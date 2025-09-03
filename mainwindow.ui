@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>CentralWidget</class>
+ <widget class="QMainWindow" name="CentralWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -14,9 +14,281 @@
    <string>低能滤片堆栈谱仪软件</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,4">
+   <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,100,100,400">
+    <property name="spacing">
+     <number>2</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout">
+     <widget class="QWidget" name="sidewidget" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>30</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <property name="spacing">
+        <number>1</number>
+       </property>
+       <property name="leftMargin">
+        <number>1</number>
+       </property>
+       <property name="topMargin">
+        <number>1</number>
+       </property>
+       <property name="rightMargin">
+        <number>1</number>
+       </property>
+       <property name="bottomMargin">
+        <number>1</number>
+       </property>
+       <item>
+        <widget class="QGraphicsView" name="graphicsView">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QStackedWidget" name="stackedWidget">
+      <property name="maximumSize">
+       <size>
+        <width>250</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <widget class="QWidget" name="laserDistanceWidget">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>测距模块</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="toolButtonClose">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>20</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="text">
+             <string notr="true">x</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <property name="spacing">
+           <number>30</number>
+          </property>
+          <property name="leftMargin">
+           <number>20</number>
+          </property>
+          <property name="rightMargin">
+           <number>20</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>电源：</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="SwitchButton" name="switchButton_power" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <property name="spacing">
+           <number>30</number>
+          </property>
+          <property name="leftMargin">
+           <number>20</number>
+          </property>
+          <property name="rightMargin">
+           <number>20</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>激光：</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="SwitchButton" name="switchButton_laser" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>80</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>25</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkBox">
+          <property name="text">
+           <string>连续测量</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <item>
+           <spacer name="horizontalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_3">
+            <property name="text">
+             <string>开始测量</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="tableWidget">
+          <column>
+           <property name="text">
+            <string>距离</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="detectorStatusWidget"/>
+     </widget>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="leftVboxLayout">
       <item>
        <widget class="QCustomPlot" name="customPlot" native="true"/>
       </item>
@@ -29,7 +301,7 @@
      </layout>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout_2" stretch="4,1">
+     <layout class="QVBoxLayout" name="rightVboxLayout" stretch="4,1">
       <item>
        <widget class="QCustomPlot" name="customPlot_result" native="true"/>
       </item>
@@ -77,9 +349,19 @@
     <addaction name="action_netCfg"/>
     <addaction name="action_cfgParam"/>
    </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>主题</string>
+    </property>
+    <addaction name="action_lightTheme"/>
+    <addaction name="action_darkTheme"/>
+    <addaction name="separator"/>
+    <addaction name="action_themeColor"/>
+   </widget>
    <addaction name="menu_F"/>
    <addaction name="menu"/>
    <addaction name="menu_H"/>
+   <addaction name="menu_2"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
@@ -108,7 +390,7 @@
   </widget>
   <action name="action_open">
    <property name="icon">
-    <iconset resource="resource.qrc">
+    <iconset>
      <normaloff>:/resource/dakaiwenjian.png</normaloff>:/resource/dakaiwenjian.png</iconset>
    </property>
    <property name="text">
@@ -120,7 +402,7 @@
   </action>
   <action name="action_exit">
    <property name="icon">
-    <iconset resource="resource.qrc">
+    <iconset>
      <normaloff>:/resource/exit.png</normaloff>:/resource/exit.png</iconset>
    </property>
    <property name="text">
@@ -132,7 +414,7 @@
   </action>
   <action name="action_netCfg">
    <property name="icon">
-    <iconset resource="resource.qrc">
+    <iconset>
      <normaloff>:/resource/remote.png</normaloff>:/resource/remote.png</iconset>
    </property>
    <property name="text">
@@ -144,7 +426,7 @@
   </action>
   <action name="action_cfgParam">
    <property name="icon">
-    <iconset resource="resource.qrc">
+    <iconset>
      <normaloff>:/resource/shebeiguanli.png</normaloff>:/resource/shebeiguanli.png</iconset>
    </property>
    <property name="text">
@@ -156,7 +438,7 @@
   </action>
   <action name="action_about">
    <property name="icon">
-    <iconset resource="resource.qrc">
+    <iconset>
      <normaloff>:/resource/about.png</normaloff>:/resource/about.png</iconset>
    </property>
    <property name="text">
@@ -168,7 +450,7 @@
   </action>
   <action name="action_connect">
    <property name="icon">
-    <iconset resource="resource.qrc">
+    <iconset>
      <normaloff>:/resource/conect-on.png</normaloff>:/resource/conect-on.png</iconset>
    </property>
    <property name="text">
@@ -180,7 +462,7 @@
   </action>
   <action name="action_disConnect">
    <property name="icon">
-    <iconset resource="resource.qrc">
+    <iconset>
      <normaloff>:/resource/conect-fault.png</normaloff>:/resource/conect-fault.png</iconset>
    </property>
    <property name="text">
@@ -192,7 +474,7 @@
   </action>
   <action name="action_startMeasure">
    <property name="icon">
-    <iconset resource="resource.qrc">
+    <iconset>
      <normaloff>:/resource/work-on.png</normaloff>:/resource/work-on.png</iconset>
    </property>
    <property name="text">
@@ -204,7 +486,7 @@
   </action>
   <action name="action_stopMeasure">
    <property name="icon">
-    <iconset resource="resource.qrc">
+    <iconset>
      <normaloff>:/resource/work-off.png</normaloff>:/resource/work-off.png</iconset>
    </property>
    <property name="text">
@@ -216,7 +498,7 @@
   </action>
   <action name="action_powerOn">
    <property name="icon">
-    <iconset resource="resource.qrc">
+    <iconset>
      <normaloff>:/resource/power-on.png</normaloff>:/resource/power-on.png</iconset>
    </property>
    <property name="text">
@@ -228,7 +510,7 @@
   </action>
   <action name="action_powerOff">
    <property name="icon">
-    <iconset resource="resource.qrc">
+    <iconset>
      <normaloff>:/resource/power-fault.png</normaloff>:/resource/power-fault.png</iconset>
    </property>
    <property name="text">
@@ -240,7 +522,7 @@
   </action>
   <action name="action_measureDistance">
    <property name="icon">
-    <iconset resource="resource.qrc">
+    <iconset>
      <normaloff>:/resource/ruler.png</normaloff>:/resource/ruler.png</iconset>
    </property>
    <property name="text">
@@ -248,6 +530,21 @@
    </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="action_lightTheme">
+   <property name="text">
+    <string>明亮</string>
+   </property>
+  </action>
+  <action name="action_darkTheme">
+   <property name="text">
+    <string>暗黑</string>
+   </property>
+  </action>
+  <action name="action_themeColor">
+   <property name="text">
+    <string>主题颜色</string>
    </property>
   </action>
  </widget>
@@ -258,9 +555,13 @@
    <header>qcustomplot.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>SwitchButton</class>
+   <extends>QWidget</extends>
+   <header>switchbutton.h</header>
+   <container>1</container>
+  </customwidget>
  </customwidgets>
- <resources>
-  <include location="resource.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

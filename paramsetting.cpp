@@ -67,11 +67,11 @@ void ParamSetting::on_pushButton_save_clicked()
     }
 
     {
-        QString waveLength = ui->tableWidget->item(1, 0)->text() + "," +
+        QString gain = ui->tableWidget->item(1, 0)->text() + "," +
                              ui->tableWidget->item(1, 1)->text() + "," +
                              ui->tableWidget->item(1, 2)->text() + "," +
                              ui->tableWidget->item(1, 3)->text();
-        fpgaSettings->setValue("Gain", waveLength);
+        fpgaSettings->setValue("Gain", gain);
     }
 
     fpgaSettings->endGroup();

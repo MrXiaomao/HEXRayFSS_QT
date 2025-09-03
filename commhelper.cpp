@@ -57,11 +57,17 @@ CommHelper::~CommHelper()
     for (auto socket : sockets){
         closeSocket(socket);
     }
+
+    // 终止线程
+    mTerminatedThead = true;
+    mDataReady = true;
+    mCondition.wakeAll();
+    dataProcessThread->wait();
 }
 
 void CommHelper::initCommand()
 {
-    dataHeadCmd = QByteArray::fromHex(QString("ab ab").toUtf8());;// 数据头
+    dataHeadCmd = QByteArray::fromHex(QString("ab ab ff").toUtf8());;// 数据头
     dataTailCmd = QByteArray::fromHex(QString("cd cd").toUtf8());;// 数据尾
 
     // 查询继电器电源状态
@@ -635,7 +641,7 @@ void CommHelper::OnDataProcessThread()
         if (rawWaveAllData.size() == 0)
             continue;
 
-        QVector<QPair<quint8, QVector<quint16>>> realCurve;// 实测曲线
+        QMap<quint8, QVector<quint16>> realCurve;// 实测曲线
         QVector<QPair<float, float>> calResult;// 反解能谱
         while (rawWaveAllData.size() >= baseWaveTotalSize * 3){
             if (rawWaveAllData.startsWith(dataHeadCmd)){
@@ -644,12 +650,26 @@ void CommHelper::OnDataProcessThread()
                 //继续检查包尾
                 QByteArray chunk = rawWaveAllData.left(baseWaveTotalSize);
                 if (chunk.endsWith(dataTailCmd)){
+                    //单个波形：0xABAB + 0xFFXY+ 波形长度*16bit +0xCDCD
+                    //X:数采板序号 Y:通道号
+                    quint8 ch = chunk[3] & 0x0F;
+                    QVector<quint16> data;
 
+                    for (int i = 0; i < waveLength * 2; i += 2) {
+                        quint16 value = static_cast<quint8>(chunk[i + 4]) << 8 | static_cast<quint8>(chunk[i + 5]);
+                        data.append(value);
+                    }
+
+                    realCurve[ch] = data;
                 }
                 else {
-                    // 包尾不对，重新找包头
-
+                    // 包尾不正确，继续寻找包头
+                    rawWaveAllData.remove(0, 3);
                 }
+            }
+            else{
+                // 包头不正确，继续寻找包头
+                rawWaveAllData.remove(0, 1);
             }
         }
 

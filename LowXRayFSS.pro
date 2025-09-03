@@ -14,7 +14,8 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     netsetting.cpp \
-    paramsetting.cpp
+    paramsetting.cpp \
+    switchbutton.cpp
 
 HEADERS += \
     qlitethread.h \
@@ -22,7 +23,8 @@ HEADERS += \
     globalsettings.h \
     mainwindow.h \
     netsetting.h \
-    paramsetting.h
+    paramsetting.h \
+    switchbutton.h
 
 FORMS += \
     mainwindow.ui \
@@ -94,3 +96,5 @@ windows {
 include($$PWD/../3rdParty/log4qt/Include/log4qt.pri)
 include($$PWD/../3rdParty/resource/resource.pri)
 include($$PWD/../3rdParty/QCustomplot/QCustomplot.pri)
+include($$PWD/../3rdParty/QGoodWindow/QGoodWindow/QGoodWindow.pri)
+include($$PWD/../3rdParty/QGoodWindow/QGoodCentralWidget/QGoodCentralWidget.pri)

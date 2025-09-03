@@ -4,12 +4,15 @@
 #include "netsetting.h"
 #include "paramsetting.h"
 
-MainWindow::MainWindow(QWidget *parent)
+CentralWidget::CentralWidget(bool isDark, QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::CentralWidget)
+    , isDarkTheme(isDark)
+    , mainWindow(static_cast<MainWindow *>(parent))
 {
     ui->setupUi(this);
 
+    initUi();
     initCustomPlot(ui->customPlot, tr("道址"), tr("实测曲线（通道1-4）"));
     initCustomPlot(ui->customPlot_2, tr("道址"), tr("实测曲线（通道5-8）"));
     initCustomPlot(ui->customPlot_3, tr("道址"), tr("实测曲线（通道9-11）"));
@@ -19,12 +22,92 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, SIGNAL(sigWriteLog(const QString&,QtMsgType)), this, SLOT(slotWriteLog(const QString&,QtMsgType)));
 }
 
-MainWindow::~MainWindow()
+CentralWidget::~CentralWidget()
 {
     delete ui;
 }
 
-void MainWindow::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, QString axisYLabel)
+void CentralWidget::initUi()
+{
+    ui->stackedWidget->hide();
+    QPushButton* laserDistanceButton = new QPushButton();
+    laserDistanceButton->setText(tr("测距模块"));
+    laserDistanceButton->setFixedSize(250,26);
+    QPushButton* detectorStatusButton = new QPushButton();
+    detectorStatusButton->setText(tr("设备状态"));
+    detectorStatusButton->setFixedSize(250,26);
+
+    QHBoxLayout* sideHboxLayout = new QHBoxLayout();
+    sideHboxLayout->setContentsMargins(0,0,0,0);
+    sideHboxLayout->setSpacing(2);
+
+    QWidget* sideProxyWidget = new QWidget();
+    sideProxyWidget->setLayout(sideHboxLayout);
+    sideHboxLayout->addWidget(laserDistanceButton);
+    sideHboxLayout->addWidget(detectorStatusButton);
+
+    QGraphicsScene *scene = new QGraphicsScene(this);
+    QGraphicsProxyWidget *w = scene->addWidget(sideProxyWidget);
+    w->setPos(0,0);
+    w->setRotation(-90);
+    ui->graphicsView->setScene(scene);
+    ui->graphicsView->setFrameStyle(0);
+    ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->graphicsView->setFixedSize(30, 502);
+    ui->sidewidget->setFixedWidth(30);
+
+    // QHBoxLayout* centralHboxLayout = new QHBoxLayout();
+    // centralHboxLayout->setContentsMargins(0,0,0,0);
+    // centralHboxLayout->setSpacing(2);
+    // centralHboxLayout->addWidget(ui->sidewidget);
+    // centralHboxLayout->addWidget(ui->stackedWidget);
+    // centralHboxLayout->addLayout(ui->leftVboxLayout);
+    // centralHboxLayout->addLayout(ui->rightVboxLayout);
+    // ui->centralwidget->setLayout(centralHboxLayout);
+    // centralHboxLayout->setSizes(QList<int>() << 1 << 100000 << 100000 << 100000 << 1);
+
+    ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->switchButton_power->setAutoChecked(false);
+    ui->switchButton_laser->setAutoChecked(false);
+    connect(ui->switchButton_power, &SwitchButton::clicked, this, [=](bool checked){
+        if (!checked){
+            // 测距模块电源
+        }
+    });
+    connect(ui->switchButton_laser, &SwitchButton::clicked, this, [=](bool checked){
+        if (!checked){
+            // 测距模块激光
+        }
+    });
+
+    connect(laserDistanceButton,&QPushButton::clicked,this,[&](){
+        if(ui->stackedWidget->isHidden()) {
+            ui->stackedWidget->setCurrentWidget(ui->laserDistanceWidget);
+            ui->stackedWidget->show();
+        } else {
+            if(ui->stackedWidget->currentWidget() == ui->laserDistanceWidget) {
+                ui->stackedWidget->hide();
+            } else {
+                ui->stackedWidget->setCurrentWidget(ui->laserDistanceWidget);
+            }
+        }
+    });
+    connect(detectorStatusButton,&QPushButton::clicked,this,[&](){
+        if(ui->stackedWidget->isHidden()) {
+            ui->stackedWidget->setCurrentWidget(ui->detectorStatusWidget);
+            ui->stackedWidget->show();
+        } else {
+            if(ui->stackedWidget->currentWidget() == ui->detectorStatusWidget) {
+                ui->stackedWidget->hide();
+            } else {
+                ui->stackedWidget->setCurrentWidget(ui->detectorStatusWidget);
+            }
+        }
+    });
+}
+
+void CentralWidget::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, QString axisYLabel)
 {
     //customPlot->setObjectName(objName);
 
@@ -132,7 +215,25 @@ void MainWindow::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, QSt
     //connect(customPlot, SIGNAL(mouseMove(QMouseEvent*)), this,SLOT(slotShowTracer(QMouseEvent*)));
 }
 
-void MainWindow::slotWriteLog(const QString &msg, QtMsgType msgType)
+void CentralWidget::checkCloseEvent(QCloseEvent *event)
+{
+    QMessageBox::StandardButton reply = QMessageBox::question(this, tr("提示"), tr("您确定要退出吗？"),
+                                                              QMessageBox::Yes|QMessageBox::No);
+    if(reply == QMessageBox::Yes) {
+        event->accept();
+    } else {
+        event->ignore();
+    }
+}
+
+void CentralWidget::checkStatusTipEvent(QStatusTipEvent *event)
+{
+    if (!event->tip().isEmpty()) {
+        ui->statusbar->showMessage(event->tip(), 2000);
+    }
+}
+
+void CentralWidget::slotWriteLog(const QString &msg, QtMsgType msgType)
 {
     // 创建一个 QTextCursor
     QTextCursor cursor = ui->textEdit_log->textCursor();
@@ -170,22 +271,101 @@ void MainWindow::slotWriteLog(const QString &msg, QtMsgType msgType)
     }
 }
 
-void MainWindow::on_action_netCfg_triggered()
+void CentralWidget::on_action_netCfg_triggered()
 {
     NetSetting w;
     w.exec();
 }
 
 
-void MainWindow::on_action_cfgParam_triggered()
+void CentralWidget::on_action_cfgParam_triggered()
 {
     ParamSetting w;
     w.exec();
 }
 
 
-void MainWindow::on_action_exit_triggered()
+void CentralWidget::on_action_exit_triggered()
 {
     this->close();
 }
 
+////////////////////////////////////////
+MainWindow::MainWindow(bool isDark,
+                       QWidget *parent)
+    : QGoodWindow(parent) {
+    m_central_widget = new CentralWidget(isDark,this);
+    m_central_widget->setWindowFlags(Qt::Widget);
+
+    m_good_central_widget = new QGoodCentralWidget(this);
+
+#ifdef Q_OS_MAC
+    //macOS uses global menu bar
+    if(QApplication::testAttribute(Qt::AA_DontUseNativeMenuBar)) {
+#else
+    if(true) {
+#endif
+        m_menu_bar = m_central_widget->menuBar();
+
+        //Set font of menu bar
+        QFont font = m_menu_bar->font();
+#ifdef Q_OS_WIN
+        font.setFamily("Segoe UI");
+#else
+        font.setFamily(qApp->font().family());
+#endif
+        m_menu_bar->setFont(font);
+
+        QTimer::singleShot(0, this, [&]{
+            const int title_bar_height = m_good_central_widget->titleBarHeight();
+            m_menu_bar->setStyleSheet(QString("QMenuBar {height: %0px;}").arg(title_bar_height));
+        });
+
+        connect(m_good_central_widget,&QGoodCentralWidget::windowActiveChanged,this, [&](bool active){
+            m_menu_bar->setEnabled(active);
+#ifdef Q_OS_MACOS
+            fixWhenShowQuardCRTTabPreviewIssue();
+#endif
+        });
+
+        m_good_central_widget->setLeftTitleBarWidget(m_menu_bar);
+        setNativeCaptionButtonsVisibleOnMac(false);
+    } else {
+        setNativeCaptionButtonsVisibleOnMac(true);
+    }
+
+    connect(qGoodStateHolder, &QGoodStateHolder::currentThemeChanged, this, [](){
+        if (qGoodStateHolder->isCurrentThemeDark())
+            QGoodWindow::setAppDarkTheme();
+        else
+            QGoodWindow::setAppLightTheme();
+    });
+    connect(this, &QGoodWindow::systemThemeChanged, this, [&]{
+        qGoodStateHolder->setCurrentThemeDark(QGoodWindow::isSystemThemeDark());
+    });
+    qGoodStateHolder->setCurrentThemeDark(isDark);
+
+    m_good_central_widget->setCentralWidget(m_central_widget);
+    setCentralWidget(m_good_central_widget);
+
+    setWindowIcon(QIcon(":/logo.png"));
+    setWindowTitle(m_central_widget->windowTitle());
+
+    m_good_central_widget->setTitleAlignment(Qt::AlignCenter);
+}
+
+MainWindow::~MainWindow() {
+    delete m_central_widget;
+}
+
+void MainWindow::closeEvent(QCloseEvent *event) {
+    m_central_widget->checkCloseEvent(event);
+}
+
+bool MainWindow::event(QEvent * event) {
+    if(event->type() == QEvent::StatusTip) {
+        m_central_widget->checkStatusTipEvent(static_cast<QStatusTipEvent *>(event));
+        return true;
+    }
+    return QGoodWindow::event(event);
+}

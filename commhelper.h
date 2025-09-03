@@ -8,6 +8,7 @@
 #include <QElapsedTimer>
 #include <QWaitCondition>
 
+#include "qlitethread.h"
 class CommHelper : public QObject
 {
     Q_OBJECT
@@ -42,6 +43,12 @@ signals:
     void distanceRespond(float distance, quint16 quality);// 测距模块距离和质量
     void temperatureRespond(float temperature);
     void appVersopmRespond(QString version, QString serialNumber);
+
+    void measureStart(); //测量开始
+    void measureEnd(); //测量结束
+
+    void showRealCurve(const QMap<quint8, QVector<quint16>>& data);//实测曲线
+    void showEnerygySpectrumCurve(const QVector<QPair<float, float>>& data);//反解能谱
 
 private:
     /*********************************************************
@@ -146,7 +153,9 @@ private:
     QTcpSocket *socketDetector3; //探测器
     quint8 socketConectedStatus = ssNone; // 设备在线状态
 
-    QByteArray askCurrentCmd;
+    QByteArray dataHeadCmd;// 数据头
+    QByteArray dataTailCmd;// 数据尾
+    QByteArray askCurrentCmd;// 当前发送指令
     QByteArray askRelayPowerOnCmd;// 继电器电源-闭合
     QByteArray askRelayPowerOffCmd;// 继电器电源-断开
     QByteArray askQueryRelayPowerStatusCmd;// 查询继电器电源状态
@@ -158,9 +167,13 @@ private:
 
     QByteArray rawWaveData[3]; //原始波形数据
     bool mDataReady = false;// 数据长度不够，还没准备好
+    bool mTerminatedThead = false;
+    QMutex mReceivePoolLocker;
     QWaitCondition mCondition;//
-    QLiteThread* dataProcessThread;// 处理线程
+    QLiteThread* dataProcessThread = nullptr;// 处理线程
     void OnDataProcessThread();
+    QByteArray rawWaveAllData;//波形总数据
+
     /*
      初始化网络
     */
