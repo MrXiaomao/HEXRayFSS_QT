@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1074</width>
+    <height>703</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>低能滤片堆栈谱仪软件</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,4">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QCustomPlot" name="customPlot" native="true"/>
+      </item>
+      <item>
+       <widget class="QCustomPlot" name="customPlot_2" native="true"/>
+      </item>
+      <item>
+       <widget class="QCustomPlot" name="customPlot_3" native="true"/>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout_2" stretch="4,1">
+      <item>
+       <widget class="QCustomPlot" name="customPlot_result" native="true"/>
+      </item>
+      <item>
+       <widget class="QTextEdit" name="textEdit_log">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1074</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_F">
+    <property name="title">
+     <string>文件(&amp;F)</string>
+    </property>
+    <addaction name="action_open"/>
+    <addaction name="separator"/>
+    <addaction name="action_exit"/>
+   </widget>
+   <widget class="QMenu" name="menu_H">
+    <property name="title">
+     <string>帮助(&amp;H)</string>
+    </property>
+    <addaction name="action_about"/>
+   </widget>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>工具(&amp;T)</string>
+    </property>
+    <addaction name="action_netCfg"/>
+    <addaction name="action_cfgParam"/>
+   </widget>
+   <addaction name="menu_F"/>
+   <addaction name="menu"/>
+   <addaction name="menu_H"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextUnderIcon</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="action_powerOn"/>
+   <addaction name="action_powerOff"/>
+   <addaction name="action_connect"/>
+   <addaction name="action_disConnect"/>
+   <addaction name="separator"/>
+   <addaction name="action_measureDistance"/>
+   <addaction name="action_startMeasure"/>
+   <addaction name="action_stopMeasure"/>
+   <addaction name="separator"/>
+   <addaction name="action_exit"/>
+  </widget>
+  <action name="action_open">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/resource/dakaiwenjian.png</normaloff>:/resource/dakaiwenjian.png</iconset>
+   </property>
+   <property name="text">
+    <string>打开历史文件(&amp;O)...</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="action_exit">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/resource/exit.png</normaloff>:/resource/exit.png</iconset>
+   </property>
+   <property name="text">
+    <string>退出系统(&amp;X)</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="action_netCfg">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/resource/remote.png</normaloff>:/resource/remote.png</iconset>
+   </property>
+   <property name="text">
+    <string>网络设置(&amp;N)</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="action_cfgParam">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/resource/shebeiguanli.png</normaloff>:/resource/shebeiguanli.png</iconset>
+   </property>
+   <property name="text">
+    <string>参数设置(&amp;P)</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="action_about">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/resource/about.png</normaloff>:/resource/about.png</iconset>
+   </property>
+   <property name="text">
+    <string>关于(&amp;A)</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="action_connect">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/resource/conect-on.png</normaloff>:/resource/conect-on.png</iconset>
+   </property>
+   <property name="text">
+    <string>连接探测器</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="action_disConnect">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/resource/conect-fault.png</normaloff>:/resource/conect-fault.png</iconset>
+   </property>
+   <property name="text">
+    <string>断开探测器</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="action_startMeasure">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/resource/work-on.png</normaloff>:/resource/work-on.png</iconset>
+   </property>
+   <property name="text">
+    <string>开始测量</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="action_stopMeasure">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/resource/work-off.png</normaloff>:/resource/work-off.png</iconset>
+   </property>
+   <property name="text">
+    <string>停止测量</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="action_powerOn">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/resource/power-on.png</normaloff>:/resource/power-on.png</iconset>
+   </property>
+   <property name="text">
+    <string>打开电源</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="action_powerOff">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/resource/power-fault.png</normaloff>:/resource/power-fault.png</iconset>
+   </property>
+   <property name="text">
+    <string>关闭电源</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="action_measureDistance">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/resource/ruler.png</normaloff>:/resource/ruler.png</iconset>
+   </property>
+   <property name="text">
+    <string>开始测距</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
+ <connections/>
+</ui>
