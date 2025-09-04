@@ -4,37 +4,124 @@
 #include "netsetting.h"
 #include "paramsetting.h"
 
-CentralWidget::CentralWidget(bool isDark, QWidget *parent)
+MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::CentralWidget)
-    , isDarkTheme(isDark)
-    , mainWindow(static_cast<MainWindow *>(parent))
+    , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
     initUi();
-    initCustomPlot(ui->customPlot, tr("道址"), tr("实测曲线（通道1-4）"));
-    initCustomPlot(ui->customPlot_2, tr("道址"), tr("实测曲线（通道5-8）"));
-    initCustomPlot(ui->customPlot_3, tr("道址"), tr("实测曲线（通道9-11）"));
+    initCustomPlot(ui->customPlot, tr("道址"), tr("实测曲线（通道1-4）"), 4);
+    initCustomPlot(ui->customPlot_2, tr("道址"), tr("实测曲线（通道5-8）"), 4);
+    initCustomPlot(ui->customPlot_3, tr("道址"), tr("实测曲线（通道9-11）"), 3);
     initCustomPlot(ui->customPlot_result, tr("能量/MeV"), tr("反解能谱）"));
 
-    commHelper = CommHelper::instance();
     connect(this, SIGNAL(sigWriteLog(const QString&,QtMsgType)), this, SLOT(slotWriteLog(const QString&,QtMsgType)));
+
+    commHelper = CommHelper::instance();
+    connect(commHelper, &CommHelper::showRealCurve, this, &MainWindow::showRealCurve);
+    connect(commHelper, &CommHelper::showEnerygySpectrumCurve, this, &MainWindow::showEnerygySpectrumCurve);
+    connect(commHelper, &CommHelper::appVersionRespond, this, [=](quint8 index, QString version, QString serialNumber){
+        ui->tableWidget_detectorVersion->item(index - 1, 0)->setText(version + " " + serialNumber);
+    });
+
+    ui->action_powerOn->setEnabled(false);
+    ui->action_powerOff->setEnabled(false);
+    ui->action_connect->setEnabled(true);
+    ui->action_disconnect->setEnabled(false);
+    ui->action_startMeasure->setEnabled(false);
+    ui->action_stopMeasure->setEnabled(false);
+
+    // 继电器
+    connect(commHelper, &CommHelper::relayConnected, this, [=](){
+        ui->action_powerOn->setEnabled(true);
+        ui->action_powerOff->setEnabled(true);
+
+        ui->action_connect->setEnabled(false);
+        ui->action_disconnect->setEnabled(true);
+
+        //查询继电器电源闭合状态
+        commHelper->queryRelayStatus();
+    });
+    connect(commHelper, &CommHelper::relayDisconnected, this, [=](){
+        ui->action_powerOn->setEnabled(false);
+        ui->action_powerOff->setEnabled(false);
+
+        ui->action_connect->setEnabled(true);
+        ui->action_disconnect->setEnabled(false);
+    });
+
+    connect(commHelper, &CommHelper::relayPowerOn, this, [=](){
+        ui->action_powerOn->setEnabled(false);
+        ui->action_powerOff->setEnabled(true);
+    });
+    connect(commHelper, &CommHelper::relayPowerOff, this, [=](){
+        ui->action_powerOn->setEnabled(true);
+        ui->action_powerOff->setEnabled(false);
+    });
+
+    // 探测器
+    connect(commHelper, &CommHelper::detectorConnected, this, [=](quint8 index){
+        ui->tableWidget_detector->item(0, index - 1)->setText(tr("在线"));
+        ui->action_startMeasure->setEnabled(true);
+        ui->action_stopMeasure->setEnabled(false);
+    });
+    connect(commHelper, &CommHelper::detectorDisconnected, this, [=](quint8 index){
+        ui->tableWidget_detector->item(0, index - 1)->setText(tr("离线"));
+        ui->action_startMeasure->setEnabled(false);
+        ui->action_stopMeasure->setEnabled(false);
+    });
+    connect(commHelper, &CommHelper::temperatureRespond, this, [=](quint8 index, float temperature){
+        ui->tableWidget_detector->item(1, index - 1)->setText(QString::number(temperature));
+    });
+
+    // 测距模块距离和质量
+    connect(commHelper, &CommHelper::distanceRespond, this, [=](float distance, quint16 quality){
+        int row = ui->tableWidget_laser->rowCount();
+        ui->tableWidget_laser->insertRow(row);
+
+        QTableWidgetItem *item1 = new QTableWidgetItem(QString::number(distance));
+        item1->setTextAlignment(Qt::AlignCenter);
+        ui->tableWidget_laser->setItem(row, 0, item1);
+
+        QTableWidgetItem *item2 = new QTableWidgetItem(QString::number(quality));
+        item2->setTextAlignment(Qt::AlignCenter);
+        ui->tableWidget_laser->setItem(row, 1, item2);
+
+        ui->tableWidget_laser->setCurrentItem(item2);
+    });
+
+
+    //测量开始
+    connect(commHelper, &CommHelper::measureStart, this, [=](){
+    });
+    //测量结束
+    connect(commHelper, &CommHelper::measureEnd, this, [=](){
+    });
+
+    //定时查询温度(1s)
+    timerQueryTemperatur = new QTimer(this);
+    timerQueryTemperatur->setInterval(1000);
+    connect(timerQueryTemperatur, &QTimer::timeout, this, [=](){
+        commHelper->queryTemperature();
+    });
+
+    this->showMaximized();
 }
 
-CentralWidget::~CentralWidget()
+MainWindow::~MainWindow()
 {
     delete ui;
 }
 
-void CentralWidget::initUi()
+void MainWindow::initUi()
 {
     ui->stackedWidget->hide();
     QPushButton* laserDistanceButton = new QPushButton();
     laserDistanceButton->setText(tr("测距模块"));
     laserDistanceButton->setFixedSize(250,26);
     QPushButton* detectorStatusButton = new QPushButton();
-    detectorStatusButton->setText(tr("设备状态"));
+    detectorStatusButton->setText(tr("设备信息"));
     detectorStatusButton->setFixedSize(250,26);
 
     QHBoxLayout* sideHboxLayout = new QHBoxLayout();
@@ -42,7 +129,7 @@ void CentralWidget::initUi()
     sideHboxLayout->setSpacing(2);
 
     QWidget* sideProxyWidget = new QWidget();
-    sideProxyWidget->setLayout(sideHboxLayout);
+    sideProxyWidget->setLayout(sideHboxLayout);    
     sideHboxLayout->addWidget(laserDistanceButton);
     sideHboxLayout->addWidget(detectorStatusButton);
 
@@ -67,9 +154,33 @@ void CentralWidget::initUi()
     // ui->centralwidget->setLayout(centralHboxLayout);
     // centralHboxLayout->setSizes(QList<int>() << 1 << 100000 << 100000 << 100000 << 1);
 
-    ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->switchButton_power->setAutoChecked(false);
-    ui->switchButton_laser->setAutoChecked(false);
+    ui->tableWidget_laser->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->tableWidget_detector->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->tableWidget_detectorVersion->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->tableWidget_detector->horizontalHeader()->setFixedHeight(25);
+    ui->tableWidget_detector->setRowHeight(0, 30);
+    ui->tableWidget_detector->setRowHeight(1, 30);
+    ui->tableWidget_detector->setFixedHeight(87);
+
+    ui->tableWidget_detectorVersion->horizontalHeader()->setFixedHeight(25);
+    ui->tableWidget_detectorVersion->setRowHeight(0, 30);
+    ui->tableWidget_detectorVersion->setRowHeight(1, 30);
+    ui->tableWidget_detectorVersion->setRowHeight(2, 30);
+    ui->tableWidget_detectorVersion->setFixedHeight(117);
+
+    // ui->switchButton_power->setAutoChecked(false);
+    // ui->switchButton_laser->setAutoChecked(false);
+
+    QAction *action = ui->lineEdit_filePath->addAction(QIcon(":/open.png"), QLineEdit::TrailingPosition);
+    QToolButton* button = qobject_cast<QToolButton*>(action->associatedWidgets().last());
+    button->setCursor(QCursor(Qt::PointingHandCursor));
+    connect(button, &QToolButton::pressed, this, [=](){
+        QString cacheDir = QFileDialog::getExistingDirectory(this);
+        if (!cacheDir.isEmpty()){
+            ui->lineEdit_filePath->setText(cacheDir);
+        }
+    });
+
     connect(ui->switchButton_power, &SwitchButton::clicked, this, [=](bool checked){
         if (!checked){
             // 测距模块电源
@@ -105,9 +216,18 @@ void CentralWidget::initUi()
             }
         }
     });
+
+    connect(ui->toolButton_closeLaserDistanceWidget,&QPushButton::clicked,this,[&](){
+        ui->stackedWidget->hide();
+    });
+    connect(ui->toolButton_closeDetectorStatusWidget,&QPushButton::clicked,this,[&](){
+        ui->stackedWidget->hide();
+    });
+
+    connect(ui->pushButton_startMeasure, &QPushButton::clicked, ui->action_startMeasure, &QAction::trigger);
 }
 
-void CentralWidget::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, QString axisYLabel)
+void MainWindow::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, QString axisYLabel, int graphCount/* = 1*/)
 {
     //customPlot->setObjectName(objName);
 
@@ -191,15 +311,15 @@ void CentralWidget::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, 
     // customPlot->yAxis->grid()->setSubGridVisible(false);
 
     // 添加散点图
-    // for (int i=0; i<count; ++i){
-    //     QCPGraph * mainGraph = customPlot->addGraph(customPlot->xAxis, customPlot->yAxis);
-    //     mainGraph->setName("mainGraph");
-    //     mainGraph->setAntialiased(false);
-    //     mainGraph->setPen(QPen(QColor(i == 0x00 ? clrLine : clrLine2)));
-    //     mainGraph->selectionDecorator()->setPen(QPen(i == 0x00 ? clrLine : clrLine2));
-    //     mainGraph->setLineStyle(QCPGraph::lsNone);// 隐藏线性图
-    //     mainGraph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));//显示散点图
-    // }
+    QColor colors[] = {Qt::red, Qt::blue, Qt::green, Qt::cyan};
+    for (int i=0; i<graphCount; ++i){
+        QCPGraph * graph = customPlot->addGraph(customPlot->xAxis, customPlot->yAxis);
+        graph->setAntialiased(false);
+        graph->setPen(QPen(colors[i]));
+        //graph->selectionDecorator()->setPen(QPen(colors[i]));
+        graph->setLineStyle(QCPGraph::lsNone);// 隐藏线性图
+        graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));//显示散点图
+    }
 
     connect(customPlot, SIGNAL(beforeReplot()), this, SLOT(slotBeforeReplot()));
     connect(customPlot, SIGNAL(afterLayout()), this, SLOT(slotBeforeReplot()));
@@ -215,9 +335,8 @@ void CentralWidget::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, 
     //connect(customPlot, SIGNAL(mouseMove(QMouseEvent*)), this,SLOT(slotShowTracer(QMouseEvent*)));
 }
 
-void CentralWidget::checkCloseEvent(QCloseEvent *event)
-{
-    QMessageBox::StandardButton reply = QMessageBox::question(this, tr("提示"), tr("您确定要退出吗？"),
+void MainWindow::closeEvent(QCloseEvent *event) {
+    int reply = QMessageBox::information(this, tr("提示"), tr("您确定要退出吗？"),
                                                               QMessageBox::Yes|QMessageBox::No);
     if(reply == QMessageBox::Yes) {
         event->accept();
@@ -226,14 +345,20 @@ void CentralWidget::checkCloseEvent(QCloseEvent *event)
     }
 }
 
-void CentralWidget::checkStatusTipEvent(QStatusTipEvent *event)
-{
-    if (!event->tip().isEmpty()) {
-        ui->statusbar->showMessage(event->tip(), 2000);
+bool MainWindow::event(QEvent * event) {
+    if(event->type() == QEvent::StatusTip) {
+        QStatusTipEvent* statusTipEvent = static_cast<QStatusTipEvent *>(event);
+        if (!statusTipEvent->tip().isEmpty()) {
+            ui->statusbar->showMessage(statusTipEvent->tip(), 2000);
+        }
+
+        return true;
     }
+
+    return QMainWindow::event(event);
 }
 
-void CentralWidget::slotWriteLog(const QString &msg, QtMsgType msgType)
+void MainWindow::slotWriteLog(const QString &msg, QtMsgType msgType)
 {
     // 创建一个 QTextCursor
     QTextCursor cursor = ui->textEdit_log->textCursor();
@@ -271,101 +396,119 @@ void CentralWidget::slotWriteLog(const QString &msg, QtMsgType msgType)
     }
 }
 
-void CentralWidget::on_action_netCfg_triggered()
+void MainWindow::on_action_netCfg_triggered()
 {
     NetSetting w;
     w.exec();
 }
 
 
-void CentralWidget::on_action_cfgParam_triggered()
+void MainWindow::on_action_cfgParam_triggered()
 {
     ParamSetting w;
     w.exec();
 }
 
 
-void CentralWidget::on_action_exit_triggered()
+void MainWindow::on_action_exit_triggered()
 {
     this->close();
 }
 
-////////////////////////////////////////
-MainWindow::MainWindow(bool isDark,
-                       QWidget *parent)
-    : QGoodWindow(parent) {
-    m_central_widget = new CentralWidget(isDark,this);
-    m_central_widget->setWindowFlags(Qt::Widget);
+void MainWindow::on_action_open_triggered()
+{
+    // 打开历史文件...
+    QString fileName = QFileDialog::getOpenFileName(this, tr("打开文件"),";",tr("测量文件 (*.dat)"));
+    if (fileName.isEmpty() || !QFileInfo::exists(fileName))
+        return;
 
-    m_good_central_widget = new QGoodCentralWidget(this);
 
-#ifdef Q_OS_MAC
-    //macOS uses global menu bar
-    if(QApplication::testAttribute(Qt::AA_DontUseNativeMenuBar)) {
-#else
-    if(true) {
-#endif
-        m_menu_bar = m_central_widget->menuBar();
+}
 
-        //Set font of menu bar
-        QFont font = m_menu_bar->font();
-#ifdef Q_OS_WIN
-        font.setFamily("Segoe UI");
-#else
-        font.setFamily(qApp->font().family());
-#endif
-        m_menu_bar->setFont(font);
 
-        QTimer::singleShot(0, this, [&]{
-            const int title_bar_height = m_good_central_widget->titleBarHeight();
-            m_menu_bar->setStyleSheet(QString("QMenuBar {height: %0px;}").arg(title_bar_height));
-        });
+void MainWindow::on_action_connect_triggered()
+{
+    // 连接网络
+    commHelper->connectNet();
+}
 
-        connect(m_good_central_widget,&QGoodCentralWidget::windowActiveChanged,this, [&](bool active){
-            m_menu_bar->setEnabled(active);
-#ifdef Q_OS_MACOS
-            fixWhenShowQuardCRTTabPreviewIssue();
-#endif
-        });
 
-        m_good_central_widget->setLeftTitleBarWidget(m_menu_bar);
-        setNativeCaptionButtonsVisibleOnMac(false);
-    } else {
-        setNativeCaptionButtonsVisibleOnMac(true);
+void MainWindow::on_action_disconnect_triggered()
+{
+    // 断开网络
+    commHelper->disconnectNet();
+}
+
+
+void MainWindow::on_action_startMeasure_triggered()
+{
+    // 开始波形测量
+    if (ui->radioButton_soft->isChecked())
+        commHelper->startMeasure(CommHelper::TriggerMode::tmSoft);
+    else
+        commHelper->startMeasure(CommHelper::TriggerMode::tmHard);
+}
+
+
+void MainWindow::on_action_stopMeasure_triggered()
+{
+    // 停止波形测量
+    commHelper->stopMeasure();
+}
+
+
+void MainWindow::on_action_powerOn_triggered()
+{
+    // 打开电源
+    commHelper->openPower();
+}
+
+
+void MainWindow::on_action_powerOff_triggered()
+{
+    // 关闭电源
+    commHelper->closePower();
+}
+
+void MainWindow::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
+{
+    //实测曲线
+    QVector<double> keys, values;
+    for (int ch=0; ch<4; ++ch){
+        QVector<quint16> chData = data[ch];
+        for (int i=0; i<chData.size(); ++i){
+            keys << i;
+            values << chData[i];
+        }
+        ui->customPlot->graph(ch)->setData(keys, values);
     }
 
-    connect(qGoodStateHolder, &QGoodStateHolder::currentThemeChanged, this, [](){
-        if (qGoodStateHolder->isCurrentThemeDark())
-            QGoodWindow::setAppDarkTheme();
-        else
-            QGoodWindow::setAppLightTheme();
-    });
-    connect(this, &QGoodWindow::systemThemeChanged, this, [&]{
-        qGoodStateHolder->setCurrentThemeDark(QGoodWindow::isSystemThemeDark());
-    });
-    qGoodStateHolder->setCurrentThemeDark(isDark);
-
-    m_good_central_widget->setCentralWidget(m_central_widget);
-    setCentralWidget(m_good_central_widget);
-
-    setWindowIcon(QIcon(":/logo.png"));
-    setWindowTitle(m_central_widget->windowTitle());
-
-    m_good_central_widget->setTitleAlignment(Qt::AlignCenter);
-}
-
-MainWindow::~MainWindow() {
-    delete m_central_widget;
-}
-
-void MainWindow::closeEvent(QCloseEvent *event) {
-    m_central_widget->checkCloseEvent(event);
-}
-
-bool MainWindow::event(QEvent * event) {
-    if(event->type() == QEvent::StatusTip) {
-        m_central_widget->checkStatusTipEvent(static_cast<QStatusTipEvent *>(event));
-        return true;
+    for (int ch=4; ch<8; ++ch){
+        QVector<quint16> chData = data[ch];
+        for (int i=0; i<chData.size(); ++i){
+            keys << i;
+            values << chData[i];
+        }
+        ui->customPlot_2->graph(ch - 4)->setData(keys, values);
     }
-    return QGoodWindow::event(event);
+
+    for (int ch=8; ch<11; ++ch){
+        QVector<quint16> chData = data[ch];
+        for (int i=0; i<chData.size(); ++i){
+            keys << i;
+            values << chData[i];
+        }
+        ui->customPlot_3->graph(ch - 8)->setData(keys, values);
+    }
+}
+
+void MainWindow::showEnerygySpectrumCurve(const QVector<QPair<float, float>>& data)
+{
+    //反解能谱
+    QVector<double> keys, values;
+    for (auto iter = data.begin(); iter != data.end(); ++iter){
+        keys << iter->first;
+        values << iter->second;
+    }
+    ui->customPlot_result->graph(0)->setData(keys, values);
 }

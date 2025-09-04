@@ -96,5 +96,3 @@ windows {
 include($$PWD/../3rdParty/log4qt/Include/log4qt.pri)
 include($$PWD/../3rdParty/resource/resource.pri)
 include($$PWD/../3rdParty/QCustomplot/QCustomplot.pri)
-include($$PWD/../3rdParty/QGoodWindow/QGoodWindow/QGoodWindow.pri)
-include($$PWD/../3rdParty/QGoodWindow/QGoodCentralWidget/QGoodCentralWidget.pri)

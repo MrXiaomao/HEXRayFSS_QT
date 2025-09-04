@@ -24,13 +24,12 @@ QMutex mutexMsg;
 QtMessageHandler system_default_message_handler = NULL;// 用来保存系统默认的输出接口
 void AppMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString &msg)
 {
-    // 加锁
     QMutexLocker locker(&mutexMsg);
     if (type == QtWarningMsg)
         return;
 
     if (mw && type != QtDebugMsg)
-        emit mw->centralWidget()->sigWriteLog(msg + "\n", type);
+        emit mw->sigWriteLog(msg + "\n", type);
 
     //这里必须调用，否则消息被拦截，log4qt无法捕获系统日志
     if (system_default_message_handler){
@@ -38,14 +37,18 @@ void AppMessageHandler(QtMsgType type, const QMessageLogContext& context, const 
     }
 }
 
+#include <QTranslator>
+#include <QLibraryInfo>
+static QTranslator qtTranslator;
+static QTranslator qtbaseTranslator;
+static QTranslator appTranslator;
 int main(int argc, char *argv[])
 {
-    QGoodWindow::setup();
     QApplication::setAttribute(Qt::AA_DontUseNativeDialogs);
     QApplication::setAttribute(Qt::AA_DontUseNativeMenuBar);
     QApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
     QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
-    QApplication application(argc, argv);
+    QApplication a(argc, argv);
     QFont font = qApp->font();
     font.setStyleStrategy(QFont::PreferAntialias);
     font.setHintingPreference(QFont::PreferFullHinting);
@@ -56,11 +59,9 @@ int main(int argc, char *argv[])
     QApplication::setOrganizationDomain("");
     QApplication::setApplicationVersion(APP_VERSION);
 
-    // QApplication::setStyle(QStyleFactory::create("fusion"));//WindowsVista fusion windows
-    // QApplication::setAttribute(Qt::AA_DisableHighDpiScaling); // 禁用高DPI缩放支持
-    // QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps); // 使用高DPI位图
-    // QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
-    QApplication a(argc, argv);
+    QApplication::setStyle(QStyleFactory::create("fusion"));//WindowsVista fusion windows
+    QApplication::setAttribute(Qt::AA_DisableHighDpiScaling); // 禁用高DPI缩放支持
+    QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps); // 使用高DPI位图
 
     QSplashScreen splash;
     splash.setPixmap(QPixmap(":/resource/splash.png"));
@@ -100,32 +101,21 @@ int main(int argc, char *argv[])
         dir.mkpath(".");
     }
 
+    QString qlibpath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+    if(qtTranslator.load("qt_zh_CN.qm",qlibpath))
+        qApp->installTranslator(&qtTranslator);
+    if(qtbaseTranslator.load("qtbase_zh_CN.qm",qlibpath))
+        qApp->installTranslator(&qtbaseTranslator);
+
     system_default_message_handler = qInstallMessageHandler(AppMessageHandler);
 
     GlobalSettings::instance();
-
-#if 0 // Now we always use the dark theme, Because the dark theme is more beautiful
-    int text_hsv_value = QPalette().color(QPalette::WindowText).value();
-    int bg_hsv_value = QPalette().color(QPalette::Window).value();
-    bool isDarkTheme = text_hsv_value > bg_hsv_value?true:false;
-#else
-    bool isDarkTheme = true;
-#endif
-    if(isDarkTheme) {
-        QGoodWindow::setAppDarkTheme();
-    } else {
-        QGoodWindow::setAppLightTheme();
-    }
-
-    // QFontIcon::addFont(":/icons/icons/fontawesome-webfont-v6.6.0-solid-900.ttf");
-    // QFontIcon::addFont(":/icons/icons/fontawesome-webfont-v6.6.0-brands-400.ttf");
-    // QFontIcon::instance()->setColor(isDarkTheme?Qt::white:Qt::black);
 
     MainWindow w;
     mw = &w;
 
     qInfo().noquote() << QObject::tr("系统启动");
-    QObject::connect(w.centralWidget(), &CentralWidget::sigUpdateBootInfo, &splash, [&](const QString &msg) {
+    QObject::connect(&w, &MainWindow::sigUpdateBootInfo, &splash, [&](const QString &msg) {
         splash.showMessage(msg, Qt::AlignLeft | Qt::AlignBottom, Qt::white);
     }/*, Qt::QueuedConnection */);
     splash.finish(&w);

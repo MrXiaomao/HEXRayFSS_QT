@@ -1,6 +1,7 @@
 #include "commhelper.h"
 #include "globalsettings.h"
 
+#include <QTimer>
 #include <QDataStream>
 #include <QNetworkSession>
 #include <QNetworkConfigurationManager>
@@ -71,39 +72,31 @@ void CommHelper::initCommand()
     dataTailCmd = QByteArray::fromHex(QString("cd cd").toUtf8());;// 数据尾
 
     // 查询继电器电源状态
-    {
-        askQueryRelayPowerStatusCmd = QByteArray::fromHex(QString("01 03 10 00 00 05 81 09").toUtf8());
-    }
+    askQueryRelayPowerStatusCmd = QByteArray::fromHex(QString("01 03 10 00 00 05 81 09").toUtf8());
 
     // 继电器电源状态-闭合
-    {
-        ackRelayPowerStatusOnCmd = QByteArray::fromHex(QString("01 03 0A 00 00 00 01 86 A0 00 0F 42 40 AA 9A").toUtf8());
-    }
+    ackRelayPowerStatusOnCmd = QByteArray::fromHex(QString("01 03 0A 00 01 00 01 86 A0 00 0F 42 40 A7 0A").toUtf8());
 
     // 继电器电源状态-断开
-    {
-        ackRelayPowerStatusOffCmd = QByteArray::fromHex(QString("01 03 0A 00 01 00 01 86 A0 00 0F 42 40 A7 0A").toUtf8());
-    }
+    ackRelayPowerStatusOffCmd = QByteArray::fromHex(QString("01 03 0A 00 00 00 01 86 A0 00 0F 42 40 AA 9A").toUtf8());
 
     // 继电器电源开
-    {
-        askRelayPowerOnCmd = QByteArray::fromHex(QString("01 05 00 00 FF 00 8C 3A").toUtf8());
-    }
+    askRelayPowerOnCmd = QByteArray::fromHex(QString("01 05 00 00 FF 00 8C 3A").toUtf8());
 
     // 继电器电源关
-    {
-        askRelayPowerOffCmd = QByteArray::fromHex(QString("01 05 00 00 00 00 CD CA").toUtf8());
-    }
+    askRelayPowerOffCmd = QByteArray::fromHex(QString("01 05 00 00 00 00 CD CA").toUtf8());
 
     // 硬件触发指令
-    {
-        ackHardTriggerCmd = QByteArray::fromHex(QString("12 34 00 AA 00 0C 00 00 00 00 AB CD").toUtf8());
-    }
+    ackHardTriggerCmd = QByteArray::fromHex(QString("12 34 00 AA 00 0C 00 00 00 00 AB CD").toUtf8());
 
     // 测距模块返回数据格式
-    {
-        ackDistanceDataCmd = QByteArray::fromHex(QString("12 34 00 AB 00 00 00 00 00 00 AB CD").toUtf8());
-    }
+    ackDistanceDataCmd = QByteArray::fromHex(QString("12 34 00 AB 00 00 00 00 00 00 AB CD").toUtf8());
+
+    // 查询程序版本
+    ackAppVersionCmd = QByteArray::fromHex(QString("12 34 00 0f fc 11 00 00 00 00 ab cd").toUtf8());
+
+    // 温度查询
+    ackTemperatureCmd = QByteArray::fromHex(QString("12 34 00 0f fc 12 00 00 00 01 ab cd").toUtf8());
 }
 
 void CommHelper::initSocket(QTcpSocket **s)
@@ -119,6 +112,8 @@ void CommHelper::initSocket(QTcpSocket **s)
 #else
     connect(socket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), this, SLOT(errorOccurred(QAbstractSocket::SocketError)));
 #endif
+
+    connect(socket, &QAbstractSocket::stateChanged, this, &CommHelper::stateChanged);
 
     //连接成功
     connect(socket, SIGNAL(connected()), this, SLOT(socketConnected()));
@@ -146,27 +141,108 @@ void CommHelper::errorOccurred(QAbstractSocket::SocketError)
         socketConectedStatus ^= ssDetector3;
         emit detectorDisconnected(3);
     }
+
+    relayIsConnected = socketConectedStatus & 0x01;
+    detectorsIsConnected = socketConectedStatus & 0x0E;
 }
+
+void CommHelper::stateChanged(QAbstractSocket::SocketState state)
+{
+    QTcpSocket* socket = qobject_cast<QTcpSocket*>(sender());
+    if (state == QAbstractSocket::SocketState::UnconnectedState){
+        if (socket == socketRelay){
+            socketConectedStatus ^= ssRelay;
+        }
+        else if (socket == socketDetector1){
+            socketConectedStatus ^= ssDetector1;
+        }
+        else if (socket == socketDetector2){
+            socketConectedStatus ^= ssDetector2;
+        }
+        else if (socket == socketDetector3){
+            socketConectedStatus ^= ssDetector3;
+        }
+
+        relayIsConnected = socketConectedStatus & 0x01;
+        detectorsIsConnected = socketConectedStatus & 0x0E;
+
+        if (socket == socketRelay){
+            emit relayDisconnected();
+        }
+        else if (socket == socketDetector1){
+            emit detectorDisconnected(1);
+        }
+        else if (socket == socketDetector2){
+            emit detectorDisconnected(2);
+        }
+        else if (socket == socketDetector3){
+            emit detectorDisconnected(3);
+        }
+    }
+}
+
 
 void CommHelper::socketConnected()
 {
     QTcpSocket* socket = qobject_cast<QTcpSocket*>(sender());
     if (socket == socketRelay){
         socketConectedStatus |= ssRelay;
-        emit relayConnected();
+        QTimer::singleShot(0, this, [=]{
+            emit relayConnected();
+        });
     }
     else if (socket == socketDetector1){
         socketConectedStatus |= ssDetector1;
-        emit detectorConnected(1);
+        QTimer::singleShot(0, this, [=]{
+            emit detectorConnected(1);
+
+            static bool firstConnected = true;
+            if (firstConnected){
+                //查询程序版本号
+                this->sendQueryAppVersionCmd(1);
+            }
+        });
     }
     else if (socket == socketDetector2){
         socketConectedStatus |= ssDetector2;
-        emit detectorConnected(2);
+        QTimer::singleShot(0, this, [=]{
+            static bool firstConnected = true;
+            if (firstConnected){
+                //查询程序版本号
+                this->sendQueryAppVersionCmd(2);
+            }
+
+            emit detectorConnected(2);
+        });
     }
     else if (socket == socketDetector3){
         socketConectedStatus |= ssDetector3;
-        emit detectorConnected(3);
+        QTimer::singleShot(0, this, [=]{
+            static bool firstConnected = true;
+            if (firstConnected){
+                //查询程序版本号
+                this->sendQueryAppVersionCmd(3);
+            }
+
+            emit detectorConnected(3);
+        });
     }
+
+    relayIsConnected = socketConectedStatus & 0x01;
+    detectorsIsConnected = socketConectedStatus & 0x0E;
+
+    // if (socket == socketRelay){
+    //     emit relayConnected();
+    // }
+    // else if (socket == socketDetector1){
+    //     emit detectorConnected(1);
+    // }
+    // else if (socket == socketDetector2){
+    //     emit detectorConnected(2);
+    // }
+    // else if (socket == socketDetector3){
+    //     emit detectorConnected(3);
+    // }
 }
 
 
@@ -176,23 +252,30 @@ void CommHelper::socketReadyRead()
     if (socket->bytesAvailable() <= 0)
         return;
 
-    QByteArray rawData = socketRelay->readAll();
+    QByteArray rawData = socket->readAll();
     if (socket == socketRelay){
         qDebug()<<"Recv HEX: "<<rawData.toHex(' ');
+
         if (rawData.contains(askRelayPowerOnCmd)){
             // 继电器控制闭合返回
+            emit relayPowerOn();
         }
         else if (rawData.contains(askRelayPowerOffCmd)){
             // 继电器控制断开返回
+            emit relayPowerOff();
         }
         else if (rawData.contains(ackRelayPowerStatusOnCmd)){
             // 继电器闭合状态返回
+            emit relayPowerOn();
         }
         else if (rawData.contains(ackRelayPowerStatusOffCmd)){
             // 继电器断开状态返回
+            emit relayPowerOff();
         }
     }
     else if (socket == socketDetector1){
+        qDebug()<<"Recv HEX: "<<rawData.toHex(' ');
+
         if (measuring){
             // 已经点击了开始测量
             //单个波形：0xABAB + 0xFFXY+ 波形长度*16bit +0xCDCD
@@ -232,43 +315,96 @@ void CommHelper::socketReadyRead()
                 float temperature = data.toShort() * 0.0078125;// 换算系数
 
                 qDebug()<<"Temperature: "<<temperature;
-                emit temperatureRespond(temperature);
+                emit temperatureRespond(1, temperature);
+            }
+            else if (rawData.startsWith(QByteArray::fromHex(QString("12 34 00 0f fa 13").toUtf8())) &&
+                     rawData.endsWith(QByteArray::fromHex(QString("ab cd").toUtf8())) &&
+                     rawData.at(9) == 0x01){
+                // 程序版本号
+
+                // 再发送查询指令
+                askCurrentCmd = ackAppVersionCmd;
+                socket->write(askCurrentCmd);
+                qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
             }
             else if (rawData.startsWith(QByteArray::fromHex(QString("ac ac").toUtf8())) &&
-                     rawData.endsWith(QByteArray::fromHex(QString("ef ef").toUtf8()))){
+                        rawData.endsWith(QByteArray::fromHex(QString("ab cd").toUtf8()))){
+                        // rawData.endsWith(QByteArray::fromHex(QString("ef ef").toUtf8()))){
                 //版本号
                 QByteArray year = rawData.mid(2, 2);
-                QByteArray month = rawData.mid(6, 1);
-                QByteArray day = rawData.mid(8, 1);
-                QByteArray serialNumber = rawData.mid(10, 2);
+                QByteArray month = rawData.mid(4, 1);
+                QByteArray day = rawData.mid(5, 1);
+                QByteArray serialNumber = rawData.mid(6, 2);
 
-                QString version = QString::fromUtf8(year) + QString::fromUtf8(month) + QString::fromUtf8(day) ;
+                bool ok = false;
+                QString version = year.toHex().toUpper() +
+                                  month.toHex().toUpper() +
+                                  day.toHex().toUpper();
 
-                qDebug()<<"AppVersion: "<<version<< ", serialNumber: " << serialNumber;
-                emit appVersopmRespond(version, QString::fromUtf8(serialNumber));
+                qDebug()<<"AppVersion: "<<version<< ", serialNumber: " << serialNumber.toHex().toUpper();
+                emit appVersionRespond(1, version, QString(serialNumber.toHex().toUpper()));
             }
         }
     }
-    else if (socket == socketDetector2){
+    else if (socket == socketDetector2 | socket == socketDetector3){
+        qDebug()<<"Recv HEX: "<<rawData.toHex(' ');
+
         if (measuring){
             // 已经点击了开始测量
             //单个波形：0xABAB + 0xFFXY+ 波形长度*16bit +0xCDCD
             QMutexLocker locker(&mReceivePoolLocker);
-            rawWaveData[1].append(rawData);
+            if (socket == socketDetector2)
+                rawWaveData[1].append(rawData);
+            else
+                rawWaveData[2].append(rawData);
 
             mDataReady = true;
             mCondition.wakeAll();
+        } else if (rawData.startsWith(QByteArray::fromHex(QString("aa bb").toUtf8())) &&
+                   rawData.endsWith(QByteArray::fromHex(QString("cc dd").toUtf8()))){
+            //0xAABB + 16bit（温度） + 0xCCDD
+            QByteArray data = rawData.mid(2, 2);
+            qint16 t = data.toShort();
+            float temperature = data.toShort() * 0.0078125;// 换算系数
+
+            qDebug()<<"Temperature: "<<temperature;
+            if (socket == socketDetector2)
+                emit temperatureRespond(2, temperature);
+            else
+                emit temperatureRespond(3, temperature);
         }
-    }
-    else if (socket == socketDetector3){
-        if (measuring){
-            // 已经点击了开始测量
-            //单个波形：0xABAB + 0xFFXY+ 波形长度*16bit +0xCDCD
-            QMutexLocker locker(&mReceivePoolLocker);
-            rawWaveData[2].append(rawData);
+        else if (rawData.startsWith(QByteArray::fromHex(QString("12 34 00 0f fa 13").toUtf8())) &&
+                 rawData.endsWith(QByteArray::fromHex(QString("ab cd").toUtf8())) &&
+                 rawData.at(9) == 0x01){
+            // 程序版本号
 
-            mDataReady = true;
-            mCondition.wakeAll();
+            // 再发送查询指令
+            askCurrentCmd = ackAppVersionCmd;
+            socket->write(askCurrentCmd);
+            qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+        }
+        else if (rawData.startsWith(QByteArray::fromHex(QString("ac ac").toUtf8())) &&
+                   rawData.endsWith(QByteArray::fromHex(QString("ab cd").toUtf8()))){
+                   //rawData.endsWith(QByteArray::fromHex(QString("ef ef").toUtf8()))){
+            //版本号
+            //AC AC 20 25 09 02 00 01 AB CD 12 34 00 0F FC 11 00 00 00 00 AB CD
+            //AC AC 20 25 09 02 00 02 AB CD 12 34 00 0F FC 11 00 00 00 00 AB CD
+            //AC AC 20 25 09 02 00 03 AB CD 12 34 00 0F FC 11 00 00 00 00 AB CD
+            QByteArray year = rawData.mid(2, 2);
+            QByteArray month = rawData.mid(4, 1);
+            QByteArray day = rawData.mid(5, 1);
+            QByteArray serialNumber = rawData.mid(6, 2);
+
+            bool ok = false;
+            QString version = year.toHex().toUpper() +
+                              month.toHex().toUpper() +
+                              day.toHex().toUpper();
+
+            qDebug()<<"AppVersion: "<<version<< ", serialNumber: " << serialNumber.toHex().toUpper();
+            if (socket == socketDetector2)
+                emit appVersionRespond(2, version, QString(serialNumber.toHex().toUpper()));
+            else
+                emit appVersionRespond(3, version, QString(serialNumber.toHex().toUpper()));
         }
     }
 }
@@ -290,6 +426,11 @@ bool CommHelper::connectRelay()
     socketRelay->connectToHost(ip, port);
     socketRelay->waitForConnected(500);
     return socketRelay->isOpen() && socketRelay->state() == QAbstractSocket::ConnectedState;
+}
+
+void CommHelper::disconnectRelay()
+{
+    socketRelay->abort();
 }
 
 bool CommHelper::connectDetectors()
@@ -317,6 +458,14 @@ bool CommHelper::connectDetectors()
 
     ipSettings->finish();
     return true;
+}
+
+void CommHelper::disconnectDetectors()
+{
+    QTcpSocket* sockets[] = {socketRelay, socketDetector1, socketDetector2, socketDetector3};
+    for (int i=1; i<=3; ++i){
+        sockets[i]->abort();
+    }
 }
 
 /*
@@ -476,18 +625,16 @@ void CommHelper::sendGainCmd()
 /*
  传输模式
 */
-void CommHelper::sendTransferModeCmd(quint8 mode)
+void CommHelper::sendTransferModeCmd(quint8 index, quint8 mode)
 {
     QTcpSocket* sockets[] = {socketDetector1, socketDetector2, socketDetector3};
-    for (auto socket : sockets){
-        if (nullptr == socket || socket->state() != QAbstractSocket::ConnectedState)
-            return;
+    if (nullptr == sockets[index] || sockets[index]->state() != QAbstractSocket::ConnectedState)
+        return;
 
-        askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f fa 13 00 00 00 05 ab cd").toUtf8());
-        askCurrentCmd[9] = mode;
-        socket->write(askCurrentCmd);
-        qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
-    }
+    askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f fa 13 00 00 00 05 ab cd").toUtf8());
+    askCurrentCmd[9] = mode;
+    sockets[index]->write(askCurrentCmd);
+    qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
 }
 
 /*
@@ -510,17 +657,14 @@ void CommHelper::sendMeasureCmd(quint8 mode)
 /*
  程序版本查询
 */
-void CommHelper::sendQueryAppVersionCmd()
+void CommHelper::sendQueryAppVersionCmd(quint8 index/* = 0x01*/)
 {
-    QTcpSocket* sockets[] = {socketDetector1, socketDetector2, socketDetector3};
-    for (auto socket : sockets){
-        if (nullptr == socket || socket->state() != QAbstractSocket::ConnectedState)
-            return;
+    QTcpSocket* sockets[] = {socketRelay, socketDetector1, socketDetector2, socketDetector3};
+    if (nullptr == sockets[index] || sockets[index]->state() != QAbstractSocket::ConnectedState)
+        return;
 
-        askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f fc 11 00 00 00 00 ab cd").toUtf8());
-        socket->write(askCurrentCmd);
-        qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
-    }
+    // 先设置传输模式
+    this->sendTransferModeCmd(index, tmAppVersion);
 }
 
 /*
@@ -533,7 +677,7 @@ void CommHelper::sendQueryTemperaturCmd(quint8 on/* = 0x01*/)
         if (nullptr == socket || socket->state() != QAbstractSocket::ConnectedState)
             return;
 
-        askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f fc 12 00 00 00 01 ab cd").toUtf8());
+        askCurrentCmd = ackTemperatureCmd;
         askCurrentCmd[9] = on;
         socket->write(askCurrentCmd);
         qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
@@ -580,6 +724,7 @@ void CommHelper::sendSingleMeasureCmd(quint8 on/* = 0x01*/)
     if (nullptr == socketDetector1 || socketDetector1->state() != QAbstractSocket::ConnectedState)
         return;
 
+    chWaveDataValidTag = 0x00;
     singleMeasure = true;
     askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f af 12 00 00 00 00 ab cd").toUtf8());
     socketDetector1->write(askCurrentCmd);
@@ -596,6 +741,7 @@ void CommHelper::sendContinueMeasureCmd(quint8 on/* = 0x01*/)
     if (nullptr == socketDetector1 || socketDetector1->state() != QAbstractSocket::ConnectedState)
         return;
 
+    chWaveDataValidTag = 0x00;
     singleMeasure = false;
     askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f af 13 00 00 00 00 ab cd").toUtf8());
     askCurrentCmd[9] = on;
@@ -609,6 +755,7 @@ void CommHelper::sendContinueMeasureCmd(quint8 on/* = 0x01*/)
 void CommHelper::OnDataProcessThread()
 {
     qDebug() << "OnDataProcessThread id:" << QThread::currentThreadId();
+    chWaveDataValidTag = 0x00;
     while (!mTerminatedThead)
     {
         //单个波形：0xABAB + 0xFFXY+ 波形长度*16bit +0xCDCD
@@ -660,6 +807,7 @@ void CommHelper::OnDataProcessThread()
                         data.append(value);
                     }
 
+                    chWaveDataValidTag |= (0x01 << (ch - 1));
                     realCurve[ch] = data;
                 }
                 else {
@@ -673,22 +821,127 @@ void CommHelper::OnDataProcessThread()
             }
         }
 
+        if (chWaveDataValidTag == 0x0FFF){
+            QVector<quint16> sortRawWaveAllData;
+            sortRawWaveAllData.resize((waveLength + 3) * 2 * 12);
+            for (int i=1; i<=12; ++i){
+                sortRawWaveAllData.append(realCurve[i]);
+            }
 
-        // 实测曲线
-        QMetaObject::invokeMethod(this, [=]() {
-            emit showRealCurve(realCurve);
-        }, Qt::QueuedConnection);
+            QString strTime = QDateTime::currentDateTime().toString("yyyy-MM-dd_HHmmss");
+            QString filePath = QString("%1").arg(shotDir + "/" + strTime + ".dat");
+            QFile *pfSaveNet = new QFile(filePath);
+            if (pfSaveNet->open(QIODevice::WriteOnly)) {
+                qDebug().noquote() << tr("创建网口数据缓存文件成功，文件名：%1").arg(filePath);
+            } else {
+                qDebug().noquote() << tr("创建网口数据缓存文件失败，文件名：%1").arg(filePath);
+            }
 
-        // 反解能谱
-        QMetaObject::invokeMethod(this, [=]() {
-            emit showEnerygySpectrumCurve(calResult);
-        }, Qt::QueuedConnection);
+            if (nullptr != pfSaveNet){
+                pfSaveNet->write((const char *)sortRawWaveAllData.constData(), sortRawWaveAllData.size() * sizeof(quint16));
+                pfSaveNet->flush();
+                pfSaveNet->close();
+            }
 
-        if (singleMeasure){
-            // 波形数据处理完成，重设测量状态
-            measuring = false;
+            // 实测曲线
+            QMetaObject::invokeMethod(this, [=]() {
+                emit showRealCurve(realCurve);
+            }, Qt::QueuedConnection);
 
-            QMetaObject::invokeMethod(this, "measureEnd", Qt::QueuedConnection);
+            // 反解能谱
+            QMetaObject::invokeMethod(this, [=]() {
+                emit showEnerygySpectrumCurve(calResult);
+            }, Qt::QueuedConnection);
+
+            if (singleMeasure){
+                // 波形数据处理完成，重设测量状态
+                measuring = false;
+
+                QMetaObject::invokeMethod(this, "measureEnd", Qt::QueuedConnection);
+            }
         }
     }
+}
+
+/////////////////////////////////////////////////////////////////////////////////
+/*
+ 连接网络
+*/
+void CommHelper::connectNet()
+{
+    if (this->connectRelay())
+        this->connectDetectors();
+}
+/*
+ 断开网络
+*/
+void CommHelper::disconnectNet()
+{
+    this->disconnectDetectors();
+    this->disconnectRelay();
+}
+
+/*
+ 打开电源
+*/
+void CommHelper::openPower()
+{
+    if (relayIsConnected)
+        this->sendRelayPowerSwitcherCmd();
+}
+/*
+ 断开电源
+*/
+void CommHelper::closePower()
+{
+    if (relayIsConnected)
+        this->sendRelayPowerSwitcherCmd(0x00);
+}
+
+/*
+ 开始测量
+*/
+void CommHelper::startMeasure(quint8 mode)
+{
+    if (!detectorsIsConnected)
+        return;
+
+    this->sendTriggerTholdCmd();
+    this->sendWaveTriggerModeCmd();
+    this->sendWaveTriggerModeCmd();
+    this->sendWaveLengthCmd();
+    this->sendGainCmd();
+    //this->sendTransferModeCmd(tmWaveMode);
+    this->sendMeasureCmd(mode);
+}
+
+/*
+ 停止测量
+*/
+void CommHelper::stopMeasure()
+{
+    if (!detectorsIsConnected)
+        return;
+
+    this->sendMeasureCmd(TriggerMode::tmStop);
+}
+
+/*
+ 温度查询
+*/
+void CommHelper::queryTemperature()
+{
+    if (!detectorsIsConnected)
+        return;
+
+    this->sendQueryTemperaturCmd();
+}
+
+/*
+ 继电器状态查询
+*/
+void CommHelper::queryRelayStatus()
+{
+    if (relayIsConnected)
+        this->sendQueryRelayStatusCmd();
 }

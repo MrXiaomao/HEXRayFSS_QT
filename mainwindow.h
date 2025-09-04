@@ -2,13 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "QGoodWindow"
-#include "QGoodCentralWidget"
 #include "commhelper.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
-class CentralWidget;
+class MainWindow;
 }
 QT_END_NAMESPACE
 
@@ -19,8 +17,8 @@ class QCPItemRect;
 class QCPGraph;
 class QCPAbstractPlottable;
 class QCPItemCurve;
-class MainWindow;
-class CentralWidget : public QMainWindow
+
+class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
@@ -30,21 +28,23 @@ public:
         MINIUI_MODE,
     };
 
-    CentralWidget(bool isDark = true,
-                  QWidget *parent = nullptr);
-    ~CentralWidget();
+    MainWindow(QWidget *parent = nullptr);
+    ~MainWindow();
 
     /*
     初始化
     */
     void initUi();
-    void initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, QString axisYLabel);
+    void initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, QString axisYLabel, int graphCount = 1);
 
-    void checkCloseEvent(QCloseEvent *event);
-    void checkStatusTipEvent(QStatusTipEvent *event);
+protected:
+    void closeEvent(QCloseEvent *event) override;
+    bool event(QEvent * event) override;
 
 public slots:
-    void slotWriteLog(const QString &msg, QtMsgType msgType);
+    void slotWriteLog(const QString &msg, QtMsgType msgType = QtDebugMsg);//操作日志
+    void showRealCurve(const QMap<quint8, QVector<quint16>>& data);//实测曲线
+    void showEnerygySpectrumCurve(const QVector<QPair<float, float>>& data);//反解能谱
 
 signals:
     void sigUpdateBootInfo(const QString &msg);
@@ -57,10 +57,22 @@ private slots:
 
     void on_action_exit_triggered();
 
+    void on_action_open_triggered();
+
+    void on_action_connect_triggered();
+
+    void on_action_disconnect_triggered();
+
+    void on_action_startMeasure_triggered();
+
+    void on_action_stopMeasure_triggered();
+
+    void on_action_powerOn_triggered();
+
+    void on_action_powerOff_triggered();
+
 private:
-    Ui::CentralWidget *ui;
-    bool isDarkTheme = true;
-    class MainWindow *mainWindow = nullptr;
+    Ui::MainWindow *ui;
 
 #ifdef MATLAB
     mwArray m_mwT;
@@ -69,52 +81,8 @@ private:
     mwArray m_mwRom;
 #endif
 
-    CommHelper *commHelper;
-};
-
-class MainWindow : public QGoodWindow
-{
-    Q_OBJECT
-public:
-    explicit MainWindow(bool isDark = true,
-                        QWidget *parent = nullptr);
-    ~MainWindow();
-    void setLaboratoryButton(QToolButton *laboratoryButton) {
-        QTimer::singleShot(0, this, [this, laboratoryButton](){
-            laboratoryButton->setFixedSize(m_good_central_widget->titleBarHeight(),m_good_central_widget->titleBarHeight());
-            m_good_central_widget->setRightTitleBarWidget(laboratoryButton, false);
-            connect(m_good_central_widget,&QGoodCentralWidget::windowActiveChanged,this, [laboratoryButton](bool active){
-                laboratoryButton->setEnabled(active);
-            });
-        });
-    }
-    void fixMenuBarWidth(void) {
-        if (m_menu_bar) {
-            /* FIXME: Fix the width of the menu bar
-             * please optimize this code */
-            int width = 0;
-            int itemSpacingPx = m_menu_bar->style()->pixelMetric(QStyle::PM_MenuBarItemSpacing);
-            for (int i = 0; i < m_menu_bar->actions().size(); i++) {
-                QString text = m_menu_bar->actions().at(i)->text();
-                QFontMetrics fm(m_menu_bar->font());
-                width += fm.size(0, text).width() + itemSpacingPx*1.5;
-            }
-            m_good_central_widget->setLeftTitleBarWidth(width);
-        }
-    }
-
-    CentralWidget* centralWidget(){
-        return m_central_widget;
-    }
-
-protected:
-    void closeEvent(QCloseEvent *event) override;
-    bool event(QEvent * event) override;
-
-private:
-    QGoodCentralWidget *m_good_central_widget;
-    QMenuBar *m_menu_bar = nullptr;
-    CentralWidget *m_central_widget;
+    CommHelper *commHelper = nullptr;
+    QTimer* timerQueryTemperatur = nullptr;// 查询温度时钟
 };
 
 #endif // MAINWINDOW_H

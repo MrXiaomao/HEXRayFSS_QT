@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CentralWidget</class>
- <widget class="QMainWindow" name="CentralWidget">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,100,100,400">
     <property name="spacing">
-     <number>2</number>
+     <number>4</number>
     </property>
     <property name="leftMargin">
      <number>0</number>
@@ -91,6 +91,12 @@
     </item>
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
+      <property name="minimumSize">
+       <size>
+        <width>250</width>
+        <height>0</height>
+       </size>
+      </property>
       <property name="maximumSize">
        <size>
         <width>250</width>
@@ -121,7 +127,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QToolButton" name="toolButtonClose">
+           <widget class="QToolButton" name="toolButton_closeLaserDistanceWidget">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -265,26 +271,350 @@
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_3">
+           <widget class="QPushButton" name="pushButton_startMeasureDistance">
             <property name="text">
-             <string>开始测量</string>
+             <string>开始测距</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../3rdParty/resource/resource.qrc">
+              <normaloff>:/ruler.png</normaloff>:/ruler.png</iconset>
             </property>
            </widget>
           </item>
          </layout>
         </item>
         <item>
-         <widget class="QTableWidget" name="tableWidget">
+         <widget class="QTableWidget" name="tableWidget_laser">
           <column>
            <property name="text">
             <string>距离</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>信号质量</string>
            </property>
           </column>
          </widget>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="detectorStatusWidget"/>
+      <widget class="QWidget" name="detectorStatusWidget">
+       <layout class="QVBoxLayout" name="verticalLayout_5">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <item>
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>设备状态</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="toolButton_closeDetectorStatusWidget">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>20</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="text">
+             <string notr="true">x</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="tableWidget_detector">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>150</height>
+           </size>
+          </property>
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <row>
+           <property name="text">
+            <string>通讯状态</string>
+           </property>
+          </row>
+          <row>
+           <property name="text">
+            <string>温度（℃）</string>
+           </property>
+          </row>
+          <column>
+           <property name="text">
+            <string>探测器#1</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>探测器#2</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>探测器#3</string>
+           </property>
+          </column>
+          <item row="0" column="0">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item row="0" column="1">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item row="0" column="2">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item row="1" column="0">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item row="1" column="1">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item row="1" column="2">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="tableWidget_detectorVersion">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="sizeAdjustPolicy">
+           <enum>QAbstractScrollArea::AdjustIgnored</enum>
+          </property>
+          <row>
+           <property name="text">
+            <string>探测器#1</string>
+           </property>
+          </row>
+          <row>
+           <property name="text">
+            <string>探测器#2</string>
+           </property>
+          </row>
+          <row>
+           <property name="text">
+            <string>探测器#3</string>
+           </property>
+          </row>
+          <column>
+           <property name="text">
+            <string>版本号</string>
+           </property>
+          </column>
+          <item row="0" column="0">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item row="1" column="0">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+          <item row="2" column="0">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
+           <property name="flags">
+            <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_7">
+          <item>
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>测量发次：</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEdit_ShotNum"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>数据保存路径：</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEdit_filePath"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox">
+          <property name="title">
+           <string>触发模式</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <widget class="QRadioButton" name="radioButton_soft">
+             <property name="text">
+              <string>软触发</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QRadioButton" name="radioButton_hard">
+             <property name="text">
+              <string>硬触发</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QWidget" name="widget" native="true">
+          <layout class="QHBoxLayout" name="horizontalLayout_8">
+           <item>
+            <spacer name="horizontalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>148</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_startMeasure">
+             <property name="text">
+              <string>开始测量</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../3rdParty/resource/resource.qrc">
+               <normaloff>:/work-on.png</normaloff>:/work-on.png</iconset>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>258</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
     <item>
@@ -349,19 +679,9 @@
     <addaction name="action_netCfg"/>
     <addaction name="action_cfgParam"/>
    </widget>
-   <widget class="QMenu" name="menu_2">
-    <property name="title">
-     <string>主题</string>
-    </property>
-    <addaction name="action_lightTheme"/>
-    <addaction name="action_darkTheme"/>
-    <addaction name="separator"/>
-    <addaction name="action_themeColor"/>
-   </widget>
    <addaction name="menu_F"/>
    <addaction name="menu"/>
    <addaction name="menu_H"/>
-   <addaction name="menu_2"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
@@ -377,12 +697,11 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="action_connect"/>
+   <addaction name="action_disconnect"/>
    <addaction name="action_powerOn"/>
    <addaction name="action_powerOff"/>
-   <addaction name="action_connect"/>
-   <addaction name="action_disConnect"/>
    <addaction name="separator"/>
-   <addaction name="action_measureDistance"/>
    <addaction name="action_startMeasure"/>
    <addaction name="action_stopMeasure"/>
    <addaction name="separator"/>
@@ -390,8 +709,8 @@
   </widget>
   <action name="action_open">
    <property name="icon">
-    <iconset>
-     <normaloff>:/resource/dakaiwenjian.png</normaloff>:/resource/dakaiwenjian.png</iconset>
+    <iconset resource="../3rdParty/resource/resource.qrc">
+     <normaloff>:/dakaiwenjian.png</normaloff>:/dakaiwenjian.png</iconset>
    </property>
    <property name="text">
     <string>打开历史文件(&amp;O)...</string>
@@ -402,8 +721,8 @@
   </action>
   <action name="action_exit">
    <property name="icon">
-    <iconset>
-     <normaloff>:/resource/exit.png</normaloff>:/resource/exit.png</iconset>
+    <iconset resource="../3rdParty/resource/resource.qrc">
+     <normaloff>:/exit.png</normaloff>:/exit.png</iconset>
    </property>
    <property name="text">
     <string>退出系统(&amp;X)</string>
@@ -414,8 +733,8 @@
   </action>
   <action name="action_netCfg">
    <property name="icon">
-    <iconset>
-     <normaloff>:/resource/remote.png</normaloff>:/resource/remote.png</iconset>
+    <iconset resource="../3rdParty/resource/resource.qrc">
+     <normaloff>:/remote.png</normaloff>:/remote.png</iconset>
    </property>
    <property name="text">
     <string>网络设置(&amp;N)</string>
@@ -426,8 +745,8 @@
   </action>
   <action name="action_cfgParam">
    <property name="icon">
-    <iconset>
-     <normaloff>:/resource/shebeiguanli.png</normaloff>:/resource/shebeiguanli.png</iconset>
+    <iconset resource="../3rdParty/resource/resource.qrc">
+     <normaloff>:/canshushezhi-05.png</normaloff>:/canshushezhi-05.png</iconset>
    </property>
    <property name="text">
     <string>参数设置(&amp;P)</string>
@@ -438,8 +757,8 @@
   </action>
   <action name="action_about">
    <property name="icon">
-    <iconset>
-     <normaloff>:/resource/about.png</normaloff>:/resource/about.png</iconset>
+    <iconset resource="../3rdParty/resource/resource.qrc">
+     <normaloff>:/about.png</normaloff>:/about.png</iconset>
    </property>
    <property name="text">
     <string>关于(&amp;A)</string>
@@ -450,23 +769,23 @@
   </action>
   <action name="action_connect">
    <property name="icon">
-    <iconset>
-     <normaloff>:/resource/conect-on.png</normaloff>:/resource/conect-on.png</iconset>
+    <iconset resource="../3rdParty/resource/resource.qrc">
+     <normaloff>:/lianjie-on.png</normaloff>:/lianjie-on.png</iconset>
    </property>
    <property name="text">
-    <string>连接探测器</string>
+    <string>连接网络</string>
    </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
    </property>
   </action>
-  <action name="action_disConnect">
+  <action name="action_disconnect">
    <property name="icon">
-    <iconset>
-     <normaloff>:/resource/conect-fault.png</normaloff>:/resource/conect-fault.png</iconset>
+    <iconset resource="../3rdParty/resource/resource.qrc">
+     <normaloff>:/lianjie-fault.png</normaloff>:/lianjie-fault.png</iconset>
    </property>
    <property name="text">
-    <string>断开探测器</string>
+    <string>断开网络</string>
    </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
@@ -474,8 +793,8 @@
   </action>
   <action name="action_startMeasure">
    <property name="icon">
-    <iconset>
-     <normaloff>:/resource/work-on.png</normaloff>:/resource/work-on.png</iconset>
+    <iconset resource="../3rdParty/resource/resource.qrc">
+     <normaloff>:/work-on.png</normaloff>:/work-on.png</iconset>
    </property>
    <property name="text">
     <string>开始测量</string>
@@ -486,8 +805,8 @@
   </action>
   <action name="action_stopMeasure">
    <property name="icon">
-    <iconset>
-     <normaloff>:/resource/work-off.png</normaloff>:/resource/work-off.png</iconset>
+    <iconset resource="../3rdParty/resource/resource.qrc">
+     <normaloff>:/work-off.png</normaloff>:/work-off.png</iconset>
    </property>
    <property name="text">
     <string>停止测量</string>
@@ -498,8 +817,8 @@
   </action>
   <action name="action_powerOn">
    <property name="icon">
-    <iconset>
-     <normaloff>:/resource/power-on.png</normaloff>:/resource/power-on.png</iconset>
+    <iconset resource="../3rdParty/resource/resource.qrc">
+     <normaloff>:/power-on.png</normaloff>:/power-on.png</iconset>
    </property>
    <property name="text">
     <string>打开电源</string>
@@ -510,41 +829,14 @@
   </action>
   <action name="action_powerOff">
    <property name="icon">
-    <iconset>
-     <normaloff>:/resource/power-fault.png</normaloff>:/resource/power-fault.png</iconset>
+    <iconset resource="../3rdParty/resource/resource.qrc">
+     <normaloff>:/power-fault.png</normaloff>:/power-fault.png</iconset>
    </property>
    <property name="text">
     <string>关闭电源</string>
    </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
-   </property>
-  </action>
-  <action name="action_measureDistance">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/resource/ruler.png</normaloff>:/resource/ruler.png</iconset>
-   </property>
-   <property name="text">
-    <string>开始测距</string>
-   </property>
-   <property name="menuRole">
-    <enum>QAction::NoRole</enum>
-   </property>
-  </action>
-  <action name="action_lightTheme">
-   <property name="text">
-    <string>明亮</string>
-   </property>
-  </action>
-  <action name="action_darkTheme">
-   <property name="text">
-    <string>暗黑</string>
-   </property>
-  </action>
-  <action name="action_themeColor">
-   <property name="text">
-    <string>主题颜色</string>
    </property>
   </action>
  </widget>
@@ -562,6 +854,9 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../3rdParty/resource/resource.qrc"/>
+  <include location="../3rdParty/resource/resource.qrc"/>
+ </resources>
  <connections/>
 </ui>
