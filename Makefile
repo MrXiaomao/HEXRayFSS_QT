@@ -14,9 +14,9 @@ EQ            = =
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DUNICODE -D_UNICODE -DWIN32 -DMINGW_HAS_SECURE_API=1 -DGIT_BRANCH="\"master\"" -DGIT_TIME="\"2025-09-03 -D20:11:10 -D+08001c361f0f07de4111eddc0d3074dc664618c988a9\"" -DAPP_VERSION="\"Git: master: 2025-09-03 20:11:10 +08001c361f0f07de4111eddc0d3074dc664618c988a9\"" -DLOG4QT_STATIC -DLOG4QT_VERSION_MAJOR=1 -DLOG4QT_VERSION_MINOR=6 -DLOG4QT_VERSION_PATCH=0 -DLOG4QT_VERSION_STR=\"1.6.0\" -DQT_QML_DEBUG -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN
+DEFINES       = -DUNICODE -D_UNICODE -DWIN32 -DMINGW_HAS_SECURE_API=1 -DGIT_BRANCH="\"master\"" -DGIT_TIME="\"2025-09-04 -D17:37:06 -D+080009a90703349762d343c9eee009b6ae00df992805\"" -DAPP_VERSION="\"Git: master: 2025-09-04 17:37:06 +080009a90703349762d343c9eee009b6ae00df992805\"" -DLOG4QT_STATIC -DLOG4QT_VERSION_MAJOR=1 -DLOG4QT_VERSION_MINOR=6 -DLOG4QT_VERSION_PATCH=0 -DLOG4QT_VERSION_STR=\"1.6.0\" -DQT_QML_DEBUG -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN
 CFLAGS        = -fno-keep-inline-dllexport -g -w $(DEFINES)
-CXXFLAGS      = -fno-keep-inline-dllexport -Wall -Wextra -pedantic -g -std=gnu++1z -w -fexceptions -mthreads $(DEFINES)
+CXXFLAGS      = -fno-keep-inline-dllexport -Wall -Wextra -pedantic -finput-charset=UTF-8 -fexec-charset=UTF-8 -g -std=gnu++1z -w -fexceptions -mthreads $(DEFINES)
 INCPATH       = -I. -I-L -I..\3rdParty\log4qt\Include -I..\3rdParty\log4qt\Include\log4qt -I..\3rdParty\log4qt\Include\log4qt\helpers -I..\3rdParty\log4qt\Include\log4qt\spi -I..\3rdParty\log4qt\Include\log4qt\varia -I-L -I..\3rdParty\resource -I-L -I..\3rdParty\QCustomplot -IC:\Qt6\5.15.2\mingw81_64\include -IC:\Qt6\5.15.2\mingw81_64\include\QtPrintSupport -IC:\Qt6\5.15.2\mingw81_64\include\QtWidgets -IC:\Qt6\5.15.2\mingw81_64\include\QtGui -IC:\Qt6\5.15.2\mingw81_64\include\QtANGLE -IC:\Qt6\5.15.2\mingw81_64\include\QtNetwork -IC:\Qt6\5.15.2\mingw81_64\include\QtConcurrent -IC:\Qt6\5.15.2\mingw81_64\include\QtCore -Itemp\moc -Itemp\ui -I/include -IC:\Qt6\5.15.2\mingw81_64\mkspecs\win32-g++ 
 LINKER      =        g++
 LFLAGS        =        -Wl,-subsystem,windows -mthreads
@@ -52,6 +52,8 @@ OBJECTS_DIR   = temp\obj
 ####### Files
 
 SOURCES       = commhelper.cpp \
+		dataprocessor.cpp \
+		devicemanager.cpp \
 		globalsettings.cpp \
 		main.cpp \
 		mainwindow.cpp \
@@ -118,7 +120,9 @@ SOURCES       = commhelper.cpp \
 		..\3rdParty\log4qt\Include\log4qt\xmllayout.cpp \
 		..\3rdParty\log4qt\Include\log4qt\wdcappender.cpp \
 		..\3rdParty\log4qt\Include\log4qt\colorconsoleappender.cpp \
-		..\3rdParty\QCustomplot\qcustomplot.cpp temp\moc\moc_qlitethread.cpp \
+		..\3rdParty\QCustomplot\qcustomplot.cpp temp\moc\moc_dataprocessor.cpp \
+		temp\moc\moc_devicemanager.cpp \
+		temp\moc\moc_qlitethread.cpp \
 		temp\moc\moc_commhelper.cpp \
 		temp\moc\moc_globalsettings.cpp \
 		temp\moc\moc_mainwindow.cpp \
@@ -128,6 +132,8 @@ SOURCES       = commhelper.cpp \
 		temp\moc\moc_qcustomplot.cpp
 OBJECTS       = temp/rcc/qrc_resource.o \
 		temp/obj/commhelper.o \
+		temp/obj/dataprocessor.o \
+		temp/obj/devicemanager.o \
 		temp/obj/globalsettings.o \
 		temp/obj/main.o \
 		temp/obj/mainwindow.o \
@@ -195,6 +201,8 @@ OBJECTS       = temp/rcc/qrc_resource.o \
 		temp/obj/wdcappender.o \
 		temp/obj/colorconsoleappender.o \
 		temp/obj/qcustomplot.o \
+		temp/obj/moc_dataprocessor.o \
+		temp/obj/moc_devicemanager.o \
 		temp/obj/moc_qlitethread.o \
 		temp/obj/moc_commhelper.o \
 		temp/obj/moc_globalsettings.o \
@@ -204,7 +212,9 @@ OBJECTS       = temp/rcc/qrc_resource.o \
 		temp/obj/moc_switchbutton.o \
 		temp/obj/moc_qcustomplot.o
 
-DIST          =  qlitethread.h \
+DIST          =  dataprocessor.h \
+		devicemanager.h \
+		qlitethread.h \
 		commhelper.h \
 		globalsettings.h \
 		mainwindow.h \
@@ -276,6 +286,8 @@ DIST          =  qlitethread.h \
 		..\3rdParty\log4qt\Include\log4qt\varia\nullappender.h \
 		..\3rdParty\log4qt\Include\log4qt\varia\stringmatchfilter.h \
 		..\3rdParty\QCustomplot\qcustomplot.h commhelper.cpp \
+		dataprocessor.cpp \
+		devicemanager.cpp \
 		globalsettings.cpp \
 		main.cpp \
 		mainwindow.cpp \
@@ -746,10 +758,11 @@ qmake: FORCE
 qmake_all: FORCE
 
 dist:
-	$(ZIP) LowXRayFSS.zip $(SOURCES) $(DIST) LowXRayFSS.pro C:\Qt6\5.15.2\mingw81_64\mkspecs\features\spec_pre.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\qdevice.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\features\device_config.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\sanitize.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\gcc-base.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\g++-base.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\angle.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\win32\windows_vulkan_sdk.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\windows-vulkan.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\g++-win32.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\windows-desktop.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\qconfig.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3danimation.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3danimation_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dcore.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dcore_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dextras.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dextras_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dinput.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dinput_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dlogic.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dlogic_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquick.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquick_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickanimation.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickanimation_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickextras.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickextras_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickinput.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickinput_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickrender.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickrender_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickscene2d.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickscene2d_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3drender.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3drender_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_accessibility_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_axbase.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_axbase_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_axcontainer.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_axcontainer_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_axserver.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_axserver_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_bluetooth.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_bluetooth_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_bootstrap_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_charts.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_charts_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_concurrent.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_concurrent_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_core.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_core_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_dbus.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_dbus_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_designer.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_designer_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_designercomponents_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_devicediscovery_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_edid_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_egl_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_eventdispatcher_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_fb_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_fontdatabase_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_gamepad.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_gamepad_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_gui.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_gui_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_help.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_help_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_location.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_location_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_multimedia.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_multimedia_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_multimediawidgets.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_multimediawidgets_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_network.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_network_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_nfc.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_nfc_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_opengl.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_opengl_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_openglextensions.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_openglextensions_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_packetprotocol_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_platformcompositor_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_positioning.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_positioning_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_positioningquick.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_positioningquick_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_printsupport.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_printsupport_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qml.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qml_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmldebug_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmldevtools_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmlmodels.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmlmodels_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmltest.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmltest_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmlworkerscript.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmlworkerscript_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quick.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quick_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quickcontrols2.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quickcontrols2_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quickparticles_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quickshapes_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quicktemplates2.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quicktemplates2_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quickwidgets.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quickwidgets_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_remoteobjects.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_remoteobjects_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_repparser.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_repparser_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_scxml.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_scxml_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_sensors.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_sensors_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_serialbus.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_serialbus_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_serialport.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_serialport_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_sql.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_sql_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_svg.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_svg_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_testlib.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_testlib_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_texttospeech.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_texttospeech_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_theme_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_uiplugin.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_uitools.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_uitools_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_vulkan_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_webchannel.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_webchannel_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_websockets.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_websockets_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_widgets.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_widgets_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_windowsuiautomation_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_winextras.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_winextras_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_xml.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_xml_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_xmlpatterns.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_xmlpatterns_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_zlib_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\features\qt_functions.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\qt_config.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\win32-g++\qmake.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\spec_post.prf .qmake.stash C:\Qt6\5.15.2\mingw81_64\mkspecs\features\exclusive_builds.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\toolchain.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\default_pre.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\win32\default_pre.prf ..\3rdParty\log4qt\Include\log4qt.pri ..\3rdParty\resource\resource.pri ..\3rdParty\QCustomplot\QCustomplot.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\features\resolve_config.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\default_post.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\warn_off.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\qml_debug.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\precompile_header.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\qt.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\resources_functions.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\resources.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\moc.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\win32\opengl.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\uic.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\qmake_use.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\file_copies.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\win32\windows.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\testcase_targets.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\exceptions.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\yacc.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\lex.prf LowXRayFSS.pro ..\3rdParty\resource\resource.qrc C:\Qt6\5.15.2\mingw81_64\lib\Qt5PrintSupport.prl C:\Qt6\5.15.2\mingw81_64\lib\Qt5Widgets.prl C:\Qt6\5.15.2\mingw81_64\lib\Qt5Gui.prl C:\Qt6\5.15.2\mingw81_64\lib\Qt5Network.prl C:\Qt6\5.15.2\mingw81_64\lib\Qt5Concurrent.prl C:\Qt6\5.15.2\mingw81_64\lib\Qt5Core.prl C:\Qt6\5.15.2\mingw81_64\lib\qtmain.prl   ..\3rdParty\resource\resource.qrc C:\Qt6\5.15.2\mingw81_64\mkspecs\features\data\dummy.cpp qlitethread.h commhelper.h globalsettings.h mainwindow.h netsetting.h paramsetting.h switchbutton.h ..\3rdParty\log4qt\Include\log4qt\appender.h ..\3rdParty\log4qt\Include\log4qt\appenderskeleton.h ..\3rdParty\log4qt\Include\log4qt\asyncappender.h ..\3rdParty\log4qt\Include\log4qt\basicconfigurator.h ..\3rdParty\log4qt\Include\log4qt\binaryfileappender.h ..\3rdParty\log4qt\Include\log4qt\binarylayout.h ..\3rdParty\log4qt\Include\log4qt\binarylogger.h ..\3rdParty\log4qt\Include\log4qt\binaryloggingevent.h ..\3rdParty\log4qt\Include\log4qt\binarylogstream.h ..\3rdParty\log4qt\Include\log4qt\binarytotextlayout.h ..\3rdParty\log4qt\Include\log4qt\binarywriterappender.h ..\3rdParty\log4qt\Include\log4qt\consoleappender.h ..\3rdParty\log4qt\Include\log4qt\dailyfileappender.h ..\3rdParty\log4qt\Include\log4qt\dailyrollingfileappender.h ..\3rdParty\log4qt\Include\log4qt\fileappender.h ..\3rdParty\log4qt\Include\log4qt\hierarchy.h ..\3rdParty\log4qt\Include\log4qt\layout.h ..\3rdParty\log4qt\Include\log4qt\level.h ..\3rdParty\log4qt\Include\log4qt\log4qt.h ..\3rdParty\log4qt\Include\log4qt\log4qtdefs.h ..\3rdParty\log4qt\Include\log4qt\log4qtshared.h ..\3rdParty\log4qt\Include\log4qt\log4qtsharedptr.h ..\3rdParty\log4qt\Include\log4qt\logger.h ..\3rdParty\log4qt\Include\log4qt\loggerrepository.h ..\3rdParty\log4qt\Include\log4qt\loggingevent.h ..\3rdParty\log4qt\Include\log4qt\logmanager.h ..\3rdParty\log4qt\Include\log4qt\logstream.h ..\3rdParty\log4qt\Include\log4qt\mainthreadappender.h ..\3rdParty\log4qt\Include\log4qt\mdc.h ..\3rdParty\log4qt\Include\log4qt\ndc.h ..\3rdParty\log4qt\Include\log4qt\patternlayout.h ..\3rdParty\log4qt\Include\log4qt\propertyconfigurator.h ..\3rdParty\log4qt\Include\log4qt\rollingbinaryfileappender.h ..\3rdParty\log4qt\Include\log4qt\rollingfileappender.h ..\3rdParty\log4qt\Include\log4qt\signalappender.h ..\3rdParty\log4qt\Include\log4qt\simplelayout.h ..\3rdParty\log4qt\Include\log4qt\simpletimelayout.h ..\3rdParty\log4qt\Include\log4qt\systemlogappender.h ..\3rdParty\log4qt\Include\log4qt\ttcclayout.h ..\3rdParty\log4qt\Include\log4qt\writerappender.h ..\3rdParty\log4qt\Include\log4qt\xmllayout.h ..\3rdParty\log4qt\Include\log4qt\wdcappender.h ..\3rdParty\log4qt\Include\log4qt\colorconsoleappender.h ..\3rdParty\log4qt\Include\log4qt\helpers\appenderattachable.h ..\3rdParty\log4qt\Include\log4qt\helpers\binaryclasslogger.h ..\3rdParty\log4qt\Include\log4qt\helpers\classlogger.h ..\3rdParty\log4qt\Include\log4qt\helpers\configuratorhelper.h ..\3rdParty\log4qt\Include\log4qt\helpers\datetime.h ..\3rdParty\log4qt\Include\log4qt\helpers\dispatcher.h ..\3rdParty\log4qt\Include\log4qt\helpers\factory.h ..\3rdParty\log4qt\Include\log4qt\helpers\initialisationhelper.h ..\3rdParty\log4qt\Include\log4qt\helpers\logerror.h ..\3rdParty\log4qt\Include\log4qt\helpers\optionconverter.h ..\3rdParty\log4qt\Include\log4qt\helpers\patternformatter.h ..\3rdParty\log4qt\Include\log4qt\helpers\properties.h ..\3rdParty\log4qt\Include\log4qt\spi\filter.h ..\3rdParty\log4qt\Include\log4qt\varia\binaryeventfilter.h ..\3rdParty\log4qt\Include\log4qt\varia\debugappender.h ..\3rdParty\log4qt\Include\log4qt\varia\denyallfilter.h ..\3rdParty\log4qt\Include\log4qt\varia\levelmatchfilter.h ..\3rdParty\log4qt\Include\log4qt\varia\levelrangefilter.h ..\3rdParty\log4qt\Include\log4qt\varia\listappender.h ..\3rdParty\log4qt\Include\log4qt\varia\nullappender.h ..\3rdParty\log4qt\Include\log4qt\varia\stringmatchfilter.h ..\3rdParty\QCustomplot\qcustomplot.h  commhelper.cpp globalsettings.cpp main.cpp mainwindow.cpp netsetting.cpp paramsetting.cpp switchbutton.cpp ..\3rdParty\log4qt\Include\log4qt\appender.cpp ..\3rdParty\log4qt\Include\log4qt\appenderskeleton.cpp ..\3rdParty\log4qt\Include\log4qt\basicconfigurator.cpp ..\3rdParty\log4qt\Include\log4qt\consoleappender.cpp ..\3rdParty\log4qt\Include\log4qt\dailyrollingfileappender.cpp ..\3rdParty\log4qt\Include\log4qt\asyncappender.cpp ..\3rdParty\log4qt\Include\log4qt\dailyfileappender.cpp ..\3rdParty\log4qt\Include\log4qt\mainthreadappender.cpp ..\3rdParty\log4qt\Include\log4qt\fileappender.cpp ..\3rdParty\log4qt\Include\log4qt\hierarchy.cpp ..\3rdParty\log4qt\Include\log4qt\layout.cpp ..\3rdParty\log4qt\Include\log4qt\level.cpp ..\3rdParty\log4qt\Include\log4qt\logger.cpp ..\3rdParty\log4qt\Include\log4qt\loggerrepository.cpp ..\3rdParty\log4qt\Include\log4qt\loggingevent.cpp ..\3rdParty\log4qt\Include\log4qt\logmanager.cpp ..\3rdParty\log4qt\Include\log4qt\mdc.cpp ..\3rdParty\log4qt\Include\log4qt\ndc.cpp ..\3rdParty\log4qt\Include\log4qt\patternlayout.cpp ..\3rdParty\log4qt\Include\log4qt\propertyconfigurator.cpp ..\3rdParty\log4qt\Include\log4qt\rollingfileappender.cpp ..\3rdParty\log4qt\Include\log4qt\signalappender.cpp ..\3rdParty\log4qt\Include\log4qt\simplelayout.cpp ..\3rdParty\log4qt\Include\log4qt\simpletimelayout.cpp ..\3rdParty\log4qt\Include\log4qt\ttcclayout.cpp ..\3rdParty\log4qt\Include\log4qt\writerappender.cpp ..\3rdParty\log4qt\Include\log4qt\systemlogappender.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\classlogger.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\appenderattachable.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\configuratorhelper.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\datetime.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\factory.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\initialisationhelper.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\logerror.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\optionconverter.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\patternformatter.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\properties.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\dispatcher.cpp ..\3rdParty\log4qt\Include\log4qt\spi\filter.cpp ..\3rdParty\log4qt\Include\log4qt\varia\debugappender.cpp ..\3rdParty\log4qt\Include\log4qt\varia\denyallfilter.cpp ..\3rdParty\log4qt\Include\log4qt\varia\levelmatchfilter.cpp ..\3rdParty\log4qt\Include\log4qt\varia\levelrangefilter.cpp ..\3rdParty\log4qt\Include\log4qt\varia\listappender.cpp ..\3rdParty\log4qt\Include\log4qt\varia\nullappender.cpp ..\3rdParty\log4qt\Include\log4qt\varia\stringmatchfilter.cpp ..\3rdParty\log4qt\Include\log4qt\logstream.cpp ..\3rdParty\log4qt\Include\log4qt\binaryloggingevent.cpp ..\3rdParty\log4qt\Include\log4qt\binarylogger.cpp ..\3rdParty\log4qt\Include\log4qt\varia\binaryeventfilter.cpp ..\3rdParty\log4qt\Include\log4qt\binarytotextlayout.cpp ..\3rdParty\log4qt\Include\log4qt\binarywriterappender.cpp ..\3rdParty\log4qt\Include\log4qt\binaryfileappender.cpp ..\3rdParty\log4qt\Include\log4qt\binarylogstream.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\binaryclasslogger.cpp ..\3rdParty\log4qt\Include\log4qt\rollingbinaryfileappender.cpp ..\3rdParty\log4qt\Include\log4qt\binarylayout.cpp ..\3rdParty\log4qt\Include\log4qt\xmllayout.cpp ..\3rdParty\log4qt\Include\log4qt\wdcappender.cpp ..\3rdParty\log4qt\Include\log4qt\colorconsoleappender.cpp ..\3rdParty\QCustomplot\qcustomplot.cpp mainwindow.ui netsetting.ui paramsetting.ui    
+	$(ZIP) LowXRayFSS.zip $(SOURCES) $(DIST) LowXRayFSS.pro C:\Qt6\5.15.2\mingw81_64\mkspecs\features\spec_pre.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\qdevice.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\features\device_config.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\sanitize.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\gcc-base.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\g++-base.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\angle.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\win32\windows_vulkan_sdk.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\windows-vulkan.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\g++-win32.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\windows-desktop.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\qconfig.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3danimation.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3danimation_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dcore.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dcore_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dextras.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dextras_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dinput.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dinput_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dlogic.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dlogic_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquick.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquick_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickanimation.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickanimation_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickextras.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickextras_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickinput.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickinput_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickrender.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickrender_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickscene2d.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickscene2d_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3drender.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3drender_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_accessibility_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_axbase.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_axbase_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_axcontainer.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_axcontainer_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_axserver.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_axserver_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_bluetooth.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_bluetooth_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_bootstrap_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_charts.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_charts_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_concurrent.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_concurrent_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_core.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_core_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_dbus.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_dbus_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_designer.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_designer_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_designercomponents_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_devicediscovery_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_edid_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_egl_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_eventdispatcher_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_fb_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_fontdatabase_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_gamepad.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_gamepad_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_gui.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_gui_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_help.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_help_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_location.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_location_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_multimedia.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_multimedia_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_multimediawidgets.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_multimediawidgets_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_network.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_network_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_nfc.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_nfc_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_opengl.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_opengl_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_openglextensions.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_openglextensions_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_packetprotocol_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_platformcompositor_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_positioning.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_positioning_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_positioningquick.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_positioningquick_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_printsupport.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_printsupport_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qml.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qml_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmldebug_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmldevtools_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmlmodels.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmlmodels_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmltest.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmltest_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmlworkerscript.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmlworkerscript_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quick.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quick_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quickcontrols2.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quickcontrols2_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quickparticles_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quickshapes_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quicktemplates2.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quicktemplates2_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quickwidgets.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quickwidgets_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_remoteobjects.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_remoteobjects_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_repparser.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_repparser_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_scxml.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_scxml_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_sensors.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_sensors_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_serialbus.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_serialbus_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_serialport.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_serialport_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_sql.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_sql_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_svg.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_svg_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_testlib.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_testlib_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_texttospeech.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_texttospeech_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_theme_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_uiplugin.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_uitools.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_uitools_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_vulkan_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_webchannel.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_webchannel_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_websockets.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_websockets_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_widgets.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_widgets_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_windowsuiautomation_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_winextras.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_winextras_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_xml.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_xml_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_xmlpatterns.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_xmlpatterns_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_zlib_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\features\qt_functions.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\qt_config.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\win32-g++\qmake.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\spec_post.prf .qmake.stash C:\Qt6\5.15.2\mingw81_64\mkspecs\features\exclusive_builds.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\toolchain.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\default_pre.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\win32\default_pre.prf ..\3rdParty\log4qt\Include\log4qt.pri ..\3rdParty\resource\resource.pri ..\3rdParty\QCustomplot\QCustomplot.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\features\resolve_config.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\default_post.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\warn_off.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\qml_debug.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\precompile_header.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\qt.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\resources_functions.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\resources.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\moc.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\win32\opengl.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\uic.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\qmake_use.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\file_copies.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\win32\windows.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\testcase_targets.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\exceptions.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\yacc.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\lex.prf LowXRayFSS.pro ..\3rdParty\resource\resource.qrc C:\Qt6\5.15.2\mingw81_64\lib\Qt5PrintSupport.prl C:\Qt6\5.15.2\mingw81_64\lib\Qt5Widgets.prl C:\Qt6\5.15.2\mingw81_64\lib\Qt5Gui.prl C:\Qt6\5.15.2\mingw81_64\lib\Qt5Network.prl C:\Qt6\5.15.2\mingw81_64\lib\Qt5Concurrent.prl C:\Qt6\5.15.2\mingw81_64\lib\Qt5Core.prl C:\Qt6\5.15.2\mingw81_64\lib\qtmain.prl   ..\3rdParty\resource\resource.qrc C:\Qt6\5.15.2\mingw81_64\mkspecs\features\data\dummy.cpp dataprocessor.h devicemanager.h qlitethread.h commhelper.h globalsettings.h mainwindow.h netsetting.h paramsetting.h switchbutton.h ..\3rdParty\log4qt\Include\log4qt\appender.h ..\3rdParty\log4qt\Include\log4qt\appenderskeleton.h ..\3rdParty\log4qt\Include\log4qt\asyncappender.h ..\3rdParty\log4qt\Include\log4qt\basicconfigurator.h ..\3rdParty\log4qt\Include\log4qt\binaryfileappender.h ..\3rdParty\log4qt\Include\log4qt\binarylayout.h ..\3rdParty\log4qt\Include\log4qt\binarylogger.h ..\3rdParty\log4qt\Include\log4qt\binaryloggingevent.h ..\3rdParty\log4qt\Include\log4qt\binarylogstream.h ..\3rdParty\log4qt\Include\log4qt\binarytotextlayout.h ..\3rdParty\log4qt\Include\log4qt\binarywriterappender.h ..\3rdParty\log4qt\Include\log4qt\consoleappender.h ..\3rdParty\log4qt\Include\log4qt\dailyfileappender.h ..\3rdParty\log4qt\Include\log4qt\dailyrollingfileappender.h ..\3rdParty\log4qt\Include\log4qt\fileappender.h ..\3rdParty\log4qt\Include\log4qt\hierarchy.h ..\3rdParty\log4qt\Include\log4qt\layout.h ..\3rdParty\log4qt\Include\log4qt\level.h ..\3rdParty\log4qt\Include\log4qt\log4qt.h ..\3rdParty\log4qt\Include\log4qt\log4qtdefs.h ..\3rdParty\log4qt\Include\log4qt\log4qtshared.h ..\3rdParty\log4qt\Include\log4qt\log4qtsharedptr.h ..\3rdParty\log4qt\Include\log4qt\logger.h ..\3rdParty\log4qt\Include\log4qt\loggerrepository.h ..\3rdParty\log4qt\Include\log4qt\loggingevent.h ..\3rdParty\log4qt\Include\log4qt\logmanager.h ..\3rdParty\log4qt\Include\log4qt\logstream.h ..\3rdParty\log4qt\Include\log4qt\mainthreadappender.h ..\3rdParty\log4qt\Include\log4qt\mdc.h ..\3rdParty\log4qt\Include\log4qt\ndc.h ..\3rdParty\log4qt\Include\log4qt\patternlayout.h ..\3rdParty\log4qt\Include\log4qt\propertyconfigurator.h ..\3rdParty\log4qt\Include\log4qt\rollingbinaryfileappender.h ..\3rdParty\log4qt\Include\log4qt\rollingfileappender.h ..\3rdParty\log4qt\Include\log4qt\signalappender.h ..\3rdParty\log4qt\Include\log4qt\simplelayout.h ..\3rdParty\log4qt\Include\log4qt\simpletimelayout.h ..\3rdParty\log4qt\Include\log4qt\systemlogappender.h ..\3rdParty\log4qt\Include\log4qt\ttcclayout.h ..\3rdParty\log4qt\Include\log4qt\writerappender.h ..\3rdParty\log4qt\Include\log4qt\xmllayout.h ..\3rdParty\log4qt\Include\log4qt\wdcappender.h ..\3rdParty\log4qt\Include\log4qt\colorconsoleappender.h ..\3rdParty\log4qt\Include\log4qt\helpers\appenderattachable.h ..\3rdParty\log4qt\Include\log4qt\helpers\binaryclasslogger.h ..\3rdParty\log4qt\Include\log4qt\helpers\classlogger.h ..\3rdParty\log4qt\Include\log4qt\helpers\configuratorhelper.h ..\3rdParty\log4qt\Include\log4qt\helpers\datetime.h ..\3rdParty\log4qt\Include\log4qt\helpers\dispatcher.h ..\3rdParty\log4qt\Include\log4qt\helpers\factory.h ..\3rdParty\log4qt\Include\log4qt\helpers\initialisationhelper.h ..\3rdParty\log4qt\Include\log4qt\helpers\logerror.h ..\3rdParty\log4qt\Include\log4qt\helpers\optionconverter.h ..\3rdParty\log4qt\Include\log4qt\helpers\patternformatter.h ..\3rdParty\log4qt\Include\log4qt\helpers\properties.h ..\3rdParty\log4qt\Include\log4qt\spi\filter.h ..\3rdParty\log4qt\Include\log4qt\varia\binaryeventfilter.h ..\3rdParty\log4qt\Include\log4qt\varia\debugappender.h ..\3rdParty\log4qt\Include\log4qt\varia\denyallfilter.h ..\3rdParty\log4qt\Include\log4qt\varia\levelmatchfilter.h ..\3rdParty\log4qt\Include\log4qt\varia\levelrangefilter.h ..\3rdParty\log4qt\Include\log4qt\varia\listappender.h ..\3rdParty\log4qt\Include\log4qt\varia\nullappender.h ..\3rdParty\log4qt\Include\log4qt\varia\stringmatchfilter.h ..\3rdParty\QCustomplot\qcustomplot.h  commhelper.cpp dataprocessor.cpp devicemanager.cpp globalsettings.cpp main.cpp mainwindow.cpp netsetting.cpp paramsetting.cpp switchbutton.cpp ..\3rdParty\log4qt\Include\log4qt\appender.cpp ..\3rdParty\log4qt\Include\log4qt\appenderskeleton.cpp ..\3rdParty\log4qt\Include\log4qt\basicconfigurator.cpp ..\3rdParty\log4qt\Include\log4qt\consoleappender.cpp ..\3rdParty\log4qt\Include\log4qt\dailyrollingfileappender.cpp ..\3rdParty\log4qt\Include\log4qt\asyncappender.cpp ..\3rdParty\log4qt\Include\log4qt\dailyfileappender.cpp ..\3rdParty\log4qt\Include\log4qt\mainthreadappender.cpp ..\3rdParty\log4qt\Include\log4qt\fileappender.cpp ..\3rdParty\log4qt\Include\log4qt\hierarchy.cpp ..\3rdParty\log4qt\Include\log4qt\layout.cpp ..\3rdParty\log4qt\Include\log4qt\level.cpp ..\3rdParty\log4qt\Include\log4qt\logger.cpp ..\3rdParty\log4qt\Include\log4qt\loggerrepository.cpp ..\3rdParty\log4qt\Include\log4qt\loggingevent.cpp ..\3rdParty\log4qt\Include\log4qt\logmanager.cpp ..\3rdParty\log4qt\Include\log4qt\mdc.cpp ..\3rdParty\log4qt\Include\log4qt\ndc.cpp ..\3rdParty\log4qt\Include\log4qt\patternlayout.cpp ..\3rdParty\log4qt\Include\log4qt\propertyconfigurator.cpp ..\3rdParty\log4qt\Include\log4qt\rollingfileappender.cpp ..\3rdParty\log4qt\Include\log4qt\signalappender.cpp ..\3rdParty\log4qt\Include\log4qt\simplelayout.cpp ..\3rdParty\log4qt\Include\log4qt\simpletimelayout.cpp ..\3rdParty\log4qt\Include\log4qt\ttcclayout.cpp ..\3rdParty\log4qt\Include\log4qt\writerappender.cpp ..\3rdParty\log4qt\Include\log4qt\systemlogappender.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\classlogger.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\appenderattachable.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\configuratorhelper.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\datetime.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\factory.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\initialisationhelper.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\logerror.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\optionconverter.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\patternformatter.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\properties.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\dispatcher.cpp ..\3rdParty\log4qt\Include\log4qt\spi\filter.cpp ..\3rdParty\log4qt\Include\log4qt\varia\debugappender.cpp ..\3rdParty\log4qt\Include\log4qt\varia\denyallfilter.cpp ..\3rdParty\log4qt\Include\log4qt\varia\levelmatchfilter.cpp ..\3rdParty\log4qt\Include\log4qt\varia\levelrangefilter.cpp ..\3rdParty\log4qt\Include\log4qt\varia\listappender.cpp ..\3rdParty\log4qt\Include\log4qt\varia\nullappender.cpp ..\3rdParty\log4qt\Include\log4qt\varia\stringmatchfilter.cpp ..\3rdParty\log4qt\Include\log4qt\logstream.cpp ..\3rdParty\log4qt\Include\log4qt\binaryloggingevent.cpp ..\3rdParty\log4qt\Include\log4qt\binarylogger.cpp ..\3rdParty\log4qt\Include\log4qt\varia\binaryeventfilter.cpp ..\3rdParty\log4qt\Include\log4qt\binarytotextlayout.cpp ..\3rdParty\log4qt\Include\log4qt\binarywriterappender.cpp ..\3rdParty\log4qt\Include\log4qt\binaryfileappender.cpp ..\3rdParty\log4qt\Include\log4qt\binarylogstream.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\binaryclasslogger.cpp ..\3rdParty\log4qt\Include\log4qt\rollingbinaryfileappender.cpp ..\3rdParty\log4qt\Include\log4qt\binarylayout.cpp ..\3rdParty\log4qt\Include\log4qt\xmllayout.cpp ..\3rdParty\log4qt\Include\log4qt\wdcappender.cpp ..\3rdParty\log4qt\Include\log4qt\colorconsoleappender.cpp ..\3rdParty\QCustomplot\qcustomplot.cpp mainwindow.ui netsetting.ui paramsetting.ui    
 
 clean: compiler_clean 
-	-$(DEL_FILE) temp\rcc\qrc_resource.o temp\obj\commhelper.o temp\obj\globalsettings.o temp\obj\main.o temp\obj\mainwindow.o temp\obj\netsetting.o temp\obj\paramsetting.o temp\obj\switchbutton.o temp\obj\appender.o temp\obj\appenderskeleton.o temp\obj\basicconfigurator.o temp\obj\consoleappender.o temp\obj\dailyrollingfileappender.o temp\obj\asyncappender.o temp\obj\dailyfileappender.o temp\obj\mainthreadappender.o temp\obj\fileappender.o temp\obj\hierarchy.o temp\obj\layout.o temp\obj\level.o temp\obj\logger.o temp\obj\loggerrepository.o temp\obj\loggingevent.o temp\obj\logmanager.o temp\obj\mdc.o temp\obj\ndc.o temp\obj\patternlayout.o temp\obj\propertyconfigurator.o temp\obj\rollingfileappender.o temp\obj\signalappender.o temp\obj\simplelayout.o temp\obj\simpletimelayout.o temp\obj\ttcclayout.o temp\obj\writerappender.o temp\obj\systemlogappender.o temp\obj\classlogger.o temp\obj\appenderattachable.o temp\obj\configuratorhelper.o temp\obj\datetime.o temp\obj\factory.o temp\obj\initialisationhelper.o temp\obj\logerror.o temp\obj\optionconverter.o temp\obj\patternformatter.o temp\obj\properties.o temp\obj\dispatcher.o temp\obj\filter.o temp\obj\debugappender.o temp\obj\denyallfilter.o temp\obj\levelmatchfilter.o temp\obj\levelrangefilter.o temp\obj\listappender.o temp\obj\nullappender.o temp\obj\stringmatchfilter.o temp\obj\logstream.o temp\obj\binaryloggingevent.o temp\obj\binarylogger.o temp\obj\binaryeventfilter.o temp\obj\binarytotextlayout.o temp\obj\binarywriterappender.o temp\obj\binaryfileappender.o temp\obj\binarylogstream.o temp\obj\binaryclasslogger.o temp\obj\rollingbinaryfileappender.o temp\obj\binarylayout.o temp\obj\xmllayout.o temp\obj\wdcappender.o temp\obj\colorconsoleappender.o temp\obj\qcustomplot.o temp\obj\moc_qlitethread.o temp\obj\moc_commhelper.o temp\obj\moc_globalsettings.o temp\obj\moc_mainwindow.o temp\obj\moc_netsetting.o temp\obj\moc_paramsetting.o temp\obj\moc_switchbutton.o temp\obj\moc_qcustomplot.o
+	-$(DEL_FILE) temp\rcc\qrc_resource.o temp\obj\commhelper.o temp\obj\dataprocessor.o temp\obj\devicemanager.o temp\obj\globalsettings.o temp\obj\main.o temp\obj\mainwindow.o temp\obj\netsetting.o temp\obj\paramsetting.o temp\obj\switchbutton.o temp\obj\appender.o temp\obj\appenderskeleton.o temp\obj\basicconfigurator.o temp\obj\consoleappender.o temp\obj\dailyrollingfileappender.o temp\obj\asyncappender.o temp\obj\dailyfileappender.o temp\obj\mainthreadappender.o temp\obj\fileappender.o temp\obj\hierarchy.o temp\obj\layout.o temp\obj\level.o temp\obj\logger.o temp\obj\loggerrepository.o temp\obj\loggingevent.o temp\obj\logmanager.o temp\obj\mdc.o temp\obj\ndc.o temp\obj\patternlayout.o temp\obj\propertyconfigurator.o temp\obj\rollingfileappender.o temp\obj\signalappender.o temp\obj\simplelayout.o temp\obj\simpletimelayout.o temp\obj\ttcclayout.o temp\obj\writerappender.o temp\obj\systemlogappender.o temp\obj\classlogger.o temp\obj\appenderattachable.o temp\obj\configuratorhelper.o temp\obj\datetime.o temp\obj\factory.o temp\obj\initialisationhelper.o temp\obj\logerror.o temp\obj\optionconverter.o temp\obj\patternformatter.o temp\obj\properties.o temp\obj\dispatcher.o temp\obj\filter.o temp\obj\debugappender.o temp\obj\denyallfilter.o temp\obj\levelmatchfilter.o temp\obj\levelrangefilter.o temp\obj\listappender.o temp\obj\nullappender.o temp\obj\stringmatchfilter.o temp\obj\logstream.o temp\obj\binaryloggingevent.o temp\obj\binarylogger.o temp\obj\binaryeventfilter.o temp\obj\binarytotextlayout.o temp\obj\binarywriterappender.o temp\obj\binaryfileappender.o temp\obj\binarylogstream.o temp\obj\binaryclasslogger.o temp\obj\rollingbinaryfileappender.o temp\obj\binarylayout.o temp\obj\xmllayout.o temp\obj\wdcappender.o temp\obj\colorconsoleappender.o temp\obj\qcustomplot.o temp\obj\moc_dataprocessor.o temp\obj\moc_devicemanager.o temp\obj\moc_qlitethread.o temp\obj\moc_commhelper.o temp\obj\moc_globalsettings.o temp\obj\moc_mainwindow.o temp\obj\moc_netsetting.o temp\obj\moc_paramsetting.o temp\obj\moc_switchbutton.o
+	-$(DEL_FILE) temp\obj\moc_qcustomplot.o
 	-$(DEL_FILE) temp\obj\LowXRayFSS_resource_res.o
 
 distclean: clean 
@@ -841,11 +854,186 @@ compiler_moc_predefs_make_all: temp/moc/moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) temp\moc\moc_predefs.h
 temp/moc/moc_predefs.h: C:/Qt6/5.15.2/mingw81_64/mkspecs/features/data/dummy.cpp
-	g++ -fno-keep-inline-dllexport -Wall -Wextra -pedantic -g -std=gnu++1z -w -dM -E -o temp\moc\moc_predefs.h C:\Qt6\5.15.2\mingw81_64\mkspecs\features\data\dummy.cpp
+	g++ -fno-keep-inline-dllexport -Wall -Wextra -pedantic -finput-charset=UTF-8 -fexec-charset=UTF-8 -g -std=gnu++1z -w -dM -E -o temp\moc\moc_predefs.h C:\Qt6\5.15.2\mingw81_64\mkspecs\features\data\dummy.cpp
 
-compiler_moc_header_make_all: temp/moc/moc_qlitethread.cpp temp/moc/moc_commhelper.cpp temp/moc/moc_globalsettings.cpp temp/moc/moc_mainwindow.cpp temp/moc/moc_netsetting.cpp temp/moc/moc_paramsetting.cpp temp/moc/moc_switchbutton.cpp temp/moc/moc_appender.cpp temp/moc/moc_appenderskeleton.cpp temp/moc/moc_asyncappender.cpp temp/moc/moc_binaryfileappender.cpp temp/moc/moc_binarylayout.cpp temp/moc/moc_binarylogger.cpp temp/moc/moc_binarytotextlayout.cpp temp/moc/moc_binarywriterappender.cpp temp/moc/moc_consoleappender.cpp temp/moc/moc_dailyfileappender.cpp temp/moc/moc_dailyrollingfileappender.cpp temp/moc/moc_fileappender.cpp temp/moc/moc_layout.cpp temp/moc/moc_logger.cpp temp/moc/moc_mainthreadappender.cpp temp/moc/moc_patternlayout.cpp temp/moc/moc_rollingbinaryfileappender.cpp temp/moc/moc_rollingfileappender.cpp temp/moc/moc_signalappender.cpp temp/moc/moc_simplelayout.cpp temp/moc/moc_simpletimelayout.cpp temp/moc/moc_systemlogappender.cpp temp/moc/moc_ttcclayout.cpp temp/moc/moc_writerappender.cpp temp/moc/moc_xmllayout.cpp temp/moc/moc_wdcappender.cpp temp/moc/moc_colorconsoleappender.cpp temp/moc/moc_configuratorhelper.cpp temp/moc/moc_dispatcher.cpp temp/moc/moc_filter.cpp temp/moc/moc_binaryeventfilter.cpp temp/moc/moc_debugappender.cpp temp/moc/moc_denyallfilter.cpp temp/moc/moc_levelmatchfilter.cpp temp/moc/moc_levelrangefilter.cpp temp/moc/moc_listappender.cpp temp/moc/moc_nullappender.cpp temp/moc/moc_stringmatchfilter.cpp temp/moc/moc_qcustomplot.cpp
+compiler_moc_header_make_all: temp/moc/moc_dataprocessor.cpp temp/moc/moc_devicemanager.cpp temp/moc/moc_qlitethread.cpp temp/moc/moc_commhelper.cpp temp/moc/moc_globalsettings.cpp temp/moc/moc_mainwindow.cpp temp/moc/moc_netsetting.cpp temp/moc/moc_paramsetting.cpp temp/moc/moc_switchbutton.cpp temp/moc/moc_appender.cpp temp/moc/moc_appenderskeleton.cpp temp/moc/moc_asyncappender.cpp temp/moc/moc_binaryfileappender.cpp temp/moc/moc_binarylayout.cpp temp/moc/moc_binarylogger.cpp temp/moc/moc_binarytotextlayout.cpp temp/moc/moc_binarywriterappender.cpp temp/moc/moc_consoleappender.cpp temp/moc/moc_dailyfileappender.cpp temp/moc/moc_dailyrollingfileappender.cpp temp/moc/moc_fileappender.cpp temp/moc/moc_layout.cpp temp/moc/moc_logger.cpp temp/moc/moc_mainthreadappender.cpp temp/moc/moc_patternlayout.cpp temp/moc/moc_rollingbinaryfileappender.cpp temp/moc/moc_rollingfileappender.cpp temp/moc/moc_signalappender.cpp temp/moc/moc_simplelayout.cpp temp/moc/moc_simpletimelayout.cpp temp/moc/moc_systemlogappender.cpp temp/moc/moc_ttcclayout.cpp temp/moc/moc_writerappender.cpp temp/moc/moc_xmllayout.cpp temp/moc/moc_wdcappender.cpp temp/moc/moc_colorconsoleappender.cpp temp/moc/moc_configuratorhelper.cpp temp/moc/moc_dispatcher.cpp temp/moc/moc_filter.cpp temp/moc/moc_binaryeventfilter.cpp temp/moc/moc_debugappender.cpp temp/moc/moc_denyallfilter.cpp temp/moc/moc_levelmatchfilter.cpp temp/moc/moc_levelrangefilter.cpp temp/moc/moc_listappender.cpp temp/moc/moc_nullappender.cpp temp/moc/moc_stringmatchfilter.cpp temp/moc/moc_qcustomplot.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) temp\moc\moc_qlitethread.cpp temp\moc\moc_commhelper.cpp temp\moc\moc_globalsettings.cpp temp\moc\moc_mainwindow.cpp temp\moc\moc_netsetting.cpp temp\moc\moc_paramsetting.cpp temp\moc\moc_switchbutton.cpp temp\moc\moc_appender.cpp temp\moc\moc_appenderskeleton.cpp temp\moc\moc_asyncappender.cpp temp\moc\moc_binaryfileappender.cpp temp\moc\moc_binarylayout.cpp temp\moc\moc_binarylogger.cpp temp\moc\moc_binarytotextlayout.cpp temp\moc\moc_binarywriterappender.cpp temp\moc\moc_consoleappender.cpp temp\moc\moc_dailyfileappender.cpp temp\moc\moc_dailyrollingfileappender.cpp temp\moc\moc_fileappender.cpp temp\moc\moc_layout.cpp temp\moc\moc_logger.cpp temp\moc\moc_mainthreadappender.cpp temp\moc\moc_patternlayout.cpp temp\moc\moc_rollingbinaryfileappender.cpp temp\moc\moc_rollingfileappender.cpp temp\moc\moc_signalappender.cpp temp\moc\moc_simplelayout.cpp temp\moc\moc_simpletimelayout.cpp temp\moc\moc_systemlogappender.cpp temp\moc\moc_ttcclayout.cpp temp\moc\moc_writerappender.cpp temp\moc\moc_xmllayout.cpp temp\moc\moc_wdcappender.cpp temp\moc\moc_colorconsoleappender.cpp temp\moc\moc_configuratorhelper.cpp temp\moc\moc_dispatcher.cpp temp\moc\moc_filter.cpp temp\moc\moc_binaryeventfilter.cpp temp\moc\moc_debugappender.cpp temp\moc\moc_denyallfilter.cpp temp\moc\moc_levelmatchfilter.cpp temp\moc\moc_levelrangefilter.cpp temp\moc\moc_listappender.cpp temp\moc\moc_nullappender.cpp temp\moc\moc_stringmatchfilter.cpp temp\moc\moc_qcustomplot.cpp
+	-$(DEL_FILE) temp\moc\moc_dataprocessor.cpp temp\moc\moc_devicemanager.cpp temp\moc\moc_qlitethread.cpp temp\moc\moc_commhelper.cpp temp\moc\moc_globalsettings.cpp temp\moc\moc_mainwindow.cpp temp\moc\moc_netsetting.cpp temp\moc\moc_paramsetting.cpp temp\moc\moc_switchbutton.cpp temp\moc\moc_appender.cpp temp\moc\moc_appenderskeleton.cpp temp\moc\moc_asyncappender.cpp temp\moc\moc_binaryfileappender.cpp temp\moc\moc_binarylayout.cpp temp\moc\moc_binarylogger.cpp temp\moc\moc_binarytotextlayout.cpp temp\moc\moc_binarywriterappender.cpp temp\moc\moc_consoleappender.cpp temp\moc\moc_dailyfileappender.cpp temp\moc\moc_dailyrollingfileappender.cpp temp\moc\moc_fileappender.cpp temp\moc\moc_layout.cpp temp\moc\moc_logger.cpp temp\moc\moc_mainthreadappender.cpp temp\moc\moc_patternlayout.cpp temp\moc\moc_rollingbinaryfileappender.cpp temp\moc\moc_rollingfileappender.cpp temp\moc\moc_signalappender.cpp temp\moc\moc_simplelayout.cpp temp\moc\moc_simpletimelayout.cpp temp\moc\moc_systemlogappender.cpp temp\moc\moc_ttcclayout.cpp temp\moc\moc_writerappender.cpp temp\moc\moc_xmllayout.cpp temp\moc\moc_wdcappender.cpp temp\moc\moc_colorconsoleappender.cpp temp\moc\moc_configuratorhelper.cpp temp\moc\moc_dispatcher.cpp temp\moc\moc_filter.cpp temp\moc\moc_binaryeventfilter.cpp temp\moc\moc_debugappender.cpp temp\moc\moc_denyallfilter.cpp temp\moc\moc_levelmatchfilter.cpp temp\moc\moc_levelrangefilter.cpp temp\moc\moc_listappender.cpp temp\moc\moc_nullappender.cpp temp\moc\moc_stringmatchfilter.cpp temp\moc\moc_qcustomplot.cpp
+temp/moc/moc_dataprocessor.cpp: dataprocessor.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QObject \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobjectdefs.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qnamespace.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qglobal.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qconfig-bootstrapped.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qconfig.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtcore-config.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsystemdetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qprocessordetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcompilerdetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtypeinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsysinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlogging.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qflags.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbasicatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_bootstrap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qgenericatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_cxx11.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_msvc.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qglobalstatic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmutex.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qnumeric.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qversiontagging.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobjectdefs_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstring.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qchar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbytearray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrefcount.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qarraydata.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringliteral.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringalgorithms.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringbuilder.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qalgorithms.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qiterator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qhashfunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpair.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvector.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontainertools_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpoint.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbytearraylist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qregexp.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringmatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcoreevent.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qscopedpointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmetatype.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvarlengtharray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontainerfwd.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobject_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMutex \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QWaitCondition \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qwaitcondition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QDeadlineTimer \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdeadlinetimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qelapsedtimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QtEndian \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qendian.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfloat16.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/QTcpSocket \
+		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/qtcpsocket.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/qtnetworkglobal.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/qtnetwork-config.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/qabstractsocket.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qiodevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdebug.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qhash.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtextstream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlocale.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvariant.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qshareddata.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qset.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontiguouscache.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsharedpointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsharedpointer_impl.h \
+		qlitethread.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QThread \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthread.h \
+		temp/moc/moc_predefs.h \
+		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include dataprocessor.h -o temp\moc\moc_dataprocessor.cpp
+
+temp/moc/moc_devicemanager.cpp: devicemanager.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QObject \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobjectdefs.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qnamespace.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qglobal.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qconfig-bootstrapped.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qconfig.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtcore-config.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsystemdetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qprocessordetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcompilerdetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtypeinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsysinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlogging.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qflags.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbasicatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_bootstrap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qgenericatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_cxx11.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_msvc.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qglobalstatic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmutex.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qnumeric.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qversiontagging.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobjectdefs_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstring.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qchar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbytearray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrefcount.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qarraydata.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringliteral.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringalgorithms.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringbuilder.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qalgorithms.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qiterator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qhashfunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpair.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvector.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontainertools_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpoint.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbytearraylist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qregexp.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringmatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcoreevent.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qscopedpointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmetatype.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvarlengtharray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontainerfwd.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobject_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/QTcpSocket \
+		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/qtcpsocket.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/qtnetworkglobal.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/qtnetwork-config.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/qabstractsocket.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qiodevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdebug.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qhash.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtextstream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlocale.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvariant.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qshareddata.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qset.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontiguouscache.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsharedpointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsharedpointer_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMutex \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QFile \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfile.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfiledevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QElapsedTimer \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qelapsedtimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QWaitCondition \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qwaitcondition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QDeadlineTimer \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdeadlinetimer.h \
+		qlitethread.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QThread \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthread.h \
+		temp/moc/moc_predefs.h \
+		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include devicemanager.h -o temp\moc\moc_devicemanager.cpp
+
 temp/moc/moc_qlitethread.cpp: qlitethread.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QThread \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthread.h \
@@ -991,6 +1179,10 @@ temp/moc/moc_commhelper.cpp: commhelper.h \
 		qlitethread.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QThread \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthread.h \
+		dataprocessor.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QtEndian \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qendian.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfloat16.h \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
 	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include commhelper.h -o temp\moc\moc_commhelper.cpp
@@ -1216,6 +1408,10 @@ temp/moc/moc_mainwindow.cpp: mainwindow.h \
 		qlitethread.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QThread \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthread.h \
+		dataprocessor.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QtEndian \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qendian.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfloat16.h \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
 	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include mainwindow.h -o temp\moc\moc_mainwindow.cpp
@@ -6129,6 +6325,10 @@ temp/obj/commhelper.o: commhelper.cpp commhelper.h \
 		qlitethread.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QThread \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthread.h \
+		dataprocessor.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QtEndian \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qendian.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfloat16.h \
 		globalsettings.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QSettings \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsettings.h \
@@ -6152,6 +6352,9 @@ temp/obj/commhelper.o: commhelper.cpp commhelper.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfileinfo.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QFileSystemWatcher \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfilesystemwatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QTimer \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbasictimer.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QDataStream \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdatastream.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/QNetworkSession \
@@ -6162,6 +6365,216 @@ temp/obj/commhelper.o: commhelper.cpp commhelper.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/QNetworkConfigurationManager \
 		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/qnetworkconfigmanager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o temp\obj\commhelper.o commhelper.cpp
+
+temp/obj/dataprocessor.o: dataprocessor.cpp dataprocessor.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QObject \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobjectdefs.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qnamespace.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qglobal.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qconfig-bootstrapped.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qconfig.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtcore-config.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsystemdetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qprocessordetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcompilerdetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtypeinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsysinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlogging.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qflags.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbasicatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_bootstrap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qgenericatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_cxx11.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_msvc.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qglobalstatic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmutex.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qnumeric.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qversiontagging.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobjectdefs_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstring.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qchar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbytearray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrefcount.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qarraydata.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringliteral.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringalgorithms.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringbuilder.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qalgorithms.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qiterator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qhashfunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpair.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvector.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontainertools_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpoint.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbytearraylist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qregexp.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringmatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcoreevent.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qscopedpointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmetatype.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvarlengtharray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontainerfwd.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobject_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMutex \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QWaitCondition \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qwaitcondition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QDeadlineTimer \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdeadlinetimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qelapsedtimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QtEndian \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qendian.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfloat16.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/QTcpSocket \
+		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/qtcpsocket.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/qtnetworkglobal.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/qtnetwork-config.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/qabstractsocket.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qiodevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdebug.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qhash.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtextstream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlocale.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvariant.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qshareddata.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qset.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontiguouscache.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsharedpointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsharedpointer_impl.h \
+		qlitethread.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QThread \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthread.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QDebug
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o temp\obj\dataprocessor.o dataprocessor.cpp
+
+temp/obj/devicemanager.o: devicemanager.cpp devicemanager.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QObject \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobjectdefs.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qnamespace.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qglobal.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qconfig-bootstrapped.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qconfig.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtcore-config.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsystemdetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qprocessordetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcompilerdetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtypeinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsysinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlogging.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qflags.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbasicatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_bootstrap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qgenericatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_cxx11.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_msvc.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qglobalstatic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmutex.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qnumeric.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qversiontagging.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobjectdefs_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstring.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qchar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbytearray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrefcount.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qarraydata.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringliteral.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringalgorithms.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringbuilder.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qalgorithms.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qiterator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qhashfunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpair.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvector.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontainertools_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpoint.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbytearraylist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qregexp.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringmatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcoreevent.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qscopedpointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmetatype.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvarlengtharray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontainerfwd.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobject_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/QTcpSocket \
+		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/qtcpsocket.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/qtnetworkglobal.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/qtnetwork-config.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/qabstractsocket.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qiodevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdebug.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qhash.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtextstream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlocale.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvariant.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qshareddata.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qset.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontiguouscache.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsharedpointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsharedpointer_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMutex \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QFile \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfile.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfiledevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QElapsedTimer \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qelapsedtimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QWaitCondition \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qwaitcondition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QDeadlineTimer \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdeadlinetimer.h \
+		qlitethread.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QThread \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthread.h \
+		globalsettings.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QSettings \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsettings.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QJsonArray \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsonarray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsonvalue.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborvalue.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdatetime.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborcommon.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qregularexpression.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qurl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qurlquery.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/quuid.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QJsonObject \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsonobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QJsonDocument \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsondocument.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QReadWriteLock \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qreadwritelock.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QFileInfo \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfileinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QFileSystemWatcher \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfilesystemwatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QTimer \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbasictimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QDataStream \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdatastream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/QNetworkSession \
+		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/qnetworksession.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/qnetworkinterface.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/qhostaddress.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/qnetworkconfiguration.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/QNetworkConfigurationManager \
+		C:/Qt6/5.15.2/mingw81_64/include/QtNetwork/qnetworkconfigmanager.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QtEndian \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qendian.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfloat16.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o temp\obj\devicemanager.o devicemanager.cpp
 
 temp/obj/globalsettings.o: globalsettings.cpp globalsettings.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QObject \
@@ -6382,6 +6795,10 @@ temp/obj/main.o: main.cpp mainwindow.h \
 		qlitethread.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QThread \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthread.h \
+		dataprocessor.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QtEndian \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qendian.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfloat16.h \
 		globalsettings.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QSettings \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsettings.h \
@@ -6469,7 +6886,11 @@ temp/obj/main.o: main.cpp mainwindow.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QVersionNumber \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qversionnumber.h \
 		../3rdParty/log4qt/Include/log4qt/propertyconfigurator.h \
-		../3rdParty/log4qt/Include/log4qt/loggerrepository.h
+		../3rdParty/log4qt/Include/log4qt/loggerrepository.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QTranslator \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtranslator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QLibraryInfo \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlibraryinfo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o temp\obj\main.o main.cpp
 
 temp/obj/mainwindow.o: mainwindow.cpp mainwindow.h \
@@ -6597,8 +7018,13 @@ temp/obj/mainwindow.o: mainwindow.cpp mainwindow.h \
 		qlitethread.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QThread \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthread.h \
+		dataprocessor.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QtEndian \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qendian.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfloat16.h \
 		temp/ui/ui_mainwindow.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QVariant \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QIcon \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QAction \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qaction.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qactiongroup.h \
@@ -6621,6 +7047,8 @@ temp/obj/mainwindow.o: mainwindow.cpp mainwindow.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractscrollarea.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qframe.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsscene.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QGroupBox \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgroupbox.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QHBoxLayout \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qboxlayout.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlayout.h \
@@ -6643,12 +7071,18 @@ temp/obj/mainwindow.o: mainwindow.cpp mainwindow.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qrubberband.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QLabel \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlabel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QLineEdit \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlineedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextcursor.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextformat.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QMenu \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmenu.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QMenuBar \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmenubar.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QPushButton \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qpushbutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QRadioButton \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qradiobutton.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QSpacerItem \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QStackedWidget \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstackedwidget.h \
@@ -6660,8 +7094,6 @@ temp/obj/mainwindow.o: mainwindow.cpp mainwindow.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QTextEdit \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtextedit.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextdocument.h \
-		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextcursor.h \
-		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextformat.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QToolBar \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtoolbar.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QToolButton \
@@ -6752,7 +7184,6 @@ temp/obj/mainwindow.o: mainwindow.cpp mainwindow.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcbormap.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborstream.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborstreamreader.h \
-		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfloat16.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborstreamwriter.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcollator.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcommandlineoption.h \
@@ -6763,7 +7194,6 @@ temp/obj/mainwindow.o: mainwindow.cpp mainwindow.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfileinfo.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdiriterator.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qeasingcurve.h \
-		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qendian.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qeventtransition.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qexception.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfactoryinterface.h \
@@ -6956,9 +7386,7 @@ temp/obj/mainwindow.o: mainwindow.cpp mainwindow.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicssceneevent.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicstransform.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QVector3D \
-		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgroupbox.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qinputdialog.h \
-		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlineedit.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qitemdelegate.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qitemeditorfactory.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qkeyeventtransition.h \
@@ -6976,7 +7404,6 @@ temp/obj/mainwindow.o: mainwindow.cpp mainwindow.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qprogressdialog.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qproxystyle.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QCommonStyle \
-		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qradiobutton.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qscrollbar.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qscroller.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QPointF \
@@ -13917,6 +14344,12 @@ temp/obj/qcustomplot.o: ../3rdParty/QCustomplot/qcustomplot.cpp ../3rdParty/QCus
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QElapsedTimer \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QTimeZone
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o temp\obj\qcustomplot.o ..\3rdParty\QCustomplot\qcustomplot.cpp
+
+temp/obj/moc_dataprocessor.o: temp/moc/moc_dataprocessor.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o temp\obj\moc_dataprocessor.o temp\moc\moc_dataprocessor.cpp
+
+temp/obj/moc_devicemanager.o: temp/moc/moc_devicemanager.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o temp\obj\moc_devicemanager.o temp\moc\moc_devicemanager.cpp
 
 temp/obj/moc_qlitethread.o: temp/moc/moc_qlitethread.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o temp\obj\moc_qlitethread.o temp\moc\moc_qlitethread.cpp

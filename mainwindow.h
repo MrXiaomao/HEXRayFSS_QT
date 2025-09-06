@@ -71,6 +71,10 @@ private slots:
 
     void on_action_powerOff_triggered();
 
+    void on_pushButton_stopMeasureDistance_clicked();
+
+    void on_pushButton_startMeasureDistance_clicked();
+
 private:
     Ui::MainWindow *ui;
 

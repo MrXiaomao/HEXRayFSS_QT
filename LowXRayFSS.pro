@@ -10,6 +10,8 @@ CONFIG += c++17
 
 SOURCES += \
     commhelper.cpp \
+    dataprocessor.cpp \
+    devicemanager.cpp \
     globalsettings.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -18,6 +20,8 @@ SOURCES += \
     switchbutton.cpp
 
 HEADERS += \
+    dataprocessor.h \
+    devicemanager.h \
     qlitethread.h \
     commhelper.h \
     globalsettings.h \
@@ -85,11 +89,18 @@ DEFINES += APP_VERSION=\"\\\"$$APP_VERSION\\\"\"
 windows {
     # MinGW
     *-g++* {
-        QMAKE_CXXFLAGS += -Wall -Wextra -pedantic
+        QMAKE_CXXFLAGS += -Wall -Wextra -pedantic        
+        QMAKE_CXXFLAGS += -finput-charset=UTF-8
+        QMAKE_CXXFLAGS += -fexec-charset=UTF-8
+        #QMAKE_CXXFLAGS += -fwide-exec-charset=UTF-16
+        #设置wchar_t类型数据的编码格式。不同主机值可能不同，编译器运行时根据主机情况会自动识别出最符合
+        #主机的方案作为默认值，这个参数是不需要动的。UTF-16 UTF-16BE UTF-16LE UTF-32LE UTF-32BE
     }
     # MSVC
     *-msvc* {
         QMAKE_CXXFLAGS += /utf-8
+        QMAKE_CXXFLAGS += /source-charset:utf-8
+        QMAKE_CXXFLAGS += /execution-charset:utf-8
     }
 }
 

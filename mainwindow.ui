@@ -246,7 +246,7 @@
          </layout>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkBox">
+         <widget class="QCheckBox" name="checkBox_continueMeasureDistance">
           <property name="text">
            <string>连续测量</string>
           </property>
@@ -278,6 +278,17 @@
             <property name="icon">
              <iconset resource="../3rdParty/resource/resource.qrc">
               <normaloff>:/ruler.png</normaloff>:/ruler.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_stopMeasureDistance">
+            <property name="text">
+             <string>停止测距</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../3rdParty/resource/resource.qrc">
+              <normaloff>:/work-off.png</normaloff>:/work-off.png</iconset>
             </property>
            </widget>
           </item>
@@ -384,7 +395,7 @@
           </column>
           <item row="0" column="0">
            <property name="text">
-            <string/>
+            <string>离线</string>
            </property>
            <property name="textAlignment">
             <set>AlignCenter</set>
@@ -395,7 +406,7 @@
           </item>
           <item row="0" column="1">
            <property name="text">
-            <string/>
+            <string>离线</string>
            </property>
            <property name="textAlignment">
             <set>AlignCenter</set>
@@ -406,7 +417,7 @@
           </item>
           <item row="0" column="2">
            <property name="text">
-            <string/>
+            <string>离线</string>
            </property>
            <property name="textAlignment">
             <set>AlignCenter</set>
@@ -526,7 +537,11 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_ShotNum"/>
+           <widget class="QLineEdit" name="lineEdit_ShotNum">
+            <property name="text">
+             <string>100</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -543,32 +558,6 @@
            <widget class="QLineEdit" name="lineEdit_filePath"/>
           </item>
          </layout>
-        </item>
-        <item>
-         <widget class="QGroupBox" name="groupBox">
-          <property name="title">
-           <string>触发模式</string>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_3">
-           <item>
-            <widget class="QRadioButton" name="radioButton_soft">
-             <property name="text">
-              <string>软触发</string>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QRadioButton" name="radioButton_hard">
-             <property name="text">
-              <string>硬触发</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
         </item>
         <item>
          <widget class="QWidget" name="widget" native="true">

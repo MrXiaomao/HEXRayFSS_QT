@@ -1,5 +1,5 @@
-#ifndef COMMHELPER_H
-#define COMMHELPER_H
+#ifndef DEVICEMANAGER_H
+#define DEVICEMANAGER_H
 
 #include <QObject>
 #include <QTcpSocket>
@@ -9,18 +9,12 @@
 #include <QWaitCondition>
 
 #include "qlitethread.h"
-#include "dataprocessor.h"
-class CommHelper : public QObject
+class DeviceManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit CommHelper(QObject *parent = nullptr);
-    ~CommHelper();
-
-    static CommHelper *instance() {
-        static CommHelper commHelper;
-        return &commHelper;
-    }
+    explicit DeviceManager(QObject *parent = nullptr);
+    ~DeviceManager();
 
     enum SocketConectedStatus{
         ssNone      = 0x00,     // 都不在线
@@ -72,7 +66,7 @@ public:
     /*
      温度查询
     */
-    void queryTemperature(quint8 on = true);
+    void queryTemperature();
 
     /*
      继电器状态查询
@@ -94,7 +88,7 @@ public slots:
     void socketReadyRead();
     void stateChanged(QAbstractSocket::SocketState);
 
-signals:    
+signals:
     void relayConnected();// 继电器
     void relayDisconnected();
     void relayPowerOn();
@@ -204,14 +198,11 @@ private:
     quint16 chWaveDataValidTag = 0x00;//标记通道数据是否接收完成
     QString shotDir;// 保存路径
     quint32 shotNum;// 测量发次
-    quint8 waveLength = 512;    // 波形长度
-    QTcpSocket *socketRelay = nullptr;    //继电器
-    QTcpSocket *socketDetector1 = nullptr; //探测器
-    QTcpSocket *socketDetector2 = nullptr; //探测器
-    QTcpSocket *socketDetector3 = nullptr; //探测器
-    DataProcessor* detector1DataProcessor = nullptr;
-    DataProcessor* detector2DataProcessor = nullptr;
-    DataProcessor* detector3DataProcessor = nullptr;
+    quint8 waveLength = 128;    // 波形长度
+    QTcpSocket *socketRelay;    //继电器
+    QTcpSocket *socketDetector1; //探测器
+    QTcpSocket *socketDetector2; //探测器
+    QTcpSocket *socketDetector3; //探测器
     quint8 socketConectedStatus = ssNone; // 设备在线状态
 
     QByteArray dataHeadCmd;// 数据头
@@ -244,11 +235,6 @@ private:
     void initSocket(QTcpSocket **socket);
 
     /*
-     初始化数据处理器
-    */
-    void initDataProcessor(DataProcessor **processor, QTcpSocket *socket, quint8 index);
-
-    /*
      初始化指令
     */
     void initCommand();
@@ -266,4 +252,4 @@ private:
     void disconnectDetectors();
 };
 
-#endif // COMMHELPER_H
+#endif // DEVICEMANAGER_H

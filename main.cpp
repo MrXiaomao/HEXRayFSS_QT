@@ -37,6 +37,7 @@ void AppMessageHandler(QtMsgType type, const QMessageLogContext& context, const 
     }
 }
 
+#include <QTextCodec>
 #include <QTranslator>
 #include <QLibraryInfo>
 static QTranslator qtTranslator;
@@ -47,6 +48,8 @@ int main(int argc, char *argv[])
     QApplication::setAttribute(Qt::AA_DontUseNativeDialogs);
     QApplication::setAttribute(Qt::AA_DontUseNativeMenuBar);
     QApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
+    QApplication::setAttribute(Qt::AA_DisableHighDpiScaling); // 禁用高DPI缩放支持
+    QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps); // 使用高DPI位图
     QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
     QApplication a(argc, argv);
     QFont font = qApp->font();
@@ -58,14 +61,19 @@ int main(int argc, char *argv[])
     QApplication::setOrganizationName("Copyright (c) 2025");
     QApplication::setOrganizationDomain("");
     QApplication::setApplicationVersion(APP_VERSION);
-
     QApplication::setStyle(QStyleFactory::create("fusion"));//WindowsVista fusion windows
-    QApplication::setAttribute(Qt::AA_DisableHighDpiScaling); // 禁用高DPI缩放支持
-    QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps); // 使用高DPI位图
 
     QSplashScreen splash;
     splash.setPixmap(QPixmap(":/resource/splash.png"));
     splash.show();
+
+    /*设置文本编码方式，方便终端输出显示中文*/
+    //QTextCodec *codec=QTextCodec::codecForName("GBK");
+    //QTextCodec *codec=QTextCodec::codecForName("UTF-8");
+    //QTextCodec::setCodecForLocale(codec);
+    //qDebug() << "你好";
+    //qDebug()<<QString::fromLocal8Bit("你好")<<endl;
+    //qDebug()<<QString::fromLocal8Bit(u8"你好")<<endl;//UTF-8调用方式
 
     // 启用新的日子记录类
     QString sConfFilename = "./log4qt.conf";

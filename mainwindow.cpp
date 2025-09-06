@@ -22,7 +22,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(commHelper, &CommHelper::showRealCurve, this, &MainWindow::showRealCurve);
     connect(commHelper, &CommHelper::showEnerygySpectrumCurve, this, &MainWindow::showEnerygySpectrumCurve);
     connect(commHelper, &CommHelper::appVersionRespond, this, [=](quint8 index, QString version, QString serialNumber){
-        ui->tableWidget_detectorVersion->item(index - 1, 0)->setText(version + " " + serialNumber);
+        ui->tableWidget_detectorVersion->item(index - 1, 0)->setText(version + serialNumber);
+
+        QTimer::singleShot(3000, this, [=]{
+            timerQueryTemperatur->start();
+        });
     });
 
     ui->action_powerOn->setEnabled(false);
@@ -64,15 +68,19 @@ MainWindow::MainWindow(QWidget *parent)
     connect(commHelper, &CommHelper::detectorConnected, this, [=](quint8 index){
         ui->tableWidget_detector->item(0, index - 1)->setText(tr("在线"));
         ui->action_startMeasure->setEnabled(true);
-        ui->action_stopMeasure->setEnabled(false);
+        ui->action_stopMeasure->setEnabled(true);
     });
     connect(commHelper, &CommHelper::detectorDisconnected, this, [=](quint8 index){
         ui->tableWidget_detector->item(0, index - 1)->setText(tr("离线"));
-        ui->action_startMeasure->setEnabled(false);
-        ui->action_stopMeasure->setEnabled(false);
+        if (ui->tableWidget_detector->item(0, 0)->text() == "离线" &&
+            ui->tableWidget_detector->item(0, 1)->text() == "离线" &&
+            ui->tableWidget_detector->item(0, 2)->text() == "离线"){
+            ui->action_startMeasure->setEnabled(false);
+            ui->action_stopMeasure->setEnabled(false);
+        }
     });
     connect(commHelper, &CommHelper::temperatureRespond, this, [=](quint8 index, float temperature){
-        ui->tableWidget_detector->item(1, index - 1)->setText(QString::number(temperature));
+        ui->tableWidget_detector->item(1, index - 1)->setText(QString::number(temperature, 'f', 2));
     });
 
     // 测距模块距离和质量
@@ -97,14 +105,16 @@ MainWindow::MainWindow(QWidget *parent)
     });
     //测量结束
     connect(commHelper, &CommHelper::measureEnd, this, [=](){
+        // 测量结束，可以开始温度查询了
+        timerQueryTemperatur->start();
     });
 
     //定时查询温度(1s)
     timerQueryTemperatur = new QTimer(this);
-    timerQueryTemperatur->setInterval(1000);
+    timerQueryTemperatur->setInterval(5000);
     connect(timerQueryTemperatur, &QTimer::timeout, this, [=](){
-        commHelper->queryTemperature();
-    });
+        //commHelper->queryTemperature();
+    });    
 
     this->showMaximized();
 }
@@ -443,10 +453,15 @@ void MainWindow::on_action_disconnect_triggered()
 void MainWindow::on_action_startMeasure_triggered()
 {
     // 开始波形测量
-    if (ui->radioButton_soft->isChecked())
-        commHelper->startMeasure(CommHelper::TriggerMode::tmSoft);
-    else
-        commHelper->startMeasure(CommHelper::TriggerMode::tmHard);
+    timerQueryTemperatur->stop();
+
+    // 先发温度停止指令
+    commHelper->queryTemperature(false);
+
+    // 开始测量之前，先停止测量
+    //commHelper->stopMeasure();
+
+    commHelper->startMeasure(CommHelper::TriggerMode::tmSoft);
 }
 
 
@@ -468,6 +483,26 @@ void MainWindow::on_action_powerOff_triggered()
 {
     // 关闭电源
     commHelper->closePower();
+}
+
+void MainWindow::on_pushButton_startMeasureDistance_clicked()
+{
+    // 开始测距
+    if (ui->checkBox_continueMeasureDistance->isChecked()){
+        ui->pushButton_startMeasureDistance->setEnabled(false);
+        ui->pushButton_stopMeasureDistance->setEnabled(true);
+    }
+
+    commHelper->startMeasureDistance(ui->checkBox_continueMeasureDistance->isChecked());
+}
+
+void MainWindow::on_pushButton_stopMeasureDistance_clicked()
+{
+    // 停止测距
+    ui->pushButton_startMeasureDistance->setEnabled(true);
+    ui->pushButton_stopMeasureDistance->setEnabled(false);
+
+    commHelper->stopMeasureDistance();
 }
 
 void MainWindow::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
