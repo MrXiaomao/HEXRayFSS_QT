@@ -6,6 +6,8 @@
 #include <QWaitCondition>
 #include <QtEndian>
 #include <QTcpSocket>
+#include <QFile>
+#include <QDateTime>
 
 #include "qlitethread.h"
 class DataProcessor : public QObject
@@ -34,6 +36,23 @@ public:
     void startMeasureWave(quint8 mode, bool on = true){
         mTransferMode = mode;
         waveMeasuring = on;
+        // if (on){
+        //     QString strTime = QDateTime::currentDateTime().toString("yyyy-MM-dd_HHmmss");
+        //     QString filePath = QString("%1%2_%3.dat").arg("./cache/").arg(detectorIndex).arg(strTime);
+        //     mpfSaveNet = new QFile(filePath);
+        //     if (mpfSaveNet->open(QIODevice::WriteOnly)) {
+        //         qDebug().noquote() << tr("创建网口数据缓存文件成功，文件名：%1").arg(filePath);
+        //     } else {
+        //         qDebug().noquote() << tr("创建网口数据缓存文件失败，文件名：%1").arg(filePath);
+        //     }
+        // }
+        // else {
+        //     if (mpfSaveNet){
+        //         mpfSaveNet->close();
+        //         mpfSaveNet->deleteLater();
+        //         mpfSaveNet = nullptr;
+        //     }
+        // }
     };
 
 public slots:
@@ -64,6 +83,7 @@ private:
     QByteArray cachePool; // 缓存数据，数据处理之前，先转移到二级缓存池
     QByteArray rawWaveData;// 波形数据
     QMap<quint8, QVector<quint16>> mRealCurve;// 4路通道实测曲线数据
+    QFile *mpfSaveNet = nullptr;
 
     bool mDataReady = false;// 数据长度不够，还没准备好
     bool mTerminatedThead = false;

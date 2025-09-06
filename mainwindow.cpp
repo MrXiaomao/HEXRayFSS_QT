@@ -509,31 +509,31 @@ void MainWindow::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
 {
     //实测曲线
     QVector<double> keys, values;
-    for (int ch=0; ch<4; ++ch){
+    for (int ch=1; ch<=4; ++ch){
         QVector<quint16> chData = data[ch];
         for (int i=0; i<chData.size(); ++i){
             keys << i;
             values << chData[i];
         }
-        ui->customPlot->graph(ch)->setData(keys, values);
+        ui->customPlot->graph(ch - 1)->setData(keys, values);
     }
 
-    for (int ch=4; ch<8; ++ch){
+    for (int ch=5; ch<=8; ++ch){
         QVector<quint16> chData = data[ch];
         for (int i=0; i<chData.size(); ++i){
             keys << i;
             values << chData[i];
         }
-        ui->customPlot_2->graph(ch - 4)->setData(keys, values);
+        ui->customPlot_2->graph(ch - 5)->setData(keys, values);
     }
 
-    for (int ch=8; ch<11; ++ch){
+    for (int ch=9; ch<=11; ++ch){
         QVector<quint16> chData = data[ch];
         for (int i=0; i<chData.size(); ++i){
             keys << i;
             values << chData[i];
         }
-        ui->customPlot_3->graph(ch - 8)->setData(keys, values);
+        ui->customPlot_3->graph(ch - 9)->setData(keys, values);
     }
 }
 
