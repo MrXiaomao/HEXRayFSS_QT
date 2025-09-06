@@ -14,9 +14,9 @@
    <string>低能滤片堆栈谱仪软件</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,100,100,400">
+   <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,100,0,0">
     <property name="spacing">
-     <number>4</number>
+     <number>2</number>
     </property>
     <property name="leftMargin">
      <number>0</number>
@@ -99,7 +99,7 @@
       </property>
       <property name="maximumSize">
        <size>
-        <width>250</width>
+        <width>500</width>
         <height>16777215</height>
        </size>
       </property>
@@ -607,34 +607,74 @@
      </widget>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="leftVboxLayout">
-      <item>
-       <widget class="QCustomPlot" name="customPlot" native="true"/>
-      </item>
-      <item>
-       <widget class="QCustomPlot" name="customPlot_2" native="true"/>
-      </item>
-      <item>
-       <widget class="QCustomPlot" name="customPlot_3" native="true"/>
-      </item>
-     </layout>
+     <widget class="QWidget" name="leftHboxWidget" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>300</width>
+        <height>0</height>
+       </size>
+      </property>
+      <layout class="QVBoxLayout" name="leftVboxLayout">
+       <property name="spacing">
+        <number>2</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QCustomPlot" name="customPlot" native="true"/>
+       </item>
+       <item>
+        <widget class="QCustomPlot" name="customPlot_2" native="true"/>
+       </item>
+       <item>
+        <widget class="QCustomPlot" name="customPlot_3" native="true"/>
+       </item>
+      </layout>
+     </widget>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="rightVboxLayout" stretch="4,1">
-      <item>
-       <widget class="QCustomPlot" name="customPlot_result" native="true"/>
-      </item>
-      <item>
-       <widget class="QTextEdit" name="textEdit_log">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <widget class="QWidget" name="rightHboxWidget" native="true">
+      <layout class="QVBoxLayout" name="rightVboxLayout" stretch="4,1">
+       <property name="spacing">
+        <number>2</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QCustomPlot" name="customPlot_result" native="true"/>
+       </item>
+       <item>
+        <widget class="QTextEdit" name="textEdit_log">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </item>
    </layout>
   </widget>

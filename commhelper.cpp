@@ -306,7 +306,7 @@ void CommHelper::socketReadyRead()
 
     QByteArray rawData = socket->readAll();
     if (socket == socketRelay){
-        //qDebug()<<"Recv HEX: "<<rawData.toHex(' ');
+        qDebug()<<"Recv HEX: "<<rawData.toHex(' ');
 
         if (rawData.contains(askRelayPowerOnCmd)){
             // 继电器控制闭合返回
@@ -500,7 +500,7 @@ void CommHelper::socketReadyRead()
                     // 再发送查询指令
                     askCurrentCmd = askAppVersionCmd;
                     socket->write(askCurrentCmd);
-                    //qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+                    qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
                     continue;
                 }
 
@@ -715,7 +715,7 @@ void CommHelper::sendRelayPowerSwitcherCmd(quint8 on/* = 0x01*/)
     else
         askCurrentCmd = askRelayPowerOnCmd;
     socketRelay->write(askCurrentCmd);
-    //qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+    qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
 }
 
 /*
@@ -728,7 +728,7 @@ void CommHelper::sendQueryRelayStatusCmd()
 
     askCurrentCmd = askQueryRelayPowerStatusCmd;
     socketRelay->write(askCurrentCmd);
-    //qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+    qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
 }
 
 /*
@@ -751,7 +751,7 @@ void CommHelper::sendTriggerTholdCmd()
     QTcpSocket* sockets[] = {socketDetector1, socketDetector2, socketDetector3};
     for (auto socket : sockets){
         if (nullptr == socket || socket->state() != QAbstractSocket::ConnectedState)
-            return;
+            continue;
 
         // CH2 CH1
         askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f fe 11 00 00 00 00 ab cd").toUtf8());
@@ -760,7 +760,7 @@ void CommHelper::sendTriggerTholdCmd()
         askCurrentCmd[8] = value[1] >> 8;
         askCurrentCmd[9] = value[1] & 0x000FF;
         socket->write(askCurrentCmd);
-        //qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+        qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
 
         // CH4 CH3
         askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f fe 12 00 00 00 00 ab cd").toUtf8());
@@ -769,7 +769,7 @@ void CommHelper::sendTriggerTholdCmd()
         askCurrentCmd[8] = value[3] >> 8;
         askCurrentCmd[9] = value[3] & 0x000FF;
         socket->write(askCurrentCmd);
-        //qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+        qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
     }
 }
 
@@ -789,12 +789,12 @@ void CommHelper::sendWaveTriggerModeCmd()
     QTcpSocket* sockets[] = {socketDetector1, socketDetector2, socketDetector3};
     for (auto socket : sockets){
         if (nullptr == socket || socket->state() != QAbstractSocket::ConnectedState)
-            return;
+            continue;
 
         askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f fe 14 00 00 00 00 ab cd").toUtf8());
         askCurrentCmd[9] = triggerMode;
         socket->write(askCurrentCmd);
-        //qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+        qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
     }
 }
 
@@ -814,15 +814,12 @@ void CommHelper::sendWaveLengthCmd()
     QTcpSocket* sockets[] = {socketDetector1, socketDetector2, socketDetector3};
     for (auto socket : sockets){
         if (nullptr == socket || socket->state() != QAbstractSocket::ConnectedState)
-            return;
+            continue;
 
         askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f fe 15 00 00 00 00 ab cd").toUtf8());
         askCurrentCmd[9] = waveLength;
         socket->write(askCurrentCmd);
-        //qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
-
-        qDebug() << QString::fromLocal8Bit("测试阶段：只测试第一个探测器");
-        break;
+        qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
     }
 }
 
@@ -846,7 +843,7 @@ void CommHelper::sendGainCmd()
     QTcpSocket* sockets[] = {socketDetector1, socketDetector2, socketDetector3};
     for (auto socket : sockets){
         if (nullptr == socket || socket->state() != QAbstractSocket::ConnectedState)
-            return;
+            continue;
 
         // CH2 CH1
         askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f fb 11 00 00 00 00 ab cd").toUtf8());
@@ -855,7 +852,7 @@ void CommHelper::sendGainCmd()
         askCurrentCmd[8] = value[1];
         askCurrentCmd[9] = value[0];
         socket->write(askCurrentCmd);
-        //qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+        qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
     }
 }
 
@@ -871,7 +868,7 @@ void CommHelper::sendTransferModeCmd(quint8 index, quint8 mode)
     askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f fa 13 00 00 00 00 ab cd").toUtf8());
     askCurrentCmd[9] = mode;
     sockets[index]->write(askCurrentCmd);
-    //qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+    qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
 }
 
 /*
@@ -882,12 +879,12 @@ void CommHelper::sendMeasureCmd(quint8 mode)
     QTcpSocket* sockets[] = {socketDetector1, socketDetector2, socketDetector3};
     for (auto socket : sockets){
         if (nullptr == socket || socket->state() != QAbstractSocket::ConnectedState)
-            return;
+            continue;
 
         askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f ff 10 11 11 00 00 ab cd").toUtf8());
         askCurrentCmd[9] = mode;
         socket->write(askCurrentCmd);
-        //qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+        qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
     }
 }
 
@@ -922,12 +919,12 @@ void CommHelper::sendQueryTemperaturCmd(quint8 on/* = 0x01*/)
     // 再发送查询请求指令
     for (auto socket : sockets){
         if (nullptr == socket || socket->state() != QAbstractSocket::ConnectedState)
-            return;
+            continue;
 
         askCurrentCmd = askTemperatureCmd;
         askCurrentCmd[9] = on;
         socket->write(askCurrentCmd);
-        //qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+        qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
     }
 }
 
@@ -946,7 +943,7 @@ void CommHelper::sendPowerSwitcherCmd(quint8 on/* = 0x01*/)
     askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f af 10 00 00 00 00 ab cd").toUtf8());
     askCurrentCmd[9] = on;
     socketDetector1->write(askCurrentCmd);
-    //qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+    qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
 }
 
 /*
@@ -960,7 +957,7 @@ void CommHelper::sendLaserSwitcherCmd(quint8 on/* = 0x01*/)
     askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f af 11 00 00 00 00 ab cd").toUtf8());
     askCurrentCmd[9] = on;
     socketDetector1->write(askCurrentCmd);
-    //qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+    qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
 }
 
 /*
@@ -975,7 +972,7 @@ void CommHelper::sendSingleMeasureCmd()
     singleMeasure = true;
     askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f af 12 00 00 00 00 ab cd").toUtf8());
     socketDetector1->write(askCurrentCmd);
-    //qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+    qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
 
     QMetaObject::invokeMethod(this, "measureStart", Qt::QueuedConnection);
 }
@@ -993,7 +990,7 @@ void CommHelper::sendContinueMeasureCmd(quint8 on/* = 0x01*/)
     askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f af 13 00 00 00 00 ab cd").toUtf8());
     askCurrentCmd[9] = on;
     socketDetector1->write(askCurrentCmd);
-    //qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+    qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
 
     QMetaObject::invokeMethod(this, "measureStart", Qt::QueuedConnection);
 }

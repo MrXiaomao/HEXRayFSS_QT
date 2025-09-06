@@ -127,6 +127,38 @@ MainWindow::~MainWindow()
 void MainWindow::initUi()
 {
     ui->stackedWidget->hide();
+
+    QSplitter *splitter = new QSplitter(Qt::Horizontal,this);
+    splitter->setHandleWidth(1);
+    ui->centralwidget->layout()->addWidget(splitter);
+    splitter->addWidget(ui->stackedWidget);
+    splitter->addWidget(ui->leftHboxWidget);
+    splitter->addWidget(ui->rightHboxWidget);
+    splitter->setSizes(QList<int>() << 100000 << 100000 << 400000);
+    splitter->setCollapsible(0,false);
+    splitter->setCollapsible(1,false);
+    splitter->setCollapsible(2,false);
+
+    QSplitter *splitterV1 = new QSplitter(Qt::Vertical,this);
+    splitterV1->setHandleWidth(1);
+    ui->leftHboxWidget->layout()->addWidget(splitterV1);
+    splitterV1->addWidget(ui->customPlot);
+    splitterV1->addWidget(ui->customPlot_2);
+    splitterV1->addWidget(ui->customPlot_3);
+    splitterV1->setCollapsible(0,false);
+    splitterV1->setCollapsible(1,false);
+    splitterV1->setCollapsible(2,false);
+    splitterV1->setSizes(QList<int>() << 100000 << 100000 << 100000);
+
+    QSplitter *splitterV2 = new QSplitter(Qt::Vertical,this);
+    splitterV2->setHandleWidth(1);
+    ui->rightHboxWidget->layout()->addWidget(splitterV2);
+    splitterV2->addWidget(ui->customPlot_result);
+    splitterV2->addWidget(ui->textEdit_log);
+    splitterV2->setCollapsible(0,false);
+    splitterV2->setCollapsible(1,false);
+    splitterV2->setSizes(QList<int>() << 400000 << 100000);
+
     QPushButton* laserDistanceButton = new QPushButton();
     laserDistanceButton->setText(tr("测距模块"));
     laserDistanceButton->setFixedSize(250,26);
@@ -327,8 +359,8 @@ void MainWindow::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, QSt
         graph->setAntialiased(false);
         graph->setPen(QPen(colors[i]));
         //graph->selectionDecorator()->setPen(QPen(colors[i]));
-        graph->setLineStyle(QCPGraph::lsNone);// 隐藏线性图
-        graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));//显示散点图
+        graph->setLineStyle(QCPGraph::lsLine);// 隐藏线性图
+        graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 3));//显示散点图
     }
 
     connect(customPlot, SIGNAL(beforeReplot()), this, SLOT(slotBeforeReplot()));
@@ -456,7 +488,7 @@ void MainWindow::on_action_startMeasure_triggered()
     timerQueryTemperatur->stop();
 
     // 先发温度停止指令
-    commHelper->queryTemperature(false);
+    //commHelper->queryTemperature(false);
 
     // 开始测量之前，先停止测量
     //commHelper->stopMeasure();
@@ -517,7 +549,12 @@ void MainWindow::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
         }
         ui->customPlot->graph(ch - 1)->setData(keys, values);
     }
+    ui->customPlot->xAxis->rescale(true);
+    ui->customPlot->yAxis->rescale(true);
+    ui->customPlot->replot(QCustomPlot::rpQueuedReplot);
 
+    keys.clear();
+    values.clear();
     for (int ch=5; ch<=8; ++ch){
         QVector<quint16> chData = data[ch];
         for (int i=0; i<chData.size(); ++i){
@@ -526,7 +563,12 @@ void MainWindow::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
         }
         ui->customPlot_2->graph(ch - 5)->setData(keys, values);
     }
+    ui->customPlot_2->xAxis->rescale(true);
+    ui->customPlot_2->yAxis->rescale(true);
+    ui->customPlot_2->replot(QCustomPlot::rpQueuedReplot);
 
+    keys.clear();
+    values.clear();
     for (int ch=9; ch<=11; ++ch){
         QVector<quint16> chData = data[ch];
         for (int i=0; i<chData.size(); ++i){
@@ -535,6 +577,9 @@ void MainWindow::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
         }
         ui->customPlot_3->graph(ch - 9)->setData(keys, values);
     }
+    ui->customPlot_3->xAxis->rescale(true);
+    ui->customPlot_3->yAxis->rescale(true);
+    ui->customPlot_3->replot(QCustomPlot::rpQueuedReplot);
 }
 
 void MainWindow::showEnerygySpectrumCurve(const QVector<QPair<float, float>>& data)
@@ -546,4 +591,5 @@ void MainWindow::showEnerygySpectrumCurve(const QVector<QPair<float, float>>& da
         values << iter->second;
     }
     ui->customPlot_result->graph(0)->setData(keys, values);
+    ui->customPlot_result->replot(QCustomPlot::rpQueuedReplot);
 }
