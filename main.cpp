@@ -37,6 +37,7 @@ void AppMessageHandler(QtMsgType type, const QMessageLogContext& context, const 
     }
 }
 
+#include <locale.h>
 #include <QTextCodec>
 #include <QTranslator>
 #include <QLibraryInfo>
@@ -64,7 +65,7 @@ int main(int argc, char *argv[])
     QApplication::setStyle(QStyleFactory::create("fusion"));//WindowsVista fusion windows
 
     QSplashScreen splash;
-    splash.setPixmap(QPixmap(":/resource/splash.png"));
+    splash.setPixmap(QPixmap(":/splash.png"));
     splash.show();
 
     /*设置文本编码方式，方便终端输出显示中文*/
@@ -74,6 +75,7 @@ int main(int argc, char *argv[])
     //qDebug() << "你好";
     //qDebug()<<QString::fromLocal8Bit("你好")<<endl;
     //qDebug()<<QString::fromLocal8Bit(u8"你好")<<endl;//UTF-8调用方式
+    setlocale(LC_ALL, "zh_CN.UTF-8");
 
     // 启用新的日子记录类
     QString sConfFilename = "./log4qt.conf";
@@ -91,15 +93,17 @@ int main(int argc, char *argv[])
 
         /***************************配置日志的输出位置***********/
         //输出到控制台
-        Log4Qt::ConsoleAppender *appender = new Log4Qt::ConsoleAppender(layout, Log4Qt::ConsoleAppender::STDOUT_TARGET);
-        appender->activateOptions();
-        logger->addAppender(appender);
+        Log4Qt::ConsoleAppender *consoleAppender = new Log4Qt::ConsoleAppender(layout, Log4Qt::ConsoleAppender::STDOUT_TARGET);
+        consoleAppender->activateOptions();
+        consoleAppender->setEncoding(QTextCodec::codecForName("UTF-8"));
+        logger->addAppender(consoleAppender);
 
         //输出到文件(如果需要把离线处理单独保存日志文件，可以改这里)
         QString filename = QFileInfo(QCoreApplication::applicationFilePath()).baseName();
         Log4Qt::DailyFileAppender *dailiAppender = new Log4Qt::DailyFileAppender(layout, "logs/.log", QString("%1_yyyy-MM-dd").arg(filename));
         dailiAppender->setAppendFile(true);
         dailiAppender->activateOptions();
+        dailiAppender->setEncoding(QTextCodec::codecForName("UTF-8"));
         logger->addAppender(dailiAppender);
     }
 

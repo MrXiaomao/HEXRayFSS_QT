@@ -244,7 +244,7 @@ reTry:
                         if (cachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FA 13 00 00 00 03 AB CD").toUtf8()))){
                             qDebug() << QString::fromLocal8Bit("<< 反馈指令：传输模式-波形");
 
-                            emit measureStart();
+                            QMetaObject::invokeMethod(this, "measureStart", Qt::QueuedConnection);
 
                             //最后发送开始测量-软件触发模式
                             QTimer::singleShot(0, this, [=]{
@@ -266,6 +266,15 @@ reTry:
 
                             findNaul = true;
                             cachePool.remove(0, BASE_CMD_LENGTH);
+
+                            //再发送温度查询指令
+                            QTimer::singleShot(0, this, [=]{
+                                QByteArray askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f fc 12 00 00 00 01 ab cd").toUtf8());
+                                mSocket->write(askCurrentCmd);
+                                qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+                                qDebug() << QString::fromLocal8Bit("<< 发送指令：探测器-温度查询");
+                            });
+
                             continue;
                         }
 
@@ -357,6 +366,9 @@ reTry:
                         // 指令返回-探测器-触发模式-停止
                         if (cachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FF 10 11 11 00 00 AB CD").toUtf8()))){
                             qDebug() << QString::fromLocal8Bit("<< 反馈指令：波形测量-停止");
+
+                            /*通知UI，波形数据收集完毕*/
+                            QMetaObject::invokeMethod(this, "measureEnd", Qt::QueuedConnection);
 
                             findNaul = true;
                             cachePool.remove(0, BASE_CMD_LENGTH);
@@ -473,6 +485,8 @@ reTry:
                     if (chunk.endsWith(QByteArray::fromHex(QString("CD CD").toUtf8()))){
                         //单个波形：0xABAB + 0xFFXY+ 波形长度*16bit +0xCDCD
                         //X:数采板序号 Y:通道号
+                        quint8 no = (chunk[3] & 0xF0) >> 4;
+                        no--; // 数采板序号
                         quint8 ch = chunk[3] & 0x0F;
                         QVector<quint16> data;
 
@@ -482,7 +496,7 @@ reTry:
                         }
 
                         mChWaveDataValidTag |= (0x01 << (ch - 1));
-                        mRealCurve[ch] = data;
+                        mRealCurve[no * 4 + ch] = data;
 
                         if (mChWaveDataValidTag == 0x0F){
                             /*4通道数据到齐了！！！*/
@@ -497,9 +511,6 @@ reTry:
                                     qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
                                 }
                             });
-
-                            /*通知UI，波形数据收集完毕*/
-                            QMetaObject::invokeMethod(this, "measureStop", Qt::QueuedConnection);
 
                             // 实测曲线
                             QMetaObject::invokeMethod(this, [=]() {

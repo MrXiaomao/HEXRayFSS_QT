@@ -904,7 +904,7 @@ void CommHelper::sendQueryAppVersionCmd(quint8 index/* = 0x01*/)
 /*
  温度查询
 */
-void CommHelper::sendQueryTemperaturCmd(quint8 on/* = 0x01*/)
+void CommHelper::sendQueryTemperaturCmd(quint8 index, quint8 on/* = 0x01*/)
 {
     if (waveMeasuring || distanceMeasuring)
         return;
@@ -912,20 +912,7 @@ void CommHelper::sendQueryTemperaturCmd(quint8 on/* = 0x01*/)
     QTcpSocket* sockets[] = {socketDetector1, socketDetector2, socketDetector3};
 
     // 先设置传输模式
-    for (int i=1; i<=3; ++i){
-        this->sendTransferModeCmd(i, tmTemperature);
-    }
-
-    // 再发送查询请求指令
-    for (auto socket : sockets){
-        if (nullptr == socket || socket->state() != QAbstractSocket::ConnectedState)
-            continue;
-
-        askCurrentCmd = askTemperatureCmd;
-        askCurrentCmd[9] = on;
-        socket->write(askCurrentCmd);
-        qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
-    }
+    this->sendTransferModeCmd(index, tmTemperature);
 }
 
 /*
@@ -1174,9 +1161,9 @@ void CommHelper::stopMeasure()
 /*
  温度查询
 */
-void CommHelper::queryTemperature(quint8 on)
+void CommHelper::queryTemperature(quint8 index, quint8 on)
 {
-    this->sendQueryTemperaturCmd(on);
+    this->sendQueryTemperaturCmd(index, on);
 }
 
 /*

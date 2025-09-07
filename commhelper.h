@@ -72,7 +72,7 @@ public:
     /*
      温度查询
     */
-    void queryTemperature(quint8 on = true);
+    void queryTemperature(quint8 index, quint8 on = true);
 
     /*
      继电器状态查询
@@ -168,7 +168,7 @@ private:
     /*
      温度查询
     */
-    void sendQueryTemperaturCmd(quint8 on = 0x01);
+    void sendQueryTemperaturCmd(quint8 index, quint8 on = 0x01);
 
     /*********************************************************
      测距模块指令

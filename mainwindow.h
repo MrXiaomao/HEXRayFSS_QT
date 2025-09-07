@@ -38,8 +38,9 @@ public:
     void initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, QString axisYLabel, int graphCount = 1);
 
 protected:
-    void closeEvent(QCloseEvent *event) override;
-    bool event(QEvent * event) override;
+    virtual void closeEvent(QCloseEvent *event) override;
+    virtual bool event(QEvent * event) override;
+    virtual bool eventFilter(QObject *watched, QEvent *event) override;
 
 public slots:
     void slotWriteLog(const QString &msg, QtMsgType msgType = QtDebugMsg);//操作日志
@@ -86,7 +87,6 @@ private:
 #endif
 
     CommHelper *commHelper = nullptr;
-    QTimer* timerQueryTemperatur = nullptr;// 查询温度时钟
 };
 
 #endif // MAINWINDOW_H

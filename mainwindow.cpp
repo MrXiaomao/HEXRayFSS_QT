@@ -24,9 +24,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(commHelper, &CommHelper::appVersionRespond, this, [=](quint8 index, QString version, QString serialNumber){
         ui->tableWidget_detectorVersion->item(index - 1, 0)->setText(version + serialNumber);
 
-        QTimer::singleShot(3000, this, [=]{
-            timerQueryTemperatur->start();
-        });
+        // 测量结束，可以开始温度查询了
+        commHelper->queryTemperature(index);
     });
 
     ui->action_powerOn->setEnabled(false);
@@ -102,21 +101,23 @@ MainWindow::MainWindow(QWidget *parent)
 
     //测量开始
     connect(commHelper, &CommHelper::measureStart, this, [=](){
+        ui->action_startMeasure->setEnabled(false);
+        ui->action_stopMeasure->setEnabled(true);
     });
     //测量结束
     connect(commHelper, &CommHelper::measureEnd, this, [=](){
+        ui->action_startMeasure->setEnabled(true);
+        ui->action_stopMeasure->setEnabled(false);
+
         // 测量结束，可以开始温度查询了
-        timerQueryTemperatur->start();
+        commHelper->queryTemperature(1);
+        commHelper->queryTemperature(2);
+        commHelper->queryTemperature(3);
     });
 
-    //定时查询温度(1s)
-    timerQueryTemperatur = new QTimer(this);
-    timerQueryTemperatur->setInterval(5000);
-    connect(timerQueryTemperatur, &QTimer::timeout, this, [=](){
-        //commHelper->queryTemperature();
-    });    
-
-    this->showMaximized();
+    QTimer::singleShot(500, this, [=](){
+        this->showMaximized();
+    });
 }
 
 MainWindow::~MainWindow()
@@ -272,6 +273,7 @@ void MainWindow::initUi()
 void MainWindow::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, QString axisYLabel, int graphCount/* = 1*/)
 {
     //customPlot->setObjectName(objName);
+    customPlot->installEventFilter(this);
 
     // 设置全局抗锯齿
     customPlot->setAntialiasedElements(QCP::aeAll);
@@ -358,7 +360,7 @@ void MainWindow::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, QSt
         QCPGraph * graph = customPlot->addGraph(customPlot->xAxis, customPlot->yAxis);
         graph->setAntialiased(false);
         graph->setPen(QPen(colors[i]));
-        //graph->selectionDecorator()->setPen(QPen(colors[i]));
+        graph->selectionDecorator()->setPen(QPen(colors[i]));
         graph->setLineStyle(QCPGraph::lsLine);// 隐藏线性图
         graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 3));//显示散点图
     }
@@ -398,6 +400,62 @@ bool MainWindow::event(QEvent * event) {
     }
 
     return QMainWindow::event(event);
+}
+
+bool MainWindow::eventFilter(QObject *watched, QEvent *event){
+    if (watched != this){
+        if (event->type() == QEvent::MouseButtonPress){
+            QMouseEvent *e = reinterpret_cast<QMouseEvent*>(event);
+            if (watched->inherits("QCustomPlot")){
+                QCustomPlot* customPlot = qobject_cast<QCustomPlot*>(watched);
+
+                if (e->button() == Qt::RightButton) {// 右键恢复
+                    QMenu contextMenu(customPlot);
+                    int chFrom = 1, chCount = 4;
+                    if (customPlot == ui->customPlot)
+                        chFrom = 1;
+                    else if (customPlot == ui->customPlot_2)
+                        chFrom = 5;
+                    else if (customPlot == ui->customPlot_3){
+                        chFrom = 9;
+                        chCount = 3;
+                    }
+                    else if (customPlot == ui->customPlot_result){
+                        chCount = 0;
+                    }
+
+                    for (int i=chFrom; i<chFrom + chCount; ++i){
+                        QAction *action = contextMenu.addAction(tr("通道#%1").arg(i), this, [=]{
+                            QAction* action = qobject_cast<QAction*>(sender());
+                            int index = action->data().toUInt();
+                            customPlot->graph(index)->setVisible(!customPlot->graph(index)->visible());
+                            customPlot->replot(QCustomPlot::rpQueuedReplot);
+                        });
+                        action->setData(i-chFrom);
+                        action->setCheckable(true);
+                        if (customPlot->graph(i-chFrom)->visible())
+                            action->setChecked(true);
+                    }
+
+                    if (chCount != 0)
+                        contextMenu.addSeparator();
+
+                    contextMenu.addAction(tr("恢复视图"), this, [=]{
+                        customPlot->xAxis->rescale(true);
+                        customPlot->yAxis->rescale(true);
+                        customPlot->replot(QCustomPlot::rpQueuedReplot);
+                    });
+                    contextMenu.exec(QCursor::pos());
+
+                    //释放内存
+                    QList<QAction*> list = contextMenu.actions();
+                    foreach (QAction* action, list) delete action;
+                }
+            }
+        }
+    }
+
+    return QMainWindow::eventFilter(watched, event);
 }
 
 void MainWindow::slotWriteLog(const QString &msg, QtMsgType msgType)
@@ -484,15 +542,25 @@ void MainWindow::on_action_disconnect_triggered()
 
 void MainWindow::on_action_startMeasure_triggered()
 {
-    // 开始波形测量
-    timerQueryTemperatur->stop();
+    QVector<double> keys, values;
+    for (int i=0; i<=3; ++i){
+        ui->customPlot->graph(i)->data()->clear();
+        ui->customPlot_2->graph(i)->data()->clear();
+        if (i==3)
+            break;
+        ui->customPlot_3->graph(i)->data()->clear();
+    }
+
+    ui->customPlot->replot();
+    ui->customPlot_2->replot();
+    ui->customPlot_3->replot();
 
     // 先发温度停止指令
-    //commHelper->queryTemperature(false);
+    commHelper->queryTemperature(1, false);
+    commHelper->queryTemperature(2, false);
+    commHelper->queryTemperature(3, false);
 
-    // 开始测量之前，先停止测量
-    //commHelper->stopMeasure();
-
+    // 再发开始测量指令
     commHelper->startMeasure(CommHelper::TriggerMode::tmSoft);
 }
 
