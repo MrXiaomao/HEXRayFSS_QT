@@ -37,17 +37,6 @@ CommHelper::CommHelper(QObject *parent)
     socketDetector1->setProperty("_q_networksession", QVariant::fromValue(spNetworkSession));
     socketDetector2->setProperty("_q_networksession", QVariant::fromValue(spNetworkSession));
     socketDetector3->setProperty("_q_networksession", QVariant::fromValue(spNetworkSession));
-
-    dataProcessThread = new QLiteThread(this);
-    dataProcessThread->setObjectName("dataProcessThread");
-    dataProcessThread->setWorkThreadProc([=](){
-        OnDataProcessThread();
-    });
-    dataProcessThread->start();
-    connect(this, &CommHelper::destroyed, [=]() {
-        dataProcessThread->exit(0);
-        dataProcessThread->wait(500);
-    });
 }
 
 CommHelper::~CommHelper()
@@ -65,12 +54,6 @@ CommHelper::~CommHelper()
     for (auto socket : sockets){
         closeSocket(socket);
     }
-
-    // 终止线程
-    mTerminatedThead = true;
-    mDataReady = true;
-    mCondition.wakeAll();
-    dataProcessThread->wait();
 }
 
 void CommHelper::initCommand()
@@ -149,16 +132,35 @@ void CommHelper::initDataProcessor(DataProcessor** processor, QTcpSocket *socket
     connect(detectorDataProcessor, &DataProcessor::appVersionRespond, this, &CommHelper::appVersionRespond);
     connect(detectorDataProcessor, &DataProcessor::distanceRespond, this, &CommHelper::distanceRespond);
 
-    connect(detectorDataProcessor, &DataProcessor::measureStart, this, [=]{
+    connect(detectorDataProcessor, &DataProcessor::measureStart, this, [=](quint8 index){
         waveMeasuring = true;
     });
     connect(detectorDataProcessor, &DataProcessor::measureStart, this, &CommHelper::measureStart);
 
-    connect(detectorDataProcessor, &DataProcessor::measureEnd, this, [=]{
+    connect(detectorDataProcessor, &DataProcessor::measureEnd, this, [=](quint8 index){
         waveMeasuring = false;
+
+        // 测量结束，可以开始温度查询了
+        this->queryTemperature(index);
     });
     connect(detectorDataProcessor, &DataProcessor::measureEnd, this, &CommHelper::measureEnd);
 
+    connect(detectorDataProcessor, &DataProcessor::showRealCurve, this, [=](const QMap<quint8, QVector<quint16>>& data){
+        // 将map1的内容添加到map2
+        for (auto it = data.constBegin(); it != data.constEnd(); ++it) {
+            waveAllData[it.key()] = it.value();
+        }
+
+        if (waveAllData.size() >= 11){
+            //11个通道都收集完毕，可以进行反能谱计算了
+            QVector<QPair<float, float>> result;
+
+
+
+            //显示反能谱曲线图
+            showEnerygySpectrumCurve(result);
+        }
+    });
     connect(detectorDataProcessor, &DataProcessor::showRealCurve, this, &CommHelper::showRealCurve);
     connect(detectorDataProcessor, &DataProcessor::showEnerygySpectrumCurve, this, &CommHelper::showEnerygySpectrumCurve);
 }
@@ -282,19 +284,6 @@ void CommHelper::socketConnected()
 
     relayIsConnected = socketConectedStatus & 0x01;
     detectorsIsConnected = socketConectedStatus & 0x0E;
-
-    // if (socket == socketRelay){
-    //     emit relayConnected();
-    // }
-    // else if (socket == socketDetector1){
-    //     emit detectorConnected(1);
-    // }
-    // else if (socket == socketDetector2){
-    //     emit detectorConnected(2);
-    // }
-    // else if (socket == socketDetector3){
-    //     emit detectorConnected(3);
-    // }
 }
 
 #include <QtEndian>
@@ -306,7 +295,7 @@ void CommHelper::socketReadyRead()
 
     QByteArray rawData = socket->readAll();
     if (socket == socketRelay){
-        qDebug()<<"Recv HEX: "<<rawData.toHex(' ');
+        qDebug()<< "[" << 0 << "] "<<"Recv HEX: "<<rawData.toHex(' ');
 
         if (rawData.contains(askRelayPowerOnCmd)){
             // 继电器控制闭合返回
@@ -333,312 +322,6 @@ void CommHelper::socketReadyRead()
         else if (rawData.contains(ackRelayPowerStatusOffCmd)){
             // 继电器断开状态返回
             emit relayPowerOff();
-        }
-    }
-    else if (socket == socketDetector1 || socket == socketDetector2 || socket == socketDetector3){
-        // 指令阶段，指令长度为12Bytes
-        static const int BASE_CMD_LENGTH = 12;
-
-        while (true){
-            if (waveMeasuring){
-                // 已经点击了开始测量
-                if (socket == socketDetector1)
-                    qDebug()<<"Recv HEX: "<<rawData.toHex(' ');
-
-                //单个波形：0xABAB + 0xFFXY+ 波形长度*16bit +0xCDCD
-                QMutexLocker locker(&mReceivePoolLocker);
-                if (socket == socketDetector1)
-                    rawWaveData[0].append(rawData);
-                else if (socket == socketDetector2)
-                    rawWaveData[1].append(rawData);
-                else if (socket == socketDetector3)
-                    rawWaveData[2].append(rawData);
-
-                mDataReady = true;
-                mCondition.wakeAll();
-                return;
-            }
-
-            if (socket == socketDetector1)
-                detector1DataProcessor->inputData(rawData);
-            else if (socket == socketDetector2)
-                detector2DataProcessor->inputData(rawData);
-            else if (socket == socketDetector3)
-                detector3DataProcessor->inputData(rawData);
-            return;
-
-            // 特殊指令集判断
-            // 0xAABB + 16bit（温度） + 0xCCDD
-            if (rawData.startsWith(QByteArray::fromHex(QString("AA BB").toUtf8())) &&
-                rawData.mid(4, 2) == QByteArray::fromHex(QString("CC DD").toUtf8())){
-                //0xAABB + 16bit（温度） + 0xCCDD
-                QByteArray data = rawData.mid(2, 2);
-                qint16 t = qFromBigEndian<qint16>(data.constData());
-                float temperature = t * 0.0078125;// 换算系数
-
-                if (socket == socketDetector1){
-                    qDebug()<<"Temperature 1: "<<temperature;
-                    emit temperatureRespond(1, temperature);
-                }
-                if (socket == socketDetector2){
-                    qDebug()<<"Temperature 2: "<<temperature;
-                    emit temperatureRespond(2, temperature);
-                }
-                if (socket == socketDetector3){
-                    qDebug()<<"Temperature 3: "<<temperature;
-                    emit temperatureRespond(3, temperature);
-                }
-
-                rawData.remove(0, 6);
-                continue;
-            }
-
-            // 0xACAC + 48bit（版本号） + 0xEFEF
-            if (rawData.startsWith(QByteArray::fromHex(QString("AC AC").toUtf8())) &&
-                rawData.mid(8, 2) == QByteArray::fromHex(QString("EF EF").toUtf8())){
-                // 0xACAC + 48bit（版本号） + 0xEFEF
-                QByteArray year = rawData.mid(2, 2);
-                QByteArray month = rawData.mid(4, 1);
-                QByteArray day = rawData.mid(5, 1);
-                QByteArray serialNumber = rawData.mid(6, 2);
-
-                bool ok = false;
-                QString version = year.toHex().toUpper() +
-                                  month.toHex().toUpper() +
-                                  day.toHex().toUpper();
-
-                if (socket == socketDetector1){
-                    qDebug()<<"AppVersion 1: "<<version<< ", serialNumber: " << serialNumber.toHex().toUpper();
-                    emit appVersionRespond(1, version, QString(serialNumber.toHex().toUpper()));
-                }
-                else if (socket == socketDetector2){
-                    qDebug()<<"AppVersion 2: "<<version<< ", serialNumber: " << serialNumber.toHex().toUpper();
-                    emit appVersionRespond(2, version, QString(serialNumber.toHex().toUpper()));
-                }
-                else if (socket == socketDetector3){
-                    qDebug()<<"AppVersion 3: "<<version<< ", serialNumber: " << serialNumber.toHex().toUpper();
-                    emit appVersionRespond(3, version, QString(serialNumber.toHex().toUpper()));
-                }
-
-                rawData.remove(0, 10);
-                continue;
-            }
-
-            if (rawData.size() == 0)
-                break;
-
-            // 指令起始字节是12 34 00 0F/AB，尾字节是AB CD
-            while (rawData.size() >= BASE_CMD_LENGTH){
-                if (!rawData.startsWith(QByteArray::fromHex(QString("12 34 00").toUtf8()))){
-                    rawData.remove(0, 1);
-                }
-
-                if (rawData.size() >= BASE_CMD_LENGTH){
-                    if (rawData.mid(10, 2) != QByteArray::fromHex(QString("AB CD").toUtf8())){
-                        rawData.remove(0, 3);
-                    }
-                    else{
-                        break;
-                    }
-                }
-            }
-
-            if (rawData.size() < BASE_CMD_LENGTH){
-                qDebug()<<"data length isn't full!";
-                return;
-            }
-
-            if (distanceMeasuring){
-                // 指令返回-距离测量
-                if ((rawData.startsWith(QByteArray::fromHex(QString("12 34 00 0F AF 12").toUtf8())) ||  //单次
-                    rawData.startsWith(QByteArray::fromHex(QString("12 34 00 0F AF 13").toUtf8()))) &&  //连续
-                    rawData.mid(10, 2) != QByteArray::fromHex(QString("AB CD").toUtf8())){
-                    rawData.remove(0, BASE_CMD_LENGTH);
-                    continue;
-                }
-
-                // 数据返回-测量距离
-                if (rawData.startsWith(QByteArray::fromHex(QString("12 34 00 AB").toUtf8())) &&
-                    rawData.mid(10, 2) != QByteArray::fromHex(QString("AB CD").toUtf8())){
-                    QByteArray data = rawData.mid(4, 4);
-                    QString string = QString::fromUtf8(data);
-                    string.insert(5, '.');
-                    float distance = string.toFloat();
-
-                    data = rawData.mid(8, 2);
-                    bool ok = false;
-                    quint16 quality = data.toShort(&ok, 16);
-
-                    qDebug()<<"Distance: "<< distance << ", quality: " << quality;
-                    emit distanceRespond(distance, quality);
-
-                    rawData.remove(0, BASE_CMD_LENGTH);
-                    if (singleMeasure){
-                        distanceMeasuring = false;
-                    }
-
-                    continue;
-                }
-                else{
-                    qDebug()<<"(1) Unknown cmd: "<<rawData.toHex(' ');
-                    rawData.remove(0, BASE_CMD_LENGTH);
-                    continue;
-                }
-            }
-            else {
-                // 硬件触发反馈
-                if (rawData.startsWith(QByteArray::fromHex(QString("12 34 00 AA 00 0C 00 00 00 00 AB CD").toUtf8()))){
-                    waveMeasuring = true;
-                    rawData.remove(0, BASE_CMD_LENGTH);
-                    continue;
-                }
-
-                // 指令返回-探测器-传输模式-程序版本号
-                if (rawData.startsWith(QByteArray::fromHex(QString("12 34 00 0F FA 13 00 00 00 00 01 AB CD").toUtf8()))){
-                    rawData.remove(0, BASE_CMD_LENGTH);
-
-                    // 再发送查询指令
-                    askCurrentCmd = askAppVersionCmd;
-                    socket->write(askCurrentCmd);
-                    qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
-                    continue;
-                }
-
-                // 指令返回-探测器-传输模式-波形
-                if (rawData.startsWith(QByteArray::fromHex(QString("12 34 00 0F FA 13 00 00 00 03 AB CD").toUtf8()))){
-                    rawData.remove(0, BASE_CMD_LENGTH);
-                    continue;
-                }
-
-                // 指令返回-探测器-传输模式-温度
-                if (rawData.startsWith(QByteArray::fromHex(QString("12 34 00 0F FA 13 00 00 00 05 AB CD").toUtf8()))){
-                    rawData.remove(0, BASE_CMD_LENGTH);
-                    continue;
-                }
-
-                // 指令返回-探测器-传输模式-激光测距
-                if (rawData.startsWith(QByteArray::fromHex(QString("12 34 00 0F FA 13 00 00 00 09 AB CD").toUtf8()))){
-                    rawData.remove(0, BASE_CMD_LENGTH);
-                    continue;
-                }
-
-                // 指令返回-探测器-程控增益
-                if (rawData.startsWith(QByteArray::fromHex(QString("12 34 00 0F FB 11").toUtf8())) &&
-                    rawData.mid(10, 2) != QByteArray::fromHex(QString("AB CD").toUtf8())){
-                    rawData.remove(0, BASE_CMD_LENGTH);
-                    continue;
-                }
-
-                // 指令返回-探测器-程序版本查询
-                if (rawData.startsWith(QByteArray::fromHex(QString("12 34 00 0F FC 11 00 00 00 00 AB CD").toUtf8()))){
-                    rawData.remove(0, BASE_CMD_LENGTH);
-                    continue;
-                }
-
-                // 指令返回-探测器-温度查询-开始
-                if (rawData.startsWith(QByteArray::fromHex(QString("12 34 00 0F FC 12 00 00 00 01 AB CD").toUtf8()))){
-                    rawData.remove(0, BASE_CMD_LENGTH);
-                    continue;
-                }
-
-                // 指令返回-探测器-温度查询-停止
-                if (rawData.startsWith(QByteArray::fromHex(QString("12 34 00 0F FC 12 00 00 00 00 AB CD").toUtf8()))){
-                    rawData.remove(0, BASE_CMD_LENGTH);
-                    continue;
-                }
-
-                // 指令返回-探测器-触发阈值
-                if ((rawData.startsWith(QByteArray::fromHex(QString("12 34 00 0F FE 11").toUtf8())) ||
-                    rawData.startsWith(QByteArray::fromHex(QString("12 34 00 0F FE 12").toUtf8()))) &&
-                    rawData.mid(10, 2) != QByteArray::fromHex(QString("AB CD").toUtf8())){
-                    rawData.remove(0, BASE_CMD_LENGTH);
-                    continue;
-                }
-
-                // 指令返回-探测器-波形触发模式
-                if (rawData.startsWith(QByteArray::fromHex(QString("12 34 00 0F FE 14").toUtf8())) &&
-                    rawData.mid(10, 2) != QByteArray::fromHex(QString("AB CD").toUtf8())){
-                    rawData.remove(0, BASE_CMD_LENGTH);
-                    continue;
-                }
-
-                // 指令返回-探测器-波形长度
-                if (rawData.startsWith(QByteArray::fromHex(QString("12 34 00 0F FE 15").toUtf8())) &&
-                    rawData.mid(10, 2) != QByteArray::fromHex(QString("AB CD").toUtf8())){
-                    rawData.remove(0, BASE_CMD_LENGTH);
-                    continue;
-                }
-
-                // 指令返回-探测器-触发模式-停止
-                if (rawData.startsWith(QByteArray::fromHex(QString("12 34 00 0F FF 10 11 11 00 00 AB CD").toUtf8()))){
-                    rawData.remove(0, BASE_CMD_LENGTH);
-                    continue;
-                }
-
-                // 指令返回-探测器-触发模式-软件触发
-                if (rawData.startsWith(QByteArray::fromHex(QString("12 34 00 0F FF 10 11 11 00 01 AB CD").toUtf8()))){
-                    rawData.remove(0, BASE_CMD_LENGTH);
-                    continue;
-                }
-
-                // 指令返回-探测器-触发模式-硬件触发
-                if (rawData.startsWith(QByteArray::fromHex(QString("12 34 00 0F FF 10 11 11 00 02 AB CD").toUtf8()))){
-                    rawData.remove(0, BASE_CMD_LENGTH);
-                    continue;
-                }
-
-                // 指令返回-测距模块-电源闭合
-                if (rawData.startsWith(QByteArray::fromHex(QString("12 34 00 0F AF 10 00 00 00 01 AB CD").toUtf8()))){
-                    rawData.remove(0, BASE_CMD_LENGTH);
-                    continue;
-                }
-
-                // 指令返回-测距模块-电源断开
-                if (rawData.startsWith(QByteArray::fromHex(QString("12 34 00 0F AF 10 00 00 00 00 AB CD").toUtf8()))){
-                    rawData.remove(0, BASE_CMD_LENGTH);
-                    continue;
-                }
-
-                // 指令返回-测距模块-激光打开
-                if (rawData.startsWith(QByteArray::fromHex(QString("12 34 00 0F AF 11 00 00 00 01 AB CD").toUtf8()))){
-                    rawData.remove(0, BASE_CMD_LENGTH);
-                    continue;
-                }
-
-                // 指令返回-测距模块-激光关闭
-                if (rawData.startsWith(QByteArray::fromHex(QString("12 34 00 0F AF 11 00 00 00 00 AB CD").toUtf8()))){
-                    rawData.remove(0, BASE_CMD_LENGTH);
-                    continue;
-                }
-
-                // 指令返回-测距模块-开始单次测量
-                if (rawData.startsWith(QByteArray::fromHex(QString("12 34 00 0F AF 12 00 00 00 00 AB CD").toUtf8()))){
-                    rawData.remove(0, BASE_CMD_LENGTH);
-                    continue;
-                }
-
-                // 指令返回-测距模块-连续测量-开始
-                if (rawData.startsWith(QByteArray::fromHex(QString("12 34 00 0F AF 13 00 00 00 01 AB CD").toUtf8()))){
-                    rawData.remove(0, BASE_CMD_LENGTH);
-                    continue;
-                }
-
-                // 指令返回-测距模块-连续测量-停止
-                if (rawData.startsWith(QByteArray::fromHex(QString("12 34 00 0F AF 13 00 00 00 00 AB CD").toUtf8()))){
-                    rawData.remove(0, BASE_CMD_LENGTH);
-                    continue;
-                }
-
-                if (rawData.size() != 0)
-                {
-                    qDebug()<<"(2) Unknown cmd: "<<rawData.toHex(' ');
-                    rawData.remove(0, BASE_CMD_LENGTH);
-                    continue;
-                }
-                else{
-                    break;
-                }
-            }
         }
     }
 }
@@ -715,7 +398,7 @@ void CommHelper::sendRelayPowerSwitcherCmd(quint8 on/* = 0x01*/)
     else
         askCurrentCmd = askRelayPowerOnCmd;
     socketRelay->write(askCurrentCmd);
-    qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+    qDebug()<< "[" << 0 << "] "<<"Send HEX: "<<askCurrentCmd.toHex(' ');
 }
 
 /*
@@ -728,7 +411,7 @@ void CommHelper::sendQueryRelayStatusCmd()
 
     askCurrentCmd = askQueryRelayPowerStatusCmd;
     socketRelay->write(askCurrentCmd);
-    qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+    qDebug()<< "[" << 0 << "] "<<"Send HEX: "<<askCurrentCmd.toHex(' ');
 }
 
 /*
@@ -868,7 +551,7 @@ void CommHelper::sendTransferModeCmd(quint8 index, quint8 mode)
     askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f fa 13 00 00 00 00 ab cd").toUtf8());
     askCurrentCmd[9] = mode;
     sockets[index]->write(askCurrentCmd);
-    qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+    qDebug()<< "[" << index << "] "<<"Send HEX: "<<askCurrentCmd.toHex(' ');
 }
 
 /*
@@ -930,7 +613,7 @@ void CommHelper::sendPowerSwitcherCmd(quint8 on/* = 0x01*/)
     askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f af 10 00 00 00 00 ab cd").toUtf8());
     askCurrentCmd[9] = on;
     socketDetector1->write(askCurrentCmd);
-    qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+    qDebug()<< "[" << 1 << "] "<<"Send HEX: "<<askCurrentCmd.toHex(' ');
 }
 
 /*
@@ -944,7 +627,7 @@ void CommHelper::sendLaserSwitcherCmd(quint8 on/* = 0x01*/)
     askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f af 11 00 00 00 00 ab cd").toUtf8());
     askCurrentCmd[9] = on;
     socketDetector1->write(askCurrentCmd);
-    qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+    qDebug()<< "[" << 1 << "] "<<"Send HEX: "<<askCurrentCmd.toHex(' ');
 }
 
 /*
@@ -959,7 +642,7 @@ void CommHelper::sendSingleMeasureCmd()
     singleMeasure = true;
     askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f af 12 00 00 00 00 ab cd").toUtf8());
     socketDetector1->write(askCurrentCmd);
-    qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+    qDebug()<< "[" << 1 << "] "<<"Send HEX: "<<askCurrentCmd.toHex(' ');
 
     QMetaObject::invokeMethod(this, "measureStart", Qt::QueuedConnection);
 }
@@ -977,123 +660,9 @@ void CommHelper::sendContinueMeasureCmd(quint8 on/* = 0x01*/)
     askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f af 13 00 00 00 00 ab cd").toUtf8());
     askCurrentCmd[9] = on;
     socketDetector1->write(askCurrentCmd);
-    qDebug()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+    qDebug()<< "[" << 1 << "] "<<"Send HEX: "<<askCurrentCmd.toHex(' ');
 
     QMetaObject::invokeMethod(this, "measureStart", Qt::QueuedConnection);
-}
-
-
-void CommHelper::OnDataProcessThread()
-{
-    chWaveDataValidTag = 0x00;
-    while (!mTerminatedThead)
-    {
-        //单个波形：0xABAB + 0xFFXY+ 波形长度*16bit +0xCDCD
-        quint32 baseWaveTotalSize = (waveLength + 3) * 2;
-
-        {
-            QMutexLocker locker(&mReceivePoolLocker);
-            if (rawWaveData[0].size() < baseWaveTotalSize ||
-                rawWaveData[1].size() < baseWaveTotalSize ||
-                rawWaveData[2].size() < baseWaveTotalSize){
-                while (!mDataReady){
-                    mCondition.wait(&mReceivePoolLocker);
-                }
-            }
-
-            if (rawWaveData[0].size() >= baseWaveTotalSize ||
-                rawWaveData[1].size() >= baseWaveTotalSize ||
-                rawWaveData[2].size() >= baseWaveTotalSize){
-                rawWaveAllData.append(rawWaveData[0]);
-                rawWaveAllData.append(rawWaveData[1]);
-                rawWaveAllData.append(rawWaveData[2]);
-
-                rawWaveData[0].clear();
-                rawWaveData[1].clear();
-                rawWaveData[2].clear();
-                mDataReady = false;
-            }
-        }
-
-        if (rawWaveAllData.size() == 0)
-            continue;
-
-        QMap<quint8, QVector<quint16>> realCurve;// 实测曲线
-        QVector<QPair<float, float>> calResult;// 反解能谱
-        while (rawWaveAllData.size() >= baseWaveTotalSize * 3){            
-            // 前面应该有12字节的开始测量反馈指令，所以还需要进一步检查一下
-
-            if (rawWaveAllData.startsWith(dataHeadCmd)){
-                // 指令包
-
-                //继续检查包尾
-                QByteArray chunk = rawWaveAllData.left(baseWaveTotalSize);
-                if (chunk.endsWith(dataTailCmd)){
-                    //单个波形：0xABAB + 0xFFXY+ 波形长度*16bit +0xCDCD
-                    //X:数采板序号 Y:通道号
-                    quint8 ch = chunk[3] & 0x0F;
-                    QVector<quint16> data;
-
-                    for (int i = 0; i < waveLength * 2; i += 2) {
-                        quint16 value = static_cast<quint8>(chunk[i + 4]) << 8 | static_cast<quint8>(chunk[i + 5]);
-                        data.append(value);
-                    }
-
-                    chWaveDataValidTag |= (0x01 << (ch - 1));
-                    realCurve[ch] = data;
-                }
-                else {
-                    // 包尾不正确，继续寻找包头
-                    rawWaveAllData.remove(0, 3);
-                }
-            }
-            else{
-                // 包头不正确，继续寻找包头
-                rawWaveAllData.remove(0, 1);
-            }
-        }
-
-        if (chWaveDataValidTag == 0x0FFF){            
-            QVector<quint16> sortRawWaveAllData;
-            for (int i=1; i<=12; ++i){
-                sortRawWaveAllData.append(realCurve[i]);
-            }
-
-            QString strTime = QDateTime::currentDateTime().toString("yyyy-MM-dd_HHmmss");
-            QString filePath = QString("%1").arg(shotDir + "/" + strTime + ".dat");
-            QFile *pfSaveNet = new QFile(filePath);
-            if (pfSaveNet->open(QIODevice::WriteOnly)) {
-                qDebug().noquote() << tr("创建网口数据缓存文件成功，文件名：%1").arg(filePath);
-            } else {
-                qDebug().noquote() << tr("创建网口数据缓存文件失败，文件名：%1").arg(filePath);
-            }
-
-            if (nullptr != pfSaveNet){
-                pfSaveNet->write((const char *)sortRawWaveAllData.constData(), sortRawWaveAllData.size() * sizeof(quint16));
-                pfSaveNet->flush();
-                pfSaveNet->close();
-            }
-
-            // 实测曲线
-            QMetaObject::invokeMethod(this, [=]() {
-                emit showRealCurve(realCurve);
-            }, Qt::QueuedConnection);
-
-            // 反解能谱
-            QMetaObject::invokeMethod(this, [=]() {
-                emit showEnerygySpectrumCurve(calResult);
-            }, Qt::QueuedConnection);
-
-
-            // 波形数据处理完成，重设测量状态
-            waveMeasuring = false;
-
-            // 数据接收完毕，先停止测量
-            this->stopMeasure();
-
-            QMetaObject::invokeMethod(this, "measureEnd", Qt::QueuedConnection);
-        }
-    }
 }
 
 /////////////////////////////////////////////////////////////////////////////////

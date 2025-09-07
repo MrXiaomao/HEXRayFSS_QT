@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    emit sigUpdateBootInfo(tr("系统启动"));
 
     initUi();
     initCustomPlot(ui->customPlot, tr("道址"), tr("实测曲线（通道1-4）"), 4);
@@ -100,19 +101,14 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     //测量开始
-    connect(commHelper, &CommHelper::measureStart, this, [=](){
+    connect(commHelper, &CommHelper::measureStart, this, [=](quint8 index){
         ui->action_startMeasure->setEnabled(false);
         ui->action_stopMeasure->setEnabled(true);
     });
     //测量结束
-    connect(commHelper, &CommHelper::measureEnd, this, [=](){
+    connect(commHelper, &CommHelper::measureEnd, this, [=](quint8 index){
         ui->action_startMeasure->setEnabled(true);
         ui->action_stopMeasure->setEnabled(false);
-
-        // 测量结束，可以开始温度查询了
-        commHelper->queryTemperature(1);
-        commHelper->queryTemperature(2);
-        commHelper->queryTemperature(3);
     });
 
     QTimer::singleShot(500, this, [=](){

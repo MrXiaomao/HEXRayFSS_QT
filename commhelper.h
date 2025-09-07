@@ -106,8 +106,8 @@ signals:
     void appVersionRespond(quint8 index, QString version, QString serialNumber);
     void distanceRespond(float distance, quint16 quality);// 测距模块距离和质量
 
-    void measureStart(); //测量开始
-    void measureEnd(); //测量结束
+    void measureStart(quint8 index); //测量开始
+    void measureEnd(quint8 index); //测量结束
 
     void showRealCurve(const QMap<quint8, QVector<quint16>>& data);//实测曲线
     void showEnerygySpectrumCurve(const QVector<QPair<float, float>>& data);//反解能谱
@@ -229,14 +229,7 @@ private:
     QByteArray askAppVersionCmd;// 程序版本查询发指令
     QByteArray askTemperatureCmd;// 温度查询指令
 
-    QByteArray rawWaveData[3]; //原始波形数据
-    bool mDataReady = false;// 数据长度不够，还没准备好
-    bool mTerminatedThead = false;
-    QMutex mReceivePoolLocker;
-    QWaitCondition mCondition;//
-    QLiteThread* dataProcessThread = nullptr;// 处理线程
-    void OnDataProcessThread();
-    QByteArray rawWaveAllData;//波形总数据
+    QMap<quint8, QVector<quint16>> waveAllData;
 
     /*
      初始化网络
