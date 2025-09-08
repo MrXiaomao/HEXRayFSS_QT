@@ -113,6 +113,9 @@ public:
     */
     void stopMeasureDistance();
 
+    /*解析历史文件*/
+    void openHistoryWaveFile(const QString &filePath);
+
 public slots:
     void errorOccurred(QAbstractSocket::SocketError);
     void socketConnected();
@@ -222,6 +225,11 @@ private:
     */
     void sendContinueMeasureCmd(quint8 on = 0x01);
 
+    /*
+     反解能谱
+    */
+    void calEnerygySpectrumCurve();
+
 private:
     bool mRelayIsConnected = false;
     bool mDetectorsIsConnected = false;
@@ -252,7 +260,7 @@ private:
     QByteArray askAppVersionCmd;// 程序版本查询发指令
     QByteArray askTemperatureCmd;// 温度查询指令
 
-    QMap<quint8, QVector<quint16>> waveAllData;
+    QMap<quint8, QVector<quint16>> mWaveAllData;
 #ifdef ENABLE_MATLAB
     mwArray m_mwT;
     mwArray m_mwSeq;

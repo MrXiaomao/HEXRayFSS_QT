@@ -127,7 +127,7 @@ int main(int argc, char *argv[])
     }
 
     // 确保logs目录存在
-    QDir dir(QDir::currentPath() + "/logs/adf/we324/wer");
+    QDir dir(QDir::currentPath() + "/logs");
     if (!dir.exists()) {
         dir.mkpath(".");
     }

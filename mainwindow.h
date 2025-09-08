@@ -82,6 +82,8 @@ private slots:
 
     void on_action_about_triggered();
 
+    void on_pushButton_export_clicked();
+
 private:
     Ui::MainWindow *ui;
     bool mRelayPowerOn = false;

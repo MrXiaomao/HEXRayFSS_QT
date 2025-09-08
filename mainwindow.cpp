@@ -123,7 +123,7 @@ MainWindow::MainWindow(QWidget *parent)
         ui->tableWidget_detector->item(1, index - 1)->setText(QString::number(temperature, 'f', 2));
     });
 
-    // 测距模块距离和质量
+    // 测距模块距离和质量    
     connect(commHelper, &CommHelper::distanceRespond, this, [=](float distance, quint16 quality){
         int row = ui->tableWidget_laser->rowCount();
         ui->tableWidget_laser->insertRow(row);
@@ -611,11 +611,14 @@ void MainWindow::on_action_exit_triggered()
 void MainWindow::on_action_open_triggered()
 {
     // 打开历史文件...
-    QString fileName = QFileDialog::getOpenFileName(this, tr("打开文件"),";",tr("测量文件 (*.dat)"));
-    if (fileName.isEmpty() || !QFileInfo::exists(fileName))
+    QString filePath = QFileDialog::getOpenFileName(this, tr("打开文件"),"",tr("测量文件 (*.dat *.csv)"));
+    if (filePath.isEmpty() || !QFileInfo::exists(filePath))
         return;
 
-
+    QVector<QPair<float, float>> data;
+    if (!filePath.isEmpty()){
+        commHelper->openHistoryWaveFile(filePath);
+    }
 }
 
 void MainWindow::on_action_connectRelay_triggered()
@@ -782,5 +785,24 @@ void MainWindow::on_action_about_triggered()
     w->setWindowFlags(Qt::WindowCloseButtonHint|Qt::Dialog);
     w->setWindowModality(Qt::ApplicationModal);
     w->showNormal();
+}
+
+
+void MainWindow::on_pushButton_export_clicked()
+{
+    QString filePath = QFileDialog::getSaveFileName(this);
+    if (!filePath.isEmpty()){
+        if (!filePath.endsWith(".csv"))
+            filePath += ".csv";
+        QFile file(filePath);
+        if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
+            QTextStream stream(&file);
+            for (int i=0; i<ui->tableWidget_laser->rowCount(); ++i){
+                stream << ui->tableWidget_laser->item(i, 0)->text() << "," << ui->tableWidget_laser->item(i, 0)->text() << "\n";
+            }
+
+            file.close();
+        }
+    }
 }
 

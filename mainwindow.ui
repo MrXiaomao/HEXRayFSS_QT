@@ -292,6 +292,17 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_export">
+            <property name="text">
+             <string>数据导出...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../3rdParty/resource/resource.qrc">
+              <normaloff>:/daochu.png</normaloff>:/daochu.png</iconset>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
         <item>
