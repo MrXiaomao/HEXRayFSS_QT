@@ -10,6 +10,14 @@
 
 #include "qlitethread.h"
 #include "dataprocessor.h"
+
+#ifdef ENABLE_MATLAB
+#include "UnfolddingAlgorithm_Gravel.h"
+#include "mclmcrrt.h"  // MATLAB 运行时头文件
+#include "mclcppclass.h"  // mwArray 头文件
+extern bool gMatlabInited;
+#endif //ENABLE_MATLAB
+
 class CommHelper : public QObject
 {
     Q_OBJECT
@@ -61,6 +69,23 @@ public:
     void closePower();
 
     /*
+     打开探测器
+    */
+    bool connectDetectors();
+    /*
+     断开探测器
+    */
+    void disconnectDetectors();
+    /*
+     探测器连接/断开
+    */
+
+    /*
+     设置发次信息
+    */
+    void setShotInformation(QString shotDir, QString shotNum);
+
+    /*
      开始测量
     */
     void startMeasure(quint8 mode);
@@ -108,6 +133,9 @@ signals:
 
     void measureStart(quint8 index); //测量开始
     void measureEnd(quint8 index); //测量结束
+
+    void measureDistanceStart(); //测量开始
+    void measureDistanceEnd(); //测量结束
 
     void showRealCurve(const QMap<quint8, QVector<quint16>>& data);//实测曲线
     void showEnerygySpectrumCurve(const QVector<QPair<float, float>>& data);//反解能谱
@@ -195,27 +223,22 @@ private:
     void sendContinueMeasureCmd(quint8 on = 0x01);
 
 private:
-    quint8 detectorConnectedTag = 0x00;
-    bool relayIsConnected = false;
-    bool detectorsIsConnected = false;
-    bool waveMeasuring = false;     //波形测量中
-    bool distanceMeasuring = false; //距离测量中
-    bool singleMeasure = false; //是否单次测量模式
-    quint16 chWaveDataValidTag = 0x00;//标记通道数据是否接收完成
-    QString shotDir;// 保存路径
-    quint32 shotNum;// 测量发次
-    quint8 waveLength = 512;    // 波形长度
-    QTcpSocket *socketRelay = nullptr;    //继电器
-    QTcpSocket *socketDetector1 = nullptr; //探测器
-    QTcpSocket *socketDetector2 = nullptr; //探测器
-    QTcpSocket *socketDetector3 = nullptr; //探测器
-    DataProcessor* detector1DataProcessor = nullptr;
-    DataProcessor* detector2DataProcessor = nullptr;
-    DataProcessor* detector3DataProcessor = nullptr;
-    quint8 socketConectedStatus = ssNone; // 设备在线状态
+    bool mRelayIsConnected = false;
+    bool mDetectorsIsConnected = false;
+    bool mWaveMeasuring = false;     //波形测量中
+    bool mDistanceMeasuring = false; //距离测量中
+    bool mSingleMeasure = false; //是否单次测量模式
+    QString mShotDir;// 保存路径
+    QString mShotNum;// 测量发次
+    QTcpSocket *mSocketRelay = nullptr;    //继电器
+    QTcpSocket *mSocketDetector1 = nullptr; //探测器
+    QTcpSocket *mSocketDetector2 = nullptr; //探测器
+    QTcpSocket *mSocketDetector3 = nullptr; //探测器
+    DataProcessor* mDetector1DataProcessor = nullptr;
+    DataProcessor* mDetector2DataProcessor = nullptr;
+    DataProcessor* mDetector3DataProcessor = nullptr;
+    quint8 mSocketConectedStatus = ssNone; // 设备在线状态
 
-    QByteArray dataHeadCmd;// 数据头
-    QByteArray dataTailCmd;// 数据尾
     QByteArray askCurrentCmd;// 当前发送指令
     QByteArray askRelayPowerOnCmd;// 继电器电源-闭合
     QByteArray askRelayPowerOffCmd;// 继电器电源-断开
@@ -230,6 +253,17 @@ private:
     QByteArray askTemperatureCmd;// 温度查询指令
 
     QMap<quint8, QVector<quint16>> waveAllData;
+#ifdef ENABLE_MATLAB
+    mwArray m_mwT;
+    mwArray m_mwSeq;
+    mwArray m_mwResponce_matrix;
+    mwArray m_mwRom;
+
+    bool loadSeq(double* seq);
+    bool loadResponceMatrix(double* responceMatrix);
+    bool loadRom(double* rom);
+    bool loadData(double* data);
+#endif //ENABLE_MATLAB
 
     /*
      初始化网络
@@ -251,12 +285,6 @@ private:
     */
     bool connectRelay();
     void disconnectRelay();
-
-    /*
-     探测器连接/断开
-    */
-    bool connectDetectors();
-    void disconnectDetectors();
 };
 
 #endif // COMMHELPER_H

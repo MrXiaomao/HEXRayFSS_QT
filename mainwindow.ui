@@ -537,7 +537,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="lineEdit_ShotNum">
+           <widget class="QLineEdit" name="lineEdit_shotNum">
             <property name="text">
              <string>100</string>
             </property>
@@ -703,7 +703,7 @@
    </widget>
    <widget class="QMenu" name="menu">
     <property name="title">
-     <string>工具(&amp;T)</string>
+     <string>配置(&amp;T)</string>
     </property>
     <addaction name="action_netCfg"/>
     <addaction name="action_cfgParam"/>
@@ -726,11 +726,13 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="action_connect"/>
-   <addaction name="action_disconnect"/>
+   <addaction name="action_connectRelay"/>
+   <addaction name="action_disconnectRelay"/>
    <addaction name="action_powerOn"/>
    <addaction name="action_powerOff"/>
    <addaction name="separator"/>
+   <addaction name="action_connect"/>
+   <addaction name="action_disconnect"/>
    <addaction name="action_startMeasure"/>
    <addaction name="action_stopMeasure"/>
    <addaction name="separator"/>
@@ -755,6 +757,12 @@
    </property>
    <property name="text">
     <string>退出系统(&amp;X)</string>
+   </property>
+   <property name="iconText">
+    <string>退出系统</string>
+   </property>
+   <property name="toolTip">
+    <string>退出系统</string>
    </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
@@ -799,10 +807,10 @@
   <action name="action_connect">
    <property name="icon">
     <iconset resource="../3rdParty/resource/resource.qrc">
-     <normaloff>:/lianjie-on.png</normaloff>:/lianjie-on.png</iconset>
+     <normaloff>:/conect-on.png</normaloff>:/conect-on.png</iconset>
    </property>
    <property name="text">
-    <string>连接网络</string>
+    <string>打开探测器</string>
    </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
@@ -811,10 +819,10 @@
   <action name="action_disconnect">
    <property name="icon">
     <iconset resource="../3rdParty/resource/resource.qrc">
-     <normaloff>:/lianjie-fault.png</normaloff>:/lianjie-fault.png</iconset>
+     <normaloff>:/conect-fault.png</normaloff>:/conect-fault.png</iconset>
    </property>
    <property name="text">
-    <string>断开网络</string>
+    <string>关闭探测器</string>
    </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
@@ -863,6 +871,30 @@
    </property>
    <property name="text">
     <string>关闭电源</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="action_connectRelay">
+   <property name="icon">
+    <iconset resource="../3rdParty/resource/resource.qrc">
+     <normaloff>:/lianjie-on.png</normaloff>:/lianjie-on.png</iconset>
+   </property>
+   <property name="text">
+    <string>连接网络</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="action_disconnectRelay">
+   <property name="icon">
+    <iconset resource="../3rdParty/resource/resource.qrc">
+     <normaloff>:/lianjie-fault.png</normaloff>:/lianjie-fault.png</iconset>
+   </property>
+   <property name="text">
+    <string>断开网络</string>
    </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>

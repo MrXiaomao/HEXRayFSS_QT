@@ -3,13 +3,14 @@
 #include "qcustomplot.h"
 #include "netsetting.h"
 #include "paramsetting.h"
+#include "globalsettings.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    emit sigUpdateBootInfo(tr("系统启动"));
+    emit sigUpdateBootInfo(tr("加载界面..."));
 
     initUi();
     initCustomPlot(ui->customPlot, tr("道址"), tr("实测曲线（通道1-4）"), 4);
@@ -29,54 +30,93 @@ MainWindow::MainWindow(QWidget *parent)
         commHelper->queryTemperature(index);
     });
 
+    ui->action_connectRelay->setEnabled(true);
+    ui->action_disconnectRelay->setEnabled(false);
     ui->action_powerOn->setEnabled(false);
     ui->action_powerOff->setEnabled(false);
-    ui->action_connect->setEnabled(true);
+    ui->action_connect->setEnabled(false);
     ui->action_disconnect->setEnabled(false);
     ui->action_startMeasure->setEnabled(false);
     ui->action_stopMeasure->setEnabled(false);
 
     // 继电器
     connect(commHelper, &CommHelper::relayConnected, this, [=](){
+        QLabel* label_Connected = this->findChild<QLabel*>("label_Connected");
+        label_Connected->setStyleSheet("color:green;");
+        label_Connected->setText(tr("继电器网络状态：已连接"));
+
+        ui->action_connectRelay->setEnabled(false);
+        ui->action_disconnectRelay->setEnabled(true);
+
         ui->action_powerOn->setEnabled(true);
         ui->action_powerOff->setEnabled(true);
 
         ui->action_connect->setEnabled(false);
-        ui->action_disconnect->setEnabled(true);
+        ui->action_disconnect->setEnabled(false);
 
         //查询继电器电源闭合状态
         commHelper->queryRelayStatus();
     });
     connect(commHelper, &CommHelper::relayDisconnected, this, [=](){
+        QLabel* label_Connected = this->findChild<QLabel*>("label_Connected");
+        label_Connected->setStyleSheet("color:red;");
+        label_Connected->setText(tr("继电器网络状态：断网"));
+
+        ui->action_connectRelay->setEnabled(true);
+        ui->action_disconnectRelay->setEnabled(false);
+
         ui->action_powerOn->setEnabled(false);
         ui->action_powerOff->setEnabled(false);
 
-        ui->action_connect->setEnabled(true);
+        ui->action_connect->setEnabled(false);
         ui->action_disconnect->setEnabled(false);
     });
 
     connect(commHelper, &CommHelper::relayPowerOn, this, [=](){
         ui->action_powerOn->setEnabled(false);
         ui->action_powerOff->setEnabled(true);
+
+        ui->action_connect->setEnabled(true);
+        ui->action_disconnect->setEnabled(false);
+
+        mRelayPowerOn = true;
     });
     connect(commHelper, &CommHelper::relayPowerOff, this, [=](){
         ui->action_powerOn->setEnabled(true);
         ui->action_powerOff->setEnabled(false);
+
+        ui->action_connect->setEnabled(false);
+        ui->action_disconnect->setEnabled(false);
+
+        mRelayPowerOn = false;
     });
 
     // 探测器
     connect(commHelper, &CommHelper::detectorConnected, this, [=](quint8 index){
         ui->tableWidget_detector->item(0, index - 1)->setText(tr("在线"));
+        ui->tableWidget_detector->item(0, index - 1)->setForeground(QBrush(QColor(Qt::green)));
         ui->action_startMeasure->setEnabled(true);
         ui->action_stopMeasure->setEnabled(true);
+
+        if (ui->tableWidget_detector->item(0, 0)->text() == "在线" &&
+            ui->tableWidget_detector->item(0, 1)->text() == "在线" &&
+            ui->tableWidget_detector->item(0, 2)->text() == "在线"){
+            ui->action_connect->setEnabled(false);
+            ui->action_disconnect->setEnabled(true);
+        }
+
     });
     connect(commHelper, &CommHelper::detectorDisconnected, this, [=](quint8 index){
         ui->tableWidget_detector->item(0, index - 1)->setText(tr("离线"));
+        ui->tableWidget_detector->item(0, index - 1)->setForeground(QBrush(QColor(Qt::red)));
         if (ui->tableWidget_detector->item(0, 0)->text() == "离线" &&
             ui->tableWidget_detector->item(0, 1)->text() == "离线" &&
             ui->tableWidget_detector->item(0, 2)->text() == "离线"){
             ui->action_startMeasure->setEnabled(false);
             ui->action_stopMeasure->setEnabled(false);
+
+            ui->action_connect->setEnabled(true);
+            ui->action_disconnect->setEnabled(false);
         }
     });
     connect(commHelper, &CommHelper::temperatureRespond, this, [=](quint8 index, float temperature){
@@ -110,10 +150,6 @@ MainWindow::MainWindow(QWidget *parent)
         ui->action_startMeasure->setEnabled(true);
         ui->action_stopMeasure->setEnabled(false);
     });
-
-    QTimer::singleShot(500, this, [=](){
-        this->showMaximized();
-    });
 }
 
 MainWindow::~MainWindow()
@@ -124,6 +160,51 @@ MainWindow::~MainWindow()
 void MainWindow::initUi()
 {
     ui->stackedWidget->hide();
+
+    // 任务栏信息
+    QLabel *label_Idle = new QLabel(ui->statusbar);
+    label_Idle->setObjectName("label_Idle");
+    label_Idle->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    label_Idle->setFixedWidth(300);
+    label_Idle->setText(tr("就绪"));
+
+    QLabel *label_Connected = new QLabel(ui->statusbar);
+    label_Connected->setObjectName("label_Connected");
+    label_Connected->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    label_Connected->setFixedWidth(300);
+    label_Connected->setText(tr("继电器网络状态：未连接"));
+
+    /*设置任务栏信息*/
+    QLabel *label_systemtime = new QLabel(ui->statusbar);
+    label_systemtime->setObjectName("label_systemtime");
+    label_systemtime->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+    ui->statusbar->setContentsMargins(5, 0, 5, 0);
+    ui->statusbar->addWidget(label_Idle);
+    ui->statusbar->addWidget(label_Connected);
+    ui->statusbar->addWidget(new QLabel(ui->statusbar), 1);
+    ui->statusbar->addWidget(nullptr, 1);
+    ui->statusbar->addPermanentWidget(label_systemtime);
+
+    QTimer* systemClockTimer = new QTimer(this);
+    systemClockTimer->setObjectName("systemClockTimer");
+    connect(systemClockTimer, &QTimer::timeout, this, [=](){
+        // 获取当前时间
+        QDateTime currentDateTime = QDateTime::currentDateTime();
+
+        // 获取星期几的数字（1代表星期日，7代表星期日）
+        int dayOfWeekNumber = currentDateTime.date().dayOfWeek();
+
+        // 星期几的中文名称列表
+        QStringList dayNames = {
+            tr("星期日"), QObject::tr("星期一"), QObject::tr("星期二"), QObject::tr("星期三"), QObject::tr("星期四"), QObject::tr("星期五"), QObject::tr("星期六"), QObject::tr("星期日")
+        };
+
+        // 根据数字获取中文名称
+        QString dayOfWeekString = dayNames.at(dayOfWeekNumber);
+        this->findChild<QLabel*>("label_systemtime")->setText(QString(QObject::tr("系统时间：")) + currentDateTime.toString("yyyy/MM/dd hh:mm:ss ") + dayOfWeekString);
+    });
+    systemClockTimer->start(900);
 
     QSplitter *splitter = new QSplitter(Qt::Horizontal,this);
     splitter->setHandleWidth(1);
@@ -183,16 +264,6 @@ void MainWindow::initUi()
     ui->graphicsView->setFixedSize(30, 502);
     ui->sidewidget->setFixedWidth(30);
 
-    // QHBoxLayout* centralHboxLayout = new QHBoxLayout();
-    // centralHboxLayout->setContentsMargins(0,0,0,0);
-    // centralHboxLayout->setSpacing(2);
-    // centralHboxLayout->addWidget(ui->sidewidget);
-    // centralHboxLayout->addWidget(ui->stackedWidget);
-    // centralHboxLayout->addLayout(ui->leftVboxLayout);
-    // centralHboxLayout->addLayout(ui->rightVboxLayout);
-    // ui->centralwidget->setLayout(centralHboxLayout);
-    // centralHboxLayout->setSizes(QList<int>() << 1 << 100000 << 100000 << 100000 << 1);
-
     ui->tableWidget_laser->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableWidget_detector->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableWidget_detectorVersion->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
@@ -216,9 +287,33 @@ void MainWindow::initUi()
     connect(button, &QToolButton::pressed, this, [=](){
         QString cacheDir = QFileDialog::getExistingDirectory(this);
         if (!cacheDir.isEmpty()){
+
+            JsonSettings* ipSettings = GlobalSettings::instance()->mIpSettings;
+            ipSettings->prepare();
+
+            ipSettings->beginGroup("Relay");
+            ipSettings->setValue("CacheDir", cacheDir);
+            ipSettings->endGroup();
+            ipSettings->flush();
+            ipSettings->finish();
+
             ui->lineEdit_filePath->setText(cacheDir);
         }
     });
+
+    {
+        JsonSettings* ipSettings = GlobalSettings::instance()->mIpSettings;
+        ipSettings->prepare();
+
+        ipSettings->beginGroup("Relay");
+        QString cacheDir = ipSettings->value("CacheDir").toString();
+        ipSettings->endGroup();
+        ipSettings->finish();
+
+        if (cacheDir.isEmpty())
+            cacheDir = QApplication::applicationDirPath() + "/cache/";
+        ui->lineEdit_filePath->setText(cacheDir);
+    }
 
     connect(ui->switchButton_power, &SwitchButton::clicked, this, [=](bool checked){
         if (!checked){
@@ -376,13 +471,15 @@ void MainWindow::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, QSt
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
-    int reply = QMessageBox::information(this, tr("提示"), tr("您确定要退出吗？"),
-                                                              QMessageBox::Yes|QMessageBox::No);
-    if(reply == QMessageBox::Yes) {
-        event->accept();
-    } else {
-        event->ignore();
+    if (mRelayPowerOn){
+        int reply = QMessageBox::question(this, tr("系统退出提示"), tr("继电器电源处理闭合状态，是否断开？"),
+                                             QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
+        if(reply == QMessageBox::Yes) {
+            commHelper->closePower();
+        }
     }
+
+    event->accept();
 }
 
 bool MainWindow::event(QEvent * event) {
@@ -521,18 +618,31 @@ void MainWindow::on_action_open_triggered()
 
 }
 
-
-void MainWindow::on_action_connect_triggered()
+void MainWindow::on_action_connectRelay_triggered()
 {
     // 连接网络
     commHelper->connectNet();
 }
 
 
-void MainWindow::on_action_disconnect_triggered()
+void MainWindow::on_action_disconnectRelay_triggered()
 {
     // 断开网络
     commHelper->disconnectNet();
+}
+
+
+void MainWindow::on_action_connect_triggered()
+{
+    // 打开探测器
+    commHelper->connectDetectors();
+}
+
+
+void MainWindow::on_action_disconnect_triggered()
+{
+    // 关闭探测器
+    commHelper->disconnectDetectors();
 }
 
 
@@ -555,6 +665,11 @@ void MainWindow::on_action_startMeasure_triggered()
     commHelper->queryTemperature(1, false);
     commHelper->queryTemperature(2, false);
     commHelper->queryTemperature(3, false);
+
+    /*设置发次信息*/
+    QString shotDir = ui->lineEdit_filePath->text();
+    QString shotNum = ui->lineEdit_shotNum->text();
+    commHelper->setShotInformation(shotDir, shotNum);
 
     // 再发开始测量指令
     commHelper->startMeasure(CommHelper::TriggerMode::tmSoft);
@@ -657,3 +772,15 @@ void MainWindow::showEnerygySpectrumCurve(const QVector<QPair<float, float>>& da
     ui->customPlot_result->graph(0)->setData(keys, values);
     ui->customPlot_result->replot(QCustomPlot::rpQueuedReplot);
 }
+
+
+#include "aboutwidget.h"
+void MainWindow::on_action_about_triggered()
+{
+    AboutWidget *w = new AboutWidget(this);
+    w->setAttribute(Qt::WA_DeleteOnClose, true);
+    w->setWindowFlags(Qt::WindowCloseButtonHint|Qt::Dialog);
+    w->setWindowModality(Qt::ApplicationModal);
+    w->showNormal();
+}
+

@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "globalsettings.h"
+#include "commhelper.h"
 
 #include <QApplication>
 #include <QStyleFactory>
@@ -7,6 +8,8 @@
 #include <QDir>
 #include <QSplashScreen>
 #include <QScreen>
+#include <QMessageBox>
+#include <QTimer>
 
 #include <log4qt/log4qt.h>
 #include <log4qt/logger.h>
@@ -37,6 +40,7 @@ void AppMessageHandler(QtMsgType type, const QMessageLogContext& context, const 
     }
 }
 
+bool gMatlabInited = false;
 #include <locale.h>
 #include <QTextCodec>
 #include <QTranslator>
@@ -67,6 +71,30 @@ int main(int argc, char *argv[])
     QSplashScreen splash;
     splash.setPixmap(QPixmap(":/splash.png"));
     splash.show();
+
+#ifdef ENABLE_MATLAB
+    splash.showMessage(QObject::tr("资源初始化..."), Qt::AlignLeft | Qt::AlignBottom, Qt::white);
+    if (mclInitializeApplication(NULL, 0)) {
+        if(UnfolddingAlgorithm_GravelInitialize())
+        {
+            gMatlabInited = true;
+        }
+        else
+        {
+            gMatlabInited = false;
+        }
+    }
+
+    if (!gMatlabInited){
+        int reply = QMessageBox::question(nullptr, QObject::tr("询问"), QObject::tr("Matlab程序DLL初始化失败，是否继续？"),
+                                          QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
+        if(reply == QMessageBox::Yes) {
+            return -1;
+        }
+    }
+#endif //ENABLE_MATLAB
+
+    splash.showMessage(QObject::tr("加载语言库..."), Qt::AlignLeft | Qt::AlignBottom, Qt::white);
 
     // 启用新的日子记录类
     QString sConfFilename = "./log4qt.conf";
@@ -127,6 +155,7 @@ int main(int argc, char *argv[])
     int x = (screenRect.width() - w.width()) / 2;
     int y = (screenRect.height() - w.height()) / 2;
     w.move(x, y);
+    w.setWindowState(w.windowState() | Qt::WindowMaximized);
     w.show();
 
     //运行运行到这里，此时主窗体析构函数还没触发，所以shutdownRootLogger需要在主窗体销毁以后再做处理

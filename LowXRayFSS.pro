@@ -9,6 +9,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    aboutwidget.cpp \
     commhelper.cpp \
     dataprocessor.cpp \
     globalsettings.cpp \
@@ -19,6 +20,7 @@ SOURCES += \
     switchbutton.cpp
 
 HEADERS += \
+    aboutwidget.h \
     dataprocessor.h \
     qlitethread.h \
     commhelper.h \
@@ -29,6 +31,7 @@ HEADERS += \
     switchbutton.h
 
 FORMS += \
+    aboutwidget.ui \
     mainwindow.ui \
     netsetting.ui \
     paramsetting.ui
@@ -52,10 +55,16 @@ contains(QT_ARCH, x86_64) {
 DESTDIR = $$DESTDIR/qt$$QT_VERSION/
 message(DESTDIR = $$DESTDIR)
 
-TARGET = LowXRayFSS
+#开启工程的debug和release两种版本构建
+CONFIG += debug_and_release
+CONFIG(debug, debug|release) {
+    TARGET = LowXRayFSSd
+} else {
+    TARGET = LowXRayFSS
+}
 
-# 避免创建空的debug和release目录
-CONFIG -= debug_and_release
+#避免创建空的debug和release目录
+#CONFIG -= debug_and_release
 
 #指定编译产生的文件分门别类放到对应目录
 MOC_DIR     = temp/moc
@@ -105,3 +114,13 @@ windows {
 include($$PWD/../3rdParty/log4qt/Include/log4qt.pri)
 include($$PWD/../3rdParty/resource/resource.pri)
 include($$PWD/../3rdParty/QCustomplot/QCustomplot.pri)
+
+# 启用反解能谱
+#DEFINES += ENABLE_MATLAB
+
+contains(DEFINES, ENABLE_MATLAB) {
+    message("Including matlab library")
+    include($$PWD/../3rdParty/Matlab2020b/Matlab2020b.pri)
+} else {
+    message("Skipping matlab library")
+}

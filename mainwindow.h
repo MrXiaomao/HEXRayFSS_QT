@@ -76,8 +76,13 @@ private slots:
 
     void on_pushButton_startMeasureDistance_clicked();
 
+    void on_action_connectRelay_triggered();
+
+    void on_action_disconnectRelay_triggered();
+
 private:
     Ui::MainWindow *ui;
+    bool mRelayPowerOn = false;
 
 #ifdef MATLAB
     mwArray m_mwT;

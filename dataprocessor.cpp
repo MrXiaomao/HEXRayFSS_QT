@@ -64,7 +64,7 @@ void DataProcessor::inputData(const QByteArray& data)
     {
         QMutexLocker locker(&mDataLocker);
         mRawData.append(data);
-        qDebug()<< "[" << mdetectorIndex << "] "<< "inputData: " << data.toHex(' ') << " >> " << mRawData.toHex(' ');
+        qDebug().noquote()<< "[" << mdetectorIndex << "] "<< "inputData: " << data.toHex(' ') << " >> " << mRawData.toHex(' ');
 
         mDataReady = true;
     }
@@ -125,7 +125,7 @@ reTry:
                         qint16 t = qFromBigEndian<qint16>(data.constData());
                         float temperature = t * 0.0078125;// 换算系数
 
-                        //qDebug()<< "[" << mdetectorIndex << "] "<<"Temperature "<< mdetectorIndex << ": " << temperature;
+                        //qDebug().noquote()<< "[" << mdetectorIndex << "] "<<"Temperature "<< mdetectorIndex << ": " << temperature;
                         emit temperatureRespond(mdetectorIndex, temperature);
 
                         findNaul = true;
@@ -155,7 +155,7 @@ reTry:
                                           month.toHex().toUpper() +
                                           day.toHex().toUpper();
 
-                        qDebug()<< "[" << mdetectorIndex << "] "<<"AppVersion "<< mdetectorIndex<< ": "<< version<< ", serialNumber: " << serialNumber.toHex().toUpper();
+                        qDebug().noquote()<< "[" << mdetectorIndex << "] "<<"AppVersion "<< mdetectorIndex<< ": "<< version<< ", serialNumber: " << serialNumber.toHex().toUpper();
                         emit appVersionRespond(mdetectorIndex, version, QString(serialNumber.toHex().toUpper()));
 
                         findNaul = true;
@@ -200,7 +200,7 @@ reTry:
                             bool ok = false;
                             quint16 quality = data.toShort(&ok, 16);
 
-                            qDebug()<< "[" << mdetectorIndex << "] "<<"Distance: "<< distance << ", quality: " << quality;
+                            qDebug().noquote()<< "[" << mdetectorIndex << "] "<<"Distance: "<< distance << ", quality: " << quality;
                             emit distanceRespond(distance, quality);
 
                             if (mSingleMeasure){
@@ -215,7 +215,7 @@ reTry:
 
                         // 硬件触发反馈
                         if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 AA 00 0C 00 00 00 00 AB CD").toUtf8()))){
-                            qDebug()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：硬件触发");
+                            qDebug().noquote()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：硬件触发");
 
                             findNaul = true;
                             mCachePool.remove(0, BASE_CMD_LENGTH);
@@ -225,14 +225,15 @@ reTry:
                         // 指令返回-探测器-传输模式-程序版本号
                         if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FA 13 00 00 00 01 AB CD").toUtf8()))){
                             mCachePool.remove(0, BASE_CMD_LENGTH);
-                            qDebug()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：传输模式-程序版本号");
+                            qDebug().noquote()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：传输模式-程序版本号");
 
                             // 再发送查询指令
                             QTimer::singleShot(0, this, [=]{
                                 QByteArray askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f fc 11 00 00 00 00 ab cd").toUtf8());
                                 mSocket->write(askCurrentCmd);
-                                qDebug()<< "[" << mdetectorIndex << "] "<<"Send HEX: "<<askCurrentCmd.toHex(' ');
-                                qDebug()<< "[" << mdetectorIndex << "] " << QString::fromUtf8(">> 发送指令：传输模式-查询程序版本号");
+                                mSocket->waitForBytesWritten();
+                                qDebug().noquote()<< "[" << mdetectorIndex << "] "<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+                                qDebug().noquote()<< "[" << mdetectorIndex << "] " << QString::fromUtf8(">> 发送指令：传输模式-查询程序版本号");
                             });
 
                             findNaul = true;
@@ -242,17 +243,18 @@ reTry:
 
                         // 指令返回-探测器-传输模式-波形
                         if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FA 13 00 00 00 03 AB CD").toUtf8()))){
-                            qDebug()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：传输模式-波形");
+                            qDebug().noquote()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：传输模式-波形");
 
-                            QMetaObject::invokeMethod(this, "measureStart", Qt::QueuedConnection, Q_ARG(qint8, mdetectorIndex));
+                            QMetaObject::invokeMethod(this, "measureStart", Qt::QueuedConnection, Q_ARG(quint8, mdetectorIndex));
 
                             //最后发送开始测量-软件触发模式
                             QTimer::singleShot(0, this, [=]{
                                 QByteArray askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f ff 10 11 11 00 01 ab cd").toUtf8());
                                 //askCurrentCmd[9] = mTransferMode;
                                 mSocket->write(askCurrentCmd);
-                                qDebug()<< "[" << mdetectorIndex << "] "<<"Send HEX: "<<askCurrentCmd.toHex(' ');
-                                qDebug()<< "[" << mdetectorIndex << "] " << QString::fromUtf8(">> 发送指令：传输模式-开始波形测量");
+                                mSocket->waitForBytesWritten();
+                                qDebug().noquote()<< "[" << mdetectorIndex << "] "<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+                                qDebug().noquote()<< "[" << mdetectorIndex << "] " << QString::fromUtf8(">> 发送指令：传输模式-开始波形测量");
                             });
 
                             findNaul = true;
@@ -262,7 +264,7 @@ reTry:
 
                         // 指令返回-探测器-传输模式-温度
                         if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FA 13 00 00 00 05 AB CD").toUtf8()))){
-                            qDebug()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：传输模式-温度");
+                            qDebug().noquote()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：传输模式-温度");
 
                             findNaul = true;
                             mCachePool.remove(0, BASE_CMD_LENGTH);
@@ -271,8 +273,9 @@ reTry:
                             QTimer::singleShot(0, this, [=]{
                                 QByteArray askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f fc 12 00 00 00 01 ab cd").toUtf8());
                                 mSocket->write(askCurrentCmd);
-                                qDebug()<< "[" << mdetectorIndex << "] "<<"Send HEX: "<<askCurrentCmd.toHex(' ');
-                                qDebug()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 发送指令：探测器-温度查询");
+                                mSocket->waitForBytesWritten();
+                                qDebug().noquote()<< "[" << mdetectorIndex << "] "<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+                                qDebug().noquote()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 发送指令：探测器-温度查询");
                             });
 
                             continue;
@@ -280,7 +283,7 @@ reTry:
 
                         // 指令返回-探测器-传输模式-激光测距
                         if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FA 13 00 00 00 09 AB CD").toUtf8()))){
-                            qDebug()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：传输模式-激光测距");
+                            qDebug().noquote()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：传输模式-激光测距");
 
                             findNaul = true;
                             mCachePool.remove(0, BASE_CMD_LENGTH);
@@ -290,7 +293,7 @@ reTry:
                         // 指令返回-探测器-程控增益
                         if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FB 11").toUtf8())) &&
                             mCachePool.mid(10, 2) == QByteArray::fromHex(QString("AB CD").toUtf8())){
-                            qDebug()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：程控增益");
+                            qDebug().noquote()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：程控增益");
 
                             findNaul = true;
                             mCachePool.remove(0, BASE_CMD_LENGTH);
@@ -299,7 +302,7 @@ reTry:
 
                         // 指令返回-探测器-程序版本查询
                         if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FC 11 00 00 00 00 AB CD").toUtf8()))){
-                            qDebug()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：程序版本查询");
+                            qDebug().noquote()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：程序版本查询");
 
                             findNaul = true;
                             mCachePool.remove(0, BASE_CMD_LENGTH);
@@ -308,7 +311,7 @@ reTry:
 
                         // 指令返回-探测器-温度查询-开始
                         if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FC 12 00 00 00 01 AB CD").toUtf8()))){
-                            qDebug()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：温度查询-开始");
+                            qDebug().noquote()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：温度查询-开始");
 
                             findNaul = true;
                             mCachePool.remove(0, BASE_CMD_LENGTH);
@@ -317,7 +320,7 @@ reTry:
 
                         // 指令返回-探测器-温度查询-停止
                         if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FC 12 00 00 00 00 AB CD").toUtf8()))){
-                            qDebug()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：温度查询-停止");
+                            qDebug().noquote()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：温度查询-停止");
 
                             findNaul = true;
                             mCachePool.remove(0, BASE_CMD_LENGTH);
@@ -328,7 +331,7 @@ reTry:
                         if ((mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FE 11").toUtf8())) ||
                              mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FE 12").toUtf8()))) &&
                             mCachePool.mid(10, 2) == QByteArray::fromHex(QString("AB CD").toUtf8())){
-                            qDebug()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：触发阈值");
+                            qDebug().noquote()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：触发阈值");
 
                             findNaul = true;
                             mCachePool.remove(0, BASE_CMD_LENGTH);
@@ -338,7 +341,7 @@ reTry:
                         // 指令返回-探测器-波形触发模式
                         if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FE 14 00 00 00 00 AB CD").toUtf8())) ||   //normal-默认值
                             mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FE 14 00 00 00 01 AB CD").toUtf8()))){    //auto-定时触发
-                            qDebug()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：波形触发模式");
+                            qDebug().noquote()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：波形触发模式");
 
                             findNaul = true;
                             mCachePool.remove(0, BASE_CMD_LENGTH);
@@ -348,14 +351,15 @@ reTry:
                         // 指令返回-探测器-波形长度
                         if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FE 15").toUtf8())) &&
                             mCachePool.mid(10, 2) == QByteArray::fromHex(QString("AB CD").toUtf8())){
-                            qDebug()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：波形长度");
+                            qDebug().noquote()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：波形长度");
 
                             //再发送传输模式-波形
                             QTimer::singleShot(0, this, [=]{
                                 QByteArray askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f fa 13 00 00 00 03 ab cd").toUtf8());
                                 mSocket->write(askCurrentCmd);
-                                qDebug()<< "[" << mdetectorIndex << "] "<<"Send HEX: "<<askCurrentCmd.toHex(' ');
-                                qDebug()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 发送指令：传输模式-波形");
+                                mSocket->waitForBytesWritten();
+                                qDebug().noquote()<< "[" << mdetectorIndex << "] "<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+                                qDebug().noquote()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 发送指令：传输模式-波形");
                             });
 
                             findNaul = true;
@@ -365,10 +369,10 @@ reTry:
 
                         // 指令返回-探测器-触发模式-停止
                         if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FF 10 11 11 00 00 AB CD").toUtf8()))){
-                            qDebug()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：波形测量-停止");
+                            qDebug().noquote()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：波形测量-停止");
 
                             /*通知UI，波形数据收集完毕*/
-                            QMetaObject::invokeMethod(this, "measureEnd", Qt::QueuedConnection, Q_ARG(qint8, mdetectorIndex));
+                            QMetaObject::invokeMethod(this, "measureEnd", Qt::QueuedConnection, Q_ARG(quint8, mdetectorIndex));
 
                             findNaul = true;
                             mCachePool.remove(0, BASE_CMD_LENGTH);
@@ -377,7 +381,7 @@ reTry:
 
                         // 指令返回-探测器-触发模式-软件触发
                         if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FF 10 11 11 00 01 AB CD").toUtf8()))){
-                            qDebug()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：波形测量-开始测量-软件触发");
+                            qDebug().noquote()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：波形测量-开始测量-软件触发");
 
                             mWaveMeasuring = true;
                             findNaul = true;
@@ -387,7 +391,7 @@ reTry:
 
                         // 指令返回-探测器-触发模式-硬件触发
                         if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FF 10 11 11 00 02 AB CD").toUtf8()))){
-                            qDebug()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：波形测量-开始测量-硬件触发");
+                            qDebug().noquote()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：波形测量-开始测量-硬件触发");
 
                             findNaul = true;
                             mCachePool.remove(0, BASE_CMD_LENGTH);
@@ -396,7 +400,7 @@ reTry:
 
                         // 指令返回-测距模块-电源闭合
                         if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F AF 10 00 00 00 01 AB CD").toUtf8()))){
-                            qDebug()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：测距模块-电源闭合");
+                            qDebug().noquote()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：测距模块-电源闭合");
 
                             findNaul = true;
                             mCachePool.remove(0, BASE_CMD_LENGTH);
@@ -405,7 +409,7 @@ reTry:
 
                         // 指令返回-测距模块-电源断开
                         if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F AF 10 00 00 00 00 AB CD").toUtf8()))){
-                            qDebug()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：测距模块-电源断开");
+                            qDebug().noquote()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：测距模块-电源断开");
 
                             findNaul = true;
                             mCachePool.remove(0, BASE_CMD_LENGTH);
@@ -414,7 +418,7 @@ reTry:
 
                         // 指令返回-测距模块-激光打开
                         if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F AF 11 00 00 00 01 AB CD").toUtf8()))){
-                            qDebug()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：测距模块-激光打开");
+                            qDebug().noquote()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：测距模块-激光打开");
 
                             findNaul = true;
                             mCachePool.remove(0, BASE_CMD_LENGTH);
@@ -423,7 +427,7 @@ reTry:
 
                         // 指令返回-测距模块-激光关闭
                         if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F AF 11 00 00 00 00 AB CD").toUtf8()))){
-                            qDebug()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：测距模块-激光关闭");
+                            qDebug().noquote()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：测距模块-激光关闭");
 
                             findNaul = true;
                             mCachePool.remove(0, BASE_CMD_LENGTH);
@@ -432,7 +436,7 @@ reTry:
 
                         // 指令返回-测距模块-开始单次测量
                         if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F AF 12 00 00 00 00 AB CD").toUtf8()))){
-                            qDebug()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：测距模块-单次测量开始");
+                            qDebug().noquote()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：测距模块-单次测量开始");
 
                             findNaul = true;
                             mCachePool.remove(0, BASE_CMD_LENGTH);
@@ -441,7 +445,7 @@ reTry:
 
                         // 指令返回-测距模块-连续测量-开始
                         if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F AF 13 00 00 00 01 AB CD").toUtf8()))){
-                            qDebug()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：测距模块-连续测量-开始");
+                            qDebug().noquote()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：测距模块-连续测量-开始");
 
                             findNaul = true;
                             mCachePool.remove(0, BASE_CMD_LENGTH);
@@ -450,7 +454,7 @@ reTry:
 
                         // 指令返回-测距模块-连续测量-停止
                         if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F AF 13 00 00 00 00 AB CD").toUtf8()))){
-                            qDebug()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：测距模块-连续测量-停止");
+                            qDebug().noquote()<< "[" << mdetectorIndex << "] " << QString::fromUtf8("<< 反馈指令：测距模块-连续测量-停止");
 
                             findNaul = true;
                             mCachePool.remove(0, BASE_CMD_LENGTH);
@@ -459,7 +463,7 @@ reTry:
 
                         /*其它指令，未解析出来*/
                         {
-                            qDebug()<< "[" << mdetectorIndex << "] "<<"(1) Unknown cmd: "<<mCachePool.left(BASE_CMD_LENGTH).toHex(' ');
+                            qDebug().noquote()<< "[" << mdetectorIndex << "] "<<"(1) Unknown cmd: "<<mCachePool.left(BASE_CMD_LENGTH).toHex(' ');
 
                             findNaul = true;
                             mCachePool.remove(0, BASE_CMD_LENGTH);
@@ -508,7 +512,8 @@ reTry:
                                 if (mSocket && mSocket->state() == QAbstractSocket::ConnectedState){
                                     QByteArray askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f ff 10 11 11 00 00 ab cd").toUtf8());
                                     mSocket->write(askCurrentCmd);
-                                    qDebug()<< "[" << mdetectorIndex << "] "<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+                                    mSocket->waitForBytesWritten();
+                                    qDebug().noquote()<< "[" << mdetectorIndex << "] "<<"Send HEX: "<<askCurrentCmd.toHex(' ');
                                 }
                             });
 
