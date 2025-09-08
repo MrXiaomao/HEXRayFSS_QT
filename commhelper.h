@@ -116,6 +116,25 @@ public:
     /*解析历史文件*/
     void openHistoryWaveFile(const QString &filePath);
 
+    //////////////////////////////////////////////////////
+    /*
+     打开测距模块电源
+    */
+    void openDistanceModulePower();
+    /*
+     断开测距模块电源
+    */
+    void closeDistanceModulePower();
+
+    /*
+     打开测距模块激光
+    */
+    void openDistanceModuleLaser();
+    /*
+     断开测距模块激光
+    */
+    void closeDistanceModuleLaser();
+
 public slots:
     void errorOccurred(QAbstractSocket::SocketError);
     void socketConnected();

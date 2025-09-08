@@ -918,6 +918,36 @@ void CommHelper::stopMeasureDistance()
     this->sendContinueMeasureCmd(0x00);
 }
 
+/*
+ 打开测距模块电源
+*/
+void CommHelper::openDistanceModulePower()
+{
+    this->sendPowerSwitcherCmd(0x01);
+}
+/*
+ 断开测距模块电源
+*/
+void CommHelper::closeDistanceModulePower()
+{
+    this->sendPowerSwitcherCmd(0x00);
+}
+
+/*
+ 打开测距模块激光
+*/
+void CommHelper::openDistanceModuleLaser()
+{
+    this->sendLaserSwitcherCmd(0x01);
+}
+/*
+ 断开测距模块激光
+*/
+void CommHelper::closeDistanceModuleLaser()
+{
+    this->sendLaserSwitcherCmd(0x00);
+}
+
 /*解析历史文件*/
 void CommHelper::openHistoryWaveFile(const QString &filePath)
 {

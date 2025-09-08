@@ -240,9 +240,11 @@ void MainWindow::initUi()
     QPushButton* laserDistanceButton = new QPushButton();
     laserDistanceButton->setText(tr("测距模块"));
     laserDistanceButton->setFixedSize(250,26);
+    laserDistanceButton->setCheckable(true);
     QPushButton* detectorStatusButton = new QPushButton();
     detectorStatusButton->setText(tr("设备信息"));
     detectorStatusButton->setFixedSize(250,26);
+    detectorStatusButton->setCheckable(true);
 
     QHBoxLayout* sideHboxLayout = new QHBoxLayout();
     sideHboxLayout->setContentsMargins(0,0,0,0);
@@ -316,13 +318,21 @@ void MainWindow::initUi()
     }
 
     connect(ui->switchButton_power, &SwitchButton::clicked, this, [=](bool checked){
-        if (!checked){
+        if (checked){
             // 测距模块电源
+            commHelper->openDistanceModulePower();
+        }
+        else{
+            commHelper->closeDistanceModulePower();
         }
     });
     connect(ui->switchButton_laser, &SwitchButton::clicked, this, [=](bool checked){
-        if (!checked){
+        if (checked){
             // 测距模块激光
+            commHelper->openDistanceModuleLaser();
+        }
+        else{
+            commHelper->closeDistanceModuleLaser();
         }
     });
 
@@ -330,32 +340,52 @@ void MainWindow::initUi()
         if(ui->stackedWidget->isHidden()) {
             ui->stackedWidget->setCurrentWidget(ui->laserDistanceWidget);
             ui->stackedWidget->show();
+
+            laserDistanceButton->setChecked(true);
+            detectorStatusButton->setChecked(false);
         } else {
             if(ui->stackedWidget->currentWidget() == ui->laserDistanceWidget) {
                 ui->stackedWidget->hide();
+
+                laserDistanceButton->setChecked(false);
+                detectorStatusButton->setChecked(false);
             } else {
                 ui->stackedWidget->setCurrentWidget(ui->laserDistanceWidget);
+
+                laserDistanceButton->setChecked(true);
+                detectorStatusButton->setChecked(false);
             }
-        }
+        }                
     });
     connect(detectorStatusButton,&QPushButton::clicked,this,[&](){
         if(ui->stackedWidget->isHidden()) {
             ui->stackedWidget->setCurrentWidget(ui->detectorStatusWidget);
             ui->stackedWidget->show();
+
+            laserDistanceButton->setChecked(false);
+            detectorStatusButton->setChecked(true);
         } else {
             if(ui->stackedWidget->currentWidget() == ui->detectorStatusWidget) {
                 ui->stackedWidget->hide();
+                laserDistanceButton->setChecked(false);
+                detectorStatusButton->setChecked(false);
             } else {
                 ui->stackedWidget->setCurrentWidget(ui->detectorStatusWidget);
+                laserDistanceButton->setChecked(false);
+                detectorStatusButton->setChecked(true);
             }
-        }
+        }        
     });
 
     connect(ui->toolButton_closeLaserDistanceWidget,&QPushButton::clicked,this,[&](){
         ui->stackedWidget->hide();
+        laserDistanceButton->setChecked(false);
+        detectorStatusButton->setChecked(false);
     });
     connect(ui->toolButton_closeDetectorStatusWidget,&QPushButton::clicked,this,[&](){
         ui->stackedWidget->hide();
+        laserDistanceButton->setChecked(false);
+        detectorStatusButton->setChecked(false);
     });
 
     connect(ui->pushButton_startMeasure, &QPushButton::clicked, ui->action_startMeasure, &QAction::trigger);
