@@ -280,13 +280,44 @@ void CommHelper::initDataProcessor(DataProcessor** processor, QTcpSocket *socket
 
 #ifdef ENABLE_MATLAB
         if (gMatlabInited){
-            if (waveAllData.size() >= 11){
+            if (waveAllData.size() >= 11){                                
                 //11个通道都收集完毕，可以进行反能谱计算了
                 QVector<QPair<float, float>> result;
 
                 QVector<quint16> rawWaveData;
                 for (int i=1; i<=waveAllData.size(); ++i){
-                    rawWaveData.append(data[i]);
+                    rawWaveData.append(waveAllData[i]);
+                }
+
+                QString strTime = QDateTime::currentDateTime().toString("yyyy-MM-dd_HHmmss");
+                /*保存波形数据*/
+                {
+                    QString filePath = QString("%1/%2/%3_Wave.dat").arg(mShotDir).arg(mShotNum).arg(strTime);
+                    QFile file(filePath);
+                    if (file.open(QIODevice::WriteOnly)){
+                        file.write(rawWaveData);
+                        file.close();
+                    }
+                }
+                /*二进制*/
+                /*csv*/
+                {
+                    QString filePath = QString("%1/%2/%3_Wave.csv").arg(mShotDir).arg(mShotNum).arg(strTime);
+                    QFile file(filePath);
+                    if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
+                        QTextStream stream(&file);
+                        for (int i=1; i<=waveAllData.size(); ++i){
+                            QVector<quint16> waveData = waveAllData[i];
+                            for (int j = 0; j < waveData.size(); ++j){
+                                stream << waveData.at(j);
+                                if (j < waveData.size() - 1)
+                                    stream << ",";
+                            }
+                            stream << "\n";
+                        }
+
+                        file.close();
+                    }
                 }
 
                 // 反解能谱波形数据
@@ -297,7 +328,7 @@ void CommHelper::initDataProcessor(DataProcessor** processor, QTcpSocket *socket
                 int nargout = 2;//输出变量的个数是2
                 mwArray unfold_seq(mxDOUBLE_CLASS, mxREAL);
                 mwArray unfold_spec(mxDOUBLE_CLASS, mxREAL);
-                //UnfolddingAlgorithm_Gravel(nargout, unfold_seq, unfold_spec, m_mwT, m_mwSeq, waveData, m_mwResponce_matrix);
+                UnfolddingAlgorithm_Gravel(nargout, unfold_seq, unfold_spec, m_mwT, m_mwSeq, waveData, m_mwResponce_matrix);
 
                 double dbX[1024] = { 0 }, dbY[1024] = { 0 };
                 {
@@ -340,7 +371,23 @@ void CommHelper::initDataProcessor(DataProcessor** processor, QTcpSocket *socket
                 for (int i = 0; i < 342; ++i) {
                     result.push_back(qMakePair<float,float>(dbX[i], dbY[i]));
                 }
-                showEnerygySpectrumCurve(result);
+                emit showEnerygySpectrumCurve(result);
+
+                /*保存能谱数据*/
+                /*csv*/
+                {
+                    QString filePath = QString("%1/%2/%3_En.csv").arg(mShotDir).arg(mShotNum).arg(strTime);
+                    QFile file(filePath);
+                    if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
+                        QTextStream stream(&file);
+                        for (int i = 0; i < 342; i++)
+                        {
+                            stream << dbX[i] << "," << dY[i] << "\n";
+                        }
+
+                        file.close();
+                    }
+                }
             }
         }
 #endif //ENABLE_MATLAB

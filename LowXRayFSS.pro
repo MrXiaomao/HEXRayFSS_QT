@@ -56,15 +56,14 @@ DESTDIR = $$DESTDIR/qt$$QT_VERSION/
 message(DESTDIR = $$DESTDIR)
 
 #开启工程的debug和release两种版本构建
-CONFIG += debug_and_release
+#CONFIG += debug_and_release
+#避免创建空的debug和release目录
+CONFIG -= debug_and_release
 CONFIG(debug, debug|release) {
     TARGET = LowXRayFSSd
 } else {
     TARGET = LowXRayFSS
 }
-
-#避免创建空的debug和release目录
-#CONFIG -= debug_and_release
 
 #指定编译产生的文件分门别类放到对应目录
 MOC_DIR     = temp/moc
@@ -124,3 +123,8 @@ contains(DEFINES, ENABLE_MATLAB) {
 } else {
     message("Skipping matlab library")
 }
+
+# 添加config配置
+# CONFIG += precompile_header
+# 指定要使用的预编译头文件
+# PRECOMPILED_HEADER += stable.h

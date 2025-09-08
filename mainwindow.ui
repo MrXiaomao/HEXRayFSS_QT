@@ -798,7 +798,10 @@
      <normaloff>:/about.png</normaloff>:/about.png</iconset>
    </property>
    <property name="text">
-    <string>关于(&amp;A)</string>
+    <string>关于 LowXRayFSS(&amp;A)</string>
+   </property>
+   <property name="iconText">
+    <string>关于</string>
    </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>

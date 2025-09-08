@@ -80,6 +80,8 @@ private slots:
 
     void on_action_disconnectRelay_triggered();
 
+    void on_action_about_triggered();
+
 private:
     Ui::MainWindow *ui;
     bool mRelayPowerOn = false;
