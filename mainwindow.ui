@@ -255,7 +255,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_5">
           <property name="rightMargin">
-           <number>9</number>
+           <number>2</number>
           </property>
           <item>
            <spacer name="horizontalSpacer_3">
@@ -310,11 +310,22 @@
           <item>
            <widget class="QPushButton" name="pushButton_export">
             <property name="text">
-             <string>数据导出...</string>
+             <string>数据导出</string>
             </property>
             <property name="icon">
              <iconset resource="../3rdParty/resource/resource.qrc">
               <normaloff>:/daochu.png</normaloff>:/daochu.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton">
+            <property name="text">
+             <string>清空</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../3rdParty/resource/resource.qrc">
+              <normaloff>:/empty.png</normaloff>:/empty.png</iconset>
             </property>
            </widget>
           </item>
@@ -770,7 +781,7 @@
      <normaloff>:/dakaiwenjian.png</normaloff>:/dakaiwenjian.png</iconset>
    </property>
    <property name="text">
-    <string>打开历史文件(&amp;O)...</string>
+    <string>打开历史测量数据(&amp;O)...</string>
    </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>

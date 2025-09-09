@@ -336,7 +336,7 @@ void MainWindow::initUi()
         }
     });
 
-    connect(laserDistanceButton,&QPushButton::clicked,this,[&](){
+    connect(laserDistanceButton,&QPushButton::clicked,this,[=](){
         if(ui->stackedWidget->isHidden()) {
             ui->stackedWidget->setCurrentWidget(ui->laserDistanceWidget);
             ui->stackedWidget->show();
@@ -357,7 +357,7 @@ void MainWindow::initUi()
             }
         }                
     });
-    connect(detectorStatusButton,&QPushButton::clicked,this,[&](){
+    connect(detectorStatusButton,&QPushButton::clicked,this,[=](){
         if(ui->stackedWidget->isHidden()) {
             ui->stackedWidget->setCurrentWidget(ui->detectorStatusWidget);
             ui->stackedWidget->show();
@@ -377,12 +377,12 @@ void MainWindow::initUi()
         }        
     });
 
-    connect(ui->toolButton_closeLaserDistanceWidget,&QPushButton::clicked,this,[&](){
+    connect(ui->toolButton_closeLaserDistanceWidget,&QPushButton::clicked,this,[=](){
         ui->stackedWidget->hide();
         laserDistanceButton->setChecked(false);
         detectorStatusButton->setChecked(false);
     });
-    connect(ui->toolButton_closeDetectorStatusWidget,&QPushButton::clicked,this,[&](){
+    connect(ui->toolButton_closeDetectorStatusWidget,&QPushButton::clicked,this,[=](){
         ui->stackedWidget->hide();
         laserDistanceButton->setChecked(false);
         detectorStatusButton->setChecked(false);
@@ -640,15 +640,14 @@ void MainWindow::on_action_exit_triggered()
 
 void MainWindow::on_action_open_triggered()
 {
-    // 打开历史文件...
-    QString filePath = QFileDialog::getOpenFileName(this, tr("打开文件"),"",tr("测量文件 (*.dat *.csv)"));
+    // 打开历史测量数据文件...
+    QString filter = "二进制文件 (*.dat);;文本文件 (*.csv);;所有文件 (*.dat *.csv)";
+    QString filePath = QFileDialog::getOpenFileName(this, tr("打开测量数据文件"),QDir::homePath(),filter);
+
     if (filePath.isEmpty() || !QFileInfo::exists(filePath))
         return;
 
-    QVector<QPair<float, float>> data;
-    if (!filePath.isEmpty()){
-        commHelper->openHistoryWaveFile(filePath);
-    }
+    commHelper->openHistoryWaveFile(filePath);
 }
 
 void MainWindow::on_action_connectRelay_triggered()
@@ -834,5 +833,12 @@ void MainWindow::on_pushButton_export_clicked()
             file.close();
         }
     }
+}
+
+
+void MainWindow::on_pushButton_clicked()
+{
+    ui->tableWidget_laser->clearContents();
+    ui->tableWidget_laser->setRowCount(0);
 }
 
