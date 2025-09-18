@@ -88,16 +88,19 @@ int main(int argc, char *argv[])
     if (!gMatlabInited){
         int reply = QMessageBox::question(nullptr, QObject::tr("询问"), QObject::tr("Matlab程序DLL初始化失败，是否继续？"),
                                           QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
-        if(reply == QMessageBox::Yes) {
+        if(reply != QMessageBox::Yes) {
             return -1;
         }
+
+        qInfo().noquote() << QObject::tr("*** matlab程序DLL初始化失败");
     }
 #endif //ENABLE_MATLAB
 
     splash.showMessage(QObject::tr("加载语言库..."), Qt::AlignLeft | Qt::AlignBottom, Qt::white);
 
     // 启用新的日子记录类
-    QString sConfFilename = "./log4qt.conf";
+    QString filename = QFileInfo(QCoreApplication::applicationFilePath()).baseName();
+    QString sConfFilename = QString("./%1.log4qt.conf").arg(filename);
     if (QFileInfo::exists(sConfFilename)){
         Log4Qt::PropertyConfigurator::configure(sConfFilename);
     } else {
@@ -117,8 +120,7 @@ int main(int argc, char *argv[])
         consoleAppender->setEncoding(QTextCodec::codecForName("UTF-8"));
         logger->addAppender(consoleAppender);
 
-        //输出到文件(如果需要把离线处理单独保存日志文件，可以改这里)
-        QString filename = QFileInfo(QCoreApplication::applicationFilePath()).baseName();
+        //输出到文件(如果需要把离线处理单独保存日志文件，可以改这里)        
         Log4Qt::DailyFileAppender *dailiAppender = new Log4Qt::DailyFileAppender(layout, "logs/.log", QString("%1_yyyy-MM-dd").arg(filename));
         dailiAppender->setAppendFile(true);
         dailiAppender->activateOptions();
@@ -158,6 +160,13 @@ int main(int argc, char *argv[])
     w.setWindowState(w.windowState() | Qt::WindowMaximized);
     w.show();
 
+    int ret = a.exec();
+
+#ifdef ENABLE_MATLAB
+    UnfolddingAlgorithm_GravelTerminate();
+    mclTerminateApplication();
+#endif //ENABLE_MATLAB
+
     //运行运行到这里，此时主窗体析构函数还没触发，所以shutdownRootLogger需要在主窗体销毁以后再做处理
     QObject::connect(&w, &QObject::destroyed, []{
         auto logger = Log4Qt::Logger::rootLogger();
@@ -165,5 +174,5 @@ int main(int argc, char *argv[])
         logger->loggerRepository()->shutdown();
     });
 
-    return a.exec();
+    return ret;
 }

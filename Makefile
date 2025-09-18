@@ -14,7 +14,7 @@ EQ            = =
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DUNICODE -D_UNICODE -DWIN32 -DMINGW_HAS_SECURE_API=1 -DGIT_BRANCH="\"master\"" -DGIT_TIME="\"2025-09-08 -D20:45:18 -D+080096967758f3500572c9d4887cacb727d1c7040a08\"" -DAPP_VERSION="\"Git: master: 2025-09-08 20:45:18 +080096967758f3500572c9d4887cacb727d1c7040a08\"" -DLOG4QT_STATIC -DLOG4QT_VERSION_MAJOR=1 -DLOG4QT_VERSION_MINOR=6 -DLOG4QT_VERSION_PATCH=0 -DLOG4QT_VERSION_STR=\"1.6.0\" -DQT_QML_DEBUG -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN
+DEFINES       = -DUNICODE -D_UNICODE -DWIN32 -DMINGW_HAS_SECURE_API=1 -DGIT_BRANCH="\"master\"" -DGIT_TIME="\"2025-09-09 -D09:06:53 -D+0800dc486d1be4f7f0d285e6963879c69f0a8e827782\"" -DAPP_VERSION="\"Git: master: 2025-09-09 09:06:53 +0800dc486d1be4f7f0d285e6963879c69f0a8e827782\"" -DLOG4QT_STATIC -DLOG4QT_VERSION_MAJOR=1 -DLOG4QT_VERSION_MINOR=6 -DLOG4QT_VERSION_PATCH=0 -DLOG4QT_VERSION_STR=\"1.6.0\" -DQT_QML_DEBUG -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN
 CFLAGS        = -fno-keep-inline-dllexport -g -w $(DEFINES)
 CXXFLAGS      = -fno-keep-inline-dllexport -Wall -Wextra -pedantic -g -std=gnu++1z -w -fexceptions -mthreads $(DEFINES)
 INCPATH       = -I. -I-L -I..\3rdParty\log4qt\Include -I..\3rdParty\log4qt\Include\log4qt -I..\3rdParty\log4qt\Include\log4qt\helpers -I..\3rdParty\log4qt\Include\log4qt\spi -I..\3rdParty\log4qt\Include\log4qt\varia -I-L -I..\3rdParty\resource -I-L -I..\3rdParty\QCustomplot -IC:\Qt6\5.15.2\mingw81_64\include -IC:\Qt6\5.15.2\mingw81_64\include\QtPrintSupport -IC:\Qt6\5.15.2\mingw81_64\include\QtWidgets -IC:\Qt6\5.15.2\mingw81_64\include\QtGui -IC:\Qt6\5.15.2\mingw81_64\include\QtANGLE -IC:\Qt6\5.15.2\mingw81_64\include\QtNetwork -IC:\Qt6\5.15.2\mingw81_64\include\QtConcurrent -IC:\Qt6\5.15.2\mingw81_64\include\QtCore -Itemp\moc -Itemp\ui -I/include -IC:\Qt6\5.15.2\mingw81_64\mkspecs\win32-g++ 
@@ -796,6 +796,7 @@ temp/rcc/qrc_resource.o: ../3rdParty/resource/resource.qrc \
 		../3rdParty/resource/resrore.png \
 		../3rdParty/resource/tip.png \
 		../3rdParty/resource/conect-fault.png \
+		../3rdParty/resource/save.png \
 		../3rdParty/resource/exit.png \
 		../3rdParty/resource/logo.png \
 		../3rdParty/resource/move.png \

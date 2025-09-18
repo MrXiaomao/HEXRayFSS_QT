@@ -22,12 +22,12 @@ DataProcessor::DataProcessor(quint8 index, QTcpSocket* socket, QObject *parent)
 
     QString strTime = QDateTime::currentDateTime().toString("yyyy-MM-dd_HHmmss");
     QString filePath = QString("%1%2_%3.dat").arg("./cache/").arg(mdetectorIndex).arg(strTime);
-    mpfSaveNet = new QFile(filePath);
-    if (mpfSaveNet->open(QIODevice::WriteOnly)) {
-        qDebug().noquote()<< "[" << mdetectorIndex << "] " << tr("创建网口数据缓存文件成功，文件名：%1").arg(filePath);
-    } else {
-        qDebug().noquote()<< "[" << mdetectorIndex << "] " << tr("创建网口数据缓存文件失败，文件名：%1").arg(filePath);
-    }
+    // mpfSaveNet = new QFile(filePath);
+    // if (mpfSaveNet->open(QIODevice::WriteOnly)) {
+    //     qDebug().noquote()<< "[" << mdetectorIndex << "] " << tr("创建网口数据缓存文件成功，文件名：%1").arg(filePath);
+    // } else {
+    //     qDebug().noquote()<< "[" << mdetectorIndex << "] " << tr("创建网口数据缓存文件失败，文件名：%1").arg(filePath);
+    // }
 }
 
 DataProcessor::~DataProcessor()
@@ -38,11 +38,11 @@ DataProcessor::~DataProcessor()
     mCondition.wakeAll();
     mdataProcessThread->wait();
 
-    if (mpfSaveNet){
-        mpfSaveNet->close();
-        mpfSaveNet->deleteLater();
-        mpfSaveNet = nullptr;
-    }
+    // if (mpfSaveNet){
+    //     mpfSaveNet->close();
+    //     mpfSaveNet->deleteLater();
+    //     mpfSaveNet = nullptr;
+    // }
 }
 
 void DataProcessor::socketReadyRead()
@@ -52,10 +52,10 @@ void DataProcessor::socketReadyRead()
         return;
 
     QByteArray rawData = socket->readAll();
-    if (mpfSaveNet){
-        mpfSaveNet->write((const char *)rawData.constData(), rawData.size());
-        mpfSaveNet->flush();
-    }
+    // if (mpfSaveNet){
+    //     mpfSaveNet->write((const char *)rawData.constData(), rawData.size());
+    //     mpfSaveNet->flush();
+    // }
     this->inputData(rawData);
 }
 
@@ -105,7 +105,6 @@ void DataProcessor::OnDataProcessThread()
             continue;
 
         while (true){
-reTry:
             if (mCachePool.size() < TEMPERATURE_CMD_LENGTH)
                 break;
 
@@ -190,15 +189,14 @@ reTry:
 
                         // 数据返回-测量距离
                         if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 AB").toUtf8())) &&
-                            mCachePool.mid(10, 2) != QByteArray::fromHex(QString("AB CD").toUtf8())){
+                            mCachePool.mid(10, 2) == QByteArray::fromHex(QString("AB CD").toUtf8())){
                             QByteArray data = mCachePool.mid(4, 4);
-                            QString string = QString::fromUtf8(data);
+                            QString string = data.toHex();
                             string.insert(5, '.');
                             float distance = string.toFloat();
 
                             data = mCachePool.mid(8, 2);
-                            bool ok = false;
-                            quint16 quality = data.toShort(&ok, 16);
+                            quint16 quality = data.toHex().toShort();
 
                             qDebug().noquote()<< "[" << mdetectorIndex << "] "<<"Distance: "<< distance << ", quality: " << quality;
                             emit distanceRespond(distance, quality);
@@ -494,7 +492,7 @@ reTry:
                         quint8 ch = chunk[3] & 0x0F;
                         QVector<quint16> data;
 
-                        for (int i = 0; i < this->mWaveLength * 2; i += 2) {
+                        for (quint32 i = 0; i < this->mWaveLength * 2; i += 2) {
                             quint16 value = static_cast<quint8>(chunk[i + 4]) << 8 | static_cast<quint8>(chunk[i + 5]);
                             data.append(value);
                         }

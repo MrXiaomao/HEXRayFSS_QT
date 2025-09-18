@@ -189,6 +189,10 @@ public:
             mJsonGroup[key] = QJsonValue::fromVariant(value);
         else
             mJsonRoot[key] = QJsonValue::fromVariant(value);
+
+        // QJsonValueRef RefPage = mJsonRoot.find(key).value();
+        // RefPage = QJsonValue(value.toString());
+        // flush();
     };
     QVariant value(const QString &key, const QVariant &defaultValue = QVariant())
     {

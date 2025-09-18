@@ -93,12 +93,6 @@ CommHelper::~CommHelper()
     for (auto socket : sockets){
         closeSocket(socket);
     }
-
-
-#ifdef ENABLE_MATLAB
-    UnfolddingAlgorithm_GravelTerminate();
-    mclTerminateApplication();
-#endif //ENABLE_MATLAB
 }
 
 #ifdef ENABLE_MATLAB
@@ -524,6 +518,7 @@ void CommHelper::sendQueryRelayStatusCmd()
 
     askCurrentCmd = askQueryRelayPowerStatusCmd;
     mSocketRelay->write(askCurrentCmd);
+    mSocketRelay->waitForBytesWritten();
     qDebug().noquote()<< "[" << 0 << "] "<<"Send HEX: "<<askCurrentCmd.toHex(' ');
 }
 
@@ -923,6 +918,9 @@ void CommHelper::stopMeasureDistance()
 */
 void CommHelper::openDistanceModulePower()
 {
+    // 先设置传输模式
+    this->sendTransferModeCmd(1, tmLaserDistance);
+
     this->sendPowerSwitcherCmd(0x01);
 }
 /*
@@ -1002,48 +1000,52 @@ void CommHelper::openHistoryWaveFile(const QString &filePath)
 */
 void CommHelper::calEnerygySpectrumCurve()
 {
+    if (mWaveAllData.size() < 11)
+        return;
+
+    //11个通道都收集完毕，可以进行反能谱计算了
+    QVector<QPair<float, float>> result;
+
+    QVector<quint16> rawWaveData;
+    for (int i=1; i<=mWaveAllData.size(); ++i){
+        rawWaveData.append(mWaveAllData[i]);
+    }
+
+    QString strTime = QDateTime::currentDateTime().toString("yyyy-MM-dd_HHmmss");
+    /*保存波形数据*/
+    /*二进制*/
+    {
+        QString filePath = QString("%1/%2/%3_Wave.dat").arg(mShotDir, mShotNum, strTime);
+        QFile file(filePath);
+        if (file.open(QIODevice::WriteOnly)){
+            file.write((const char *)rawWaveData.constData(), rawWaveData.size()*sizeof(quint16));
+            file.close();
+        }
+    }
+
+    /*csv*/
+    {
+        QString filePath = QString("%1/%2/%3_Wave.csv").arg(mShotDir, mShotNum, strTime);
+        QFile file(filePath);
+        if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
+            QTextStream stream(&file);
+            for (int i=1; i<=mWaveAllData.size(); ++i){
+                QVector<quint16> waveData = mWaveAllData[i];
+                for (int j = 0; j < waveData.size(); ++j){
+                    stream << waveData.at(j);
+                    if (j < waveData.size() - 1)
+                        stream << ",";
+                }
+                stream << "\n";
+            }
+
+            file.close();
+        }
+    }
+
 #ifdef ENABLE_MATLAB
     if (gMatlabInited){
-        if (mWaveAllData.size() >= 11){
-            //11个通道都收集完毕，可以进行反能谱计算了
-            QVector<QPair<float, float>> result;
-
-            QVector<quint16> rawWaveData;
-            for (int i=1; i<=mWaveAllData.size(); ++i){
-                rawWaveData.append(mWaveAllData[i]);
-            }
-
-            QString strTime = QDateTime::currentDateTime().toString("yyyy-MM-dd_HHmmss");
-            /*保存波形数据*/
-            /*二进制*/
-            {
-                QString filePath = QString("%1/%2/%3_Wave.dat").arg(mShotDir).arg(mShotNum).arg(strTime);
-                QFile file(filePath);
-                if (file.open(QIODevice::WriteOnly)){
-                    file.write(rawWaveData);
-                    file.close();
-                }
-            }
-
-            /*csv*/
-            {
-                QString filePath = QString("%1/%2/%3_Wave.csv").arg(mShotDir).arg(mShotNum).arg(strTime);
-                QFile file(filePath);
-                if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
-                    QTextStream stream(&file);
-                    for (int i=1; i<=mWaveAllData.size(); ++i){
-                        QVector<quint16> waveData = mWaveAllData[i];
-                        for (int j = 0; j < waveData.size(); ++j){
-                            stream << waveData.at(j);
-                            if (j < waveData.size() - 1)
-                                stream << ",";
-                        }
-                        stream << "\n";
-                    }
-
-                    file.close();
-                }
-            }
+        if (mWaveAllData.size() >= 11){            
 
             // 反解能谱波形数据
             mwArray waveData(11264, 1, mxDOUBLE_CLASS);
@@ -1107,7 +1109,7 @@ void CommHelper::calEnerygySpectrumCurve()
                     QTextStream stream(&file);
                     for (int i = 0; i < 342; i++)
                     {
-                        stream << dbX[i] << "," << dY[i] << "\n";
+                        stream << dbX[i] << "," << dbY[i] << "\n";
                     }
 
                     file.close();

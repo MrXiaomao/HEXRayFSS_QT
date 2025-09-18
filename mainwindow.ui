@@ -335,7 +335,7 @@
          <widget class="QTableWidget" name="tableWidget_laser">
           <column>
            <property name="text">
-            <string>距离</string>
+            <string>距离(m)</string>
            </property>
           </column>
           <column>
@@ -729,6 +729,7 @@
      <string>文件(&amp;F)</string>
     </property>
     <addaction name="action_open"/>
+    <addaction name="action_exportImg"/>
     <addaction name="separator"/>
     <addaction name="action_exit"/>
    </widget>
@@ -935,6 +936,18 @@
    </property>
    <property name="text">
     <string>断开网络</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="action_exportImg">
+   <property name="icon">
+    <iconset resource="../3rdParty/resource/resource.qrc">
+     <normaloff>:/lingcunwei.png</normaloff>:/lingcunwei.png</iconset>
+   </property>
+   <property name="text">
+    <string>导出图像(&amp;E)...</string>
    </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>

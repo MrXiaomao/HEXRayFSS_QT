@@ -317,7 +317,7 @@ void MainWindow::initUi()
         ui->lineEdit_filePath->setText(cacheDir);
     }
 
-    connect(ui->switchButton_power, &SwitchButton::clicked, this, [=](bool checked){
+    connect(ui->switchButton_power, &SwitchButton::toggled, this, [=](bool checked){
         if (checked){
             // 测距模块电源
             commHelper->openDistanceModulePower();
@@ -326,7 +326,7 @@ void MainWindow::initUi()
             commHelper->closeDistanceModulePower();
         }
     });
-    connect(ui->switchButton_laser, &SwitchButton::clicked, this, [=](bool checked){
+    connect(ui->switchButton_laser, &SwitchButton::toggled, this, [=](bool checked){
         if (checked){
             // 测距模块激光
             commHelper->openDistanceModuleLaser();
@@ -398,7 +398,6 @@ void MainWindow::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, QSt
 
     // 设置全局抗锯齿
     customPlot->setAntialiasedElements(QCP::aeAll);
-    //customPlot->setNotAntialiasedElements(QCP::aeAll);
     // 图例名称隐藏
     customPlot->legend->setVisible(false);
     customPlot->legend->setFillOrder(QCPLayoutGrid::foColumnsFirst);//设置图例在一行中显示
@@ -408,12 +407,6 @@ void MainWindow::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, QSt
     //customPlot->setContentsMargins(0, 0, 0, 0);
     // 设置标签倾斜角度，避免显示不下
     customPlot->xAxis->setTickLabelRotation(-45);
-    // 背景色
-    //customPlot->setBackground(QBrush(Qt::white));
-    // 图像画布边界
-    //customPlot->axisRect()->setMinimumMargins(QMargins(0, 0, 0, 0));
-    // 坐标背景色
-    //customPlot->axisRect()->setBackground(Qt::white);
     // 允许拖拽，缩放
     customPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
     // 允许轴自适应大小
@@ -427,53 +420,10 @@ void MainWindow::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, QSt
 
     customPlot->yAxis2->ticker()->setTickCount(5);
     customPlot->xAxis2->ticker()->setTickCount(10);
-    // 设置刻度可见
-    // customPlot->xAxis->setTicks(true);
-    // customPlot->xAxis2->setTicks(true);
-    // customPlot->yAxis->setTicks(true);
-    // customPlot->yAxis2->setTicks(true);
-    // 设置刻度高度
-    // customPlot->xAxis->setTickLength(13);
-    // customPlot->yAxis->setTickLength(13);
-    // customPlot->xAxis->setSubTickLength(4);
-    // customPlot->yAxis->setSubTickLength(4);
 
-    // customPlot->xAxis2->setTickLength(13);
-    // customPlot->yAxis2->setTickLength(13);
-    // customPlot->xAxis2->setSubTickLength(4);
-    // customPlot->yAxis2->setSubTickLength(4);
-    // 设置轴线可见
-    // customPlot->xAxis->setVisible(true);
-    // customPlot->xAxis2->setVisible(true);
-    // customPlot->yAxis->setVisible(true);
-    // customPlot->yAxis2->setVisible(true);
-    //customPlot->axisRect()->setupFullAxesBox();//四边安装轴并显示
-    // 设置刻度标签可见
-    // customPlot->xAxis->setTickLabels(true);
-    // customPlot->xAxis2->setTickLabels(false);
-    // customPlot->yAxis->setTickLabels(true);
-    // customPlot->yAxis2->setTickLabels(false);
-    // 设置子刻度可见
-    // customPlot->xAxis->setSubTicks(false);
-    // customPlot->xAxis2->setSubTicks(false);
-    // customPlot->yAxis->setSubTicks(false);
-    // customPlot->yAxis2->setSubTicks(false);
     //设置轴标签名称
     customPlot->xAxis->setLabel(axisXLabel);
     customPlot->yAxis->setLabel(axisYLabel);
-    // 设置网格线颜色
-    // customPlot->xAxis->grid()->setPen(QPen(QColor(114, 114, 114, 255), 1, Qt::PenStyle::DashLine));
-    // customPlot->yAxis->grid()->setPen(QPen(QColor(114, 114, 114, 255), 1, Qt::PenStyle::DashLine));
-    // customPlot->xAxis->grid()->setSubGridPen(QPen(QColor(50, 50, 50, 128), 1, Qt::DotLine));
-    // customPlot->yAxis->grid()->setSubGridPen(QPen(QColor(50, 50, 50, 128), 1, Qt::DotLine));
-    // customPlot->xAxis->grid()->setZeroLinePen(QPen(QColor(50, 50, 50, 100), 1, Qt::SolidLine));
-    // customPlot->yAxis->grid()->setZeroLinePen(QPen(QColor(50, 50, 50, 100), 1, Qt::SolidLine));
-    // 设置网格线是否可见
-    // customPlot->xAxis->grid()->setVisible(false);
-    // customPlot->yAxis->grid()->setVisible(false);
-    // 设置子网格线是否可见
-    // customPlot->xAxis->grid()->setSubGridVisible(false);
-    // customPlot->yAxis->grid()->setSubGridVisible(false);
 
     // 添加散点图
     QColor colors[] = {Qt::red, Qt::blue, Qt::green, Qt::cyan};
@@ -484,6 +434,7 @@ void MainWindow::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, QSt
         graph->selectionDecorator()->setPen(QPen(colors[i]));
         graph->setLineStyle(QCPGraph::lsLine);// 隐藏线性图
         graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 3));//显示散点图
+        graph->setSmooth(true);
     }
 
     connect(customPlot, SIGNAL(beforeReplot()), this, SLOT(slotBeforeReplot()));
@@ -737,6 +688,10 @@ void MainWindow::on_pushButton_startMeasureDistance_clicked()
     }
 
     commHelper->startMeasureDistance(ui->checkBox_continueMeasureDistance->isChecked());
+
+    // 非连续测量，测量完成之后，激光会自动关闭，所以这里把按钮状态同步更新一下
+    if (!ui->checkBox_continueMeasureDistance->isChecked())
+        ui->switchButton_laser->setChecked(false);
 }
 
 void MainWindow::on_pushButton_stopMeasureDistance_clicked()
@@ -746,6 +701,9 @@ void MainWindow::on_pushButton_stopMeasureDistance_clicked()
     ui->pushButton_stopMeasureDistance->setEnabled(false);
 
     commHelper->stopMeasureDistance();
+
+    // 测距完成之后，激光会自动关闭，所以这里把按钮状态同步更新一下
+    ui->switchButton_laser->setChecked(false);
 }
 
 void MainWindow::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
@@ -753,12 +711,16 @@ void MainWindow::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
     //实测曲线
     QVector<double> keys, values;
     for (int ch=1; ch<=4; ++ch){
+        keys.clear();
+        values.clear();
         QVector<quint16> chData = data[ch];
-        for (int i=0; i<chData.size(); ++i){
-            keys << i;
-            values << chData[i];
+        if (chData.size() > 0){
+            for (int i=0; i<chData.size(); ++i){
+                keys << i;
+                values << chData[i];
+            }
+            ui->customPlot->graph(ch - 1)->setData(keys, values);
         }
-        ui->customPlot->graph(ch - 1)->setData(keys, values);
     }
     ui->customPlot->xAxis->rescale(true);
     ui->customPlot->yAxis->rescale(true);
@@ -767,12 +729,16 @@ void MainWindow::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
     keys.clear();
     values.clear();
     for (int ch=5; ch<=8; ++ch){
+        keys.clear();
+        values.clear();
         QVector<quint16> chData = data[ch];
-        for (int i=0; i<chData.size(); ++i){
-            keys << i;
-            values << chData[i];
+        if (chData.size() > 0){
+            for (int i=0; i<chData.size(); ++i){
+                keys << i;
+                values << chData[i];
+            }
+            ui->customPlot_2->graph(ch - 5)->setData(keys, values);
         }
-        ui->customPlot_2->graph(ch - 5)->setData(keys, values);
     }
     ui->customPlot_2->xAxis->rescale(true);
     ui->customPlot_2->yAxis->rescale(true);
@@ -781,12 +747,16 @@ void MainWindow::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
     keys.clear();
     values.clear();
     for (int ch=9; ch<=11; ++ch){
+        keys.clear();
+        values.clear();
         QVector<quint16> chData = data[ch];
-        for (int i=0; i<chData.size(); ++i){
-            keys << i;
-            values << chData[i];
+        if (chData.size() > 0){
+            for (int i=0; i<chData.size(); ++i){
+                keys << i;
+                values << chData[i];
+            }
+            ui->customPlot_3->graph(ch - 9)->setData(keys, values);
         }
-        ui->customPlot_3->graph(ch - 9)->setData(keys, values);
     }
     ui->customPlot_3->xAxis->rescale(true);
     ui->customPlot_3->yAxis->rescale(true);
@@ -826,8 +796,9 @@ void MainWindow::on_pushButton_export_clicked()
         QFile file(filePath);
         if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
             QTextStream stream(&file);
+            stream << ui->tableWidget_laser->horizontalHeaderItem(0)->text() << "," << ui->tableWidget_laser->horizontalHeaderItem(1)->text() << "\n";
             for (int i=0; i<ui->tableWidget_laser->rowCount(); ++i){
-                stream << ui->tableWidget_laser->item(i, 0)->text() << "," << ui->tableWidget_laser->item(i, 0)->text() << "\n";
+                stream << ui->tableWidget_laser->item(i, 0)->text() << "," << ui->tableWidget_laser->item(i, 1)->text() << "\n";
             }
 
             file.close();
@@ -840,5 +811,18 @@ void MainWindow::on_pushButton_clicked()
 {
     ui->tableWidget_laser->clearContents();
     ui->tableWidget_laser->setRowCount(0);
+}
+
+
+void MainWindow::on_action_exportImg_triggered()
+{
+    // 导出图像
+    QString filePath = QFileDialog::getSaveFileName(this);
+    if (!filePath.isEmpty()){
+        if (!filePath.endsWith(".png"))
+            filePath += ".png";
+        if (!ui->customPlot_result->savePng(filePath, 1920, 1080))
+            QMessageBox::information(this, tr("提示"), tr("导出失败！"));
+    }
 }
 

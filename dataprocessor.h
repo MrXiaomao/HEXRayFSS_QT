@@ -36,23 +36,6 @@ public:
     void startMeasureWave(quint8 mode, bool on = true){
         mTransferMode = mode;
         mWaveMeasuring = on;
-        // if (on){
-        //     QString strTime = QDateTime::currentDateTime().toString("yyyy-MM-dd_HHmmss");
-        //     QString filePath = QString("%1%2_%3.dat").arg("./cache/").arg(mdetectorIndex).arg(strTime);
-        //     mpfSaveNet = new QFile(filePath);
-        //     if (mpfSaveNet->open(QIODevice::WriteOnly)) {
-        //         qDebug().noquote() << tr("创建网口数据缓存文件成功，文件名：%1").arg(filePath);
-        //     } else {
-        //         qDebug().noquote() << tr("创建网口数据缓存文件失败，文件名：%1").arg(filePath);
-        //     }
-        // }
-        // else {
-        //     if (mpfSaveNet){
-        //         mpfSaveNet->close();
-        //         mpfSaveNet->deleteLater();
-        //         mpfSaveNet = nullptr;
-        //     }
-        // }
     };
 
 public slots:
