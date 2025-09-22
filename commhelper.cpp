@@ -266,7 +266,8 @@ void CommHelper::initDataProcessor(DataProcessor** processor, QTcpSocket *socket
     });
     connect(detectorDataProcessor, &DataProcessor::measureEnd, this, &CommHelper::measureEnd);
 
-    connect(detectorDataProcessor, &DataProcessor::showRealCurve, this, [=](const QMap<quint8, QVector<quint16>>& data){
+    connect(detectorDataProcessor, &DataProcessor::showRealCurve, this, &CommHelper::showRealCurve);
+    connect(this, &CommHelper::showRealCurve, this, [=](const QMap<quint8, QVector<quint16>>& data){
         // 将map1的内容添加到map2
         for (auto it = data.constBegin(); it != data.constEnd(); ++it) {
             mWaveAllData[it.key()] = it.value();
@@ -277,7 +278,6 @@ void CommHelper::initDataProcessor(DataProcessor** processor, QTcpSocket *socket
         */
         calEnerygySpectrumCurve();
     });
-    connect(detectorDataProcessor, &DataProcessor::showRealCurve, this, &CommHelper::showRealCurve);
     connect(detectorDataProcessor, &DataProcessor::showEnerygySpectrumCurve, this, &CommHelper::showEnerygySpectrumCurve);
 }
 

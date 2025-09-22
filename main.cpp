@@ -2,6 +2,10 @@
 #include "globalsettings.h"
 #include "commhelper.h"
 
+#include "lightstyle.h"
+#include "darkstyle.h"
+#include "customcolorstyle.h"
+
 #include <QApplication>
 #include <QStyleFactory>
 #include <QFileInfo>
@@ -56,11 +60,15 @@ int main(int argc, char *argv[])
     QApplication::setAttribute(Qt::AA_DisableHighDpiScaling); // 禁用高DPI缩放支持
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps); // 使用高DPI位图
     QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
+
     QApplication a(argc, argv);
     QFont font = qApp->font();
     font.setStyleStrategy(QFont::PreferAntialias);
     font.setHintingPreference(QFont::PreferFullHinting);
     qApp->setFont(font);
+
+    qApp->setStyle(new DarkStyle());
+    qApp->style()->setObjectName("fusion");
 
     QApplication::setApplicationName("LowXRayFSS");
     QApplication::setOrganizationName("Copyright (c) 2025");

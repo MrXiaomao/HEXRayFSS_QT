@@ -113,6 +113,7 @@ windows {
 include($$PWD/../3rdParty/log4qt/Include/log4qt.pri)
 include($$PWD/../3rdParty/resource/resource.pri)
 include($$PWD/../3rdParty/QCustomplot/QCustomplot.pri)
+include($$PWD/../3rdParty/QGoodWindow/QGoodWindow/src/theme/theme.pri)
 
 # 启用反解能谱
 #DEFINES += ENABLE_MATLAB

@@ -14,10 +14,10 @@ EQ            = =
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DUNICODE -D_UNICODE -DWIN32 -DMINGW_HAS_SECURE_API=1 -DGIT_BRANCH="\"master\"" -DGIT_TIME="\"2025-09-09 -D09:06:53 -D+0800dc486d1be4f7f0d285e6963879c69f0a8e827782\"" -DAPP_VERSION="\"Git: master: 2025-09-09 09:06:53 +0800dc486d1be4f7f0d285e6963879c69f0a8e827782\"" -DLOG4QT_STATIC -DLOG4QT_VERSION_MAJOR=1 -DLOG4QT_VERSION_MINOR=6 -DLOG4QT_VERSION_PATCH=0 -DLOG4QT_VERSION_STR=\"1.6.0\" -DQT_QML_DEBUG -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN
+DEFINES       = -DUNICODE -D_UNICODE -DWIN32 -DMINGW_HAS_SECURE_API=1 -DGIT_BRANCH="\"master\"" -DGIT_TIME="\"2025-09-18 -D17:32:48 -D+0800d795f666839187a78df522c0e688492f6ce31bc3\"" -DAPP_VERSION="\"Git: master: 2025-09-18 17:32:48 +0800d795f666839187a78df522c0e688492f6ce31bc3\"" -DLOG4QT_STATIC -DLOG4QT_VERSION_MAJOR=1 -DLOG4QT_VERSION_MINOR=6 -DLOG4QT_VERSION_PATCH=0 -DLOG4QT_VERSION_STR=\"1.6.0\" -DQT_QML_DEBUG -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN
 CFLAGS        = -fno-keep-inline-dllexport -g -w $(DEFINES)
 CXXFLAGS      = -fno-keep-inline-dllexport -Wall -Wextra -pedantic -g -std=gnu++1z -w -fexceptions -mthreads $(DEFINES)
-INCPATH       = -I. -I-L -I..\3rdParty\log4qt\Include -I..\3rdParty\log4qt\Include\log4qt -I..\3rdParty\log4qt\Include\log4qt\helpers -I..\3rdParty\log4qt\Include\log4qt\spi -I..\3rdParty\log4qt\Include\log4qt\varia -I-L -I..\3rdParty\resource -I-L -I..\3rdParty\QCustomplot -IC:\Qt6\5.15.2\mingw81_64\include -IC:\Qt6\5.15.2\mingw81_64\include\QtPrintSupport -IC:\Qt6\5.15.2\mingw81_64\include\QtWidgets -IC:\Qt6\5.15.2\mingw81_64\include\QtGui -IC:\Qt6\5.15.2\mingw81_64\include\QtANGLE -IC:\Qt6\5.15.2\mingw81_64\include\QtNetwork -IC:\Qt6\5.15.2\mingw81_64\include\QtConcurrent -IC:\Qt6\5.15.2\mingw81_64\include\QtCore -Itemp\moc -Itemp\ui -I/include -IC:\Qt6\5.15.2\mingw81_64\mkspecs\win32-g++ 
+INCPATH       = -I. -I-L -I..\3rdParty\log4qt\Include -I..\3rdParty\log4qt\Include\log4qt -I..\3rdParty\log4qt\Include\log4qt\helpers -I..\3rdParty\log4qt\Include\log4qt\spi -I..\3rdParty\log4qt\Include\log4qt\varia -I-L -I..\3rdParty\resource -I-L -I..\3rdParty\QCustomplot -I..\3rdParty\QGoodWindow\QGoodWindow\src\theme -IC:\Qt6\5.15.2\mingw81_64\include -IC:\Qt6\5.15.2\mingw81_64\include\QtPrintSupport -IC:\Qt6\5.15.2\mingw81_64\include\QtWidgets -IC:\Qt6\5.15.2\mingw81_64\include\QtGui -IC:\Qt6\5.15.2\mingw81_64\include\QtANGLE -IC:\Qt6\5.15.2\mingw81_64\include\QtNetwork -IC:\Qt6\5.15.2\mingw81_64\include\QtConcurrent -IC:\Qt6\5.15.2\mingw81_64\include\QtCore -Itemp\moc -Itemp\ui -I/include -IC:\Qt6\5.15.2\mingw81_64\mkspecs\win32-g++ 
 LINKER      =        g++
 LFLAGS        =        -Wl,-subsystem,windows -mthreads
 LIBS        =        C:\Qt6\5.15.2\mingw81_64\lib\libQt5PrintSupport.a C:\Qt6\5.15.2\mingw81_64\lib\libQt5Widgets.a C:\Qt6\5.15.2\mingw81_64\lib\libQt5Gui.a C:\Qt6\5.15.2\mingw81_64\lib\libQt5Network.a C:\Qt6\5.15.2\mingw81_64\lib\libQt5Concurrent.a C:\Qt6\5.15.2\mingw81_64\lib\libQt5Core.a temp\obj\LowXRayFSSd_resource_res.o  -lmingw32 C:\Qt6\5.15.2\mingw81_64\lib\libqtmain.a -LC:\openssl\lib -LC:\Utils\my_sql\mysql-5.7.25-winx64\lib -LC:\Utils\postgresql\pgsql\lib -lshell32 
@@ -120,7 +120,10 @@ SOURCES       = aboutwidget.cpp \
 		..\3rdParty\log4qt\Include\log4qt\xmllayout.cpp \
 		..\3rdParty\log4qt\Include\log4qt\wdcappender.cpp \
 		..\3rdParty\log4qt\Include\log4qt\colorconsoleappender.cpp \
-		..\3rdParty\QCustomplot\qcustomplot.cpp temp\moc\moc_aboutwidget.cpp \
+		..\3rdParty\QCustomplot\qcustomplot.cpp \
+		..\3rdParty\QGoodWindow\QGoodWindow\src\theme\stylecommon.cpp \
+		..\3rdParty\QGoodWindow\QGoodWindow\src\theme\lightstyle.cpp \
+		..\3rdParty\QGoodWindow\QGoodWindow\src\theme\darkstyle.cpp temp\moc\moc_aboutwidget.cpp \
 		temp\moc\moc_dataprocessor.cpp \
 		temp\moc\moc_qlitethread.cpp \
 		temp\moc\moc_commhelper.cpp \
@@ -129,8 +132,12 @@ SOURCES       = aboutwidget.cpp \
 		temp\moc\moc_netsetting.cpp \
 		temp\moc\moc_paramsetting.cpp \
 		temp\moc\moc_switchbutton.cpp \
-		temp\moc\moc_qcustomplot.cpp
+		temp\moc\moc_qcustomplot.cpp \
+		temp\moc\moc_lightstyle.cpp \
+		temp\moc\moc_darkstyle.cpp \
+		temp\moc\moc_customcolorstyle.cpp
 OBJECTS       = temp/rcc/qrc_resource.o \
+		temp/rcc/qrc_qgoodwindow_style.o \
 		temp/obj/aboutwidget.o \
 		temp/obj/commhelper.o \
 		temp/obj/dataprocessor.o \
@@ -201,6 +208,9 @@ OBJECTS       = temp/rcc/qrc_resource.o \
 		temp/obj/wdcappender.o \
 		temp/obj/colorconsoleappender.o \
 		temp/obj/qcustomplot.o \
+		temp/obj/stylecommon.o \
+		temp/obj/lightstyle.o \
+		temp/obj/darkstyle.o \
 		temp/obj/moc_aboutwidget.o \
 		temp/obj/moc_dataprocessor.o \
 		temp/obj/moc_qlitethread.o \
@@ -210,7 +220,10 @@ OBJECTS       = temp/rcc/qrc_resource.o \
 		temp/obj/moc_netsetting.o \
 		temp/obj/moc_paramsetting.o \
 		temp/obj/moc_switchbutton.o \
-		temp/obj/moc_qcustomplot.o
+		temp/obj/moc_qcustomplot.o \
+		temp/obj/moc_lightstyle.o \
+		temp/obj/moc_darkstyle.o \
+		temp/obj/moc_customcolorstyle.o
 
 DIST          =  aboutwidget.h \
 		dataprocessor.h \
@@ -285,7 +298,11 @@ DIST          =  aboutwidget.h \
 		..\3rdParty\log4qt\Include\log4qt\varia\listappender.h \
 		..\3rdParty\log4qt\Include\log4qt\varia\nullappender.h \
 		..\3rdParty\log4qt\Include\log4qt\varia\stringmatchfilter.h \
-		..\3rdParty\QCustomplot\qcustomplot.h aboutwidget.cpp \
+		..\3rdParty\QCustomplot\qcustomplot.h \
+		..\3rdParty\QGoodWindow\QGoodWindow\src\theme\stylecommon.h \
+		..\3rdParty\QGoodWindow\QGoodWindow\src\theme\lightstyle.h \
+		..\3rdParty\QGoodWindow\QGoodWindow\src\theme\darkstyle.h \
+		..\3rdParty\QGoodWindow\QGoodWindow\src\theme\customcolorstyle.h aboutwidget.cpp \
 		commhelper.cpp \
 		dataprocessor.cpp \
 		globalsettings.cpp \
@@ -354,7 +371,10 @@ DIST          =  aboutwidget.h \
 		..\3rdParty\log4qt\Include\log4qt\xmllayout.cpp \
 		..\3rdParty\log4qt\Include\log4qt\wdcappender.cpp \
 		..\3rdParty\log4qt\Include\log4qt\colorconsoleappender.cpp \
-		..\3rdParty\QCustomplot\qcustomplot.cpp
+		..\3rdParty\QCustomplot\qcustomplot.cpp \
+		..\3rdParty\QGoodWindow\QGoodWindow\src\theme\stylecommon.cpp \
+		..\3rdParty\QGoodWindow\QGoodWindow\src\theme\lightstyle.cpp \
+		..\3rdParty\QGoodWindow\QGoodWindow\src\theme\darkstyle.cpp
 QMAKE_TARGET  = LowXRayFSSd
 DESTDIR        = ..\build\x64\qt5.15.2\ #avoid trailing-slash linebreak
 TARGET         = LowXRayFSSd.exe
@@ -538,6 +558,7 @@ Makefile: LowXRayFSS.pro C:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++/qmake.conf C
 		../3rdParty/log4qt/Include/log4qt.pri \
 		../3rdParty/resource/resource.pri \
 		../3rdParty/QCustomplot/QCustomplot.pri \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/theme.pri \
 		C:/Qt6/5.15.2/mingw81_64/mkspecs/features/resolve_config.prf \
 		C:/Qt6/5.15.2/mingw81_64/mkspecs/features/default_post.prf \
 		C:/Qt6/5.15.2/mingw81_64/mkspecs/features/warn_off.prf \
@@ -558,6 +579,7 @@ Makefile: LowXRayFSS.pro C:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++/qmake.conf C
 		C:/Qt6/5.15.2/mingw81_64/mkspecs/features/lex.prf \
 		LowXRayFSS.pro \
 		../3rdParty/resource/resource.qrc \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/qgoodwindow_style.qrc \
 		C:/Qt6/5.15.2/mingw81_64/lib/Qt5PrintSupport.prl \
 		C:/Qt6/5.15.2/mingw81_64/lib/Qt5Widgets.prl \
 		C:/Qt6/5.15.2/mingw81_64/lib/Qt5Gui.prl \
@@ -733,6 +755,7 @@ C:/Qt6/5.15.2/mingw81_64/mkspecs/features/win32/default_pre.prf:
 ../3rdParty/log4qt/Include/log4qt.pri:
 ../3rdParty/resource/resource.pri:
 ../3rdParty/QCustomplot/QCustomplot.pri:
+../3rdParty/QGoodWindow/QGoodWindow/src/theme/theme.pri:
 C:/Qt6/5.15.2/mingw81_64/mkspecs/features/resolve_config.prf:
 C:/Qt6/5.15.2/mingw81_64/mkspecs/features/default_post.prf:
 C:/Qt6/5.15.2/mingw81_64/mkspecs/features/warn_off.prf:
@@ -753,6 +776,7 @@ C:/Qt6/5.15.2/mingw81_64/mkspecs/features/yacc.prf:
 C:/Qt6/5.15.2/mingw81_64/mkspecs/features/lex.prf:
 LowXRayFSS.pro:
 ../3rdParty/resource/resource.qrc:
+../3rdParty/QGoodWindow/QGoodWindow/src/theme/qgoodwindow_style.qrc:
 C:/Qt6/5.15.2/mingw81_64/lib/Qt5PrintSupport.prl:
 C:/Qt6/5.15.2/mingw81_64/lib/Qt5Widgets.prl:
 C:/Qt6/5.15.2/mingw81_64/lib/Qt5Gui.prl:
@@ -766,11 +790,11 @@ qmake: FORCE
 qmake_all: FORCE
 
 dist:
-	$(ZIP) LowXRayFSSd.zip $(SOURCES) $(DIST) LowXRayFSS.pro C:\Qt6\5.15.2\mingw81_64\mkspecs\features\spec_pre.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\qdevice.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\features\device_config.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\sanitize.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\gcc-base.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\g++-base.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\angle.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\win32\windows_vulkan_sdk.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\windows-vulkan.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\g++-win32.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\windows-desktop.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\qconfig.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3danimation.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3danimation_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dcore.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dcore_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dextras.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dextras_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dinput.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dinput_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dlogic.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dlogic_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquick.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquick_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickanimation.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickanimation_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickextras.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickextras_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickinput.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickinput_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickrender.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickrender_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickscene2d.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickscene2d_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3drender.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3drender_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_accessibility_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_axbase.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_axbase_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_axcontainer.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_axcontainer_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_axserver.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_axserver_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_bluetooth.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_bluetooth_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_bootstrap_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_charts.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_charts_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_concurrent.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_concurrent_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_core.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_core_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_dbus.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_dbus_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_designer.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_designer_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_designercomponents_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_devicediscovery_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_edid_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_egl_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_eventdispatcher_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_fb_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_fontdatabase_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_gamepad.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_gamepad_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_gui.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_gui_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_help.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_help_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_location.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_location_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_multimedia.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_multimedia_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_multimediawidgets.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_multimediawidgets_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_network.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_network_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_nfc.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_nfc_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_opengl.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_opengl_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_openglextensions.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_openglextensions_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_packetprotocol_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_platformcompositor_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_positioning.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_positioning_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_positioningquick.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_positioningquick_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_printsupport.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_printsupport_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qml.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qml_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmldebug_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmldevtools_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmlmodels.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmlmodels_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmltest.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmltest_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmlworkerscript.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmlworkerscript_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quick.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quick_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quickcontrols2.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quickcontrols2_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quickparticles_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quickshapes_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quicktemplates2.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quicktemplates2_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quickwidgets.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quickwidgets_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_remoteobjects.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_remoteobjects_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_repparser.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_repparser_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_script.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_script_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_scripttools.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_scripttools_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_scxml.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_scxml_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_sensors.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_sensors_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_serialbus.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_serialbus_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_serialport.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_serialport_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_sql.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_sql_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_svg.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_svg_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_testlib.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_testlib_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_texttospeech.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_texttospeech_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_theme_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_uiplugin.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_uitools.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_uitools_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_vulkan_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_webchannel.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_webchannel_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_websockets.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_websockets_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_widgets.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_widgets_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_windowsuiautomation_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_winextras.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_winextras_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_xml.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_xml_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_xmlpatterns.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_xmlpatterns_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_zlib_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\features\qt_functions.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\qt_config.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\win32-g++\qmake.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\spec_post.prf .qmake.stash C:\Qt6\5.15.2\mingw81_64\mkspecs\features\exclusive_builds.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\toolchain.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\default_pre.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\win32\default_pre.prf ..\3rdParty\log4qt\Include\log4qt.pri ..\3rdParty\resource\resource.pri ..\3rdParty\QCustomplot\QCustomplot.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\features\resolve_config.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\default_post.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\warn_off.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\qml_debug.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\precompile_header.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\qt.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\resources_functions.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\resources.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\moc.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\win32\opengl.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\uic.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\qmake_use.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\file_copies.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\win32\windows.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\testcase_targets.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\exceptions.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\yacc.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\lex.prf LowXRayFSS.pro ..\3rdParty\resource\resource.qrc C:\Qt6\5.15.2\mingw81_64\lib\Qt5PrintSupport.prl C:\Qt6\5.15.2\mingw81_64\lib\Qt5Widgets.prl C:\Qt6\5.15.2\mingw81_64\lib\Qt5Gui.prl C:\Qt6\5.15.2\mingw81_64\lib\Qt5Network.prl C:\Qt6\5.15.2\mingw81_64\lib\Qt5Concurrent.prl C:\Qt6\5.15.2\mingw81_64\lib\Qt5Core.prl C:\Qt6\5.15.2\mingw81_64\lib\qtmain.prl   ..\3rdParty\resource\resource.qrc C:\Qt6\5.15.2\mingw81_64\mkspecs\features\data\dummy.cpp aboutwidget.h dataprocessor.h qlitethread.h commhelper.h globalsettings.h mainwindow.h netsetting.h paramsetting.h switchbutton.h ..\3rdParty\log4qt\Include\log4qt\appender.h ..\3rdParty\log4qt\Include\log4qt\appenderskeleton.h ..\3rdParty\log4qt\Include\log4qt\asyncappender.h ..\3rdParty\log4qt\Include\log4qt\basicconfigurator.h ..\3rdParty\log4qt\Include\log4qt\binaryfileappender.h ..\3rdParty\log4qt\Include\log4qt\binarylayout.h ..\3rdParty\log4qt\Include\log4qt\binarylogger.h ..\3rdParty\log4qt\Include\log4qt\binaryloggingevent.h ..\3rdParty\log4qt\Include\log4qt\binarylogstream.h ..\3rdParty\log4qt\Include\log4qt\binarytotextlayout.h ..\3rdParty\log4qt\Include\log4qt\binarywriterappender.h ..\3rdParty\log4qt\Include\log4qt\consoleappender.h ..\3rdParty\log4qt\Include\log4qt\dailyfileappender.h ..\3rdParty\log4qt\Include\log4qt\dailyrollingfileappender.h ..\3rdParty\log4qt\Include\log4qt\fileappender.h ..\3rdParty\log4qt\Include\log4qt\hierarchy.h ..\3rdParty\log4qt\Include\log4qt\layout.h ..\3rdParty\log4qt\Include\log4qt\level.h ..\3rdParty\log4qt\Include\log4qt\log4qt.h ..\3rdParty\log4qt\Include\log4qt\log4qtdefs.h ..\3rdParty\log4qt\Include\log4qt\log4qtshared.h ..\3rdParty\log4qt\Include\log4qt\log4qtsharedptr.h ..\3rdParty\log4qt\Include\log4qt\logger.h ..\3rdParty\log4qt\Include\log4qt\loggerrepository.h ..\3rdParty\log4qt\Include\log4qt\loggingevent.h ..\3rdParty\log4qt\Include\log4qt\logmanager.h ..\3rdParty\log4qt\Include\log4qt\logstream.h ..\3rdParty\log4qt\Include\log4qt\mainthreadappender.h ..\3rdParty\log4qt\Include\log4qt\mdc.h ..\3rdParty\log4qt\Include\log4qt\ndc.h ..\3rdParty\log4qt\Include\log4qt\patternlayout.h ..\3rdParty\log4qt\Include\log4qt\propertyconfigurator.h ..\3rdParty\log4qt\Include\log4qt\rollingbinaryfileappender.h ..\3rdParty\log4qt\Include\log4qt\rollingfileappender.h ..\3rdParty\log4qt\Include\log4qt\signalappender.h ..\3rdParty\log4qt\Include\log4qt\simplelayout.h ..\3rdParty\log4qt\Include\log4qt\simpletimelayout.h ..\3rdParty\log4qt\Include\log4qt\systemlogappender.h ..\3rdParty\log4qt\Include\log4qt\ttcclayout.h ..\3rdParty\log4qt\Include\log4qt\writerappender.h ..\3rdParty\log4qt\Include\log4qt\xmllayout.h ..\3rdParty\log4qt\Include\log4qt\wdcappender.h ..\3rdParty\log4qt\Include\log4qt\colorconsoleappender.h ..\3rdParty\log4qt\Include\log4qt\helpers\appenderattachable.h ..\3rdParty\log4qt\Include\log4qt\helpers\binaryclasslogger.h ..\3rdParty\log4qt\Include\log4qt\helpers\classlogger.h ..\3rdParty\log4qt\Include\log4qt\helpers\configuratorhelper.h ..\3rdParty\log4qt\Include\log4qt\helpers\datetime.h ..\3rdParty\log4qt\Include\log4qt\helpers\dispatcher.h ..\3rdParty\log4qt\Include\log4qt\helpers\factory.h ..\3rdParty\log4qt\Include\log4qt\helpers\initialisationhelper.h ..\3rdParty\log4qt\Include\log4qt\helpers\logerror.h ..\3rdParty\log4qt\Include\log4qt\helpers\optionconverter.h ..\3rdParty\log4qt\Include\log4qt\helpers\patternformatter.h ..\3rdParty\log4qt\Include\log4qt\helpers\properties.h ..\3rdParty\log4qt\Include\log4qt\spi\filter.h ..\3rdParty\log4qt\Include\log4qt\varia\binaryeventfilter.h ..\3rdParty\log4qt\Include\log4qt\varia\debugappender.h ..\3rdParty\log4qt\Include\log4qt\varia\denyallfilter.h ..\3rdParty\log4qt\Include\log4qt\varia\levelmatchfilter.h ..\3rdParty\log4qt\Include\log4qt\varia\levelrangefilter.h ..\3rdParty\log4qt\Include\log4qt\varia\listappender.h ..\3rdParty\log4qt\Include\log4qt\varia\nullappender.h ..\3rdParty\log4qt\Include\log4qt\varia\stringmatchfilter.h ..\3rdParty\QCustomplot\qcustomplot.h  aboutwidget.cpp commhelper.cpp dataprocessor.cpp globalsettings.cpp main.cpp mainwindow.cpp netsetting.cpp paramsetting.cpp switchbutton.cpp ..\3rdParty\log4qt\Include\log4qt\appender.cpp ..\3rdParty\log4qt\Include\log4qt\appenderskeleton.cpp ..\3rdParty\log4qt\Include\log4qt\basicconfigurator.cpp ..\3rdParty\log4qt\Include\log4qt\consoleappender.cpp ..\3rdParty\log4qt\Include\log4qt\dailyrollingfileappender.cpp ..\3rdParty\log4qt\Include\log4qt\asyncappender.cpp ..\3rdParty\log4qt\Include\log4qt\dailyfileappender.cpp ..\3rdParty\log4qt\Include\log4qt\mainthreadappender.cpp ..\3rdParty\log4qt\Include\log4qt\fileappender.cpp ..\3rdParty\log4qt\Include\log4qt\hierarchy.cpp ..\3rdParty\log4qt\Include\log4qt\layout.cpp ..\3rdParty\log4qt\Include\log4qt\level.cpp ..\3rdParty\log4qt\Include\log4qt\logger.cpp ..\3rdParty\log4qt\Include\log4qt\loggerrepository.cpp ..\3rdParty\log4qt\Include\log4qt\loggingevent.cpp ..\3rdParty\log4qt\Include\log4qt\logmanager.cpp ..\3rdParty\log4qt\Include\log4qt\mdc.cpp ..\3rdParty\log4qt\Include\log4qt\ndc.cpp ..\3rdParty\log4qt\Include\log4qt\patternlayout.cpp ..\3rdParty\log4qt\Include\log4qt\propertyconfigurator.cpp ..\3rdParty\log4qt\Include\log4qt\rollingfileappender.cpp ..\3rdParty\log4qt\Include\log4qt\signalappender.cpp ..\3rdParty\log4qt\Include\log4qt\simplelayout.cpp ..\3rdParty\log4qt\Include\log4qt\simpletimelayout.cpp ..\3rdParty\log4qt\Include\log4qt\ttcclayout.cpp ..\3rdParty\log4qt\Include\log4qt\writerappender.cpp ..\3rdParty\log4qt\Include\log4qt\systemlogappender.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\classlogger.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\appenderattachable.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\configuratorhelper.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\datetime.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\factory.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\initialisationhelper.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\logerror.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\optionconverter.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\patternformatter.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\properties.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\dispatcher.cpp ..\3rdParty\log4qt\Include\log4qt\spi\filter.cpp ..\3rdParty\log4qt\Include\log4qt\varia\debugappender.cpp ..\3rdParty\log4qt\Include\log4qt\varia\denyallfilter.cpp ..\3rdParty\log4qt\Include\log4qt\varia\levelmatchfilter.cpp ..\3rdParty\log4qt\Include\log4qt\varia\levelrangefilter.cpp ..\3rdParty\log4qt\Include\log4qt\varia\listappender.cpp ..\3rdParty\log4qt\Include\log4qt\varia\nullappender.cpp ..\3rdParty\log4qt\Include\log4qt\varia\stringmatchfilter.cpp ..\3rdParty\log4qt\Include\log4qt\logstream.cpp ..\3rdParty\log4qt\Include\log4qt\binaryloggingevent.cpp ..\3rdParty\log4qt\Include\log4qt\binarylogger.cpp ..\3rdParty\log4qt\Include\log4qt\varia\binaryeventfilter.cpp ..\3rdParty\log4qt\Include\log4qt\binarytotextlayout.cpp ..\3rdParty\log4qt\Include\log4qt\binarywriterappender.cpp ..\3rdParty\log4qt\Include\log4qt\binaryfileappender.cpp ..\3rdParty\log4qt\Include\log4qt\binarylogstream.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\binaryclasslogger.cpp ..\3rdParty\log4qt\Include\log4qt\rollingbinaryfileappender.cpp ..\3rdParty\log4qt\Include\log4qt\binarylayout.cpp ..\3rdParty\log4qt\Include\log4qt\xmllayout.cpp ..\3rdParty\log4qt\Include\log4qt\wdcappender.cpp ..\3rdParty\log4qt\Include\log4qt\colorconsoleappender.cpp ..\3rdParty\QCustomplot\qcustomplot.cpp aboutwidget.ui mainwindow.ui netsetting.ui paramsetting.ui    
+	$(ZIP) LowXRayFSSd.zip $(SOURCES) $(DIST) LowXRayFSS.pro C:\Qt6\5.15.2\mingw81_64\mkspecs\features\spec_pre.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\qdevice.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\features\device_config.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\sanitize.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\gcc-base.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\g++-base.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\angle.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\win32\windows_vulkan_sdk.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\windows-vulkan.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\g++-win32.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\common\windows-desktop.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\qconfig.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3danimation.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3danimation_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dcore.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dcore_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dextras.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dextras_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dinput.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dinput_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dlogic.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dlogic_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquick.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquick_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickanimation.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickanimation_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickextras.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickextras_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickinput.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickinput_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickrender.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickrender_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickscene2d.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3dquickscene2d_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3drender.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_3drender_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_accessibility_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_axbase.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_axbase_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_axcontainer.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_axcontainer_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_axserver.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_axserver_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_bluetooth.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_bluetooth_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_bootstrap_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_charts.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_charts_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_concurrent.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_concurrent_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_core.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_core_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_dbus.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_dbus_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_designer.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_designer_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_designercomponents_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_devicediscovery_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_edid_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_egl_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_eventdispatcher_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_fb_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_fontdatabase_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_gamepad.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_gamepad_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_gui.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_gui_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_help.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_help_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_location.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_location_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_multimedia.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_multimedia_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_multimediawidgets.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_multimediawidgets_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_network.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_network_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_nfc.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_nfc_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_opengl.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_opengl_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_openglextensions.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_openglextensions_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_packetprotocol_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_platformcompositor_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_positioning.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_positioning_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_positioningquick.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_positioningquick_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_printsupport.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_printsupport_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qml.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qml_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmldebug_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmldevtools_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmlmodels.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmlmodels_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmltest.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmltest_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmlworkerscript.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qmlworkerscript_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quick.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quick_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quickcontrols2.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quickcontrols2_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quickparticles_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quickshapes_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quicktemplates2.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quicktemplates2_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quickwidgets.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_quickwidgets_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_remoteobjects.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_remoteobjects_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_repparser.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_repparser_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_script.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_script_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_scripttools.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_scripttools_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_scxml.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_scxml_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_sensors.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_sensors_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_serialbus.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_serialbus_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_serialport.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_serialport_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_sql.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_sql_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_svg.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_svg_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_testlib.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_testlib_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_texttospeech.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_texttospeech_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_theme_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_uiplugin.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_uitools.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_uitools_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_vulkan_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_webchannel.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_webchannel_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_websockets.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_websockets_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_widgets.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_widgets_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_windowsuiautomation_support_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_winextras.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_winextras_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_xml.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_xml_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_xmlpatterns.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_xmlpatterns_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\modules\qt_lib_zlib_private.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\features\qt_functions.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\qt_config.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\win32-g++\qmake.conf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\spec_post.prf .qmake.stash C:\Qt6\5.15.2\mingw81_64\mkspecs\features\exclusive_builds.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\toolchain.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\default_pre.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\win32\default_pre.prf ..\3rdParty\log4qt\Include\log4qt.pri ..\3rdParty\resource\resource.pri ..\3rdParty\QCustomplot\QCustomplot.pri ..\3rdParty\QGoodWindow\QGoodWindow\src\theme\theme.pri C:\Qt6\5.15.2\mingw81_64\mkspecs\features\resolve_config.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\default_post.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\warn_off.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\qml_debug.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\precompile_header.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\qt.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\resources_functions.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\resources.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\moc.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\win32\opengl.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\uic.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\qmake_use.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\file_copies.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\win32\windows.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\testcase_targets.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\exceptions.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\yacc.prf C:\Qt6\5.15.2\mingw81_64\mkspecs\features\lex.prf LowXRayFSS.pro ..\3rdParty\resource\resource.qrc ..\3rdParty\QGoodWindow\QGoodWindow\src\theme\qgoodwindow_style.qrc C:\Qt6\5.15.2\mingw81_64\lib\Qt5PrintSupport.prl C:\Qt6\5.15.2\mingw81_64\lib\Qt5Widgets.prl C:\Qt6\5.15.2\mingw81_64\lib\Qt5Gui.prl C:\Qt6\5.15.2\mingw81_64\lib\Qt5Network.prl C:\Qt6\5.15.2\mingw81_64\lib\Qt5Concurrent.prl C:\Qt6\5.15.2\mingw81_64\lib\Qt5Core.prl C:\Qt6\5.15.2\mingw81_64\lib\qtmain.prl   ..\3rdParty\resource\resource.qrc ..\3rdParty\QGoodWindow\QGoodWindow\src\theme\qgoodwindow_style.qrc C:\Qt6\5.15.2\mingw81_64\mkspecs\features\data\dummy.cpp aboutwidget.h dataprocessor.h qlitethread.h commhelper.h globalsettings.h mainwindow.h netsetting.h paramsetting.h switchbutton.h ..\3rdParty\log4qt\Include\log4qt\appender.h ..\3rdParty\log4qt\Include\log4qt\appenderskeleton.h ..\3rdParty\log4qt\Include\log4qt\asyncappender.h ..\3rdParty\log4qt\Include\log4qt\basicconfigurator.h ..\3rdParty\log4qt\Include\log4qt\binaryfileappender.h ..\3rdParty\log4qt\Include\log4qt\binarylayout.h ..\3rdParty\log4qt\Include\log4qt\binarylogger.h ..\3rdParty\log4qt\Include\log4qt\binaryloggingevent.h ..\3rdParty\log4qt\Include\log4qt\binarylogstream.h ..\3rdParty\log4qt\Include\log4qt\binarytotextlayout.h ..\3rdParty\log4qt\Include\log4qt\binarywriterappender.h ..\3rdParty\log4qt\Include\log4qt\consoleappender.h ..\3rdParty\log4qt\Include\log4qt\dailyfileappender.h ..\3rdParty\log4qt\Include\log4qt\dailyrollingfileappender.h ..\3rdParty\log4qt\Include\log4qt\fileappender.h ..\3rdParty\log4qt\Include\log4qt\hierarchy.h ..\3rdParty\log4qt\Include\log4qt\layout.h ..\3rdParty\log4qt\Include\log4qt\level.h ..\3rdParty\log4qt\Include\log4qt\log4qt.h ..\3rdParty\log4qt\Include\log4qt\log4qtdefs.h ..\3rdParty\log4qt\Include\log4qt\log4qtshared.h ..\3rdParty\log4qt\Include\log4qt\log4qtsharedptr.h ..\3rdParty\log4qt\Include\log4qt\logger.h ..\3rdParty\log4qt\Include\log4qt\loggerrepository.h ..\3rdParty\log4qt\Include\log4qt\loggingevent.h ..\3rdParty\log4qt\Include\log4qt\logmanager.h ..\3rdParty\log4qt\Include\log4qt\logstream.h ..\3rdParty\log4qt\Include\log4qt\mainthreadappender.h ..\3rdParty\log4qt\Include\log4qt\mdc.h ..\3rdParty\log4qt\Include\log4qt\ndc.h ..\3rdParty\log4qt\Include\log4qt\patternlayout.h ..\3rdParty\log4qt\Include\log4qt\propertyconfigurator.h ..\3rdParty\log4qt\Include\log4qt\rollingbinaryfileappender.h ..\3rdParty\log4qt\Include\log4qt\rollingfileappender.h ..\3rdParty\log4qt\Include\log4qt\signalappender.h ..\3rdParty\log4qt\Include\log4qt\simplelayout.h ..\3rdParty\log4qt\Include\log4qt\simpletimelayout.h ..\3rdParty\log4qt\Include\log4qt\systemlogappender.h ..\3rdParty\log4qt\Include\log4qt\ttcclayout.h ..\3rdParty\log4qt\Include\log4qt\writerappender.h ..\3rdParty\log4qt\Include\log4qt\xmllayout.h ..\3rdParty\log4qt\Include\log4qt\wdcappender.h ..\3rdParty\log4qt\Include\log4qt\colorconsoleappender.h ..\3rdParty\log4qt\Include\log4qt\helpers\appenderattachable.h ..\3rdParty\log4qt\Include\log4qt\helpers\binaryclasslogger.h ..\3rdParty\log4qt\Include\log4qt\helpers\classlogger.h ..\3rdParty\log4qt\Include\log4qt\helpers\configuratorhelper.h ..\3rdParty\log4qt\Include\log4qt\helpers\datetime.h ..\3rdParty\log4qt\Include\log4qt\helpers\dispatcher.h ..\3rdParty\log4qt\Include\log4qt\helpers\factory.h ..\3rdParty\log4qt\Include\log4qt\helpers\initialisationhelper.h ..\3rdParty\log4qt\Include\log4qt\helpers\logerror.h ..\3rdParty\log4qt\Include\log4qt\helpers\optionconverter.h ..\3rdParty\log4qt\Include\log4qt\helpers\patternformatter.h ..\3rdParty\log4qt\Include\log4qt\helpers\properties.h ..\3rdParty\log4qt\Include\log4qt\spi\filter.h ..\3rdParty\log4qt\Include\log4qt\varia\binaryeventfilter.h ..\3rdParty\log4qt\Include\log4qt\varia\debugappender.h ..\3rdParty\log4qt\Include\log4qt\varia\denyallfilter.h ..\3rdParty\log4qt\Include\log4qt\varia\levelmatchfilter.h ..\3rdParty\log4qt\Include\log4qt\varia\levelrangefilter.h ..\3rdParty\log4qt\Include\log4qt\varia\listappender.h ..\3rdParty\log4qt\Include\log4qt\varia\nullappender.h ..\3rdParty\log4qt\Include\log4qt\varia\stringmatchfilter.h ..\3rdParty\QCustomplot\qcustomplot.h ..\3rdParty\QGoodWindow\QGoodWindow\src\theme\stylecommon.h ..\3rdParty\QGoodWindow\QGoodWindow\src\theme\lightstyle.h ..\3rdParty\QGoodWindow\QGoodWindow\src\theme\darkstyle.h ..\3rdParty\QGoodWindow\QGoodWindow\src\theme\customcolorstyle.h  aboutwidget.cpp commhelper.cpp dataprocessor.cpp globalsettings.cpp main.cpp mainwindow.cpp netsetting.cpp paramsetting.cpp switchbutton.cpp ..\3rdParty\log4qt\Include\log4qt\appender.cpp ..\3rdParty\log4qt\Include\log4qt\appenderskeleton.cpp ..\3rdParty\log4qt\Include\log4qt\basicconfigurator.cpp ..\3rdParty\log4qt\Include\log4qt\consoleappender.cpp ..\3rdParty\log4qt\Include\log4qt\dailyrollingfileappender.cpp ..\3rdParty\log4qt\Include\log4qt\asyncappender.cpp ..\3rdParty\log4qt\Include\log4qt\dailyfileappender.cpp ..\3rdParty\log4qt\Include\log4qt\mainthreadappender.cpp ..\3rdParty\log4qt\Include\log4qt\fileappender.cpp ..\3rdParty\log4qt\Include\log4qt\hierarchy.cpp ..\3rdParty\log4qt\Include\log4qt\layout.cpp ..\3rdParty\log4qt\Include\log4qt\level.cpp ..\3rdParty\log4qt\Include\log4qt\logger.cpp ..\3rdParty\log4qt\Include\log4qt\loggerrepository.cpp ..\3rdParty\log4qt\Include\log4qt\loggingevent.cpp ..\3rdParty\log4qt\Include\log4qt\logmanager.cpp ..\3rdParty\log4qt\Include\log4qt\mdc.cpp ..\3rdParty\log4qt\Include\log4qt\ndc.cpp ..\3rdParty\log4qt\Include\log4qt\patternlayout.cpp ..\3rdParty\log4qt\Include\log4qt\propertyconfigurator.cpp ..\3rdParty\log4qt\Include\log4qt\rollingfileappender.cpp ..\3rdParty\log4qt\Include\log4qt\signalappender.cpp ..\3rdParty\log4qt\Include\log4qt\simplelayout.cpp ..\3rdParty\log4qt\Include\log4qt\simpletimelayout.cpp ..\3rdParty\log4qt\Include\log4qt\ttcclayout.cpp ..\3rdParty\log4qt\Include\log4qt\writerappender.cpp ..\3rdParty\log4qt\Include\log4qt\systemlogappender.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\classlogger.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\appenderattachable.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\configuratorhelper.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\datetime.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\factory.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\initialisationhelper.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\logerror.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\optionconverter.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\patternformatter.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\properties.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\dispatcher.cpp ..\3rdParty\log4qt\Include\log4qt\spi\filter.cpp ..\3rdParty\log4qt\Include\log4qt\varia\debugappender.cpp ..\3rdParty\log4qt\Include\log4qt\varia\denyallfilter.cpp ..\3rdParty\log4qt\Include\log4qt\varia\levelmatchfilter.cpp ..\3rdParty\log4qt\Include\log4qt\varia\levelrangefilter.cpp ..\3rdParty\log4qt\Include\log4qt\varia\listappender.cpp ..\3rdParty\log4qt\Include\log4qt\varia\nullappender.cpp ..\3rdParty\log4qt\Include\log4qt\varia\stringmatchfilter.cpp ..\3rdParty\log4qt\Include\log4qt\logstream.cpp ..\3rdParty\log4qt\Include\log4qt\binaryloggingevent.cpp ..\3rdParty\log4qt\Include\log4qt\binarylogger.cpp ..\3rdParty\log4qt\Include\log4qt\varia\binaryeventfilter.cpp ..\3rdParty\log4qt\Include\log4qt\binarytotextlayout.cpp ..\3rdParty\log4qt\Include\log4qt\binarywriterappender.cpp ..\3rdParty\log4qt\Include\log4qt\binaryfileappender.cpp ..\3rdParty\log4qt\Include\log4qt\binarylogstream.cpp ..\3rdParty\log4qt\Include\log4qt\helpers\binaryclasslogger.cpp ..\3rdParty\log4qt\Include\log4qt\rollingbinaryfileappender.cpp ..\3rdParty\log4qt\Include\log4qt\binarylayout.cpp ..\3rdParty\log4qt\Include\log4qt\xmllayout.cpp ..\3rdParty\log4qt\Include\log4qt\wdcappender.cpp ..\3rdParty\log4qt\Include\log4qt\colorconsoleappender.cpp ..\3rdParty\QCustomplot\qcustomplot.cpp ..\3rdParty\QGoodWindow\QGoodWindow\src\theme\stylecommon.cpp ..\3rdParty\QGoodWindow\QGoodWindow\src\theme\lightstyle.cpp ..\3rdParty\QGoodWindow\QGoodWindow\src\theme\darkstyle.cpp aboutwidget.ui mainwindow.ui netsetting.ui paramsetting.ui    
 
 clean: compiler_clean 
-	-$(DEL_FILE) temp\rcc\qrc_resource.o temp\obj\aboutwidget.o temp\obj\commhelper.o temp\obj\dataprocessor.o temp\obj\globalsettings.o temp\obj\main.o temp\obj\mainwindow.o temp\obj\netsetting.o temp\obj\paramsetting.o temp\obj\switchbutton.o temp\obj\appender.o temp\obj\appenderskeleton.o temp\obj\basicconfigurator.o temp\obj\consoleappender.o temp\obj\dailyrollingfileappender.o temp\obj\asyncappender.o temp\obj\dailyfileappender.o temp\obj\mainthreadappender.o temp\obj\fileappender.o temp\obj\hierarchy.o temp\obj\layout.o temp\obj\level.o temp\obj\logger.o temp\obj\loggerrepository.o temp\obj\loggingevent.o temp\obj\logmanager.o temp\obj\mdc.o temp\obj\ndc.o temp\obj\patternlayout.o temp\obj\propertyconfigurator.o temp\obj\rollingfileappender.o temp\obj\signalappender.o temp\obj\simplelayout.o temp\obj\simpletimelayout.o temp\obj\ttcclayout.o temp\obj\writerappender.o temp\obj\systemlogappender.o temp\obj\classlogger.o temp\obj\appenderattachable.o temp\obj\configuratorhelper.o temp\obj\datetime.o temp\obj\factory.o temp\obj\initialisationhelper.o temp\obj\logerror.o temp\obj\optionconverter.o temp\obj\patternformatter.o temp\obj\properties.o temp\obj\dispatcher.o temp\obj\filter.o temp\obj\debugappender.o temp\obj\denyallfilter.o temp\obj\levelmatchfilter.o temp\obj\levelrangefilter.o temp\obj\listappender.o temp\obj\nullappender.o temp\obj\stringmatchfilter.o temp\obj\logstream.o temp\obj\binaryloggingevent.o temp\obj\binarylogger.o temp\obj\binaryeventfilter.o temp\obj\binarytotextlayout.o temp\obj\binarywriterappender.o temp\obj\binaryfileappender.o temp\obj\binarylogstream.o temp\obj\binaryclasslogger.o temp\obj\rollingbinaryfileappender.o temp\obj\binarylayout.o temp\obj\xmllayout.o temp\obj\wdcappender.o temp\obj\colorconsoleappender.o temp\obj\qcustomplot.o temp\obj\moc_aboutwidget.o temp\obj\moc_dataprocessor.o temp\obj\moc_qlitethread.o temp\obj\moc_commhelper.o temp\obj\moc_globalsettings.o temp\obj\moc_mainwindow.o temp\obj\moc_netsetting.o temp\obj\moc_paramsetting.o temp\obj\moc_switchbutton.o
-	-$(DEL_FILE) temp\obj\moc_qcustomplot.o
+	-$(DEL_FILE) temp\rcc\qrc_resource.o temp\rcc\qrc_qgoodwindow_style.o temp\obj\aboutwidget.o temp\obj\commhelper.o temp\obj\dataprocessor.o temp\obj\globalsettings.o temp\obj\main.o temp\obj\mainwindow.o temp\obj\netsetting.o temp\obj\paramsetting.o temp\obj\switchbutton.o temp\obj\appender.o temp\obj\appenderskeleton.o temp\obj\basicconfigurator.o temp\obj\consoleappender.o temp\obj\dailyrollingfileappender.o temp\obj\asyncappender.o temp\obj\dailyfileappender.o temp\obj\mainthreadappender.o temp\obj\fileappender.o temp\obj\hierarchy.o temp\obj\layout.o temp\obj\level.o temp\obj\logger.o temp\obj\loggerrepository.o temp\obj\loggingevent.o temp\obj\logmanager.o temp\obj\mdc.o temp\obj\ndc.o temp\obj\patternlayout.o temp\obj\propertyconfigurator.o temp\obj\rollingfileappender.o temp\obj\signalappender.o temp\obj\simplelayout.o temp\obj\simpletimelayout.o temp\obj\ttcclayout.o temp\obj\writerappender.o temp\obj\systemlogappender.o temp\obj\classlogger.o temp\obj\appenderattachable.o temp\obj\configuratorhelper.o temp\obj\datetime.o temp\obj\factory.o temp\obj\initialisationhelper.o temp\obj\logerror.o temp\obj\optionconverter.o temp\obj\patternformatter.o temp\obj\properties.o temp\obj\dispatcher.o temp\obj\filter.o temp\obj\debugappender.o temp\obj\denyallfilter.o temp\obj\levelmatchfilter.o temp\obj\levelrangefilter.o temp\obj\listappender.o temp\obj\nullappender.o temp\obj\stringmatchfilter.o temp\obj\logstream.o temp\obj\binaryloggingevent.o temp\obj\binarylogger.o temp\obj\binaryeventfilter.o temp\obj\binarytotextlayout.o temp\obj\binarywriterappender.o temp\obj\binaryfileappender.o temp\obj\binarylogstream.o temp\obj\binaryclasslogger.o temp\obj\rollingbinaryfileappender.o temp\obj\binarylayout.o temp\obj\xmllayout.o temp\obj\wdcappender.o temp\obj\colorconsoleappender.o temp\obj\qcustomplot.o temp\obj\stylecommon.o temp\obj\lightstyle.o temp\obj\darkstyle.o temp\obj\moc_aboutwidget.o temp\obj\moc_dataprocessor.o temp\obj\moc_qlitethread.o temp\obj\moc_commhelper.o temp\obj\moc_globalsettings.o
+	-$(DEL_FILE) temp\obj\moc_mainwindow.o temp\obj\moc_netsetting.o temp\obj\moc_paramsetting.o temp\obj\moc_switchbutton.o temp\obj\moc_qcustomplot.o temp\obj\moc_lightstyle.o temp\obj\moc_darkstyle.o temp\obj\moc_customcolorstyle.o
 	-$(DEL_FILE) temp\obj\LowXRayFSSd_resource_res.o
 
 distclean: clean 
@@ -788,9 +812,9 @@ benchmark: first
 
 compiler_no_pch_compiler_make_all:
 compiler_no_pch_compiler_clean:
-compiler_rcc_make_all: temp/rcc/qrc_resource.o
+compiler_rcc_make_all: temp/rcc/qrc_resource.o temp/rcc/qrc_qgoodwindow_style.o
 compiler_rcc_clean:
-	-$(DEL_FILE) temp\rcc\qrc_resource.cpp temp\rcc\qrc_resource.tmp.o
+	-$(DEL_FILE) temp\rcc\qrc_resource.cpp temp\rcc\qrc_resource.tmp.o temp\rcc\qrc_qgoodwindow_style.cpp temp\rcc\qrc_qgoodwindow_style.tmp.o
 temp/rcc/qrc_resource.o: ../3rdParty/resource/resource.qrc \
 		C:/Qt6/5.15.2/mingw81_64/bin/rcc.exe \
 		../3rdParty/resource/resrore.png \
@@ -860,15 +884,439 @@ temp/rcc/qrc_resource.o: ../3rdParty/resource/resource.qrc \
 	 g++ $(CXXFLAGS) -c temp/rcc/qrc_resource.cpp -o temp/rcc/qrc_resource.tmp.o 
 	 C:\Qt6\5.15.2\mingw81_64\bin\rcc.exe -name resource ..\3rdParty\resource\resource.qrc -pass 2 -temp temp/rcc/qrc_resource.tmp.o -o temp\rcc\qrc_resource.o
 
+temp/rcc/qrc_qgoodwindow_style.o: ../3rdParty/QGoodWindow/QGoodWindow/src/theme/qgoodwindow_style.qrc \
+		C:/Qt6/5.15.2/mingw81_64/bin/rcc.exe \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/darkstyle.qss \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/lightstyle.qss \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/transparent.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/line_horizontal_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/line_horizontal.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_left_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_more_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_down_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_move_vertical_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_close_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_up_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_separator_horizontal_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_close_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_open_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/line_horizontal_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/checkbox_unchecked.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/radio_checked_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/checkbox_checked_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/base_icon_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_move_horizontal.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_close_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_line@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_move_vertical@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_right_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_up_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/checkbox_checked@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_move_vertical_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/radio_unchecked_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/checkbox_indeterminate.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_close_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_grip_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_separator_horizontal_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_closed_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_line.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/checkbox_indeterminate_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/transparent_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_separator_horizontal.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_end_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/checkbox_unchecked@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_undock_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/radio_checked_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_end_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_move_horizontal_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_left_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_left@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_separator_vertical_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_grip_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_undock_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_close.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/line_horizontal@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_move_vertical_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/line_vertical_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_right@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/base_icon_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_line_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_grip_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_right_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_more_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_move_vertical_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_up.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_left_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/checkbox_checked.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_move_horizontal_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/line_vertical_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/base_icon_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_separator_vertical_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_end_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/checkbox_indeterminate_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_minimize_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_undock_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/radio_checked@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_move_horizontal_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_closed_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/line_vertical.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_line_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_separator_vertical.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_more_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_move_horizontal@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_undock_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_down_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_separator_horizontal_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_more_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/line_vertical_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_separator_horizontal@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_left_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/transparent_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_open_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_separator_vertical_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_down_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_up_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_up_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/checkbox_checked_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/checkbox_checked_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/line_vertical@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_close@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_right_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_open@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/checkbox_unchecked_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/line_vertical_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_more.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/transparent_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_move_vertical.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/line_horizontal_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_minimize_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/checkbox_indeterminate@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_end_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_up_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_right.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/radio_checked_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_open_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/line_horizontal_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_close_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/radio_checked_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_more@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_open.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/checkbox_unchecked_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/base_icon_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/checkbox_unchecked_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_close_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_minimize_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_closed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_up_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/radio_checked_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_end_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/radio_unchecked_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/radio_unchecked_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/base_icon@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_move_vertical_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_separator_vertical_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_separator_horizontal_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_line_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_closed_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_closed_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_minimize@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_minimize.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/transparent_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_grip@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/checkbox_indeterminate_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/base_icon_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/checkbox_checked_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_down_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/radio_checked.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_end_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_move_horizontal_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/radio_unchecked_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_undock_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/radio_unchecked_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_separator_vertical_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_undock.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_grip_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_open_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/radio_checked_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/checkbox_checked_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_undock_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/line_vertical_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/checkbox_unchecked_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_closed_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_down@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_move_vertical_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_separator_horizontal_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_grip_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/radio_unchecked.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/checkbox_unchecked_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_grip.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_separator_vertical@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_right_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_move_horizontal_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/transparent_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/base_icon_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_grip_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/base_icon.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/transparent@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_up@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/line_vertical_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/line_horizontal_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_minimize_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/checkbox_indeterminate_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_minimize_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_undock@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/checkbox_indeterminate_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_line_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_line_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_line_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/window_minimize_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/radio_unchecked@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/checkbox_indeterminate_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_closed_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_left.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_separator_vertical_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_more_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/line_horizontal_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_more_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_right_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_down_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_separator_horizontal_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_closed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_end@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_left_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/transparent_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_open_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_open_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_down_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/radio_unchecked_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/branch_end.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/checkbox_unchecked_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/checkbox_checked_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_left_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_down.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/toolbar_move_horizontal_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/light_icons/arrow_right_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/transparent.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/line_horizontal_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/line_horizontal.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_left_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_more_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_down_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_move_vertical_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_close_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_up_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_separator_horizontal_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_close_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_open_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/line_horizontal_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/checkbox_unchecked.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/radio_checked_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/checkbox_checked_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/base_icon_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_move_horizontal.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_close_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_line@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_move_vertical@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_right_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_up_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/checkbox_checked@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_move_vertical_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/radio_unchecked_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/checkbox_indeterminate.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_close_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_grip_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_separator_horizontal_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_closed_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_line.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/checkbox_indeterminate_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/transparent_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_separator_horizontal.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_end_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/checkbox_unchecked@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_undock_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/radio_checked_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_end_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_move_horizontal_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_left_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_left@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_separator_vertical_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_grip_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_undock_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_close.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/line_horizontal@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_move_vertical_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/line_vertical_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_right@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/base_icon_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_line_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_grip_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_right_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_more_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_move_vertical_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_up.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_left_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/checkbox_checked.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_move_horizontal_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/line_vertical_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/base_icon_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_separator_vertical_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_end_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/checkbox_indeterminate_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_minimize_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_undock_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/radio_checked@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_move_horizontal_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_closed_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/line_vertical.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_line_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_separator_vertical.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_more_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_move_horizontal@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_undock_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_down_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_separator_horizontal_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_more_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/line_vertical_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_separator_horizontal@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_left_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/transparent_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_open_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_separator_vertical_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_down_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_up_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_up_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/checkbox_checked_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/checkbox_checked_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/line_vertical@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_close@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_right_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_open@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/checkbox_unchecked_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/line_vertical_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_more.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/transparent_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_move_vertical.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/line_horizontal_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_minimize_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/checkbox_indeterminate@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_end_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_up_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_right.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/radio_checked_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_open_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/line_horizontal_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_close_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/radio_checked_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_more@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_open.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/checkbox_unchecked_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/base_icon_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/checkbox_unchecked_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_close_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_minimize_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_closed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_up_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/radio_checked_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_end_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/radio_unchecked_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/radio_unchecked_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/base_icon@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_move_vertical_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_separator_vertical_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_separator_horizontal_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_line_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_closed_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_closed_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_minimize@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_minimize.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/transparent_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_grip@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/checkbox_indeterminate_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/base_icon_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/checkbox_checked_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_down_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/radio_checked.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_end_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_move_horizontal_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/radio_unchecked_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_undock_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/radio_unchecked_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_separator_vertical_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_undock.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_grip_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_open_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/radio_checked_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/checkbox_checked_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_undock_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/line_vertical_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/checkbox_unchecked_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_closed_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_down@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_move_vertical_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_separator_horizontal_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_grip_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/radio_unchecked.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/checkbox_unchecked_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_grip.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_separator_vertical@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_right_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_move_horizontal_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/transparent_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/base_icon_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_grip_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/base_icon.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/transparent@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_up@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/line_vertical_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/line_horizontal_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_minimize_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/checkbox_indeterminate_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_minimize_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_undock@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/checkbox_indeterminate_disabled@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_line_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_line_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_line_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/window_minimize_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/radio_unchecked@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/checkbox_indeterminate_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_closed_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_left.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_separator_vertical_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_more_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/line_horizontal_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_more_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_right_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_down_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_separator_horizontal_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_closed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_end@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_left_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/transparent_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_open_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_open_focus.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_down_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/radio_unchecked_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/branch_end.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/checkbox_unchecked_disabled.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/checkbox_checked_focus@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_left_pressed.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_down.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/toolbar_move_horizontal_pressed@2x.png \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/dark_icons/arrow_right_focus@2x.png
+	C:\Qt6\5.15.2\mingw81_64\bin\rcc.exe -name qgoodwindow_style ..\3rdParty\QGoodWindow\QGoodWindow\src\theme\qgoodwindow_style.qrc -pass 1 -o temp/rcc/qrc_qgoodwindow_style.cpp 
+	 g++ $(CXXFLAGS) -c temp/rcc/qrc_qgoodwindow_style.cpp -o temp/rcc/qrc_qgoodwindow_style.tmp.o 
+	 C:\Qt6\5.15.2\mingw81_64\bin\rcc.exe -name qgoodwindow_style ..\3rdParty\QGoodWindow\QGoodWindow\src\theme\qgoodwindow_style.qrc -pass 2 -temp temp/rcc/qrc_qgoodwindow_style.tmp.o -o temp\rcc\qrc_qgoodwindow_style.o
+
 compiler_moc_predefs_make_all: temp/moc/moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) temp\moc\moc_predefs.h
 temp/moc/moc_predefs.h: C:/Qt6/5.15.2/mingw81_64/mkspecs/features/data/dummy.cpp
 	g++ -fno-keep-inline-dllexport -Wall -Wextra -pedantic -g -std=gnu++1z -w -dM -E -o temp\moc\moc_predefs.h C:\Qt6\5.15.2\mingw81_64\mkspecs\features\data\dummy.cpp
 
-compiler_moc_header_make_all: temp/moc/moc_aboutwidget.cpp temp/moc/moc_dataprocessor.cpp temp/moc/moc_qlitethread.cpp temp/moc/moc_commhelper.cpp temp/moc/moc_globalsettings.cpp temp/moc/moc_mainwindow.cpp temp/moc/moc_netsetting.cpp temp/moc/moc_paramsetting.cpp temp/moc/moc_switchbutton.cpp temp/moc/moc_appender.cpp temp/moc/moc_appenderskeleton.cpp temp/moc/moc_asyncappender.cpp temp/moc/moc_binaryfileappender.cpp temp/moc/moc_binarylayout.cpp temp/moc/moc_binarylogger.cpp temp/moc/moc_binarytotextlayout.cpp temp/moc/moc_binarywriterappender.cpp temp/moc/moc_consoleappender.cpp temp/moc/moc_dailyfileappender.cpp temp/moc/moc_dailyrollingfileappender.cpp temp/moc/moc_fileappender.cpp temp/moc/moc_layout.cpp temp/moc/moc_logger.cpp temp/moc/moc_mainthreadappender.cpp temp/moc/moc_patternlayout.cpp temp/moc/moc_rollingbinaryfileappender.cpp temp/moc/moc_rollingfileappender.cpp temp/moc/moc_signalappender.cpp temp/moc/moc_simplelayout.cpp temp/moc/moc_simpletimelayout.cpp temp/moc/moc_systemlogappender.cpp temp/moc/moc_ttcclayout.cpp temp/moc/moc_writerappender.cpp temp/moc/moc_xmllayout.cpp temp/moc/moc_wdcappender.cpp temp/moc/moc_colorconsoleappender.cpp temp/moc/moc_configuratorhelper.cpp temp/moc/moc_dispatcher.cpp temp/moc/moc_filter.cpp temp/moc/moc_binaryeventfilter.cpp temp/moc/moc_debugappender.cpp temp/moc/moc_denyallfilter.cpp temp/moc/moc_levelmatchfilter.cpp temp/moc/moc_levelrangefilter.cpp temp/moc/moc_listappender.cpp temp/moc/moc_nullappender.cpp temp/moc/moc_stringmatchfilter.cpp temp/moc/moc_qcustomplot.cpp
+compiler_moc_header_make_all: temp/moc/moc_aboutwidget.cpp temp/moc/moc_dataprocessor.cpp temp/moc/moc_qlitethread.cpp temp/moc/moc_commhelper.cpp temp/moc/moc_globalsettings.cpp temp/moc/moc_mainwindow.cpp temp/moc/moc_netsetting.cpp temp/moc/moc_paramsetting.cpp temp/moc/moc_switchbutton.cpp temp/moc/moc_appender.cpp temp/moc/moc_appenderskeleton.cpp temp/moc/moc_asyncappender.cpp temp/moc/moc_binaryfileappender.cpp temp/moc/moc_binarylayout.cpp temp/moc/moc_binarylogger.cpp temp/moc/moc_binarytotextlayout.cpp temp/moc/moc_binarywriterappender.cpp temp/moc/moc_consoleappender.cpp temp/moc/moc_dailyfileappender.cpp temp/moc/moc_dailyrollingfileappender.cpp temp/moc/moc_fileappender.cpp temp/moc/moc_layout.cpp temp/moc/moc_logger.cpp temp/moc/moc_mainthreadappender.cpp temp/moc/moc_patternlayout.cpp temp/moc/moc_rollingbinaryfileappender.cpp temp/moc/moc_rollingfileappender.cpp temp/moc/moc_signalappender.cpp temp/moc/moc_simplelayout.cpp temp/moc/moc_simpletimelayout.cpp temp/moc/moc_systemlogappender.cpp temp/moc/moc_ttcclayout.cpp temp/moc/moc_writerappender.cpp temp/moc/moc_xmllayout.cpp temp/moc/moc_wdcappender.cpp temp/moc/moc_colorconsoleappender.cpp temp/moc/moc_configuratorhelper.cpp temp/moc/moc_dispatcher.cpp temp/moc/moc_filter.cpp temp/moc/moc_binaryeventfilter.cpp temp/moc/moc_debugappender.cpp temp/moc/moc_denyallfilter.cpp temp/moc/moc_levelmatchfilter.cpp temp/moc/moc_levelrangefilter.cpp temp/moc/moc_listappender.cpp temp/moc/moc_nullappender.cpp temp/moc/moc_stringmatchfilter.cpp temp/moc/moc_qcustomplot.cpp temp/moc/moc_lightstyle.cpp temp/moc/moc_darkstyle.cpp temp/moc/moc_customcolorstyle.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) temp\moc\moc_aboutwidget.cpp temp\moc\moc_dataprocessor.cpp temp\moc\moc_qlitethread.cpp temp\moc\moc_commhelper.cpp temp\moc\moc_globalsettings.cpp temp\moc\moc_mainwindow.cpp temp\moc\moc_netsetting.cpp temp\moc\moc_paramsetting.cpp temp\moc\moc_switchbutton.cpp temp\moc\moc_appender.cpp temp\moc\moc_appenderskeleton.cpp temp\moc\moc_asyncappender.cpp temp\moc\moc_binaryfileappender.cpp temp\moc\moc_binarylayout.cpp temp\moc\moc_binarylogger.cpp temp\moc\moc_binarytotextlayout.cpp temp\moc\moc_binarywriterappender.cpp temp\moc\moc_consoleappender.cpp temp\moc\moc_dailyfileappender.cpp temp\moc\moc_dailyrollingfileappender.cpp temp\moc\moc_fileappender.cpp temp\moc\moc_layout.cpp temp\moc\moc_logger.cpp temp\moc\moc_mainthreadappender.cpp temp\moc\moc_patternlayout.cpp temp\moc\moc_rollingbinaryfileappender.cpp temp\moc\moc_rollingfileappender.cpp temp\moc\moc_signalappender.cpp temp\moc\moc_simplelayout.cpp temp\moc\moc_simpletimelayout.cpp temp\moc\moc_systemlogappender.cpp temp\moc\moc_ttcclayout.cpp temp\moc\moc_writerappender.cpp temp\moc\moc_xmllayout.cpp temp\moc\moc_wdcappender.cpp temp\moc\moc_colorconsoleappender.cpp temp\moc\moc_configuratorhelper.cpp temp\moc\moc_dispatcher.cpp temp\moc\moc_filter.cpp temp\moc\moc_binaryeventfilter.cpp temp\moc\moc_debugappender.cpp temp\moc\moc_denyallfilter.cpp temp\moc\moc_levelmatchfilter.cpp temp\moc\moc_levelrangefilter.cpp temp\moc\moc_listappender.cpp temp\moc\moc_nullappender.cpp temp\moc\moc_stringmatchfilter.cpp temp\moc\moc_qcustomplot.cpp
+	-$(DEL_FILE) temp\moc\moc_aboutwidget.cpp temp\moc\moc_dataprocessor.cpp temp\moc\moc_qlitethread.cpp temp\moc\moc_commhelper.cpp temp\moc\moc_globalsettings.cpp temp\moc\moc_mainwindow.cpp temp\moc\moc_netsetting.cpp temp\moc\moc_paramsetting.cpp temp\moc\moc_switchbutton.cpp temp\moc\moc_appender.cpp temp\moc\moc_appenderskeleton.cpp temp\moc\moc_asyncappender.cpp temp\moc\moc_binaryfileappender.cpp temp\moc\moc_binarylayout.cpp temp\moc\moc_binarylogger.cpp temp\moc\moc_binarytotextlayout.cpp temp\moc\moc_binarywriterappender.cpp temp\moc\moc_consoleappender.cpp temp\moc\moc_dailyfileappender.cpp temp\moc\moc_dailyrollingfileappender.cpp temp\moc\moc_fileappender.cpp temp\moc\moc_layout.cpp temp\moc\moc_logger.cpp temp\moc\moc_mainthreadappender.cpp temp\moc\moc_patternlayout.cpp temp\moc\moc_rollingbinaryfileappender.cpp temp\moc\moc_rollingfileappender.cpp temp\moc\moc_signalappender.cpp temp\moc\moc_simplelayout.cpp temp\moc\moc_simpletimelayout.cpp temp\moc\moc_systemlogappender.cpp temp\moc\moc_ttcclayout.cpp temp\moc\moc_writerappender.cpp temp\moc\moc_xmllayout.cpp temp\moc\moc_wdcappender.cpp temp\moc\moc_colorconsoleappender.cpp temp\moc\moc_configuratorhelper.cpp temp\moc\moc_dispatcher.cpp temp\moc\moc_filter.cpp temp\moc\moc_binaryeventfilter.cpp temp\moc\moc_debugappender.cpp temp\moc\moc_denyallfilter.cpp temp\moc\moc_levelmatchfilter.cpp temp\moc\moc_levelrangefilter.cpp temp\moc\moc_listappender.cpp temp\moc\moc_nullappender.cpp temp\moc\moc_stringmatchfilter.cpp temp\moc\moc_qcustomplot.cpp temp\moc\moc_lightstyle.cpp temp\moc\moc_darkstyle.cpp temp\moc\moc_customcolorstyle.cpp
 temp/moc/moc_aboutwidget.cpp: aboutwidget.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QWidget \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qwidget.h \
@@ -975,7 +1423,7 @@ temp/moc/moc_aboutwidget.cpp: aboutwidget.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtouchdevice.h \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include aboutwidget.h -o temp\moc\moc_aboutwidget.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include aboutwidget.h -o temp\moc\moc_aboutwidget.cpp
 
 temp/moc/moc_dataprocessor.cpp: dataprocessor.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QObject \
@@ -1067,7 +1515,7 @@ temp/moc/moc_dataprocessor.cpp: dataprocessor.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthread.h \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include dataprocessor.h -o temp\moc\moc_dataprocessor.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include dataprocessor.h -o temp\moc\moc_dataprocessor.cpp
 
 temp/moc/moc_qlitethread.cpp: qlitethread.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QThread \
@@ -1128,7 +1576,7 @@ temp/moc/moc_qlitethread.cpp: qlitethread.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qelapsedtimer.h \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include qlitethread.h -o temp\moc\moc_qlitethread.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include qlitethread.h -o temp\moc\moc_qlitethread.cpp
 
 temp/moc/moc_commhelper.cpp: commhelper.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QObject \
@@ -1222,7 +1670,7 @@ temp/moc/moc_commhelper.cpp: commhelper.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdatetime.h \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include commhelper.h -o temp\moc\moc_commhelper.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include commhelper.h -o temp\moc\moc_commhelper.cpp
 
 temp/moc/moc_globalsettings.cpp: globalsettings.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QObject \
@@ -1318,7 +1766,7 @@ temp/moc/moc_globalsettings.cpp: globalsettings.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfilesystemwatcher.h \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include globalsettings.h -o temp\moc\moc_globalsettings.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include globalsettings.h -o temp\moc\moc_globalsettings.cpp
 
 temp/moc/moc_mainwindow.cpp: mainwindow.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QMainWindow \
@@ -1453,7 +1901,7 @@ temp/moc/moc_mainwindow.cpp: mainwindow.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdatetime.h \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include mainwindow.h -o temp\moc\moc_mainwindow.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include mainwindow.h -o temp\moc\moc_mainwindow.cpp
 
 temp/moc/moc_netsetting.cpp: netsetting.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QDialog \
@@ -1562,7 +2010,7 @@ temp/moc/moc_netsetting.cpp: netsetting.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtouchdevice.h \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include netsetting.h -o temp\moc\moc_netsetting.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include netsetting.h -o temp\moc\moc_netsetting.cpp
 
 temp/moc/moc_paramsetting.cpp: paramsetting.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QDialog \
@@ -1671,7 +2119,7 @@ temp/moc/moc_paramsetting.cpp: paramsetting.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtouchdevice.h \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include paramsetting.h -o temp\moc\moc_paramsetting.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include paramsetting.h -o temp\moc\moc_paramsetting.cpp
 
 temp/moc/moc_switchbutton.cpp: switchbutton.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QWidget \
@@ -1779,7 +2227,7 @@ temp/moc/moc_switchbutton.cpp: switchbutton.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtouchdevice.h \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include switchbutton.h -o temp\moc\moc_switchbutton.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include switchbutton.h -o temp\moc\moc_switchbutton.cpp
 
 temp/moc/moc_appender.cpp: ../3rdParty/log4qt/Include/log4qt/appender.h \
 		../3rdParty/log4qt/Include/log4qt/layout.h \
@@ -1851,7 +2299,7 @@ temp/moc/moc_appender.cpp: ../3rdParty/log4qt/Include/log4qt/appender.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QAtomicPointer \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\appender.h -o temp\moc\moc_appender.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\appender.h -o temp\moc\moc_appender.cpp
 
 temp/moc/moc_appenderskeleton.cpp: ../3rdParty/log4qt/Include/log4qt/appenderskeleton.h \
 		../3rdParty/log4qt/Include/log4qt/appender.h \
@@ -1951,7 +2399,7 @@ temp/moc/moc_appenderskeleton.cpp: ../3rdParty/log4qt/Include/log4qt/appenderske
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMutex \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\appenderskeleton.h -o temp\moc\moc_appenderskeleton.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\appenderskeleton.h -o temp\moc\moc_appenderskeleton.cpp
 
 temp/moc/moc_asyncappender.cpp: ../3rdParty/log4qt/Include/log4qt/asyncappender.h \
 		../3rdParty/log4qt/Include/log4qt/appenderskeleton.h \
@@ -2052,7 +2500,7 @@ temp/moc/moc_asyncappender.cpp: ../3rdParty/log4qt/Include/log4qt/asyncappender.
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMutex \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\asyncappender.h -o temp\moc\moc_asyncappender.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\asyncappender.h -o temp\moc\moc_asyncappender.cpp
 
 temp/moc/moc_binaryfileappender.cpp: ../3rdParty/log4qt/Include/log4qt/binaryfileappender.h \
 		../3rdParty/log4qt/Include/log4qt/binarywriterappender.h \
@@ -2156,7 +2604,7 @@ temp/moc/moc_binaryfileappender.cpp: ../3rdParty/log4qt/Include/log4qt/binaryfil
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdatastream.h \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\binaryfileappender.h -o temp\moc\moc_binaryfileappender.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\binaryfileappender.h -o temp\moc\moc_binaryfileappender.cpp
 
 temp/moc/moc_binarylayout.cpp: ../3rdParty/log4qt/Include/log4qt/binarylayout.h \
 		../3rdParty/log4qt/Include/log4qt/layout.h \
@@ -2226,7 +2674,7 @@ temp/moc/moc_binarylayout.cpp: ../3rdParty/log4qt/Include/log4qt/binarylayout.h 
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QByteArray \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\binarylayout.h -o temp\moc\moc_binarylayout.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\binarylayout.h -o temp\moc\moc_binarylayout.cpp
 
 temp/moc/moc_binarylogger.cpp: ../3rdParty/log4qt/Include/log4qt/binarylogger.h \
 		../3rdParty/log4qt/Include/log4qt/logger.h \
@@ -2327,7 +2775,7 @@ temp/moc/moc_binarylogger.cpp: ../3rdParty/log4qt/Include/log4qt/binarylogger.h 
 		../3rdParty/log4qt/Include/log4qt/helpers/binaryclasslogger.h \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\binarylogger.h -o temp\moc\moc_binarylogger.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\binarylogger.h -o temp\moc\moc_binarylogger.cpp
 
 temp/moc/moc_binarytotextlayout.cpp: ../3rdParty/log4qt/Include/log4qt/binarytotextlayout.h \
 		../3rdParty/log4qt/Include/log4qt/layout.h \
@@ -2396,7 +2844,7 @@ temp/moc/moc_binarytotextlayout.cpp: ../3rdParty/log4qt/Include/log4qt/binarytot
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QObject \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\binarytotextlayout.h -o temp\moc\moc_binarytotextlayout.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\binarytotextlayout.h -o temp\moc\moc_binarytotextlayout.cpp
 
 temp/moc/moc_binarywriterappender.cpp: ../3rdParty/log4qt/Include/log4qt/binarywriterappender.h \
 		../3rdParty/log4qt/Include/log4qt/appenderskeleton.h \
@@ -2497,7 +2945,7 @@ temp/moc/moc_binarywriterappender.cpp: ../3rdParty/log4qt/Include/log4qt/binaryw
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMutex \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\binarywriterappender.h -o temp\moc\moc_binarywriterappender.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\binarywriterappender.h -o temp\moc\moc_binarywriterappender.cpp
 
 temp/moc/moc_consoleappender.cpp: ../3rdParty/log4qt/Include/log4qt/consoleappender.h \
 		../3rdParty/log4qt/Include/log4qt/writerappender.h \
@@ -2599,7 +3047,7 @@ temp/moc/moc_consoleappender.cpp: ../3rdParty/log4qt/Include/log4qt/consoleappen
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMutex \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\consoleappender.h -o temp\moc\moc_consoleappender.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\consoleappender.h -o temp\moc\moc_consoleappender.cpp
 
 temp/moc/moc_dailyfileappender.cpp: ../3rdParty/log4qt/Include/log4qt/dailyfileappender.h \
 		../3rdParty/log4qt/Include/log4qt/fileappender.h \
@@ -2711,7 +3159,7 @@ temp/moc/moc_dailyfileappender.cpp: ../3rdParty/log4qt/Include/log4qt/dailyfilea
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qresultstore.h \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\dailyfileappender.h -o temp\moc\moc_dailyfileappender.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\dailyfileappender.h -o temp\moc\moc_dailyfileappender.cpp
 
 temp/moc/moc_dailyrollingfileappender.cpp: ../3rdParty/log4qt/Include/log4qt/dailyrollingfileappender.h \
 		../3rdParty/log4qt/Include/log4qt/fileappender.h \
@@ -2816,7 +3264,7 @@ temp/moc/moc_dailyrollingfileappender.cpp: ../3rdParty/log4qt/Include/log4qt/dai
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdatetime.h \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\dailyrollingfileappender.h -o temp\moc\moc_dailyrollingfileappender.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\dailyrollingfileappender.h -o temp\moc\moc_dailyrollingfileappender.cpp
 
 temp/moc/moc_fileappender.cpp: ../3rdParty/log4qt/Include/log4qt/fileappender.h \
 		../3rdParty/log4qt/Include/log4qt/writerappender.h \
@@ -2918,7 +3366,7 @@ temp/moc/moc_fileappender.cpp: ../3rdParty/log4qt/Include/log4qt/fileappender.h 
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMutex \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\fileappender.h -o temp\moc\moc_fileappender.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\fileappender.h -o temp\moc\moc_fileappender.cpp
 
 temp/moc/moc_layout.cpp: ../3rdParty/log4qt/Include/log4qt/layout.h \
 		../3rdParty/log4qt/Include/log4qt/log4qtdefs.h \
@@ -2986,7 +3434,7 @@ temp/moc/moc_layout.cpp: ../3rdParty/log4qt/Include/log4qt/layout.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QObject \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\layout.h -o temp\moc\moc_layout.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\layout.h -o temp\moc\moc_layout.cpp
 
 temp/moc/moc_logger.cpp: ../3rdParty/log4qt/Include/log4qt/logger.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QObject \
@@ -3084,7 +3532,7 @@ temp/moc/moc_logger.cpp: ../3rdParty/log4qt/Include/log4qt/logger.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QEvent \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\logger.h -o temp\moc\moc_logger.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\logger.h -o temp\moc\moc_logger.cpp
 
 temp/moc/moc_mainthreadappender.cpp: ../3rdParty/log4qt/Include/log4qt/mainthreadappender.h \
 		../3rdParty/log4qt/Include/log4qt/appenderskeleton.h \
@@ -3185,7 +3633,7 @@ temp/moc/moc_mainthreadappender.cpp: ../3rdParty/log4qt/Include/log4qt/mainthrea
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMutex \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\mainthreadappender.h -o temp\moc\moc_mainthreadappender.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\mainthreadappender.h -o temp\moc\moc_mainthreadappender.cpp
 
 temp/moc/moc_patternlayout.cpp: ../3rdParty/log4qt/Include/log4qt/patternlayout.h \
 		../3rdParty/log4qt/Include/log4qt/layout.h \
@@ -3258,7 +3706,7 @@ temp/moc/moc_patternlayout.cpp: ../3rdParty/log4qt/Include/log4qt/patternlayout.
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QScopedPointer \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\patternlayout.h -o temp\moc\moc_patternlayout.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\patternlayout.h -o temp\moc\moc_patternlayout.cpp
 
 temp/moc/moc_rollingbinaryfileappender.cpp: ../3rdParty/log4qt/Include/log4qt/rollingbinaryfileappender.h \
 		../3rdParty/log4qt/Include/log4qt/binaryfileappender.h \
@@ -3365,7 +3813,7 @@ temp/moc/moc_rollingbinaryfileappender.cpp: ../3rdParty/log4qt/Include/log4qt/ro
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdatetime.h \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\rollingbinaryfileappender.h -o temp\moc\moc_rollingbinaryfileappender.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\rollingbinaryfileappender.h -o temp\moc\moc_rollingbinaryfileappender.cpp
 
 temp/moc/moc_rollingfileappender.cpp: ../3rdParty/log4qt/Include/log4qt/rollingfileappender.h \
 		../3rdParty/log4qt/Include/log4qt/fileappender.h \
@@ -3468,7 +3916,7 @@ temp/moc/moc_rollingfileappender.cpp: ../3rdParty/log4qt/Include/log4qt/rollingf
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMutex \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\rollingfileappender.h -o temp\moc\moc_rollingfileappender.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\rollingfileappender.h -o temp\moc\moc_rollingfileappender.cpp
 
 temp/moc/moc_signalappender.cpp: ../3rdParty/log4qt/Include/log4qt/signalappender.h \
 		../3rdParty/log4qt/Include/log4qt/appenderskeleton.h \
@@ -3569,7 +4017,7 @@ temp/moc/moc_signalappender.cpp: ../3rdParty/log4qt/Include/log4qt/signalappende
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMutex \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\signalappender.h -o temp\moc\moc_signalappender.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\signalappender.h -o temp\moc\moc_signalappender.cpp
 
 temp/moc/moc_simplelayout.cpp: ../3rdParty/log4qt/Include/log4qt/simplelayout.h \
 		../3rdParty/log4qt/Include/log4qt/layout.h \
@@ -3638,7 +4086,7 @@ temp/moc/moc_simplelayout.cpp: ../3rdParty/log4qt/Include/log4qt/simplelayout.h 
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QObject \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\simplelayout.h -o temp\moc\moc_simplelayout.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\simplelayout.h -o temp\moc\moc_simplelayout.cpp
 
 temp/moc/moc_simpletimelayout.cpp: ../3rdParty/log4qt/Include/log4qt/simpletimelayout.h \
 		../3rdParty/log4qt/Include/log4qt/layout.h \
@@ -3707,7 +4155,7 @@ temp/moc/moc_simpletimelayout.cpp: ../3rdParty/log4qt/Include/log4qt/simpletimel
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QObject \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\simpletimelayout.h -o temp\moc\moc_simpletimelayout.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\simpletimelayout.h -o temp\moc\moc_simpletimelayout.cpp
 
 temp/moc/moc_systemlogappender.cpp: ../3rdParty/log4qt/Include/log4qt/systemlogappender.h \
 		../3rdParty/log4qt/Include/log4qt/appenderskeleton.h \
@@ -3808,7 +4256,7 @@ temp/moc/moc_systemlogappender.cpp: ../3rdParty/log4qt/Include/log4qt/systemloga
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMutex \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\systemlogappender.h -o temp\moc\moc_systemlogappender.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\systemlogappender.h -o temp\moc\moc_systemlogappender.cpp
 
 temp/moc/moc_ttcclayout.cpp: ../3rdParty/log4qt/Include/log4qt/ttcclayout.h \
 		../3rdParty/log4qt/Include/log4qt/layout.h \
@@ -3881,7 +4329,7 @@ temp/moc/moc_ttcclayout.cpp: ../3rdParty/log4qt/Include/log4qt/ttcclayout.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QScopedPointer \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\ttcclayout.h -o temp\moc\moc_ttcclayout.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\ttcclayout.h -o temp\moc\moc_ttcclayout.cpp
 
 temp/moc/moc_writerappender.cpp: ../3rdParty/log4qt/Include/log4qt/writerappender.h \
 		../3rdParty/log4qt/Include/log4qt/appenderskeleton.h \
@@ -3982,7 +4430,7 @@ temp/moc/moc_writerappender.cpp: ../3rdParty/log4qt/Include/log4qt/writerappende
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMutex \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\writerappender.h -o temp\moc\moc_writerappender.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\writerappender.h -o temp\moc\moc_writerappender.cpp
 
 temp/moc/moc_xmllayout.cpp: ../3rdParty/log4qt/Include/log4qt/xmllayout.h \
 		../3rdParty/log4qt/Include/log4qt/layout.h \
@@ -4051,7 +4499,7 @@ temp/moc/moc_xmllayout.cpp: ../3rdParty/log4qt/Include/log4qt/xmllayout.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QObject \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\xmllayout.h -o temp\moc\moc_xmllayout.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\xmllayout.h -o temp\moc\moc_xmllayout.cpp
 
 temp/moc/moc_wdcappender.cpp: ../3rdParty/log4qt/Include/log4qt/wdcappender.h \
 		../3rdParty/log4qt/Include/log4qt/appenderskeleton.h \
@@ -4152,7 +4600,7 @@ temp/moc/moc_wdcappender.cpp: ../3rdParty/log4qt/Include/log4qt/wdcappender.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMutex \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\wdcappender.h -o temp\moc\moc_wdcappender.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\wdcappender.h -o temp\moc\moc_wdcappender.cpp
 
 temp/moc/moc_colorconsoleappender.cpp: ../3rdParty/log4qt/Include/log4qt/colorconsoleappender.h \
 		../3rdParty/log4qt/Include/log4qt/consoleappender.h \
@@ -4255,7 +4703,7 @@ temp/moc/moc_colorconsoleappender.cpp: ../3rdParty/log4qt/Include/log4qt/colorco
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMutex \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\colorconsoleappender.h -o temp\moc\moc_colorconsoleappender.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\colorconsoleappender.h -o temp\moc\moc_colorconsoleappender.cpp
 
 temp/moc/moc_configuratorhelper.cpp: ../3rdParty/log4qt/Include/log4qt/helpers/configuratorhelper.h \
 		../3rdParty/log4qt/Include/log4qt/log4qtdefs.h \
@@ -4333,7 +4781,7 @@ temp/moc/moc_configuratorhelper.cpp: ../3rdParty/log4qt/Include/log4qt/helpers/c
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qshareddata.h \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\helpers\configuratorhelper.h -o temp\moc\moc_configuratorhelper.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\helpers\configuratorhelper.h -o temp\moc\moc_configuratorhelper.cpp
 
 temp/moc/moc_dispatcher.cpp: ../3rdParty/log4qt/Include/log4qt/helpers/dispatcher.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QObject \
@@ -4391,7 +4839,7 @@ temp/moc/moc_dispatcher.cpp: ../3rdParty/log4qt/Include/log4qt/helpers/dispatche
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobject_impl.h \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\helpers\dispatcher.h -o temp\moc\moc_dispatcher.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\helpers\dispatcher.h -o temp\moc\moc_dispatcher.cpp
 
 temp/moc/moc_filter.cpp: ../3rdParty/log4qt/Include/log4qt/spi/filter.h \
 		../3rdParty/log4qt/Include/log4qt/log4qt.h \
@@ -4458,7 +4906,7 @@ temp/moc/moc_filter.cpp: ../3rdParty/log4qt/Include/log4qt/spi/filter.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QObject \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\spi\filter.h -o temp\moc\moc_filter.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\spi\filter.h -o temp\moc\moc_filter.cpp
 
 temp/moc/moc_binaryeventfilter.cpp: ../3rdParty/log4qt/Include/log4qt/varia/binaryeventfilter.h \
 		../3rdParty/log4qt/Include/log4qt/spi/filter.h \
@@ -4526,7 +4974,7 @@ temp/moc/moc_binaryeventfilter.cpp: ../3rdParty/log4qt/Include/log4qt/varia/bina
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QObject \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\varia\binaryeventfilter.h -o temp\moc\moc_binaryeventfilter.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\varia\binaryeventfilter.h -o temp\moc\moc_binaryeventfilter.cpp
 
 temp/moc/moc_debugappender.cpp: ../3rdParty/log4qt/Include/log4qt/varia/debugappender.h \
 		../3rdParty/log4qt/Include/log4qt/appenderskeleton.h \
@@ -4627,7 +5075,7 @@ temp/moc/moc_debugappender.cpp: ../3rdParty/log4qt/Include/log4qt/varia/debugapp
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMutex \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\varia\debugappender.h -o temp\moc\moc_debugappender.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\varia\debugappender.h -o temp\moc\moc_debugappender.cpp
 
 temp/moc/moc_denyallfilter.cpp: ../3rdParty/log4qt/Include/log4qt/varia/denyallfilter.h \
 		../3rdParty/log4qt/Include/log4qt/spi/filter.h \
@@ -4695,7 +5143,7 @@ temp/moc/moc_denyallfilter.cpp: ../3rdParty/log4qt/Include/log4qt/varia/denyallf
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QObject \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\varia\denyallfilter.h -o temp\moc\moc_denyallfilter.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\varia\denyallfilter.h -o temp\moc\moc_denyallfilter.cpp
 
 temp/moc/moc_levelmatchfilter.cpp: ../3rdParty/log4qt/Include/log4qt/varia/levelmatchfilter.h \
 		../3rdParty/log4qt/Include/log4qt/spi/filter.h \
@@ -4766,7 +5214,7 @@ temp/moc/moc_levelmatchfilter.cpp: ../3rdParty/log4qt/Include/log4qt/varia/level
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMetaType \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\varia\levelmatchfilter.h -o temp\moc\moc_levelmatchfilter.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\varia\levelmatchfilter.h -o temp\moc\moc_levelmatchfilter.cpp
 
 temp/moc/moc_levelrangefilter.cpp: ../3rdParty/log4qt/Include/log4qt/varia/levelrangefilter.h \
 		../3rdParty/log4qt/Include/log4qt/spi/filter.h \
@@ -4837,7 +5285,7 @@ temp/moc/moc_levelrangefilter.cpp: ../3rdParty/log4qt/Include/log4qt/varia/level
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMetaType \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\varia\levelrangefilter.h -o temp\moc\moc_levelrangefilter.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\varia\levelrangefilter.h -o temp\moc\moc_levelrangefilter.cpp
 
 temp/moc/moc_listappender.cpp: ../3rdParty/log4qt/Include/log4qt/varia/listappender.h \
 		../3rdParty/log4qt/Include/log4qt/appenderskeleton.h \
@@ -4938,7 +5386,7 @@ temp/moc/moc_listappender.cpp: ../3rdParty/log4qt/Include/log4qt/varia/listappen
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMutex \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\varia\listappender.h -o temp\moc\moc_listappender.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\varia\listappender.h -o temp\moc\moc_listappender.cpp
 
 temp/moc/moc_nullappender.cpp: ../3rdParty/log4qt/Include/log4qt/varia/nullappender.h \
 		../3rdParty/log4qt/Include/log4qt/appenderskeleton.h \
@@ -5039,7 +5487,7 @@ temp/moc/moc_nullappender.cpp: ../3rdParty/log4qt/Include/log4qt/varia/nullappen
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMutex \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\varia\nullappender.h -o temp\moc\moc_nullappender.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\varia\nullappender.h -o temp\moc\moc_nullappender.cpp
 
 temp/moc/moc_stringmatchfilter.cpp: ../3rdParty/log4qt/Include/log4qt/varia/stringmatchfilter.h \
 		../3rdParty/log4qt/Include/log4qt/spi/filter.h \
@@ -5107,7 +5555,7 @@ temp/moc/moc_stringmatchfilter.cpp: ../3rdParty/log4qt/Include/log4qt/varia/stri
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QObject \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\varia\stringmatchfilter.h -o temp\moc\moc_stringmatchfilter.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\log4qt\Include\log4qt\varia\stringmatchfilter.h -o temp\moc\moc_stringmatchfilter.cpp
 
 temp/moc/moc_qcustomplot.cpp: ../3rdParty/QCustomplot/qcustomplot.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qglobal.h \
@@ -5627,7 +6075,1444 @@ temp/moc/moc_qcustomplot.cpp: ../3rdParty/QCustomplot/qcustomplot.h \
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QTimeZone \
 		temp/moc/moc_predefs.h \
 		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
-	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\QCustomplot\qcustomplot.h -o temp\moc\moc_qcustomplot.cpp
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\QCustomplot\qcustomplot.h -o temp\moc\moc_qcustomplot.cpp
+
+temp/moc/moc_lightstyle.cpp: ../3rdParty/QGoodWindow/QGoodWindow/src/theme/lightstyle.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QtCore \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QtCoreDepends \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qglobal.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qconfig-bootstrapped.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qconfig.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtcore-config.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsystemdetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qprocessordetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcompilerdetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtypeinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsysinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlogging.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qflags.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbasicatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_bootstrap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qgenericatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_cxx11.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_msvc.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qglobalstatic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmutex.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qnumeric.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qversiontagging.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobjectdefs.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qnamespace.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobjectdefs_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstring.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qchar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbytearray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrefcount.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qarraydata.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringliteral.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringalgorithms.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringbuilder.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qalgorithms.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qiterator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qhashfunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpair.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvector.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontainertools_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpoint.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbytearraylist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qregexp.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringmatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcoreevent.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qscopedpointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmetatype.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvarlengtharray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontainerfwd.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobject_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstracteventdispatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qeventloop.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractitemmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvariant.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdebug.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qhash.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtextstream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qiodevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlocale.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qshareddata.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qset.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontiguouscache.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsharedpointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsharedpointer_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractnativeeventfilter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractstate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstracttransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qanimationgroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qarraydataops.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qarraydatapointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbasictimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbitarray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbuffer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbytearraymatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcache.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcalendar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborarray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborvalue.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdatetime.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborcommon.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qregularexpression.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qurl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qurlquery.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/quuid.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcbormap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborstream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborstreamreader.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfloat16.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborstreamwriter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcollator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcommandlineoption.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcommandlineparser.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcoreapplication.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qconcatenatetablesproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcryptographichash.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdatastream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdeadlinetimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qelapsedtimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdir.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfileinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfile.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfiledevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdiriterator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qeasingcurve.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qendian.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qeventtransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qexception.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfactoryinterface.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfileselector.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QObject \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QStringList \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfilesystemwatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfinalstate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfuture.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfutureinterface.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrunnable.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qresultstore.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfuturesynchronizer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfuturewatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qhistorystate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qidentityproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qisenum.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qitemselectionmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsonarray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsonvalue.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsondocument.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsonobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlibrary.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlibraryinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qversionnumber.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qline.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlinkedlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlockfile.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qloggingcategory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmargins.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmath.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmessageauthenticationcode.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmetaobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmimedata.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmimedatabase.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmimetype.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobjectcleanuphandler.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qoperatingsystemversion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qparallelanimationgroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpauseanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpluginloader.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qprocess.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpropertyanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvariantanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qqueue.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrandom.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qreadwritelock.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrect.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsize.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qresource.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsavefile.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qscopedvaluerollback.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qscopeguard.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsemaphore.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsequentialanimationgroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsettings.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsharedmemory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsignalmapper.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsignaltransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsocketnotifier.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsortfilterproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstack.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstandardpaths.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstatemachine.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstorageinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringlistmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsystemsemaphore.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtemporarydir.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtemporaryfile.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtextboundaryfinder.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtextcodec.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthread.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthreadpool.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthreadstorage.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtimeline.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtimezone.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtranslator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtransposeproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtypetraits.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qwaitcondition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QDeadlineTimer \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qwineventnotifier.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qxmlstream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtcoreversion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QtGui \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QtGuiDepends \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtguiglobal.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtgui-config.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qabstracttextdocumentlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qcolor.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qrgb.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qrgba64.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qevent.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qwindowdefs.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qwindowdefs_win.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qregion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qkeysequence.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qvector2d.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtouchdevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextformat.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qfont.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpen.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qbrush.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qmatrix.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpolygon.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtransform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qimage.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpaintdevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpixelformat.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpixmap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextoption.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qglyphrun.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qrawfont.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qfontdatabase.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextcursor.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextdocument.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpalette.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qaccessible.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qaccessiblebridge.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qaccessibleobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qaccessibleplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qbackingstore.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QEvent \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMargins \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QRect \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qsurface.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qsurfaceformat.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qicon.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qcursor.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qbitmap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qclipboard.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qcolorspace.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qcolortransform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qdesktopservices.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qdrag.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qfontinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qfontmetrics.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qgenericmatrix.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qgenericplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qgenericpluginfactory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qguiapplication.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qinputmethod.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qiconengine.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qiconengineplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qimageiohandler.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qimagereader.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qimagewriter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qmatrix4x4.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qvector3d.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qvector4d.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qquaternion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qmovie.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qoffscreensurface.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qt_windows.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/GLES3/gl3.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/GLES3/gl3platform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/KHR/khrplatform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/GLES2/gl2.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/GLES2/gl2platform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengles2ext.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglext.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglbuffer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglcontext.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QScopedPointer \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QSurfaceFormat \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglversionfunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengldebug.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglextrafunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglfunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglframebufferobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglpaintdevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglpixeltransferoptions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QSharedDataPointer \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglshaderprogram.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengltexture.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengltextureblitter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QMatrix3x3 \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QMatrix4x4 \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengltimerquery.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglvertexarrayobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QPaintDeviceWindow \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpaintdevicewindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QWindow \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QPaintDevice \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QOpenGLContext \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QImage \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpagedpaintdevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpagelayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpagesize.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpaintengine.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpainter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpainterpath.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpdfwriter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpicture.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpictureformatplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpixmapcache.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qrasterwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qscreen.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QList \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QSize \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QSizeF \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QTransform \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qsessionmanager.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qstandarditemmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qstatictext.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qstylehints.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qsyntaxhighlighter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextdocumentfragment.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextdocumentwriter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtexttable.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qvalidator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtguiversion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QtWidgets \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QtWidgetsDepends \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtwidgetsglobal.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtwidgets-config.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractbutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsizepolicy.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractitemdelegate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstyleoption.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractspinbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qslider.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractslider.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstyle.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtabbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtabwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qrubberband.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qframe.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractitemview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractscrollarea.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qaccessiblewidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qaction.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qactiongroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qapplication.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdesktopwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qboxlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlayoutitem.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgridlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qbuttongroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcalendarwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcheckbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcolordialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcolormap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcolumnview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcombobox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcommandlinkbutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qpushbutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcommonstyle.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcompleter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdatawidgetmapper.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdatetimeedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdial.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdialogbuttonbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdirmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfileiconprovider.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdockwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdrawutil.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qerrormessage.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfiledialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfilesystemmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfocusframe.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfontcombobox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfontdialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qformlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QLayout \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgesture.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgesturerecognizer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsanchorlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsitem.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicslayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicslayoutitem.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicseffect.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsgridlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsitemanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicslinearlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsproxywidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicswidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsscene.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicssceneevent.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicstransform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QVector3D \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qscrollarea.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgroupbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qheaderview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qinputdialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlineedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qitemdelegate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qitemeditorfactory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qkeyeventtransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qkeysequenceedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlabel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlcdnumber.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlistview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlistwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmainwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmdiarea.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmdisubwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmenu.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmenubar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmessagebox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmouseeventtransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qopenglwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QWidget \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qplaintextedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtextedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qprogressbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qprogressdialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qproxystyle.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QCommonStyle \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qradiobutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qscrollbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qscroller.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QPointF \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QScrollerProperties \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qscrollerproperties.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMetaType \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QVariant \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qshortcut.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsizegrip.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qspinbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsplashscreen.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsplitter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstackedlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstackedwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstatusbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstyleditemdelegate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstylefactory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstylepainter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstyleplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsystemtrayicon.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtableview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtablewidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtextbrowser.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtoolbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtoolbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtoolbutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtooltip.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtreeview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtreewidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtreewidgetitemiterator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qundogroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qundostack.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qundoview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qwhatsthis.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qwidgetaction.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qwizard.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtwidgetsversion.h \
+		temp/moc/moc_predefs.h \
+		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\QGoodWindow\QGoodWindow\src\theme\lightstyle.h -o temp\moc\moc_lightstyle.cpp
+
+temp/moc/moc_darkstyle.cpp: ../3rdParty/QGoodWindow/QGoodWindow/src/theme/darkstyle.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QtCore \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QtCoreDepends \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qglobal.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qconfig-bootstrapped.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qconfig.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtcore-config.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsystemdetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qprocessordetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcompilerdetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtypeinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsysinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlogging.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qflags.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbasicatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_bootstrap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qgenericatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_cxx11.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_msvc.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qglobalstatic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmutex.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qnumeric.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qversiontagging.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobjectdefs.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qnamespace.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobjectdefs_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstring.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qchar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbytearray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrefcount.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qarraydata.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringliteral.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringalgorithms.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringbuilder.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qalgorithms.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qiterator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qhashfunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpair.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvector.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontainertools_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpoint.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbytearraylist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qregexp.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringmatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcoreevent.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qscopedpointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmetatype.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvarlengtharray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontainerfwd.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobject_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstracteventdispatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qeventloop.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractitemmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvariant.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdebug.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qhash.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtextstream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qiodevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlocale.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qshareddata.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qset.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontiguouscache.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsharedpointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsharedpointer_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractnativeeventfilter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractstate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstracttransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qanimationgroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qarraydataops.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qarraydatapointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbasictimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbitarray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbuffer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbytearraymatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcache.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcalendar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborarray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborvalue.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdatetime.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborcommon.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qregularexpression.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qurl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qurlquery.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/quuid.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcbormap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborstream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborstreamreader.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfloat16.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborstreamwriter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcollator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcommandlineoption.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcommandlineparser.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcoreapplication.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qconcatenatetablesproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcryptographichash.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdatastream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdeadlinetimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qelapsedtimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdir.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfileinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfile.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfiledevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdiriterator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qeasingcurve.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qendian.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qeventtransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qexception.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfactoryinterface.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfileselector.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QObject \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QStringList \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfilesystemwatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfinalstate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfuture.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfutureinterface.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrunnable.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qresultstore.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfuturesynchronizer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfuturewatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qhistorystate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qidentityproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qisenum.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qitemselectionmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsonarray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsonvalue.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsondocument.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsonobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlibrary.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlibraryinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qversionnumber.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qline.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlinkedlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlockfile.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qloggingcategory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmargins.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmath.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmessageauthenticationcode.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmetaobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmimedata.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmimedatabase.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmimetype.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobjectcleanuphandler.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qoperatingsystemversion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qparallelanimationgroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpauseanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpluginloader.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qprocess.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpropertyanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvariantanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qqueue.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrandom.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qreadwritelock.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrect.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsize.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qresource.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsavefile.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qscopedvaluerollback.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qscopeguard.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsemaphore.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsequentialanimationgroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsettings.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsharedmemory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsignalmapper.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsignaltransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsocketnotifier.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsortfilterproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstack.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstandardpaths.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstatemachine.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstorageinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringlistmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsystemsemaphore.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtemporarydir.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtemporaryfile.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtextboundaryfinder.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtextcodec.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthread.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthreadpool.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthreadstorage.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtimeline.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtimezone.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtranslator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtransposeproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtypetraits.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qwaitcondition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QDeadlineTimer \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qwineventnotifier.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qxmlstream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtcoreversion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QtGui \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QtGuiDepends \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtguiglobal.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtgui-config.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qabstracttextdocumentlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qcolor.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qrgb.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qrgba64.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qevent.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qwindowdefs.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qwindowdefs_win.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qregion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qkeysequence.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qvector2d.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtouchdevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextformat.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qfont.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpen.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qbrush.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qmatrix.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpolygon.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtransform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qimage.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpaintdevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpixelformat.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpixmap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextoption.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qglyphrun.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qrawfont.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qfontdatabase.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextcursor.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextdocument.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpalette.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qaccessible.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qaccessiblebridge.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qaccessibleobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qaccessibleplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qbackingstore.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QEvent \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMargins \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QRect \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qsurface.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qsurfaceformat.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qicon.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qcursor.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qbitmap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qclipboard.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qcolorspace.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qcolortransform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qdesktopservices.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qdrag.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qfontinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qfontmetrics.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qgenericmatrix.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qgenericplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qgenericpluginfactory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qguiapplication.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qinputmethod.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qiconengine.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qiconengineplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qimageiohandler.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qimagereader.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qimagewriter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qmatrix4x4.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qvector3d.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qvector4d.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qquaternion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qmovie.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qoffscreensurface.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qt_windows.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/GLES3/gl3.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/GLES3/gl3platform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/KHR/khrplatform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/GLES2/gl2.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/GLES2/gl2platform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengles2ext.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglext.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglbuffer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglcontext.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QScopedPointer \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QSurfaceFormat \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglversionfunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengldebug.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglextrafunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglfunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglframebufferobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglpaintdevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglpixeltransferoptions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QSharedDataPointer \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglshaderprogram.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengltexture.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengltextureblitter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QMatrix3x3 \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QMatrix4x4 \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengltimerquery.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglvertexarrayobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QPaintDeviceWindow \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpaintdevicewindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QWindow \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QPaintDevice \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QOpenGLContext \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QImage \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpagedpaintdevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpagelayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpagesize.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpaintengine.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpainter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpainterpath.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpdfwriter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpicture.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpictureformatplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpixmapcache.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qrasterwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qscreen.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QList \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QSize \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QSizeF \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QTransform \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qsessionmanager.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qstandarditemmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qstatictext.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qstylehints.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qsyntaxhighlighter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextdocumentfragment.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextdocumentwriter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtexttable.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qvalidator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtguiversion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QtWidgets \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QtWidgetsDepends \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtwidgetsglobal.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtwidgets-config.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractbutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsizepolicy.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractitemdelegate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstyleoption.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractspinbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qslider.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractslider.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstyle.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtabbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtabwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qrubberband.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qframe.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractitemview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractscrollarea.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qaccessiblewidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qaction.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qactiongroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qapplication.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdesktopwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qboxlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlayoutitem.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgridlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qbuttongroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcalendarwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcheckbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcolordialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcolormap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcolumnview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcombobox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcommandlinkbutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qpushbutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcommonstyle.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcompleter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdatawidgetmapper.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdatetimeedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdial.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdialogbuttonbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdirmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfileiconprovider.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdockwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdrawutil.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qerrormessage.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfiledialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfilesystemmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfocusframe.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfontcombobox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfontdialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qformlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QLayout \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgesture.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgesturerecognizer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsanchorlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsitem.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicslayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicslayoutitem.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicseffect.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsgridlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsitemanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicslinearlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsproxywidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicswidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsscene.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicssceneevent.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicstransform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QVector3D \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qscrollarea.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgroupbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qheaderview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qinputdialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlineedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qitemdelegate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qitemeditorfactory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qkeyeventtransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qkeysequenceedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlabel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlcdnumber.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlistview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlistwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmainwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmdiarea.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmdisubwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmenu.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmenubar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmessagebox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmouseeventtransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qopenglwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QWidget \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qplaintextedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtextedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qprogressbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qprogressdialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qproxystyle.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QCommonStyle \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qradiobutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qscrollbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qscroller.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QPointF \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QScrollerProperties \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qscrollerproperties.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMetaType \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QVariant \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qshortcut.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsizegrip.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qspinbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsplashscreen.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsplitter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstackedlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstackedwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstatusbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstyleditemdelegate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstylefactory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstylepainter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstyleplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsystemtrayicon.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtableview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtablewidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtextbrowser.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtoolbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtoolbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtoolbutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtooltip.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtreeview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtreewidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtreewidgetitemiterator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qundogroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qundostack.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qundoview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qwhatsthis.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qwidgetaction.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qwizard.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtwidgetsversion.h \
+		temp/moc/moc_predefs.h \
+		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\QGoodWindow\QGoodWindow\src\theme\darkstyle.h -o temp\moc\moc_darkstyle.cpp
+
+temp/moc/moc_customcolorstyle.cpp: ../3rdParty/QGoodWindow/QGoodWindow/src/theme/customcolorstyle.h \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/darkstyle.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QtCore \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QtCoreDepends \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qglobal.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qconfig-bootstrapped.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qconfig.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtcore-config.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsystemdetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qprocessordetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcompilerdetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtypeinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsysinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlogging.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qflags.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbasicatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_bootstrap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qgenericatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_cxx11.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_msvc.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qglobalstatic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmutex.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qnumeric.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qversiontagging.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobjectdefs.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qnamespace.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobjectdefs_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstring.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qchar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbytearray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrefcount.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qarraydata.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringliteral.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringalgorithms.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringbuilder.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qalgorithms.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qiterator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qhashfunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpair.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvector.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontainertools_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpoint.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbytearraylist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qregexp.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringmatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcoreevent.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qscopedpointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmetatype.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvarlengtharray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontainerfwd.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobject_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstracteventdispatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qeventloop.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractitemmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvariant.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdebug.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qhash.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtextstream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qiodevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlocale.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qshareddata.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qset.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontiguouscache.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsharedpointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsharedpointer_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractnativeeventfilter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractstate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstracttransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qanimationgroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qarraydataops.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qarraydatapointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbasictimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbitarray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbuffer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbytearraymatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcache.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcalendar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborarray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborvalue.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdatetime.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborcommon.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qregularexpression.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qurl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qurlquery.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/quuid.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcbormap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborstream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborstreamreader.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfloat16.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborstreamwriter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcollator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcommandlineoption.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcommandlineparser.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcoreapplication.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qconcatenatetablesproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcryptographichash.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdatastream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdeadlinetimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qelapsedtimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdir.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfileinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfile.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfiledevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdiriterator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qeasingcurve.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qendian.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qeventtransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qexception.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfactoryinterface.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfileselector.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QObject \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QStringList \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfilesystemwatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfinalstate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfuture.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfutureinterface.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrunnable.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qresultstore.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfuturesynchronizer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfuturewatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qhistorystate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qidentityproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qisenum.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qitemselectionmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsonarray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsonvalue.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsondocument.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsonobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlibrary.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlibraryinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qversionnumber.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qline.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlinkedlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlockfile.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qloggingcategory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmargins.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmath.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmessageauthenticationcode.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmetaobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmimedata.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmimedatabase.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmimetype.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobjectcleanuphandler.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qoperatingsystemversion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qparallelanimationgroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpauseanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpluginloader.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qprocess.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpropertyanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvariantanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qqueue.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrandom.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qreadwritelock.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrect.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsize.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qresource.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsavefile.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qscopedvaluerollback.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qscopeguard.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsemaphore.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsequentialanimationgroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsettings.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsharedmemory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsignalmapper.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsignaltransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsocketnotifier.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsortfilterproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstack.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstandardpaths.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstatemachine.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstorageinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringlistmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsystemsemaphore.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtemporarydir.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtemporaryfile.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtextboundaryfinder.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtextcodec.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthread.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthreadpool.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthreadstorage.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtimeline.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtimezone.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtranslator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtransposeproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtypetraits.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qwaitcondition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QDeadlineTimer \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qwineventnotifier.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qxmlstream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtcoreversion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QtGui \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QtGuiDepends \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtguiglobal.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtgui-config.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qabstracttextdocumentlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qcolor.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qrgb.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qrgba64.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qevent.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qwindowdefs.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qwindowdefs_win.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qregion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qkeysequence.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qvector2d.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtouchdevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextformat.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qfont.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpen.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qbrush.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qmatrix.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpolygon.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtransform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qimage.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpaintdevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpixelformat.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpixmap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextoption.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qglyphrun.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qrawfont.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qfontdatabase.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextcursor.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextdocument.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpalette.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qaccessible.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qaccessiblebridge.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qaccessibleobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qaccessibleplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qbackingstore.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QEvent \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMargins \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QRect \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qsurface.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qsurfaceformat.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qicon.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qcursor.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qbitmap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qclipboard.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qcolorspace.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qcolortransform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qdesktopservices.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qdrag.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qfontinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qfontmetrics.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qgenericmatrix.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qgenericplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qgenericpluginfactory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qguiapplication.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qinputmethod.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qiconengine.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qiconengineplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qimageiohandler.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qimagereader.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qimagewriter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qmatrix4x4.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qvector3d.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qvector4d.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qquaternion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qmovie.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qoffscreensurface.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qt_windows.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/GLES3/gl3.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/GLES3/gl3platform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/KHR/khrplatform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/GLES2/gl2.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/GLES2/gl2platform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengles2ext.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglext.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglbuffer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglcontext.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QScopedPointer \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QSurfaceFormat \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglversionfunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengldebug.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglextrafunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglfunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglframebufferobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglpaintdevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglpixeltransferoptions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QSharedDataPointer \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglshaderprogram.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengltexture.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengltextureblitter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QMatrix3x3 \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QMatrix4x4 \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengltimerquery.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglvertexarrayobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QPaintDeviceWindow \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpaintdevicewindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QWindow \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QPaintDevice \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QOpenGLContext \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QImage \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpagedpaintdevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpagelayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpagesize.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpaintengine.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpainter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpainterpath.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpdfwriter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpicture.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpictureformatplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpixmapcache.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qrasterwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qscreen.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QList \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QSize \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QSizeF \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QTransform \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qsessionmanager.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qstandarditemmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qstatictext.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qstylehints.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qsyntaxhighlighter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextdocumentfragment.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextdocumentwriter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtexttable.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qvalidator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtguiversion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QtWidgets \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QtWidgetsDepends \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtwidgetsglobal.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtwidgets-config.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractbutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsizepolicy.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractitemdelegate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstyleoption.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractspinbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qslider.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractslider.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstyle.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtabbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtabwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qrubberband.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qframe.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractitemview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractscrollarea.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qaccessiblewidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qaction.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qactiongroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qapplication.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdesktopwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qboxlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlayoutitem.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgridlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qbuttongroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcalendarwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcheckbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcolordialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcolormap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcolumnview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcombobox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcommandlinkbutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qpushbutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcommonstyle.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcompleter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdatawidgetmapper.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdatetimeedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdial.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdialogbuttonbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdirmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfileiconprovider.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdockwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdrawutil.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qerrormessage.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfiledialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfilesystemmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfocusframe.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfontcombobox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfontdialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qformlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QLayout \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgesture.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgesturerecognizer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsanchorlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsitem.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicslayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicslayoutitem.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicseffect.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsgridlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsitemanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicslinearlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsproxywidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicswidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsscene.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicssceneevent.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicstransform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QVector3D \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qscrollarea.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgroupbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qheaderview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qinputdialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlineedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qitemdelegate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qitemeditorfactory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qkeyeventtransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qkeysequenceedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlabel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlcdnumber.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlistview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlistwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmainwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmdiarea.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmdisubwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmenu.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmenubar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmessagebox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmouseeventtransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qopenglwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QWidget \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qplaintextedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtextedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qprogressbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qprogressdialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qproxystyle.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QCommonStyle \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qradiobutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qscrollbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qscroller.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QPointF \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QScrollerProperties \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qscrollerproperties.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMetaType \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QVariant \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qshortcut.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsizegrip.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qspinbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsplashscreen.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsplitter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstackedlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstackedwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstatusbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstyleditemdelegate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstylefactory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstylepainter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstyleplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsystemtrayicon.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtableview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtablewidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtextbrowser.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtoolbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtoolbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtoolbutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtooltip.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtreeview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtreewidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtreewidgetitemiterator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qundogroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qundostack.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qundoview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qwhatsthis.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qwidgetaction.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qwizard.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtwidgetsversion.h \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/lightstyle.h \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/stylecommon.h \
+		temp/moc/moc_predefs.h \
+		C:/Qt6/5.15.2/mingw81_64/bin/moc.exe
+	C:\Qt6\5.15.2\mingw81_64\bin\moc.exe $(DEFINES) --include D:/Examples/Qt/MicroDetector/LowXRayFSS/temp/moc/moc_predefs.h -IC:/Qt6/5.15.2/mingw81_64/mkspecs/win32-g++ -ID:/Examples/Qt/MicroDetector/LowXRayFSS -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/helpers -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/spi -ID:/Examples/Qt/MicroDetector/3rdParty/log4qt/Include/log4qt/varia -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/resource -ID:/Examples/Qt/MicroDetector/LowXRayFSS/-L -ID:/Examples/Qt/MicroDetector/3rdParty/QCustomplot -ID:/Examples/Qt/MicroDetector/3rdParty/QGoodWindow/QGoodWindow/src/theme -IC:/Qt6/5.15.2/mingw81_64/include -IC:/Qt6/5.15.2/mingw81_64/include/QtPrintSupport -IC:/Qt6/5.15.2/mingw81_64/include/QtWidgets -IC:/Qt6/5.15.2/mingw81_64/include/QtGui -IC:/Qt6/5.15.2/mingw81_64/include/QtANGLE -IC:/Qt6/5.15.2/mingw81_64/include/QtNetwork -IC:/Qt6/5.15.2/mingw81_64/include/QtConcurrent -IC:/Qt6/5.15.2/mingw81_64/include/QtCore -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++ -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include -IC:/Qt6/Tools/mingw810_64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed -IC:/Qt6/Tools/mingw810_64/x86_64-w64-mingw32/include ..\3rdParty\QGoodWindow\QGoodWindow\src\theme\customcolorstyle.h -o temp\moc\moc_customcolorstyle.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -14420,6 +16305,1436 @@ temp/obj/qcustomplot.o: ../3rdParty/QCustomplot/qcustomplot.cpp ../3rdParty/QCus
 		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QTimeZone
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o temp\obj\qcustomplot.o ..\3rdParty\QCustomplot\qcustomplot.cpp
 
+temp/obj/stylecommon.o: ../3rdParty/QGoodWindow/QGoodWindow/src/theme/stylecommon.cpp ../3rdParty/QGoodWindow/QGoodWindow/src/theme/stylecommon.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QtCore \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QtCoreDepends \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qglobal.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qconfig-bootstrapped.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qconfig.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtcore-config.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsystemdetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qprocessordetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcompilerdetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtypeinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsysinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlogging.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qflags.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbasicatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_bootstrap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qgenericatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_cxx11.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_msvc.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qglobalstatic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmutex.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qnumeric.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qversiontagging.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobjectdefs.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qnamespace.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobjectdefs_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstring.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qchar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbytearray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrefcount.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qarraydata.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringliteral.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringalgorithms.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringbuilder.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qalgorithms.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qiterator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qhashfunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpair.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvector.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontainertools_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpoint.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbytearraylist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qregexp.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringmatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcoreevent.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qscopedpointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmetatype.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvarlengtharray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontainerfwd.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobject_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstracteventdispatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qeventloop.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractitemmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvariant.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdebug.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qhash.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtextstream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qiodevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlocale.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qshareddata.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qset.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontiguouscache.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsharedpointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsharedpointer_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractnativeeventfilter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractstate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstracttransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qanimationgroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qarraydataops.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qarraydatapointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbasictimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbitarray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbuffer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbytearraymatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcache.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcalendar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborarray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborvalue.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdatetime.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborcommon.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qregularexpression.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qurl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qurlquery.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/quuid.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcbormap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborstream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborstreamreader.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfloat16.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborstreamwriter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcollator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcommandlineoption.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcommandlineparser.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcoreapplication.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qconcatenatetablesproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcryptographichash.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdatastream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdeadlinetimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qelapsedtimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdir.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfileinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfile.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfiledevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdiriterator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qeasingcurve.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qendian.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qeventtransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qexception.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfactoryinterface.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfileselector.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QObject \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QStringList \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfilesystemwatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfinalstate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfuture.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfutureinterface.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrunnable.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qresultstore.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfuturesynchronizer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfuturewatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qhistorystate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qidentityproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qisenum.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qitemselectionmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsonarray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsonvalue.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsondocument.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsonobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlibrary.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlibraryinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qversionnumber.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qline.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlinkedlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlockfile.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qloggingcategory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmargins.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmath.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmessageauthenticationcode.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmetaobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmimedata.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmimedatabase.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmimetype.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobjectcleanuphandler.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qoperatingsystemversion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qparallelanimationgroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpauseanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpluginloader.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qprocess.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpropertyanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvariantanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qqueue.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrandom.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qreadwritelock.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrect.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsize.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qresource.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsavefile.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qscopedvaluerollback.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qscopeguard.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsemaphore.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsequentialanimationgroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsettings.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsharedmemory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsignalmapper.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsignaltransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsocketnotifier.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsortfilterproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstack.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstandardpaths.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstatemachine.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstorageinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringlistmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsystemsemaphore.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtemporarydir.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtemporaryfile.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtextboundaryfinder.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtextcodec.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthread.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthreadpool.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthreadstorage.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtimeline.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtimezone.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtranslator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtransposeproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtypetraits.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qwaitcondition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QDeadlineTimer \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qwineventnotifier.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qxmlstream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtcoreversion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QtGui \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QtGuiDepends \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtguiglobal.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtgui-config.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qabstracttextdocumentlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qcolor.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qrgb.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qrgba64.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qevent.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qwindowdefs.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qwindowdefs_win.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qregion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qkeysequence.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qvector2d.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtouchdevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextformat.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qfont.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpen.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qbrush.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qmatrix.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpolygon.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtransform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qimage.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpaintdevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpixelformat.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpixmap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextoption.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qglyphrun.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qrawfont.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qfontdatabase.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextcursor.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextdocument.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpalette.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qaccessible.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qaccessiblebridge.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qaccessibleobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qaccessibleplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qbackingstore.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QEvent \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMargins \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QRect \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qsurface.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qsurfaceformat.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qicon.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qcursor.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qbitmap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qclipboard.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qcolorspace.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qcolortransform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qdesktopservices.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qdrag.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qfontinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qfontmetrics.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qgenericmatrix.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qgenericplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qgenericpluginfactory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qguiapplication.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qinputmethod.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qiconengine.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qiconengineplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qimageiohandler.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qimagereader.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qimagewriter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qmatrix4x4.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qvector3d.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qvector4d.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qquaternion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qmovie.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qoffscreensurface.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qt_windows.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/GLES3/gl3.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/GLES3/gl3platform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/KHR/khrplatform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/GLES2/gl2.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/GLES2/gl2platform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengles2ext.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglext.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglbuffer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglcontext.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QScopedPointer \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QSurfaceFormat \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglversionfunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengldebug.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglextrafunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglfunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglframebufferobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglpaintdevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglpixeltransferoptions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QSharedDataPointer \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglshaderprogram.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengltexture.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengltextureblitter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QMatrix3x3 \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QMatrix4x4 \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengltimerquery.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglvertexarrayobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QPaintDeviceWindow \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpaintdevicewindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QWindow \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QPaintDevice \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QOpenGLContext \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QImage \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpagedpaintdevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpagelayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpagesize.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpaintengine.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpainter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpainterpath.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpdfwriter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpicture.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpictureformatplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpixmapcache.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qrasterwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qscreen.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QList \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QSize \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QSizeF \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QTransform \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qsessionmanager.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qstandarditemmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qstatictext.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qstylehints.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qsyntaxhighlighter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextdocumentfragment.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextdocumentwriter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtexttable.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qvalidator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtguiversion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QtWidgets \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QtWidgetsDepends \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtwidgetsglobal.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtwidgets-config.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractbutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsizepolicy.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractitemdelegate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstyleoption.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractspinbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qslider.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractslider.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstyle.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtabbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtabwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qrubberband.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qframe.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractitemview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractscrollarea.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qaccessiblewidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qaction.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qactiongroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qapplication.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdesktopwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qboxlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlayoutitem.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgridlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qbuttongroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcalendarwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcheckbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcolordialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcolormap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcolumnview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcombobox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcommandlinkbutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qpushbutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcommonstyle.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcompleter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdatawidgetmapper.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdatetimeedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdial.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdialogbuttonbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdirmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfileiconprovider.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdockwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdrawutil.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qerrormessage.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfiledialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfilesystemmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfocusframe.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfontcombobox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfontdialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qformlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QLayout \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgesture.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgesturerecognizer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsanchorlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsitem.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicslayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicslayoutitem.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicseffect.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsgridlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsitemanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicslinearlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsproxywidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicswidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsscene.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicssceneevent.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicstransform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QVector3D \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qscrollarea.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgroupbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qheaderview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qinputdialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlineedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qitemdelegate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qitemeditorfactory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qkeyeventtransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qkeysequenceedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlabel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlcdnumber.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlistview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlistwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmainwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmdiarea.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmdisubwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmenu.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmenubar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmessagebox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmouseeventtransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qopenglwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QWidget \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qplaintextedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtextedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qprogressbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qprogressdialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qproxystyle.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QCommonStyle \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qradiobutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qscrollbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qscroller.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QPointF \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QScrollerProperties \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qscrollerproperties.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMetaType \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QVariant \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qshortcut.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsizegrip.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qspinbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsplashscreen.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsplitter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstackedlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstackedwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstatusbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstyleditemdelegate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstylefactory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstylepainter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstyleplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsystemtrayicon.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtableview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtablewidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtextbrowser.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtoolbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtoolbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtoolbutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtooltip.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtreeview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtreewidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtreewidgetitemiterator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qundogroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qundostack.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qundoview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qwhatsthis.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qwidgetaction.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qwizard.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtwidgetsversion.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o temp\obj\stylecommon.o ..\3rdParty\QGoodWindow\QGoodWindow\src\theme\stylecommon.cpp
+
+temp/obj/lightstyle.o: ../3rdParty/QGoodWindow/QGoodWindow/src/theme/lightstyle.cpp ../3rdParty/QGoodWindow/QGoodWindow/src/theme/lightstyle.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QtCore \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QtCoreDepends \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qglobal.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qconfig-bootstrapped.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qconfig.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtcore-config.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsystemdetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qprocessordetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcompilerdetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtypeinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsysinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlogging.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qflags.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbasicatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_bootstrap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qgenericatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_cxx11.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_msvc.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qglobalstatic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmutex.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qnumeric.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qversiontagging.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobjectdefs.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qnamespace.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobjectdefs_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstring.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qchar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbytearray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrefcount.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qarraydata.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringliteral.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringalgorithms.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringbuilder.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qalgorithms.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qiterator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qhashfunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpair.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvector.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontainertools_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpoint.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbytearraylist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qregexp.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringmatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcoreevent.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qscopedpointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmetatype.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvarlengtharray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontainerfwd.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobject_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstracteventdispatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qeventloop.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractitemmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvariant.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdebug.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qhash.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtextstream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qiodevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlocale.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qshareddata.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qset.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontiguouscache.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsharedpointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsharedpointer_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractnativeeventfilter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractstate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstracttransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qanimationgroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qarraydataops.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qarraydatapointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbasictimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbitarray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbuffer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbytearraymatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcache.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcalendar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborarray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborvalue.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdatetime.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborcommon.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qregularexpression.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qurl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qurlquery.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/quuid.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcbormap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborstream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborstreamreader.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfloat16.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborstreamwriter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcollator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcommandlineoption.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcommandlineparser.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcoreapplication.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qconcatenatetablesproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcryptographichash.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdatastream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdeadlinetimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qelapsedtimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdir.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfileinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfile.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfiledevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdiriterator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qeasingcurve.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qendian.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qeventtransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qexception.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfactoryinterface.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfileselector.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QObject \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QStringList \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfilesystemwatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfinalstate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfuture.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfutureinterface.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrunnable.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qresultstore.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfuturesynchronizer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfuturewatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qhistorystate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qidentityproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qisenum.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qitemselectionmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsonarray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsonvalue.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsondocument.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsonobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlibrary.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlibraryinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qversionnumber.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qline.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlinkedlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlockfile.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qloggingcategory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmargins.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmath.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmessageauthenticationcode.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmetaobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmimedata.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmimedatabase.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmimetype.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobjectcleanuphandler.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qoperatingsystemversion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qparallelanimationgroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpauseanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpluginloader.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qprocess.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpropertyanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvariantanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qqueue.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrandom.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qreadwritelock.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrect.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsize.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qresource.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsavefile.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qscopedvaluerollback.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qscopeguard.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsemaphore.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsequentialanimationgroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsettings.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsharedmemory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsignalmapper.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsignaltransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsocketnotifier.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsortfilterproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstack.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstandardpaths.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstatemachine.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstorageinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringlistmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsystemsemaphore.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtemporarydir.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtemporaryfile.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtextboundaryfinder.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtextcodec.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthread.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthreadpool.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthreadstorage.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtimeline.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtimezone.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtranslator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtransposeproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtypetraits.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qwaitcondition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QDeadlineTimer \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qwineventnotifier.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qxmlstream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtcoreversion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QtGui \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QtGuiDepends \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtguiglobal.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtgui-config.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qabstracttextdocumentlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qcolor.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qrgb.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qrgba64.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qevent.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qwindowdefs.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qwindowdefs_win.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qregion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qkeysequence.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qvector2d.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtouchdevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextformat.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qfont.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpen.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qbrush.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qmatrix.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpolygon.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtransform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qimage.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpaintdevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpixelformat.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpixmap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextoption.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qglyphrun.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qrawfont.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qfontdatabase.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextcursor.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextdocument.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpalette.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qaccessible.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qaccessiblebridge.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qaccessibleobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qaccessibleplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qbackingstore.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QEvent \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMargins \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QRect \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qsurface.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qsurfaceformat.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qicon.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qcursor.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qbitmap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qclipboard.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qcolorspace.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qcolortransform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qdesktopservices.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qdrag.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qfontinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qfontmetrics.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qgenericmatrix.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qgenericplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qgenericpluginfactory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qguiapplication.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qinputmethod.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qiconengine.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qiconengineplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qimageiohandler.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qimagereader.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qimagewriter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qmatrix4x4.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qvector3d.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qvector4d.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qquaternion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qmovie.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qoffscreensurface.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qt_windows.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/GLES3/gl3.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/GLES3/gl3platform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/KHR/khrplatform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/GLES2/gl2.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/GLES2/gl2platform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengles2ext.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglext.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglbuffer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglcontext.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QScopedPointer \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QSurfaceFormat \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglversionfunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengldebug.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglextrafunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglfunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglframebufferobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglpaintdevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglpixeltransferoptions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QSharedDataPointer \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglshaderprogram.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengltexture.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengltextureblitter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QMatrix3x3 \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QMatrix4x4 \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengltimerquery.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglvertexarrayobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QPaintDeviceWindow \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpaintdevicewindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QWindow \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QPaintDevice \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QOpenGLContext \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QImage \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpagedpaintdevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpagelayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpagesize.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpaintengine.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpainter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpainterpath.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpdfwriter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpicture.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpictureformatplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpixmapcache.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qrasterwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qscreen.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QList \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QSize \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QSizeF \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QTransform \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qsessionmanager.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qstandarditemmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qstatictext.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qstylehints.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qsyntaxhighlighter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextdocumentfragment.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextdocumentwriter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtexttable.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qvalidator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtguiversion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QtWidgets \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QtWidgetsDepends \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtwidgetsglobal.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtwidgets-config.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractbutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsizepolicy.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractitemdelegate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstyleoption.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractspinbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qslider.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractslider.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstyle.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtabbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtabwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qrubberband.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qframe.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractitemview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractscrollarea.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qaccessiblewidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qaction.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qactiongroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qapplication.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdesktopwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qboxlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlayoutitem.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgridlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qbuttongroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcalendarwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcheckbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcolordialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcolormap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcolumnview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcombobox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcommandlinkbutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qpushbutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcommonstyle.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcompleter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdatawidgetmapper.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdatetimeedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdial.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdialogbuttonbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdirmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfileiconprovider.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdockwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdrawutil.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qerrormessage.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfiledialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfilesystemmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfocusframe.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfontcombobox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfontdialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qformlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QLayout \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgesture.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgesturerecognizer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsanchorlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsitem.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicslayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicslayoutitem.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicseffect.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsgridlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsitemanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicslinearlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsproxywidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicswidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsscene.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicssceneevent.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicstransform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QVector3D \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qscrollarea.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgroupbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qheaderview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qinputdialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlineedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qitemdelegate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qitemeditorfactory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qkeyeventtransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qkeysequenceedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlabel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlcdnumber.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlistview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlistwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmainwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmdiarea.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmdisubwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmenu.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmenubar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmessagebox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmouseeventtransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qopenglwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QWidget \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qplaintextedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtextedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qprogressbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qprogressdialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qproxystyle.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QCommonStyle \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qradiobutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qscrollbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qscroller.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QPointF \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QScrollerProperties \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qscrollerproperties.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMetaType \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QVariant \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qshortcut.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsizegrip.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qspinbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsplashscreen.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsplitter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstackedlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstackedwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstatusbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstyleditemdelegate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstylefactory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstylepainter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstyleplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsystemtrayicon.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtableview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtablewidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtextbrowser.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtoolbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtoolbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtoolbutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtooltip.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtreeview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtreewidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtreewidgetitemiterator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qundogroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qundostack.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qundoview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qwhatsthis.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qwidgetaction.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qwizard.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtwidgetsversion.h \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/stylecommon.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o temp\obj\lightstyle.o ..\3rdParty\QGoodWindow\QGoodWindow\src\theme\lightstyle.cpp
+
+temp/obj/darkstyle.o: ../3rdParty/QGoodWindow/QGoodWindow/src/theme/darkstyle.cpp ../3rdParty/QGoodWindow/QGoodWindow/src/theme/darkstyle.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QtCore \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QtCoreDepends \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qglobal.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qconfig-bootstrapped.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qconfig.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtcore-config.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsystemdetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qprocessordetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcompilerdetection.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtypeinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsysinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlogging.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qflags.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbasicatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_bootstrap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qgenericatomic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_cxx11.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qatomic_msvc.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qglobalstatic.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmutex.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qnumeric.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qversiontagging.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobjectdefs.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qnamespace.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobjectdefs_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstring.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qchar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbytearray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrefcount.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qarraydata.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringliteral.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringalgorithms.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringbuilder.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qalgorithms.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qiterator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qhashfunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpair.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvector.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontainertools_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpoint.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbytearraylist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qregexp.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringmatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcoreevent.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qscopedpointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmetatype.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvarlengtharray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontainerfwd.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobject_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstracteventdispatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qeventloop.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractitemmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvariant.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdebug.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qhash.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtextstream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qiodevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlocale.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qshareddata.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qset.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcontiguouscache.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsharedpointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsharedpointer_impl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractnativeeventfilter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstractstate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qabstracttransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qanimationgroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qarraydataops.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qarraydatapointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbasictimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbitarray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbuffer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qbytearraymatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcache.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcalendar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborarray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborvalue.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdatetime.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborcommon.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qregularexpression.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qurl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qurlquery.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/quuid.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcbormap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborstream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborstreamreader.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfloat16.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcborstreamwriter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcollator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcommandlineoption.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcommandlineparser.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcoreapplication.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qconcatenatetablesproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qcryptographichash.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdatastream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdeadlinetimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qelapsedtimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdir.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfileinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfile.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfiledevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qdiriterator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qeasingcurve.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qendian.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qeventtransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qexception.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfactoryinterface.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfileselector.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QObject \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QStringList \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfilesystemwatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfinalstate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfuture.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfutureinterface.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrunnable.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qresultstore.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfuturesynchronizer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qfuturewatcher.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qhistorystate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qidentityproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qisenum.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qitemselectionmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsonarray.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsonvalue.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsondocument.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qjsonobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlibrary.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlibraryinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qversionnumber.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qline.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlinkedlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qlockfile.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qloggingcategory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmargins.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmath.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmessageauthenticationcode.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmetaobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmimedata.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmimedatabase.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qmimetype.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qobjectcleanuphandler.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qoperatingsystemversion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qparallelanimationgroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpauseanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpointer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpluginloader.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qprocess.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qpropertyanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qvariantanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qqueue.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrandom.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qreadwritelock.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qrect.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsize.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qresource.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsavefile.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qscopedvaluerollback.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qscopeguard.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsemaphore.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsequentialanimationgroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsettings.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsharedmemory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsignalmapper.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsignaltransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsocketnotifier.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsortfilterproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstack.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstandardpaths.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstatemachine.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstorageinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qstringlistmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qsystemsemaphore.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtemporarydir.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtemporaryfile.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtextboundaryfinder.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtextcodec.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthread.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthreadpool.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qthreadstorage.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtimeline.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtimer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtimezone.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtranslator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtransposeproxymodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtypetraits.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qwaitcondition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QDeadlineTimer \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qwineventnotifier.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qxmlstream.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qtcoreversion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QtGui \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QtGuiDepends \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtguiglobal.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtgui-config.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qabstracttextdocumentlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qcolor.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qrgb.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qrgba64.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qevent.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qwindowdefs.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qwindowdefs_win.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qregion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qkeysequence.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qvector2d.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtouchdevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextformat.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qfont.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpen.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qbrush.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qmatrix.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpolygon.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtransform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qimage.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpaintdevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpixelformat.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpixmap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextoption.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qglyphrun.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qrawfont.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qfontdatabase.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextcursor.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextdocument.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpalette.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qaccessible.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qaccessiblebridge.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qaccessibleobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qaccessibleplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qbackingstore.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QEvent \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMargins \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QRect \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qsurface.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qsurfaceformat.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qicon.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qcursor.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qbitmap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qclipboard.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qcolorspace.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qcolortransform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qdesktopservices.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qdrag.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qfontinfo.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qfontmetrics.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qgenericmatrix.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qgenericplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qgenericpluginfactory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qguiapplication.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qinputmethod.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qiconengine.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qiconengineplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qimageiohandler.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qimagereader.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qimagewriter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qmatrix4x4.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qvector3d.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qvector4d.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qquaternion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qmovie.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qoffscreensurface.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengl.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/qt_windows.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/GLES3/gl3.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/GLES3/gl3platform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/KHR/khrplatform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/GLES2/gl2.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtANGLE/GLES2/gl2platform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengles2ext.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglext.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglbuffer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglcontext.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QScopedPointer \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QSurfaceFormat \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglversionfunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengldebug.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglextrafunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglfunctions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglframebufferobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglpaintdevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglpixeltransferoptions.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QSharedDataPointer \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglshaderprogram.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengltexture.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengltextureblitter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QMatrix3x3 \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QMatrix4x4 \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopengltimerquery.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglvertexarrayobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qopenglwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QPaintDeviceWindow \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpaintdevicewindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QWindow \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QPaintDevice \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QOpenGLContext \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QImage \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpagedpaintdevice.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpagelayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpagesize.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpaintengine.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpainter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpainterpath.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpdfwriter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpicture.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpictureformatplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qpixmapcache.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qrasterwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qscreen.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QList \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QSize \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QSizeF \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QTransform \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qsessionmanager.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qstandarditemmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qstatictext.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qstylehints.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qsyntaxhighlighter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextobject.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextdocumentfragment.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextdocumentwriter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtextlist.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtexttable.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qvalidator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/qtguiversion.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QtWidgets \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QtWidgetsDepends \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtwidgetsglobal.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtwidgets-config.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractbutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsizepolicy.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractitemdelegate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstyleoption.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractspinbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qslider.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractslider.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstyle.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtabbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtabwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qrubberband.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qframe.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractitemview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qabstractscrollarea.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qaccessiblewidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qaction.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qactiongroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qapplication.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdesktopwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qboxlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlayoutitem.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgridlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qbuttongroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcalendarwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcheckbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcolordialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcolormap.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcolumnview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcombobox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcommandlinkbutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qpushbutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcommonstyle.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qcompleter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdatawidgetmapper.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdatetimeedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdial.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdialogbuttonbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdirmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfileiconprovider.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdockwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qdrawutil.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qerrormessage.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfiledialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfilesystemmodel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfocusframe.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfontcombobox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qfontdialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qformlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QLayout \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgesture.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgesturerecognizer.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsanchorlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsitem.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicslayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicslayoutitem.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicseffect.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsgridlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsitemanimation.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicslinearlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsproxywidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicswidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsscene.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicssceneevent.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicstransform.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtGui/QVector3D \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgraphicsview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qscrollarea.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qgroupbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qheaderview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qinputdialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlineedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qitemdelegate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qitemeditorfactory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qkeyeventtransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qkeysequenceedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlabel.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlcdnumber.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlistview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qlistwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmainwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmdiarea.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmdisubwindow.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmenu.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmenubar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmessagebox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qmouseeventtransition.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qopenglwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QWidget \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qplaintextedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtextedit.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qprogressbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qprogressdialog.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qproxystyle.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QCommonStyle \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qradiobutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qscrollbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qscroller.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QPointF \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/QScrollerProperties \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qscrollerproperties.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QMetaType \
+		C:/Qt6/5.15.2/mingw81_64/include/QtCore/QVariant \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qshortcut.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsizegrip.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qspinbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsplashscreen.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsplitter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstackedlayout.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstackedwidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstatusbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstyleditemdelegate.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstylefactory.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstylepainter.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qstyleplugin.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qsystemtrayicon.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtableview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtablewidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtextbrowser.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtoolbar.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtoolbox.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtoolbutton.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtooltip.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtreeview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtreewidget.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtreewidgetitemiterator.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qundogroup.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qundostack.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qundoview.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qwhatsthis.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qwidgetaction.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qwizard.h \
+		C:/Qt6/5.15.2/mingw81_64/include/QtWidgets/qtwidgetsversion.h \
+		../3rdParty/QGoodWindow/QGoodWindow/src/theme/stylecommon.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o temp\obj\darkstyle.o ..\3rdParty\QGoodWindow\QGoodWindow\src\theme\darkstyle.cpp
+
 temp/obj/moc_aboutwidget.o: temp/moc/moc_aboutwidget.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o temp\obj\moc_aboutwidget.o temp\moc\moc_aboutwidget.cpp
 
@@ -14449,6 +17764,15 @@ temp/obj/moc_switchbutton.o: temp/moc/moc_switchbutton.cpp
 
 temp/obj/moc_qcustomplot.o: temp/moc/moc_qcustomplot.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o temp\obj\moc_qcustomplot.o temp\moc\moc_qcustomplot.cpp
+
+temp/obj/moc_lightstyle.o: temp/moc/moc_lightstyle.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o temp\obj\moc_lightstyle.o temp\moc\moc_lightstyle.cpp
+
+temp/obj/moc_darkstyle.o: temp/moc/moc_darkstyle.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o temp\obj\moc_darkstyle.o temp\moc\moc_darkstyle.cpp
+
+temp/obj/moc_customcolorstyle.o: temp/moc/moc_customcolorstyle.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o temp\obj\moc_customcolorstyle.o temp\moc\moc_customcolorstyle.cpp
 
 ####### Install
 
