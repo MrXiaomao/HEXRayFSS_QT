@@ -81,16 +81,17 @@ CONFIG += resources_big
 exists (./.git) {
     GIT_BRANCH   = $$system(git rev-parse --abbrev-ref HEAD)
     GIT_TIME     = $$system(git show --oneline --format=\"%ci%H\" -s HEAD)
-    APP_VERSION = "Git: $${GIT_BRANCH}: $${GIT_TIME}"
+    GIT_VERSION = "Git: $${GIT_BRANCH}: $${GIT_TIME}"
 } else {
     GIT_BRANCH      = None
     GIT_TIME        = None
-    APP_VERSION     = None
+    GIT_VERSION     = None
 }
 
 DEFINES += GIT_BRANCH=\"\\\"$$GIT_BRANCH\\\"\"
 DEFINES += GIT_TIME=\"\\\"$$GIT_TIME\\\"\"
-DEFINES += APP_VERSION=\"\\\"$$APP_VERSION\\\"\"
+DEFINES += GIT_VERSION=\"\\\"$$GIT_VERSION\\\"\"
+DEFINES += APP_VERSION="\\\"V1.0.1\\\""
 
 windows {
     # MinGW
@@ -113,7 +114,10 @@ windows {
 include($$PWD/../3rdParty/log4qt/Include/log4qt.pri)
 include($$PWD/../3rdParty/resource/resource.pri)
 include($$PWD/../3rdParty/QCustomplot/QCustomplot.pri)
-include($$PWD/../3rdParty/QGoodWindow/QGoodWindow/src/theme/theme.pri)
+#include($$PWD/../3rdParty/QGoodWindow/QGoodWindow/src/theme/theme.pri)
+include($$PWD/../3rdParty/QGoodWindow/QGoodWindow/QGoodWindow.pri)
+include($$PWD/../3rdParty/QGoodWindow/QGoodCentralWidget/QGoodCentralWidget.pri)
+# include($$PWD/../3rdParty/QtFramelessWindow/QtFramelessWindow.pri)
 
 # 启用反解能谱
 #DEFINES += ENABLE_MATLAB

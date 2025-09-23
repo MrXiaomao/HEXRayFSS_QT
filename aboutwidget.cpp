@@ -7,7 +7,7 @@ AboutWidget::AboutWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->label_3->setText(tr("Commit: %1").arg(APP_VERSION));
+    ui->label_3->setText(tr("Commit: %1").arg(GIT_VERSION));
 }
 
 AboutWidget::~AboutWidget()

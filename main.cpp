@@ -26,7 +26,7 @@
 #include <log4qt/loggerrepository.h>
 #include <log4qt/fileappender.h>
 
-MainWindow *mw = nullptr;
+CentralWidget *mw = nullptr;
 QMutex mutexMsg;
 QtMessageHandler system_default_message_handler = NULL;// 用来保存系统默认的输出接口
 void AppMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString &msg)
@@ -66,11 +66,10 @@ int main(int argc, char *argv[])
     font.setStyleStrategy(QFont::PreferAntialias);
     font.setHintingPreference(QFont::PreferFullHinting);
     qApp->setFont(font);
-
     qApp->setStyle(new DarkStyle());
     qApp->style()->setObjectName("fusion");
 
-    QApplication::setApplicationName("LowXRayFSS");
+    QApplication::setApplicationName("低能滤片堆栈谱仪软件");
     QApplication::setOrganizationName("Copyright (c) 2025");
     QApplication::setOrganizationDomain("");
     QApplication::setApplicationVersion(APP_VERSION);
@@ -153,10 +152,10 @@ int main(int argc, char *argv[])
     GlobalSettings::instance();
 
     MainWindow w;
-    mw = &w;
+    mw = w.centralWidget();
 
     qInfo().noquote() << QObject::tr("系统启动");
-    QObject::connect(&w, &MainWindow::sigUpdateBootInfo, &splash, [&](const QString &msg) {
+    QObject::connect(mw, &CentralWidget::sigUpdateBootInfo, &splash, [&](const QString &msg) {
         splash.showMessage(msg, Qt::AlignLeft | Qt::AlignBottom, Qt::white);
     }/*, Qt::QueuedConnection */);
     splash.finish(&w);

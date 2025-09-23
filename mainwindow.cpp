@@ -5,12 +5,16 @@
 #include "paramsetting.h"
 #include "globalsettings.h"
 
-MainWindow::MainWindow(QWidget *parent)
+CentralWidget::CentralWidget(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::CentralWidget)
+    , mainWindow(static_cast<MainWindow *>(parent))
 {
     ui->setupUi(this);
     emit sigUpdateBootInfo(tr("加载界面..."));
+
+    //ui->toolBar->setVisible(true);
+    setWindowTitle(QApplication::applicationName()+" - "+APP_VERSION);
 
     initUi();
     initCustomPlot(ui->customPlot, tr("道址"), tr("实测曲线（通道1-4）"), 4);
@@ -21,8 +25,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, SIGNAL(sigWriteLog(const QString&,QtMsgType)), this, SLOT(slotWriteLog(const QString&,QtMsgType)));
 
     commHelper = CommHelper::instance();
-    connect(commHelper, &CommHelper::showRealCurve, this, &MainWindow::showRealCurve);
-    connect(commHelper, &CommHelper::showEnerygySpectrumCurve, this, &MainWindow::showEnerygySpectrumCurve);
+    connect(commHelper, &CommHelper::showRealCurve, this, &CentralWidget::showRealCurve);
+    connect(commHelper, &CommHelper::showEnerygySpectrumCurve, this, &CentralWidget::showEnerygySpectrumCurve);
     connect(commHelper, &CommHelper::appVersionRespond, this, [=](quint8 index, QString version, QString serialNumber){
         ui->tableWidget_detectorVersion->item(index - 1, 0)->setText(version + serialNumber);
 
@@ -150,14 +154,32 @@ MainWindow::MainWindow(QWidget *parent)
         ui->action_startMeasure->setEnabled(true);
         ui->action_stopMeasure->setEnabled(false);
     });
+
+    connect(ui->statusbar,&QStatusBar::messageChanged,this,[&](const QString &message){
+        if(message.isEmpty()) {
+            ui->statusbar->showMessage(tr("准备就绪"));
+        } else {
+            ui->statusbar->showMessage(message);
+        }
+    });
+    QTimer::singleShot(0, this, [&](){
+        qGoodStateHolder->setCurrentThemeDark(isDarkTheme);
+        QGoodWindow::setAppCustomTheme(isDarkTheme,this->themeColor); // Must be >96
+    });
+
+    QTimer::singleShot(0, this, [&](){
+        if(mainWindow) {
+            mainWindow->fixMenuBarWidth();
+        }
+    });
 }
 
-MainWindow::~MainWindow()
+CentralWidget::~CentralWidget()
 {
     delete ui;
 }
 
-void MainWindow::initUi()
+void CentralWidget::initUi()
 {
     ui->stackedWidget->hide();
 
@@ -207,7 +229,7 @@ void MainWindow::initUi()
     systemClockTimer->start(900);
 
     QSplitter *splitter = new QSplitter(Qt::Horizontal,this);
-    splitter->setHandleWidth(1);
+    splitter->setHandleWidth(5);
     ui->centralwidget->layout()->addWidget(splitter);
     splitter->addWidget(ui->stackedWidget);
     splitter->addWidget(ui->leftHboxWidget);
@@ -218,7 +240,7 @@ void MainWindow::initUi()
     splitter->setCollapsible(2,false);
 
     QSplitter *splitterV1 = new QSplitter(Qt::Vertical,this);
-    splitterV1->setHandleWidth(1);
+    splitterV1->setHandleWidth(5);
     ui->leftHboxWidget->layout()->addWidget(splitterV1);
     splitterV1->addWidget(ui->customPlot);
     splitterV1->addWidget(ui->customPlot_2);
@@ -229,7 +251,7 @@ void MainWindow::initUi()
     splitterV1->setSizes(QList<int>() << 100000 << 100000 << 100000);
 
     QSplitter *splitterV2 = new QSplitter(Qt::Vertical,this);
-    splitterV2->setHandleWidth(1);
+    splitterV2->setHandleWidth(5);
     ui->rightHboxWidget->layout()->addWidget(splitterV2);
     splitterV2->addWidget(ui->customPlot_result);
     splitterV2->addWidget(ui->textEdit_log);
@@ -391,10 +413,61 @@ void MainWindow::initUi()
     connect(ui->pushButton_startMeasure, &QPushButton::clicked, ui->action_startMeasure, &QAction::trigger);
 }
 
-void MainWindow::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, QString axisYLabel, int graphCount/* = 1*/)
+void CentralWidget::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, QString axisYLabel, int graphCount/* = 1*/)
 {
     //customPlot->setObjectName(objName);
     customPlot->installEventFilter(this);
+
+    QPalette palette = customPlot->palette();
+    if (isDarkTheme)
+    {
+        DarkStyle darkStyle;
+        darkStyle.polish(palette);
+    }
+    else
+    {
+        LightStyle lightStyle;
+        lightStyle.polish(palette);
+    }
+    // 窗体背景色
+    customPlot->setBackground(QBrush(palette.color(QPalette::Window)));
+    // 四边安装轴并显示
+    customPlot->axisRect()->setupFullAxesBox();
+    // 坐标轴线颜色
+    customPlot->xAxis->setBasePen(QPen(palette.color(QPalette::WindowText)));
+    customPlot->xAxis2->setBasePen(QPen(palette.color(QPalette::WindowText)));
+    customPlot->yAxis->setBasePen(QPen(palette.color(QPalette::WindowText)));
+    customPlot->yAxis2->setBasePen(QPen(palette.color(QPalette::WindowText)));
+    // 刻度线颜色
+    customPlot->xAxis->setTickPen(QPen(palette.color(QPalette::WindowText)));
+    customPlot->xAxis2->setTickPen(QPen(palette.color(QPalette::WindowText)));
+    customPlot->yAxis->setTickPen(QPen(palette.color(QPalette::WindowText)));
+    customPlot->yAxis2->setTickPen(QPen(palette.color(QPalette::WindowText)));
+    // 子刻度线颜色
+    customPlot->xAxis->setSubTickPen(QPen(palette.color(QPalette::WindowText)));
+    customPlot->xAxis2->setSubTickPen(QPen(palette.color(QPalette::WindowText)));
+    customPlot->yAxis->setSubTickPen(QPen(palette.color(QPalette::WindowText)));
+    customPlot->yAxis2->setSubTickPen(QPen(palette.color(QPalette::WindowText)));
+    // 坐标轴文本标签颜色
+    customPlot->xAxis->setLabelColor(palette.color(QPalette::WindowText));
+    customPlot->xAxis2->setLabelColor(palette.color(QPalette::WindowText));
+    customPlot->yAxis->setLabelColor(palette.color(QPalette::WindowText));
+    customPlot->yAxis2->setLabelColor(palette.color(QPalette::WindowText));
+    // 坐标轴刻度文本标签颜色
+    customPlot->xAxis->setTickLabelColor(palette.color(QPalette::WindowText));
+    customPlot->xAxis2->setTickLabelColor(palette.color(QPalette::WindowText));
+    customPlot->yAxis->setTickLabelColor(palette.color(QPalette::WindowText));
+    customPlot->yAxis2->setTickLabelColor(palette.color(QPalette::WindowText));
+    // 坐标系背景色
+    customPlot->axisRect()->setBackground(palette.color(QPalette::Window));
+    // 设置背景网格线是否显示
+    //customPlot->xAxis->grid()->setVisible(true);
+    //customPlot->yAxis->grid()->setVisible(true);
+    // 设置背景网格线条颜色
+    //customPlot->xAxis->grid()->setPen(QPen(palette.color(QPalette::WindowText),1,Qt::PenStyle::SolidLine));  // 垂直网格线条属性
+    //customPlot->yAxis->grid()->setPen(QPen(palette.color(QPalette::WindowText),1,Qt::PenStyle::SolidLine)); // 水平网格线条属性
+    //customPlot->xAxis->grid()->setSubGridPen(QPen(palette.color(QPalette::WindowText),1,Qt::PenStyle::DotLine));
+    //customPlot->yAxis->grid()->setSubGridPen(QPen(palette.color(QPalette::WindowText),1,Qt::PenStyle::SolidLine));
 
     // 设置全局抗锯齿
     customPlot->setAntialiasedElements(QCP::aeAll);
@@ -451,7 +524,7 @@ void MainWindow::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, QSt
     //connect(customPlot, SIGNAL(mouseMove(QMouseEvent*)), this,SLOT(slotShowTracer(QMouseEvent*)));
 }
 
-void MainWindow::closeEvent(QCloseEvent *event) {
+void CentralWidget::closeEvent(QCloseEvent *event) {
     if (mRelayPowerOn){
         int reply = QMessageBox::question(this, tr("系统退出提示"), tr("继电器电源处理闭合状态，是否断开？"),
                                              QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
@@ -463,7 +536,7 @@ void MainWindow::closeEvent(QCloseEvent *event) {
     event->accept();
 }
 
-bool MainWindow::event(QEvent * event) {
+bool CentralWidget::event(QEvent * event) {
     if(event->type() == QEvent::StatusTip) {
         QStatusTipEvent* statusTipEvent = static_cast<QStatusTipEvent *>(event);
         if (!statusTipEvent->tip().isEmpty()) {
@@ -476,7 +549,7 @@ bool MainWindow::event(QEvent * event) {
     return QMainWindow::event(event);
 }
 
-bool MainWindow::eventFilter(QObject *watched, QEvent *event){
+bool CentralWidget::eventFilter(QObject *watched, QEvent *event){
     if (watched != this){
         if (event->type() == QEvent::MouseButtonPress){
             QMouseEvent *e = reinterpret_cast<QMouseEvent*>(event);
@@ -532,7 +605,7 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event){
     return QMainWindow::eventFilter(watched, event);
 }
 
-void MainWindow::slotWriteLog(const QString &msg, QtMsgType msgType)
+void CentralWidget::slotWriteLog(const QString &msg, QtMsgType msgType)
 {
     // 创建一个 QTextCursor
     QTextCursor cursor = ui->textEdit_log->textCursor();
@@ -540,10 +613,13 @@ void MainWindow::slotWriteLog(const QString &msg, QtMsgType msgType)
     cursor.movePosition(QTextCursor::End);
 
     // 先插入时间
-    cursor.insertHtml(QString("<span style='color:black;'>%1</span>").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz >> ")));
+    QString color = "black";
+    if (isDarkTheme)
+        color = "white";
+    cursor.insertHtml(QString("<span style='color:%1;'>%2</span>").arg(color, QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz >> ")));
     // 再插入文本
     if (msgType == QtDebugMsg || msgType == QtInfoMsg)
-        cursor.insertHtml(QString("<span style='color:black;'>%1</span>").arg(msg));
+        cursor.insertHtml(QString("<span style='color:%1;'>%2</span>").arg(color, msg));
     else if (msgType == QtCriticalMsg || msgType == QtFatalMsg)
         cursor.insertHtml(QString("<span style='color:red;'>%1</span>").arg(msg));
     else
@@ -570,26 +646,26 @@ void MainWindow::slotWriteLog(const QString &msg, QtMsgType msgType)
     }
 }
 
-void MainWindow::on_action_netCfg_triggered()
+void CentralWidget::on_action_netCfg_triggered()
 {
     NetSetting w;
     w.exec();
 }
 
 
-void MainWindow::on_action_cfgParam_triggered()
+void CentralWidget::on_action_cfgParam_triggered()
 {
     ParamSetting w;
     w.exec();
 }
 
 
-void MainWindow::on_action_exit_triggered()
+void CentralWidget::on_action_exit_triggered()
 {
-    this->close();
+    mainWindow->close();
 }
 
-void MainWindow::on_action_open_triggered()
+void CentralWidget::on_action_open_triggered()
 {
     // 打开历史测量数据文件...
     QString filter = "二进制文件 (*.dat);;文本文件 (*.csv);;所有文件 (*.dat *.csv)";
@@ -601,35 +677,35 @@ void MainWindow::on_action_open_triggered()
     commHelper->openHistoryWaveFile(filePath);
 }
 
-void MainWindow::on_action_connectRelay_triggered()
+void CentralWidget::on_action_connectRelay_triggered()
 {
     // 连接网络
     commHelper->connectNet();
 }
 
 
-void MainWindow::on_action_disconnectRelay_triggered()
+void CentralWidget::on_action_disconnectRelay_triggered()
 {
     // 断开网络
     commHelper->disconnectNet();
 }
 
 
-void MainWindow::on_action_connect_triggered()
+void CentralWidget::on_action_connect_triggered()
 {
     // 打开探测器
     commHelper->connectDetectors();
 }
 
 
-void MainWindow::on_action_disconnect_triggered()
+void CentralWidget::on_action_disconnect_triggered()
 {
     // 关闭探测器
     commHelper->disconnectDetectors();
 }
 
 
-void MainWindow::on_action_startMeasure_triggered()
+void CentralWidget::on_action_startMeasure_triggered()
 {
     QVector<double> keys, values;
     for (int i=0; i<=3; ++i){
@@ -659,27 +735,27 @@ void MainWindow::on_action_startMeasure_triggered()
 }
 
 
-void MainWindow::on_action_stopMeasure_triggered()
+void CentralWidget::on_action_stopMeasure_triggered()
 {
     // 停止波形测量
     commHelper->stopMeasure();
 }
 
 
-void MainWindow::on_action_powerOn_triggered()
+void CentralWidget::on_action_powerOn_triggered()
 {
     // 打开电源
     commHelper->openPower();
 }
 
 
-void MainWindow::on_action_powerOff_triggered()
+void CentralWidget::on_action_powerOff_triggered()
 {
     // 关闭电源
     commHelper->closePower();
 }
 
-void MainWindow::on_pushButton_startMeasureDistance_clicked()
+void CentralWidget::on_pushButton_startMeasureDistance_clicked()
 {
     // 开始测距
     if (ui->checkBox_continueMeasureDistance->isChecked()){
@@ -694,7 +770,7 @@ void MainWindow::on_pushButton_startMeasureDistance_clicked()
         ui->switchButton_laser->setChecked(false);
 }
 
-void MainWindow::on_pushButton_stopMeasureDistance_clicked()
+void CentralWidget::on_pushButton_stopMeasureDistance_clicked()
 {
     // 停止测距
     ui->pushButton_startMeasureDistance->setEnabled(true);
@@ -706,7 +782,7 @@ void MainWindow::on_pushButton_stopMeasureDistance_clicked()
     ui->switchButton_laser->setChecked(false);
 }
 
-void MainWindow::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
+void CentralWidget::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
 {
     //实测曲线
     QVector<double> keys, values;
@@ -763,7 +839,7 @@ void MainWindow::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
     ui->customPlot_3->replot(QCustomPlot::rpQueuedReplot);
 }
 
-void MainWindow::showEnerygySpectrumCurve(const QVector<QPair<float, float>>& data)
+void CentralWidget::showEnerygySpectrumCurve(const QVector<QPair<float, float>>& data)
 {
     //反解能谱
     QVector<double> keys, values;
@@ -777,7 +853,7 @@ void MainWindow::showEnerygySpectrumCurve(const QVector<QPair<float, float>>& da
 
 
 #include "aboutwidget.h"
-void MainWindow::on_action_about_triggered()
+void CentralWidget::on_action_about_triggered()
 {
     AboutWidget *w = new AboutWidget(this);
     w->setAttribute(Qt::WA_DeleteOnClose, true);
@@ -787,7 +863,7 @@ void MainWindow::on_action_about_triggered()
 }
 
 
-void MainWindow::on_pushButton_export_clicked()
+void CentralWidget::on_pushButton_export_clicked()
 {
     QString filePath = QFileDialog::getSaveFileName(this);
     if (!filePath.isEmpty()){
@@ -807,14 +883,14 @@ void MainWindow::on_pushButton_export_clicked()
 }
 
 
-void MainWindow::on_pushButton_clicked()
+void CentralWidget::on_pushButton_clicked()
 {
     ui->tableWidget_laser->clearContents();
     ui->tableWidget_laser->setRowCount(0);
 }
 
 
-void MainWindow::on_action_exportImg_triggered()
+void CentralWidget::on_action_exportImg_triggered()
 {
     // 导出图像
     QString filePath = QFileDialog::getSaveFileName(this);
@@ -826,3 +902,83 @@ void MainWindow::on_action_exportImg_triggered()
     }
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+MainWindow::MainWindow(QWidget *parent)
+    : QGoodWindow(parent) {
+    m_central_widget = new CentralWidget(this);
+    m_central_widget->setWindowFlags(Qt::Widget);
+
+    m_good_central_widget = new QGoodCentralWidget(this);
+
+#ifdef Q_OS_MAC
+    //macOS uses global menu bar
+    if(QApplication::testAttribute(Qt::AA_DontUseNativeMenuBar)) {
+#else
+    if(true) {
+#endif
+        m_menu_bar = m_central_widget->menuBar();
+
+        //Set font of menu bar
+        QFont font = m_menu_bar->font();
+#ifdef Q_OS_WIN
+        font.setFamily("Segoe UI");
+#else
+        font.setFamily(qApp->font().family());
+#endif
+        m_menu_bar->setFont(font);
+
+        QTimer::singleShot(0, this, [&]{
+            const int title_bar_height = m_good_central_widget->titleBarHeight();
+            m_menu_bar->setStyleSheet(QString("QMenuBar {height: %0px;}").arg(title_bar_height));
+        });
+
+        connect(m_good_central_widget,&QGoodCentralWidget::windowActiveChanged,this, [&](bool active){
+            m_menu_bar->setEnabled(active);
+#ifdef Q_OS_MACOS
+            fixWhenShowQuardCRTTabPreviewIssue();
+#endif
+        });
+
+        m_good_central_widget->setLeftTitleBarWidget(m_menu_bar);
+        setNativeCaptionButtonsVisibleOnMac(false);
+    } else {
+        setNativeCaptionButtonsVisibleOnMac(true);
+    }
+
+    connect(qGoodStateHolder, &QGoodStateHolder::currentThemeChanged, this, [](){
+        if (qGoodStateHolder->isCurrentThemeDark())
+            QGoodWindow::setAppDarkTheme();
+        else
+            QGoodWindow::setAppLightTheme();
+    });
+    connect(this, &QGoodWindow::systemThemeChanged, this, [&]{
+        qGoodStateHolder->setCurrentThemeDark(QGoodWindow::isSystemThemeDark());
+    });
+    qGoodStateHolder->setCurrentThemeDark(true);
+    QGoodWindow::setAppCustomTheme(true, QColor(255,255,255));
+
+    m_good_central_widget->setCentralWidget(m_central_widget);
+    setCentralWidget(m_good_central_widget);
+
+    setWindowIcon(QIcon(":/log.png"));
+    setWindowTitle(m_central_widget->windowTitle());
+
+    m_good_central_widget->setTitleAlignment(Qt::AlignCenter);
+}
+
+MainWindow::~MainWindow() {
+    delete m_central_widget;
+}
+
+void MainWindow::closeEvent(QCloseEvent *event) {
+    m_central_widget->closeEvent(event);
+}
+
+bool MainWindow::event(QEvent * event) {
+    if(event->type() == QEvent::StatusTip) {
+        m_central_widget->event(static_cast<QStatusTipEvent *>(event));
+        return true;
+    }
+
+    return QGoodWindow::event(event);
+}

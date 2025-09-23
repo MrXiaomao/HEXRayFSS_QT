@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>CentralWidget</class>
+ <widget class="QMainWindow" name="CentralWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -674,7 +674,11 @@
         <widget class="QCustomPlot" name="customPlot_2" native="true"/>
        </item>
        <item>
-        <widget class="QCustomPlot" name="customPlot_3" native="true"/>
+        <widget class="QCustomPlot" name="customPlot_3" native="true">
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -755,6 +759,12 @@
    <property name="windowTitle">
     <string>toolBar</string>
    </property>
+   <property name="iconSize">
+    <size>
+     <width>36</width>
+     <height>36</height>
+    </size>
+   </property>
    <property name="toolButtonStyle">
     <enum>Qt::ToolButtonTextUnderIcon</enum>
    </property>
@@ -784,6 +794,9 @@
    <property name="text">
     <string>打开历史测量数据(&amp;O)...</string>
    </property>
+   <property name="toolTip">
+    <string>打开历史测量数据(O)</string>
+   </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
    </property>
@@ -800,7 +813,7 @@
     <string>退出系统</string>
    </property>
    <property name="toolTip">
-    <string>退出系统</string>
+    <string>退出系统(X)</string>
    </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>

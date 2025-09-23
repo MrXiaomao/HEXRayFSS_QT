@@ -93,7 +93,7 @@ public:
         return mResult;
     }
 
-    void beginGroup(const QString &prefix = ""){
+    Q_DECL_DEPRECATED void beginGroup(const QString &prefix = ""){
         if (prefix.isEmpty()){
             mPrefix = prefix;
             mJsonGroup = QJsonObject();
@@ -103,15 +103,17 @@ public:
                 mPrefix = prefix;
             } else {
                 mJsonGroup = QJsonObject();
+                mJsonRoot[prefix] = mJsonGroup;
+                mPrefix = prefix;
             }
         }
     };
-    void endGroup(){
+    Q_DECL_DEPRECATED void endGroup(){
         if (!mPrefix.isEmpty()){
             mJsonRoot[mPrefix] = mJsonGroup;
             mJsonGroup = QJsonObject();
             mPrefix.clear();
-        }        
+        }
     };
 
     bool load(){
@@ -175,6 +177,360 @@ public:
     };
 
     /*
+        {
+            "键key": "值value",
+        }
+    */
+    void setRootValue(const QString &key, const QVariant &value){
+        QWriteLocker locker(&mRWLock);
+        mJsonRoot[key] = value.toJsonValue();
+    };
+
+    /*
+        {
+            "groupName":{
+                "键key": "值value",
+            }
+        }
+    */
+    void setGroupValue(const QString &groupName, const QString &key, const QVariant &value){
+        QWriteLocker locker(&mRWLock);
+        auto iterator = mJsonRoot.find(groupName);
+        if (iterator != mJsonRoot.end()) {
+            QJsonValueRef valueGroupRef = iterator.value();
+            QJsonObject objGroup = valueGroupRef.toObject();
+            objGroup[key] = value.toJsonValue();
+            valueGroupRef = objGroup;
+        }
+        else {
+            QJsonObject objGroup;
+            objGroup[key] = value.toJsonValue();
+            mJsonRoot.insert(groupName, QJsonValue(objGroup));
+        }
+    };
+
+    /*
+        {
+            "groupName":{
+                "group2Name":{
+                    "键key": "值value",
+                }
+            }
+        }
+    */
+    void setGroupValue(const QString &groupName, const QString &group2Name, const QString &key, const QVariant &value){
+        QWriteLocker locker(&mRWLock);
+        auto iterator = mJsonRoot.find(groupName);
+        if (iterator != mJsonRoot.end())
+        {
+            QJsonValueRef valueGroupRef = iterator.value();
+            if (valueGroupRef.isObject())
+            {
+                QJsonObject objGroup = valueGroupRef.toObject();
+                auto iterator2 = objGroup.find(group2Name);
+                if (iterator2 != objGroup.end())
+                {
+                    QJsonValueRef valueGroupRef2 = iterator2.value();
+                    QJsonObject objGroup2 = valueGroupRef2.toObject();
+                    objGroup2[key] = value.toJsonValue();
+                    valueGroupRef2 = objGroup2;
+                }
+                else
+                {
+                    QJsonObject objGroup2;
+                    objGroup2[key] = value.toJsonValue();
+                    objGroup.insert(groupName, QJsonValue(objGroup2));
+                }
+
+                valueGroupRef = objGroup;
+            }
+            else
+            {
+                // 找到字段，但是类型不对
+                return;
+            }
+        }
+        else
+        {
+            QJsonObject objGroup2;
+            objGroup2[key] = value.toJsonValue();
+
+            QJsonObject objGroup;
+            objGroup.insert(group2Name, QJsonValue(objGroup2));
+
+            mJsonRoot.insert(groupName, QJsonValue(objGroup));
+        }
+    };
+
+    /*
+        {
+            "groupName":{
+                "group2Name":{
+                    "group3Name":{
+                        "键key": "值value",
+                    }
+                }
+            }
+        }
+    */
+    void setGroupValue(const QString &groupName, const QString &group2Name, const QString &group3Name, const QString &key, const QVariant &value){
+        QWriteLocker locker(&mRWLock);
+        auto iterator = mJsonRoot.find(groupName);
+        if (iterator != mJsonRoot.end())
+        {
+            QJsonValueRef valueGroupRef = iterator.value();
+            if (valueGroupRef.isObject())
+            {
+                QJsonObject objGroup = valueGroupRef.toObject();
+                auto iterator2 = objGroup.find(group2Name);
+                if (iterator2 != objGroup.end())
+                {
+                    QJsonValueRef valueGroup2Ref = iterator2.value();
+                    if (valueGroup2Ref.isObject())
+                    {
+                        QJsonObject objGroup2 = valueGroup2Ref.toObject();
+                        auto iterator3 = objGroup2.find(group3Name);
+                        if (iterator3 != objGroup2.end())
+                        {
+                            QJsonValueRef valueGroupRef3 = iterator3.value();
+                            QJsonObject objGroup3 = valueGroupRef3.toObject();
+                            objGroup3[key] = value.toJsonValue();
+
+                            objGroup2.insert(group3Name, objGroup3);//valueGroupRef3 = objGroup2;
+                        }
+                        else
+                        {
+                            QJsonObject objGroup3;
+                            objGroup3[key] = value.toJsonValue();
+
+                            objGroup2.insert(group3Name, objGroup3);
+                        }
+
+                        valueGroup2Ref = objGroup2;
+                    }
+                    else
+                    {
+                        // 找到字段，但是类型不对
+                        return;
+                    }
+                }
+                else
+                {
+                    QJsonObject objGroup3;
+                    objGroup3[key] = value.toJsonValue();
+
+                    QJsonObject objGroup2;
+                    objGroup2.insert(group3Name, QJsonValue(objGroup3));
+
+                    objGroup.insert(group2Name, QJsonValue(objGroup2));
+                }
+
+                valueGroupRef = objGroup;
+            }
+            else
+            {
+                // 找到字段，但是类型不对
+                return;
+            }
+        }
+        else
+        {
+            QJsonObject objGroup3;
+            objGroup3[key] = value.toJsonValue();
+
+            QJsonObject objGroup2;
+            objGroup2.insert(group3Name, QJsonValue(objGroup3));
+
+            QJsonObject objGroup;
+            objGroup.insert(group2Name, QJsonValue(objGroup2));
+
+            mJsonRoot.insert(groupName, QJsonValue(objGroup));
+        }
+    };
+
+    /*
+    {
+        "arrayName":[
+            "键key1": "值value1", //arrayIndex===0
+            "键key2": "值value2", //arrayIndex===1
+        ]
+    }
+    */
+    void appendArrayValue(const QString &arrayName, const QVariant &value)
+    {
+        QWriteLocker locker(&mRWLock);
+        auto iterator = mJsonRoot.find(arrayName);
+        if (iterator != mJsonRoot.end())
+        {
+            QJsonValueRef valueArrayRef = iterator.value();
+            if (valueArrayRef.isArray())
+            {
+                QJsonArray arrayGroup = valueArrayRef.toArray();
+                arrayGroup.append(value.toJsonValue());
+                valueArrayRef = arrayGroup;
+            }
+            else
+            {
+                // 找到字段，但是类型不对
+                return;
+            }
+        }
+        else
+        {
+            QJsonArray arrayGroup;
+            arrayGroup.append(value.toJsonValue());
+
+            mJsonRoot.insert(arrayName, QJsonValue(arrayGroup));
+        }
+    };
+
+    /*
+    {
+        "arrayName":[
+            "键key1": "值value1", //arrayIndex===0
+            "键key2": "值value2", //arrayIndex===1
+        ]
+    }
+    */
+    void setArrayValue(const QString &arrayName, const quint8 &arrayIndex, const QVariant &value){
+        QWriteLocker locker(&mRWLock);
+        auto iterator = mJsonRoot.find(arrayName);
+        if (iterator != mJsonRoot.end())
+        {
+            QJsonValueRef valueArrayRef = iterator.value();
+            if (valueArrayRef.isArray())
+            {
+                QJsonArray arrayGroup = valueArrayRef.toArray();
+                if (arrayIndex < arrayGroup.size())
+                {
+                    arrayGroup.replace(arrayIndex, value.toJsonValue());
+                    valueArrayRef = arrayGroup;
+                }
+                else
+                {
+                    // 越界
+                    return;
+                }
+            }
+            else
+            {
+                // 找到字段，但是类型不对
+                return;
+            }
+        }
+        else
+        {
+            // 越界
+            return;
+        }
+    };
+
+    /*
+    {
+        "groupName":{
+            "arrayName":[
+                "键key1": "值value1", //arrayIndex===0
+                "键key2": "值value2", //arrayIndex===2
+            ]
+        }
+    }
+    */
+    void setArrayValue(const QString &groupName, const QString &arrayName, const quint8 &arrayIndex, const QString &key, const QVariant &value){
+        QWriteLocker locker(&mRWLock);
+        auto iterator = mJsonRoot.find(groupName);
+        if (iterator != mJsonRoot.end())
+        {
+            QJsonValueRef valueGroupRef = iterator.value();
+            if (valueGroupRef.isObject())
+            {
+                QJsonObject objGroup = valueGroupRef.toObject();
+                auto iterator2 = objGroup.find(arrayName);
+                if (iterator2 != objGroup.end())
+                {
+                    QJsonValueRef valueArrayRef = iterator2.value();
+                    if (valueArrayRef.isArray())
+                    {
+                        QJsonArray arrayGroup = valueArrayRef.toArray();
+                        if (arrayIndex < arrayGroup.size()){
+                            QJsonValueRef valueGroupRef = arrayGroup[arrayIndex];
+                            if (valueGroupRef.isObject())
+                            {
+                                QJsonObject objArray = valueGroupRef.toObject();
+                                objArray[key] = value.toJsonValue();
+
+                                valueGroupRef = objArray;
+                            }
+                            else
+                            {
+                                // 找到字段，但是类型不对
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            // 数组越界
+                            QJsonObject objArray;
+                            objArray[key] = value.toJsonValue();
+
+                            arrayGroup.append(objArray);
+                        }
+
+                        valueArrayRef = arrayGroup;
+                    }
+                    else
+                    {
+                        // 找到字段，但是类型不对
+                        return;
+                    }
+                }
+                else
+                {
+                    QJsonObject objArray;
+                    objArray[key] = value.toJsonValue();
+
+                    QJsonArray arrayGroup;
+                    arrayGroup.append(objArray);
+
+                    objGroup.insert(arrayName, QJsonValue(arrayGroup));
+                }
+
+                valueGroupRef = objGroup;
+            }
+            else
+            {
+                // 找到字段，但是类型不对
+                return;
+            }
+        }
+        else
+        {
+            QJsonObject objArray;
+            objArray[key] = value.toJsonValue();
+
+            QJsonArray arrayGroup;
+            arrayGroup.append(objArray);
+
+            QJsonObject objGroup;
+            objGroup.insert(arrayName, QJsonValue(arrayGroup));
+
+            mJsonRoot.insert(groupName, QJsonValue(objGroup));
+        }
+    };
+
+    /*
+    {
+        "groupName":{
+            "arrayName":[
+                {
+                    "键key1": "值value1", //arrayIndex===0
+                    "键key2": "值value2", //arrayIndex===2
+                }
+            ]
+        }
+    }
+    */
+
+    /*
         适用于跟节点或一级节点赋值
         {
             "键key": "值value",
@@ -183,16 +539,13 @@ public:
             }
         }
     */
+    QT_DEPRECATED_X("Use JsonSettings::setGroupValue(QString,QString,QVariant) instead")
     void setValue(const QString &key, const QVariant &value){
         //QWriteLocker locker(&mRWLock);//beginGroup已经上锁了，这里就不需要了
         if (!mJsonGroup.isEmpty())
             mJsonGroup[key] = QJsonValue::fromVariant(value);
         else
             mJsonRoot[key] = QJsonValue::fromVariant(value);
-
-        // QJsonValueRef RefPage = mJsonRoot.find(key).value();
-        // RefPage = QJsonValue(value.toString());
-        // flush();
     };
     QVariant value(const QString &key, const QVariant &defaultValue = QVariant())
     {
@@ -335,7 +688,7 @@ protected:
     bool mResult = false;//保存操作结果
 };
 
-class GlobalSettings: public QObject
+class GlobalSettings: public QSettings
 {
     Q_OBJECT
 public:
@@ -344,14 +697,23 @@ public:
         return &globalSettings;
     }
 
-    explicit GlobalSettings();
+    explicit GlobalSettings(QObject *parent = nullptr);
     ~GlobalSettings();
 
     JsonSettings* mFpgaSettings;
     JsonSettings* mIpSettings;
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
+    void setValue(QAnyStringView key, const QVariant &value);
+#else
+    void setValue(const QString &key, const QVariant &value);
+#endif
+    void setRealtimeSave(bool realtime);
+    bool isRealtimeSave() const { return realtime;}
+
 private:
-    bool mWatchThisFile = true;
+    bool realtime = false;
+    bool mWatchThisFile = false;
     QFileSystemWatcher *mConfigurationFileWatch;
 };
 
