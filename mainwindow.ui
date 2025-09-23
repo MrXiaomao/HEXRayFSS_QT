@@ -409,10 +409,16 @@
            <property name="text">
             <string>通讯状态</string>
            </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
+           </property>
           </row>
           <row>
            <property name="text">
-            <string>温度（℃）</string>
+            <string>温度(℃)</string>
+           </property>
+           <property name="textAlignment">
+            <set>AlignCenter</set>
            </property>
           </row>
           <column>
@@ -742,6 +748,7 @@
      <string>帮助(&amp;H)</string>
     </property>
     <addaction name="action_about"/>
+    <addaction name="action_aboutQt"/>
    </widget>
    <widget class="QMenu" name="menu_setup">
     <property name="title">
@@ -868,10 +875,10 @@
   <action name="action_about">
    <property name="icon">
     <iconset resource="../3rdParty/resource/resource.qrc">
-     <normaloff>:/about.png</normaloff>:/about.png</iconset>
+     <normaloff>:/logo.png</normaloff>:/logo.png</iconset>
    </property>
    <property name="text">
-    <string>关于 LowXRayFSS(&amp;A)</string>
+    <string>关于</string>
    </property>
    <property name="iconText">
     <string>关于</string>
@@ -1049,6 +1056,15 @@
    </property>
    <property name="toolTip">
     <string>设置主题颜色，取消设置默认值</string>
+   </property>
+  </action>
+  <action name="action_aboutQt">
+   <property name="icon">
+    <iconset resource="../3rdParty/resource/resource.qrc">
+     <normaloff>:/aboutqt.png</normaloff>:/aboutqt.png</iconset>
+   </property>
+   <property name="text">
+    <string>关于Qt</string>
    </property>
   </action>
  </widget>

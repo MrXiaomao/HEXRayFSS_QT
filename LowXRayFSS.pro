@@ -80,16 +80,16 @@ CONFIG += resources_big
 #############################################################################################################
 exists (./.git) {
     GIT_BRANCH   = $$system(git rev-parse --abbrev-ref HEAD)
-    GIT_TIME     = $$system(git show --oneline --format=\"%ci%H\" -s HEAD)
-    GIT_VERSION = "Git: $${GIT_BRANCH}: $${GIT_TIME}"
+    GIT_DATE     = $$system(git show --oneline --format=\"%ci%H\" -s HEAD)
+    GIT_VERSION = "Git: $${GIT_BRANCH}: $${GIT_DATE}"
 } else {
     GIT_BRANCH      = None
-    GIT_TIME        = None
+    GIT_DATE        = None
     GIT_VERSION     = None
 }
 
 DEFINES += GIT_BRANCH=\"\\\"$$GIT_BRANCH\\\"\"
-DEFINES += GIT_TIME=\"\\\"$$GIT_TIME\\\"\"
+DEFINES += GIT_DATE=\"\\\"$$GIT_DATE\\\"\"
 DEFINES += GIT_VERSION=\"\\\"$$GIT_VERSION\\\"\"
 DEFINES += APP_VERSION="\\\"V1.0.1\\\""
 

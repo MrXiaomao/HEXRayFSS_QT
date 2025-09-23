@@ -105,9 +105,9 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
         ui->action_startMeasure->setEnabled(true);
         ui->action_stopMeasure->setEnabled(true);
 
-        if (ui->tableWidget_detector->item(0, 0)->text() == "在线" &&
-            ui->tableWidget_detector->item(0, 1)->text() == "在线" &&
-            ui->tableWidget_detector->item(0, 2)->text() == "在线"){
+        if (ui->tableWidget_detector->item(0, 0)->text() == tr("在线") &&
+            ui->tableWidget_detector->item(0, 1)->text() == tr("在线") &&
+            ui->tableWidget_detector->item(0, 2)->text() == tr("在线")){
             ui->action_connect->setEnabled(false);
             ui->action_disconnect->setEnabled(true);
         }
@@ -116,9 +116,9 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
     connect(commHelper, &CommHelper::detectorDisconnected, this, [=](quint8 index){
         ui->tableWidget_detector->item(0, index - 1)->setText(tr("离线"));
         ui->tableWidget_detector->item(0, index - 1)->setForeground(QBrush(QColor(Qt::red)));
-        if (ui->tableWidget_detector->item(0, 0)->text() == "离线" &&
-            ui->tableWidget_detector->item(0, 1)->text() == "离线" &&
-            ui->tableWidget_detector->item(0, 2)->text() == "离线"){
+        if (ui->tableWidget_detector->item(0, 0)->text() == tr("离线") &&
+            ui->tableWidget_detector->item(0, 1)->text() == tr("离线") &&
+            ui->tableWidget_detector->item(0, 2)->text() == tr("离线")){
             ui->action_startMeasure->setEnabled(false);
             ui->action_stopMeasure->setEnabled(false);
 
@@ -824,6 +824,10 @@ void CentralWidget::on_action_about_triggered()
     w->showNormal();
 }
 
+void CentralWidget::on_action_aboutQt_triggered()
+{
+    QMessageBox::aboutQt(this);
+}
 
 void CentralWidget::on_pushButton_export_clicked()
 {
@@ -983,7 +987,6 @@ MainWindow::MainWindow(bool isDarkTheme, QWidget *parent)
     : QGoodWindow(parent) {
     mCentralWidget = new CentralWidget(isDarkTheme, this);
     mCentralWidget->setWindowFlags(Qt::Widget);
-
     mGoodCentraWidget = new QGoodCentralWidget(this);
 
 #ifdef Q_OS_MAC
@@ -1010,9 +1013,6 @@ MainWindow::MainWindow(bool isDarkTheme, QWidget *parent)
 
         connect(mGoodCentraWidget,&QGoodCentralWidget::windowActiveChanged,this, [&](bool active){
             mMenuBar->setEnabled(active);
-#ifdef Q_OS_MACOS
-            fixWhenShowQuardCRTTabPreviewIssue();
-#endif
         });
 
         mGoodCentraWidget->setLeftTitleBarWidget(mMenuBar);

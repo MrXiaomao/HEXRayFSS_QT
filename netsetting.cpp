@@ -10,7 +10,8 @@ NetSetting::NetSetting(QWidget *parent)
     ui->tableWidget->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     ui->tableWidget->setColumnWidth(1, 100);
     ui->tableWidget->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);
-    ui->tableWidget->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+    ui->tableWidget->setColumnWidth(1, 50);
+    ui->tableWidget->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Fixed);
 
 
     GlobalSettings settings("./Settings.ini");

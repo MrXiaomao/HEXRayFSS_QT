@@ -59,14 +59,6 @@ int main(int argc, char *argv[])
     QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
 
     QApplication a(argc, argv);
-    QFont font = qApp->font();
-    font.setStyleStrategy(QFont::PreferAntialias);
-    font.setHintingPreference(QFont::PreferFullHinting);
-    font.setFamily("微软雅黑");
-    qApp->setFont(font);
-    qApp->setStyle(new DarkStyle());
-    qApp->style()->setObjectName("fusion");
-
     QApplication::setApplicationName("低能滤片堆栈谱仪软件");
     QApplication::setOrganizationName("Copyright (c) 2025");
     QApplication::setOrganizationDomain("");
@@ -153,10 +145,22 @@ int main(int argc, char *argv[])
         QApplication::setAttribute(Qt::AA_DontUseNativeMenuBar,false);
         QApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings,false);
     }
+
+    QString fontFamily = settings.value("Global/Options/fontFamily", "微软雅黑").toString();
+    quint32 fontPointSize = settings.value("Global/Options/fontPointSize", 12).toInt();
+    QFont font = qApp->font();
+    font.setStyleStrategy(QFont::PreferAntialias);
+    font.setHintingPreference(QFont::PreferFullHinting);
+    font.setFamily(fontFamily);
+    font.setPointSize(fontPointSize);
+    qApp->setFont(font);
+    qApp->setStyle(new DarkStyle());
+    qApp->style()->setObjectName("fusion");
+
     settings.beginGroup("Version");
     settings.setValue("Version",GIT_VERSION);
     settings.setValue("GitBranch",GIT_BRANCH);
-    settings.setValue("BuildDate",GIT_TIME);
+    settings.setValue("BuildDate",GIT_DATE);
     settings.endGroup();
 
     QString darkTheme = "true";
