@@ -30,19 +30,22 @@ public:
         MINIUI_MODE,
     };
 
-    CentralWidget(QWidget *parent = nullptr);
+    CentralWidget(bool isDarkTheme = true, QWidget *parent = nullptr);
     ~CentralWidget();
 
     /*
     初始化
     */
     void initUi();
+    void restoreSettings();
     void initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, QString axisYLabel, int graphCount = 1);
+    void applyColorTheme();
 
 public:
     virtual void closeEvent(QCloseEvent *event) override;
-    virtual bool event(QEvent * event) override;
     virtual bool eventFilter(QObject *watched, QEvent *event) override;
+
+    bool checkStatusTipEvent(QEvent * event);
 
 public slots:
     void slotWriteLog(const QString &msg, QtMsgType msgType = QtDebugMsg);//操作日志
@@ -90,12 +93,19 @@ private slots:
 
     void on_action_exportImg_triggered();
 
+    void on_action_lightTheme_triggered();
+
+    void on_action_darkTheme_triggered();
+
+    void on_action_colorTheme_triggered();
+
 private:
     Ui::CentralWidget *ui;
     bool mRelayPowerOn = false;
     qreal windowTransparency = 1.0;
     bool windowTransparencyEnabled = false;
-    bool isDarkTheme = true;
+    bool mIsDarkTheme = true;
+    bool themeColorEnable = true;
     QColor themeColor = QColor(255,255,255);
 
 #ifdef MATLAB
@@ -113,35 +123,26 @@ class MainWindow : public QGoodWindow
 {
     Q_OBJECT
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(bool isDarkTheme = true, QWidget *parent = nullptr);
     ~MainWindow();
-    void setLaboratoryButton(QToolButton *laboratoryButton) {
-        QTimer::singleShot(0, this, [this, laboratoryButton](){
-            laboratoryButton->setFixedSize(m_good_central_widget->titleBarHeight(),m_good_central_widget->titleBarHeight());
-            m_good_central_widget->setRightTitleBarWidget(laboratoryButton, false);
-            connect(m_good_central_widget,&QGoodCentralWidget::windowActiveChanged,this, [laboratoryButton](bool active){
-                laboratoryButton->setEnabled(active);
-            });
-        });
-    }
     void fixMenuBarWidth(void) {
-        if (m_menu_bar) {
+        if (mMenuBar) {
             /* FIXME: Fix the width of the menu bar
              * please optimize this code */
             int width = 0;
-            int itemSpacingPx = m_menu_bar->style()->pixelMetric(QStyle::PM_MenuBarItemSpacing);
-            for (int i = 0; i < m_menu_bar->actions().size(); i++) {
-                QString text = m_menu_bar->actions().at(i)->text();
-                QFontMetrics fm(m_menu_bar->font());
+            int itemSpacingPx = mMenuBar->style()->pixelMetric(QStyle::PM_MenuBarItemSpacing);
+            for (int i = 0; i < mMenuBar->actions().size(); i++) {
+                QString text = mMenuBar->actions().at(i)->text();
+                QFontMetrics fm(mMenuBar->font());
                 width += fm.size(0, text).width() + itemSpacingPx*1.5;
             }
-            m_good_central_widget->setLeftTitleBarWidth(width);
+            mGoodCentraWidget->setLeftTitleBarWidth(width);
         }
     }
 
     CentralWidget* centralWidget() const
     {
-        return this->m_central_widget;
+        return this->mCentralWidget;
     }
 
 
@@ -150,9 +151,9 @@ protected:
     bool event(QEvent * event) override;
 
 private:
-    QGoodCentralWidget *m_good_central_widget;
-    QMenuBar *m_menu_bar = nullptr;
-    CentralWidget *m_central_widget;
+    QGoodCentralWidget *mGoodCentraWidget;
+    QMenuBar *mMenuBar = nullptr;
+    CentralWidget *mCentralWidget;
 };
 
 #endif // MAINWINDOW_H

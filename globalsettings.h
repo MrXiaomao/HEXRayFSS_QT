@@ -2,54 +2,6 @@
 #define GLOBALSETTINGS_H
 
 #include <QObject>
-#include <QSettings>
-
-class BaseSettings : public QObject{
-    Q_OBJECT
-public:
-    BaseSettings(const QString &fileName){
-        mSettings = new QSettings(mFileName, QSettings::IniFormat);
-    };
-    ~BaseSettings(){
-        delete mSettings;
-        mSettings = nullptr;
-    };
-
-    QString fileName() const{
-        return mFileName;
-    }
-
-    void beginGroup(const QString &prefix){
-        mSettings->beginGroup(prefix);
-    };
-    void endGroup(){
-        mSettings->endGroup();
-    };
-
-    virtual void load() = 0;
-    virtual void save() = 0;
-
-    void setValue(const QString &key, const QVariant &value){
-        mSettings->setValue(key, value);
-    };
-    QVariant value(const QString &key, const QVariant &defaultValue/* = QVariant()*/) const
-    {
-        return mSettings->value(key, defaultValue);
-    };
-
-    void setArrayValue(const QString &arrayKey, const int &index, const QString &valueKey, const QVariant &value){
-        mSettings->setValue(QString("%1_%2_%3").arg(arrayKey, valueKey).arg(index), value);
-    };
-    QVariant arrayValue(const QString &arrayKey, const int &index, const QString &valueKey, const QVariant &defaultValue = QVariant()) const
-    {
-        return mSettings->value(QString("%1_%2_%3").arg(arrayKey, valueKey).arg(index), defaultValue);
-    };
-
-protected:
-    QString mFileName;
-    QSettings *mSettings;
-};
-
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonObject>
@@ -66,9 +18,30 @@ public:
         mConfigurationFile.setFile(fileName);
         mFileName = mConfigurationFile.absoluteFilePath();
         mOpened = this->load();
+
+        if (mWatchThisFile){
+            // 监视文件内容变化，一旦发现变化重新读取配置文件内容，保持配置信息同步
+            mConfigurationFileWatch = new QFileSystemWatcher();
+            QFileInfo mConfigurationFile;
+            mConfigurationFile.setFile(mFileName);
+            if (!mConfigurationFileWatch->files().contains(mConfigurationFile.absoluteFilePath()))
+                mConfigurationFileWatch->addPath(mConfigurationFile.absoluteFilePath());
+
+            connect(mConfigurationFileWatch, &QFileSystemWatcher::fileChanged, this, [=](const QString &fileName){
+                this->load();
+            });
+
+            //mConfigurationFileWatch->addPath(mConfigurationFile.absolutePath());//只需要监视某个文件即可，这里不需要监视整个目录
+            // connect(mConfigurationFileWatch, &QFileSystemWatcher::directoryChanged, [=](const QString &path){
+            // });
+        }
     };
     ~JsonSettings(){
-
+        if (mConfigurationFileWatch)
+        {
+            delete mConfigurationFileWatch;
+            mConfigurationFileWatch = nullptr;
+        }
     };
 
     bool isOpen() {
@@ -78,43 +51,6 @@ public:
     QString fileName() const{
         return mFileName;
     }
-
-    void prepare(){
-        emit sigPrepare(mFileName);
-        //qDebug() << "enter lock >>>";
-        mAccessMutex.lock();
-    }
-
-    bool finish()
-    {
-        mAccessMutex.unlock();
-        //qDebug() << "leave lock <<<<<<";
-        emit sigFinish(mFileName);
-        return mResult;
-    }
-
-    Q_DECL_DEPRECATED void beginGroup(const QString &prefix = ""){
-        if (prefix.isEmpty()){
-            mPrefix = prefix;
-            mJsonGroup = QJsonObject();
-        } else {
-            if (mJsonRoot.contains(prefix)){
-                mJsonGroup = mJsonRoot[prefix].toObject();
-                mPrefix = prefix;
-            } else {
-                mJsonGroup = QJsonObject();
-                mJsonRoot[prefix] = mJsonGroup;
-                mPrefix = prefix;
-            }
-        }
-    };
-    Q_DECL_DEPRECATED void endGroup(){
-        if (!mPrefix.isEmpty()){
-            mJsonRoot[mPrefix] = mJsonGroup;
-            mJsonGroup = QJsonObject();
-            mPrefix.clear();
-        }
-    };
 
     bool load(){
         //QReadLocker locker(&mRWLock);
@@ -153,24 +89,6 @@ public:
             }
         }
     };
-    bool save(const QString &fileName = ""){
-        //QWriteLocker locker(&mRWLock);
-        QFile file(fileName);
-        if (fileName.isEmpty())
-            file.setFileName(mFileName);
-
-        if (file.open(QIODevice::ReadWrite | QIODevice::Text)) {
-            QJsonDocument jsonDoc(mJsonRoot);
-            file.write(jsonDoc.toJson());
-            file.close();
-            mResult = true;
-        } else {
-            qDebug() << "文件[" << mFileName << "]信息保存失败！";
-            mResult = false;
-        }
-
-        return mResult;
-    };
 
     bool flush(){
         return save(mFileName);
@@ -184,6 +102,9 @@ public:
     void setRootValue(const QString &key, const QVariant &value){
         QWriteLocker locker(&mRWLock);
         mJsonRoot[key] = value.toJsonValue();
+
+        if (realtime)
+            flush();
     };
 
     /*
@@ -207,6 +128,9 @@ public:
             objGroup[key] = value.toJsonValue();
             mJsonRoot.insert(groupName, QJsonValue(objGroup));
         }
+
+        if (realtime)
+            flush();
     };
 
     /*
@@ -243,11 +167,9 @@ public:
                 }
 
                 valueGroupRef = objGroup;
-            }
-            else
-            {
-                // 找到字段，但是类型不对
-                return;
+
+                if (realtime)
+                    flush();
             }
         }
         else
@@ -259,6 +181,9 @@ public:
             objGroup.insert(group2Name, QJsonValue(objGroup2));
 
             mJsonRoot.insert(groupName, QJsonValue(objGroup));
+
+            if (realtime)
+                flush();
         }
     };
 
@@ -307,11 +232,9 @@ public:
                         }
 
                         valueGroup2Ref = objGroup2;
-                    }
-                    else
-                    {
-                        // 找到字段，但是类型不对
-                        return;
+
+                        if (realtime)
+                            flush();
                     }
                 }
                 else
@@ -326,11 +249,9 @@ public:
                 }
 
                 valueGroupRef = objGroup;
-            }
-            else
-            {
-                // 找到字段，但是类型不对
-                return;
+
+                if (realtime)
+                    flush();
             }
         }
         else
@@ -345,6 +266,9 @@ public:
             objGroup.insert(group2Name, QJsonValue(objGroup2));
 
             mJsonRoot.insert(groupName, QJsonValue(objGroup));
+
+            if (realtime)
+                flush();
         }
     };
 
@@ -368,11 +292,9 @@ public:
                 QJsonArray arrayGroup = valueArrayRef.toArray();
                 arrayGroup.append(value.toJsonValue());
                 valueArrayRef = arrayGroup;
-            }
-            else
-            {
-                // 找到字段，但是类型不对
-                return;
+
+                if (realtime)
+                    flush();
             }
         }
         else
@@ -381,6 +303,9 @@ public:
             arrayGroup.append(value.toJsonValue());
 
             mJsonRoot.insert(arrayName, QJsonValue(arrayGroup));
+
+            if (realtime)
+                flush();
         }
     };
 
@@ -405,23 +330,11 @@ public:
                 {
                     arrayGroup.replace(arrayIndex, value.toJsonValue());
                     valueArrayRef = arrayGroup;
-                }
-                else
-                {
-                    // 越界
-                    return;
+
+                    if (realtime)
+                        flush();
                 }
             }
-            else
-            {
-                // 找到字段，但是类型不对
-                return;
-            }
-        }
-        else
-        {
-            // 越界
-            return;
         }
     };
 
@@ -431,6 +344,19 @@ public:
             "arrayName":[
                 "键key1": "值value1", //arrayIndex===0
                 "键key2": "值value2", //arrayIndex===2
+            ]
+        }
+    }
+    */
+
+    /*
+    {
+        "groupName":{
+            "arrayName":[
+                {
+                    "键key1": "值value1", //arrayIndex===0
+                    "键key2": "值value2", //arrayIndex===2
+                }
             ]
         }
     }
@@ -515,167 +441,31 @@ public:
 
             mJsonRoot.insert(groupName, QJsonValue(objGroup));
         }
-    };
 
-    /*
-    {
-        "groupName":{
-            "arrayName":[
-                {
-                    "键key1": "值value1", //arrayIndex===0
-                    "键key2": "值value2", //arrayIndex===2
-                }
-            ]
-        }
-    }
-    */
-
-    /*
-        适用于跟节点或一级节点赋值
-        {
-            "键key": "值value",
-            "一级节点" :{           //需调用beginGroup进入子节点
-                "键key": "值value"
-            }
-        }
-    */
-    QT_DEPRECATED_X("Use JsonSettings::setGroupValue(QString,QString,QVariant) instead")
-    void setValue(const QString &key, const QVariant &value){
-        //QWriteLocker locker(&mRWLock);//beginGroup已经上锁了，这里就不需要了
-        if (!mJsonGroup.isEmpty())
-            mJsonGroup[key] = QJsonValue::fromVariant(value);
-        else
-            mJsonRoot[key] = QJsonValue::fromVariant(value);
-    };
-    QVariant value(const QString &key, const QVariant &defaultValue = QVariant())
-    {
-        //QReadLocker locker(&mRWLock);//beginGroup已经上锁了，这里就不需要了
-        if (!mJsonGroup.isEmpty())
-            return mJsonGroup[key].toVariant();
-        else if (mJsonRoot.contains(key))
-            return mJsonRoot[key].toVariant();
-        else
-            return defaultValue;
+        if (realtime)
+            flush();
     };
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /*
-        适用于二级节点下数组类型数据访问
-        {
-            "一级节点" :{            //需调用beginGroup进入子节点
-                "二级节点键arrayKey": [
-                    {               // index=0
-                        "键valueKey" : "值value"
-                    },
-                    {               // index=1
-                        "键valueKey" : "值value"
-                    }
-                ]
-                "二级节点": [
-                    {               // index=0
-                        "键valueKey" : "值value"
-                    }
-                ]
-            }
-        }
-    */
-    void setArrayValue(const QString &arrayKey, const int &index, const QString &valueKey, const QVariant &value){
-        //QWriteLocker locker(&mRWLock);//beginGroup已经上锁了，这里就不需要了
-        QJsonArray jsonArray;
-        if (mJsonGroup.contains(arrayKey)){
-            jsonArray = mJsonGroup[arrayKey].toArray();
-            QJsonObject item;
-            if (index > jsonArray.size()){
-                item[valueKey] = QJsonValue::fromVariant(value);
-                jsonArray.append(item);
-            } else {
-                item = jsonArray.at(index).toObject();
-                item[valueKey] = QJsonValue::fromVariant(value);
-                jsonArray.replace(index, item);
-            }
-        } else {
-            QJsonObject item;
-            item[valueKey] = QJsonValue::fromVariant(value);
-            jsonArray.append(item);
-        }
-
-        mJsonGroup[arrayKey] = jsonArray;
-    };
-    QVariant arrayValue(const QString &arrayKey, const int &index, const QString &valueKey, const QVariant &defaultValue = QVariant())
-    {
-        //QReadLocker locker(&mRWLock);//beginGroup已经上锁了，这里就不需要了
-        if (mJsonGroup.contains(arrayKey)){
-            QJsonArray jsonArray = mJsonGroup[arrayKey].toArray();
-            if (index > jsonArray.size()){
-                return defaultValue;
-            } else {
-                const QJsonObject mJsonValue = jsonArray[index].toObject();
-                return mJsonValue[valueKey].toVariant();
-            }
-        } else {
-            return defaultValue;
-        }
-    };
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /*
-        适用于三级节点数据访问
-        {
-            "一级节点" :{            //需调用beginGroup进入子节点
-                "二级节点键subGroup": {
-                    "三级节点键childKey" {
-                        "键valueKey" : "值value"
-                    },
-                    "三级节点键childKey" {
-                        "键valueKey" : "值value"
-                    }
-                ]
-            }
-        }
-    */
-    void setChildValue(const QString &subGroup, const QString &childKey, const QString &valueKey, const QVariant &value){
-        //QWriteLocker locker(&mRWLock);//beginGroup已经上锁了，这里就不需要了
-        QJsonObject jsonSubGroup;
-        if (mJsonGroup.contains(subGroup)){
-            jsonSubGroup = mJsonGroup[subGroup].toObject();
-            QJsonObject jsonChild;
-            if (jsonSubGroup.contains(childKey)){
-                jsonChild = jsonSubGroup[childKey].toObject();
-            }
+private:
+    bool save(const QString &fileName = ""){
+        //QWriteLocker locker(&mRWLock);
+        QFile file(fileName);
+        if (fileName.isEmpty())
+            file.setFileName(mFileName);
 
-            jsonChild[valueKey] = QJsonValue::fromVariant(value);
-            jsonSubGroup[childKey] = jsonChild;
+        if (file.open(QIODevice::ReadWrite | QIODevice::Text)) {
+            QJsonDocument jsonDoc(mJsonRoot);
+            file.write(jsonDoc.toJson());
+            file.close();
+            return true;
+        } else {
+            qDebug() << "文件[" << mFileName << "]信息保存失败！";
+            return false;
         }
-        else{
-            QJsonObject jsonChild;
-            jsonChild[valueKey] = QJsonValue::fromVariant(value);
-            jsonSubGroup[childKey] = jsonChild;
-        }
-
-        mJsonGroup[subGroup] = jsonSubGroup;
     };
-    QVariant childValue(const QString &subGroup, const QString &childKey, const QString &valueKey, const QVariant &defaultValue = QVariant())
-    {
-        //QReadLocker locker(&mRWLock);//beginGroup已经上锁了，这里就不需要了
-        QVariant result = defaultValue;
-        if (mJsonGroup.contains(subGroup)){
-            QJsonObject jsonSubGroup = mJsonGroup[subGroup].toObject();
-            if (jsonSubGroup.contains(childKey)){
-                QJsonObject jsonChild = jsonSubGroup[childKey].toObject();
-                if (jsonChild.contains(valueKey))
-                    result = jsonChild[valueKey].toVariant();
-                else
-                    result = defaultValue;
-            } else {
-                result = defaultValue;
-            }
-        }
-
-        return result;
-    };
-
-    Q_SIGNAL void sigPrepare(const QString &fileName);
-    Q_SIGNAL void sigFinish(const QString &fileName);
 
 protected:
     QString mFileName;
@@ -685,23 +475,20 @@ protected:
     QReadWriteLock mRWLock;
     QMutex mAccessMutex;//访问锁
     bool mOpened = false;//文档打开成功标识
-    bool mResult = false;//保存操作结果
+    bool realtime = false;
+    bool mWatchThisFile = false;
+    QFileSystemWatcher *mConfigurationFileWatch;
 };
 
+#include <QSettings>
+#include <QApplication>
 class GlobalSettings: public QSettings
 {
     Q_OBJECT
 public:
-    static GlobalSettings *instance() {
-        static GlobalSettings globalSettings;
-        return &globalSettings;
-    }
-
     explicit GlobalSettings(QObject *parent = nullptr);
+    explicit GlobalSettings(QString fileName, QObject *parent = nullptr);
     ~GlobalSettings();
-
-    JsonSettings* mFpgaSettings;
-    JsonSettings* mIpSettings;
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
     void setValue(QAnyStringView key, const QVariant &value);
@@ -713,8 +500,6 @@ public:
 
 private:
     bool realtime = false;
-    bool mWatchThisFile = false;
-    QFileSystemWatcher *mConfigurationFileWatch;
 };
 
 #endif // GLOBALSETTINGS_H

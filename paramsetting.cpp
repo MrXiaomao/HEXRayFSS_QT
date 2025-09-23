@@ -9,15 +9,12 @@ ParamSetting::ParamSetting(QWidget *parent)
     ui->setupUi(this);
     ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-    JsonSettings* fpgaSettings = GlobalSettings::instance()->mFpgaSettings;
-    fpgaSettings->prepare();
-
-    fpgaSettings->beginGroup();
-    ui->comboBox_triggerMode->setCurrentIndex(fpgaSettings->value("TriggerMode").toInt());
-    ui->comboBox_waveLength->setCurrentIndex(fpgaSettings->value("WaveLength").toInt());
+    GlobalSettings settings("./Settings.ini");
+    ui->comboBox_triggerMode->setCurrentIndex(settings.value("Fpga/TriggerMode").toInt());
+    ui->comboBox_waveLength->setCurrentIndex(settings.value("Fpga/WaveLength").toInt());
 
     {
-        QString triggerThold = fpgaSettings->value("TriggerThold").toString();
+        QString triggerThold = settings.value("Fpga/TriggerThold").toString();
         QList<QString> triggerTholds = triggerThold.split(',', Qt::SkipEmptyParts);
         while (triggerTholds.size() < 4)
             triggerTholds.push_back("200");
@@ -29,7 +26,7 @@ ParamSetting::ParamSetting(QWidget *parent)
     }
 
     {
-        QString gain = fpgaSettings->value("Gain").toString();
+        QString gain = settings.value("Fpga/Gain").toString();
         QList<QString> gains = gain.split(',', Qt::SkipEmptyParts);
         while (gains.size() < 4)
             gains.push_back("5");
@@ -39,9 +36,6 @@ ParamSetting::ParamSetting(QWidget *parent)
         ui->tableWidget->item(1, 2)->setText(gains[2]);
         ui->tableWidget->item(1, 3)->setText(gains[3]);
     }
-
-    fpgaSettings->endGroup();
-    fpgaSettings->finish();
 }
 
 ParamSetting::~ParamSetting()
@@ -51,19 +45,16 @@ ParamSetting::~ParamSetting()
 
 void ParamSetting::on_pushButton_save_clicked()
 {
-    JsonSettings* fpgaSettings = GlobalSettings::instance()->mFpgaSettings;
-    fpgaSettings->prepare();
-
-    fpgaSettings->beginGroup();
-    fpgaSettings->setValue("TriggerMode", ui->comboBox_triggerMode->currentIndex());
-    fpgaSettings->setValue("WaveLength", ui->comboBox_waveLength->currentIndex());
+    GlobalSettings settings("./Settings.ini");
+    settings.setValue("Fpga/TriggerMode", ui->comboBox_triggerMode->currentIndex());
+    settings.setValue("Fpga/WaveLength", ui->comboBox_waveLength->currentIndex());
 
     {
         QString triggerThold = ui->tableWidget->item(0, 0)->text() + "," +
                                ui->tableWidget->item(0, 1)->text() + "," +
                                ui->tableWidget->item(0, 2)->text() + "," +
                                ui->tableWidget->item(0, 3)->text();
-        fpgaSettings->setValue("TriggerThold", triggerThold);
+        settings.setValue("Fpga/TriggerThold", triggerThold);
     }
 
     {
@@ -71,12 +62,10 @@ void ParamSetting::on_pushButton_save_clicked()
                              ui->tableWidget->item(1, 1)->text() + "," +
                              ui->tableWidget->item(1, 2)->text() + "," +
                              ui->tableWidget->item(1, 3)->text();
-        fpgaSettings->setValue("Gain", gain);
+        settings.setValue("Fpga/Gain", gain);
     }
 
-    fpgaSettings->endGroup();
-    fpgaSettings->flush();
-    fpgaSettings->finish();
+    this->close();
 }
 
 

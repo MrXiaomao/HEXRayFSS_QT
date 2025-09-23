@@ -434,13 +434,9 @@ void CommHelper::socketReadyRead()
 
 bool CommHelper::connectRelay()
 {
-    JsonSettings* ipSettings = GlobalSettings::instance()->mIpSettings;
-    ipSettings->prepare();
-    ipSettings->beginGroup("Relay");
-    QString ip = ipSettings->value("ip").toString();
-    qint32 port = ipSettings->value("port").toInt();
-    ipSettings->endGroup();
-    ipSettings->finish();
+    GlobalSettings settings("./Settings.ini");
+    QString ip = settings.value("Relay/ip").toString();
+    qint32 port = settings.value("Relay/port").toInt();
 
     //断开网络连接
     if (mSocketRelay->isOpen() && mSocketRelay->state() == QAbstractSocket::ConnectedState)
@@ -458,15 +454,11 @@ void CommHelper::disconnectRelay()
 
 bool CommHelper::connectDetectors()
 {
-    JsonSettings* ipSettings = GlobalSettings::instance()->mIpSettings;
-    ipSettings->prepare();
-
+    GlobalSettings settings("./Settings.ini");
     QTcpSocket* sockets[] = {mSocketRelay, mSocketDetector1, mSocketDetector2, mSocketDetector3};
-    for (int i=1; i<=3; ++i){
-        ipSettings->beginGroup(QString("Detector%1").arg(i));
-        QString ip = ipSettings->value("ip").toString();
-        qint32 port = ipSettings->value("port").toInt();
-        ipSettings->endGroup();
+    for (int i=1; i<=3; ++i){        
+        QString ip = settings.value(QString("Detector/%1/ip").arg(i)).toString();
+        qint32 port = settings.value(QString("Detector/%1/port").arg(i)).toInt();
 
         if (sockets[i]->isOpen() && sockets[i]->state() == QAbstractSocket::ConnectedState)
             sockets[i]->abort();
@@ -478,8 +470,6 @@ bool CommHelper::connectDetectors()
         //     return false;
         // }
     }
-
-    ipSettings->finish();
     return true;
 }
 
@@ -527,16 +517,11 @@ void CommHelper::sendQueryRelayStatusCmd()
 */
 void CommHelper::sendTriggerTholdCmd()
 {
-    JsonSettings* fpgaSettings = GlobalSettings::instance()->mFpgaSettings;
-    fpgaSettings->prepare();
-
-    fpgaSettings->beginGroup();
-    QString triggerThold = fpgaSettings->value("TriggerThold").toString();
+    GlobalSettings settings("./Settings.ini");
+    QString triggerThold = settings.value("Fpga/TriggerThold").toString();
     QList<QString> triggerTholds = triggerThold.split(',', Qt::SkipEmptyParts);
     while (triggerTholds.size() < 4)
         triggerTholds.push_back("200");
-    fpgaSettings->endGroup();
-    fpgaSettings->finish();
 
     QList<quint16> value = {triggerTholds[0].toUShort(), triggerTholds[1].toUShort(), triggerTholds[2].toUShort(), triggerTholds[3].toUShort()};
     QTcpSocket* sockets[] = {mSocketDetector1, mSocketDetector2, mSocketDetector3};
@@ -569,14 +554,8 @@ void CommHelper::sendTriggerTholdCmd()
 */
 void CommHelper::sendWaveTriggerModeCmd()
 {
-    JsonSettings* fpgaSettings = GlobalSettings::instance()->mFpgaSettings;
-    fpgaSettings->prepare();
-
-    fpgaSettings->beginGroup();
-    quint8 triggerMode = fpgaSettings->value("TriggerMode").toUInt();
-    fpgaSettings->endGroup();
-    fpgaSettings->finish();
-
+    GlobalSettings settings("./Settings.ini");
+    quint8 triggerMode = settings.value("Fpga/TriggerMode").toUInt();
     QTcpSocket* sockets[] = {mSocketDetector1, mSocketDetector2, mSocketDetector3};
     for (auto socket : sockets){
         if (nullptr == socket || socket->state() != QAbstractSocket::ConnectedState)
@@ -594,14 +573,8 @@ void CommHelper::sendWaveTriggerModeCmd()
 */
 void CommHelper::sendWaveLengthCmd()
 {
-    JsonSettings* fpgaSettings = GlobalSettings::instance()->mFpgaSettings;
-    fpgaSettings->prepare();
-
-    fpgaSettings->beginGroup();
-    quint8 waveLength = fpgaSettings->value("WaveLength").toUInt();
-    fpgaSettings->endGroup();
-    fpgaSettings->finish();
-
+    GlobalSettings settings("./Settings.ini");
+    quint8 waveLength = settings.value("Fpga/WaveLength").toUInt();
     QTcpSocket* sockets[] = {mSocketDetector1, mSocketDetector2, mSocketDetector3};
     for (auto socket : sockets){
         if (nullptr == socket || socket->state() != QAbstractSocket::ConnectedState)
@@ -619,16 +592,11 @@ void CommHelper::sendWaveLengthCmd()
 */
 void CommHelper::sendGainCmd()
 {
-    JsonSettings* fpgaSettings = GlobalSettings::instance()->mFpgaSettings;
-    fpgaSettings->prepare();
-
-    fpgaSettings->beginGroup();
-    QString gain = fpgaSettings->value("Gain").toString();
+    GlobalSettings settings("./Settings.ini");
+    QString gain = settings.value("Fpga/Gain").toString();
     QList<QString> gains = gain.split(',', Qt::SkipEmptyParts);
     while (gains.size() < 4)
         gains.push_back("5");
-    fpgaSettings->endGroup();
-    fpgaSettings->finish();
 
     QList<quint16> value = {gains[0].toUShort(), gains[1].toUShort(), gains[2].toUShort(), gains[3].toUShort()};
     QTcpSocket* sockets[] = {mSocketDetector1, mSocketDetector2, mSocketDetector3};

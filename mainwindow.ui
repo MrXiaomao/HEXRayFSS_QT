@@ -728,7 +728,7 @@
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu_F">
+   <widget class="QMenu" name="menu_File">
     <property name="title">
      <string>文件(&amp;F)</string>
     </property>
@@ -737,22 +737,32 @@
     <addaction name="separator"/>
     <addaction name="action_exit"/>
    </widget>
-   <widget class="QMenu" name="menu_H">
+   <widget class="QMenu" name="menu_help">
     <property name="title">
      <string>帮助(&amp;H)</string>
     </property>
     <addaction name="action_about"/>
    </widget>
-   <widget class="QMenu" name="menu">
+   <widget class="QMenu" name="menu_setup">
     <property name="title">
      <string>配置(&amp;T)</string>
     </property>
     <addaction name="action_netCfg"/>
     <addaction name="action_cfgParam"/>
    </widget>
-   <addaction name="menu_F"/>
-   <addaction name="menu"/>
-   <addaction name="menu_H"/>
+   <widget class="QMenu" name="menu_theme">
+    <property name="title">
+     <string>主题(&amp;M)</string>
+    </property>
+    <addaction name="action_lightTheme"/>
+    <addaction name="action_darkTheme"/>
+    <addaction name="separator"/>
+    <addaction name="action_colorTheme"/>
+   </widget>
+   <addaction name="menu_File"/>
+   <addaction name="menu_setup"/>
+   <addaction name="menu_theme"/>
+   <addaction name="menu_help"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
@@ -813,7 +823,7 @@
     <string>退出系统</string>
    </property>
    <property name="toolTip">
-    <string>退出系统(X)</string>
+    <string>退出系统</string>
    </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
@@ -827,6 +837,12 @@
    <property name="text">
     <string>网络设置(&amp;N)</string>
    </property>
+   <property name="iconText">
+    <string>网络设置</string>
+   </property>
+   <property name="toolTip">
+    <string>网络设置</string>
+   </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
    </property>
@@ -838,6 +854,12 @@
    </property>
    <property name="text">
     <string>参数设置(&amp;P)</string>
+   </property>
+   <property name="iconText">
+    <string>参数设置</string>
+   </property>
+   <property name="toolTip">
+    <string>参数设置</string>
    </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
@@ -854,6 +876,9 @@
    <property name="iconText">
     <string>关于</string>
    </property>
+   <property name="toolTip">
+    <string>关于 LowXRayFSS</string>
+   </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
    </property>
@@ -864,6 +889,9 @@
      <normaloff>:/conect-on.png</normaloff>:/conect-on.png</iconset>
    </property>
    <property name="text">
+    <string>打开探测器</string>
+   </property>
+   <property name="toolTip">
     <string>打开探测器</string>
    </property>
    <property name="menuRole">
@@ -878,6 +906,9 @@
    <property name="text">
     <string>关闭探测器</string>
    </property>
+   <property name="toolTip">
+    <string>关闭探测器</string>
+   </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
    </property>
@@ -888,6 +919,9 @@
      <normaloff>:/work-on.png</normaloff>:/work-on.png</iconset>
    </property>
    <property name="text">
+    <string>开始测量</string>
+   </property>
+   <property name="toolTip">
     <string>开始测量</string>
    </property>
    <property name="menuRole">
@@ -902,6 +936,9 @@
    <property name="text">
     <string>停止测量</string>
    </property>
+   <property name="toolTip">
+    <string>停止测量</string>
+   </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
    </property>
@@ -912,6 +949,9 @@
      <normaloff>:/power-on.png</normaloff>:/power-on.png</iconset>
    </property>
    <property name="text">
+    <string>打开电源</string>
+   </property>
+   <property name="toolTip">
     <string>打开电源</string>
    </property>
    <property name="menuRole">
@@ -926,6 +966,9 @@
    <property name="text">
     <string>关闭电源</string>
    </property>
+   <property name="toolTip">
+    <string>关闭电源</string>
+   </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
    </property>
@@ -936,6 +979,9 @@
      <normaloff>:/lianjie-on.png</normaloff>:/lianjie-on.png</iconset>
    </property>
    <property name="text">
+    <string>连接网络</string>
+   </property>
+   <property name="toolTip">
     <string>连接网络</string>
    </property>
    <property name="menuRole">
@@ -950,6 +996,9 @@
    <property name="text">
     <string>断开网络</string>
    </property>
+   <property name="toolTip">
+    <string>断开网络</string>
+   </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
    </property>
@@ -962,8 +1011,44 @@
    <property name="text">
     <string>导出图像(&amp;E)...</string>
    </property>
+   <property name="toolTip">
+    <string>导出图像</string>
+   </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="action_lightTheme">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>明亮(&amp;L)</string>
+   </property>
+   <property name="toolTip">
+    <string>切换到明亮主题</string>
+   </property>
+  </action>
+  <action name="action_darkTheme">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>暗黑(&amp;D)</string>
+   </property>
+   <property name="toolTip">
+    <string>切换到暗黑主题</string>
+   </property>
+  </action>
+  <action name="action_colorTheme">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>主题颜色(&amp;C)</string>
+   </property>
+   <property name="toolTip">
+    <string>设置主题颜色，取消设置默认值</string>
    </property>
   </action>
  </widget>

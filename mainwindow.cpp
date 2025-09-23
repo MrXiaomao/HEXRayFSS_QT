@@ -5,12 +5,13 @@
 #include "paramsetting.h"
 #include "globalsettings.h"
 
-CentralWidget::CentralWidget(QWidget *parent)
+CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::CentralWidget)
+    , mIsDarkTheme(isDarkTheme)
     , mainWindow(static_cast<MainWindow *>(parent))
 {
-    ui->setupUi(this);
+    ui->setupUi(this);    
     emit sigUpdateBootInfo(tr("加载界面..."));
 
     //ui->toolBar->setVisible(true);
@@ -21,6 +22,8 @@ CentralWidget::CentralWidget(QWidget *parent)
     initCustomPlot(ui->customPlot_2, tr("道址"), tr("实测曲线（通道5-8）"), 4);
     initCustomPlot(ui->customPlot_3, tr("道址"), tr("实测曲线（通道9-11）"), 3);
     initCustomPlot(ui->customPlot_result, tr("能量/MeV"), tr("反解能谱）"));
+    restoreSettings();
+    applyColorTheme();
 
     connect(this, SIGNAL(sigWriteLog(const QString&,QtMsgType)), this, SLOT(slotWriteLog(const QString&,QtMsgType)));
 
@@ -163,8 +166,8 @@ CentralWidget::CentralWidget(QWidget *parent)
         }
     });
     QTimer::singleShot(0, this, [&](){
-        qGoodStateHolder->setCurrentThemeDark(isDarkTheme);
-        QGoodWindow::setAppCustomTheme(isDarkTheme,this->themeColor); // Must be >96
+        qGoodStateHolder->setCurrentThemeDark(mIsDarkTheme);
+        QGoodWindow::setAppCustomTheme(mIsDarkTheme,this->themeColor); // Must be >96
     });
 
     QTimer::singleShot(0, this, [&](){
@@ -183,12 +186,21 @@ void CentralWidget::initUi()
 {
     ui->stackedWidget->hide();
 
+    QActionGroup *themeActionGroup = new QActionGroup(this);
+    ui->action_lightTheme->setActionGroup(themeActionGroup);
+    ui->action_darkTheme->setActionGroup(themeActionGroup);
+    ui->action_lightTheme->setChecked(!mIsDarkTheme);
+    ui->action_darkTheme->setChecked(mIsDarkTheme);
+
     // 任务栏信息
     QLabel *label_Idle = new QLabel(ui->statusbar);
     label_Idle->setObjectName("label_Idle");
     label_Idle->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     label_Idle->setFixedWidth(300);
-    label_Idle->setText(tr("就绪"));
+    label_Idle->setText(tr("准备就绪"));
+    connect(ui->statusbar,&QStatusBar::messageChanged,this,[&](const QString &message){
+        label_Idle->setText(message);
+    });
 
     QLabel *label_Connected = new QLabel(ui->statusbar);
     label_Connected->setObjectName("label_Connected");
@@ -261,11 +273,11 @@ void CentralWidget::initUi()
 
     QPushButton* laserDistanceButton = new QPushButton();
     laserDistanceButton->setText(tr("测距模块"));
-    laserDistanceButton->setFixedSize(250,26);
+    laserDistanceButton->setFixedSize(250,29);
     laserDistanceButton->setCheckable(true);
     QPushButton* detectorStatusButton = new QPushButton();
     detectorStatusButton->setText(tr("设备信息"));
-    detectorStatusButton->setFixedSize(250,26);
+    detectorStatusButton->setFixedSize(250,29);
     detectorStatusButton->setCheckable(true);
 
     QHBoxLayout* sideHboxLayout = new QHBoxLayout();
@@ -311,29 +323,15 @@ void CentralWidget::initUi()
     connect(button, &QToolButton::pressed, this, [=](){
         QString cacheDir = QFileDialog::getExistingDirectory(this);
         if (!cacheDir.isEmpty()){
-
-            JsonSettings* ipSettings = GlobalSettings::instance()->mIpSettings;
-            ipSettings->prepare();
-
-            ipSettings->beginGroup("Relay");
-            ipSettings->setValue("CacheDir", cacheDir);
-            ipSettings->endGroup();
-            ipSettings->flush();
-            ipSettings->finish();
-
+            GlobalSettings settings("./Settings.ini");
+            settings.setValue("Global/CacheDir", cacheDir);
             ui->lineEdit_filePath->setText(cacheDir);
         }
     });
 
     {
-        JsonSettings* ipSettings = GlobalSettings::instance()->mIpSettings;
-        ipSettings->prepare();
-
-        ipSettings->beginGroup("Relay");
-        QString cacheDir = ipSettings->value("CacheDir").toString();
-        ipSettings->endGroup();
-        ipSettings->finish();
-
+        GlobalSettings settings("./Settings.ini");
+        QString cacheDir = settings.value("Global/CacheDir").toString();
         if (cacheDir.isEmpty())
             cacheDir = QApplication::applicationDirPath() + "/cache/";
         ui->lineEdit_filePath->setText(cacheDir);
@@ -410,6 +408,7 @@ void CentralWidget::initUi()
         detectorStatusButton->setChecked(false);
     });
 
+    detectorStatusButton->clicked();
     connect(ui->pushButton_startMeasure, &QPushButton::clicked, ui->action_startMeasure, &QAction::trigger);
 }
 
@@ -418,48 +417,6 @@ void CentralWidget::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, 
     //customPlot->setObjectName(objName);
     customPlot->installEventFilter(this);
 
-    QPalette palette = customPlot->palette();
-    if (isDarkTheme)
-    {
-        DarkStyle darkStyle;
-        darkStyle.polish(palette);
-    }
-    else
-    {
-        LightStyle lightStyle;
-        lightStyle.polish(palette);
-    }
-    // 窗体背景色
-    customPlot->setBackground(QBrush(palette.color(QPalette::Window)));
-    // 四边安装轴并显示
-    customPlot->axisRect()->setupFullAxesBox();
-    // 坐标轴线颜色
-    customPlot->xAxis->setBasePen(QPen(palette.color(QPalette::WindowText)));
-    customPlot->xAxis2->setBasePen(QPen(palette.color(QPalette::WindowText)));
-    customPlot->yAxis->setBasePen(QPen(palette.color(QPalette::WindowText)));
-    customPlot->yAxis2->setBasePen(QPen(palette.color(QPalette::WindowText)));
-    // 刻度线颜色
-    customPlot->xAxis->setTickPen(QPen(palette.color(QPalette::WindowText)));
-    customPlot->xAxis2->setTickPen(QPen(palette.color(QPalette::WindowText)));
-    customPlot->yAxis->setTickPen(QPen(palette.color(QPalette::WindowText)));
-    customPlot->yAxis2->setTickPen(QPen(palette.color(QPalette::WindowText)));
-    // 子刻度线颜色
-    customPlot->xAxis->setSubTickPen(QPen(palette.color(QPalette::WindowText)));
-    customPlot->xAxis2->setSubTickPen(QPen(palette.color(QPalette::WindowText)));
-    customPlot->yAxis->setSubTickPen(QPen(palette.color(QPalette::WindowText)));
-    customPlot->yAxis2->setSubTickPen(QPen(palette.color(QPalette::WindowText)));
-    // 坐标轴文本标签颜色
-    customPlot->xAxis->setLabelColor(palette.color(QPalette::WindowText));
-    customPlot->xAxis2->setLabelColor(palette.color(QPalette::WindowText));
-    customPlot->yAxis->setLabelColor(palette.color(QPalette::WindowText));
-    customPlot->yAxis2->setLabelColor(palette.color(QPalette::WindowText));
-    // 坐标轴刻度文本标签颜色
-    customPlot->xAxis->setTickLabelColor(palette.color(QPalette::WindowText));
-    customPlot->xAxis2->setTickLabelColor(palette.color(QPalette::WindowText));
-    customPlot->yAxis->setTickLabelColor(palette.color(QPalette::WindowText));
-    customPlot->yAxis2->setTickLabelColor(palette.color(QPalette::WindowText));
-    // 坐标系背景色
-    customPlot->axisRect()->setBackground(palette.color(QPalette::Window));
     // 设置背景网格线是否显示
     //customPlot->xAxis->grid()->setVisible(true);
     //customPlot->yAxis->grid()->setVisible(true);
@@ -536,7 +493,7 @@ void CentralWidget::closeEvent(QCloseEvent *event) {
     event->accept();
 }
 
-bool CentralWidget::event(QEvent * event) {
+bool CentralWidget::checkStatusTipEvent(QEvent * event) {
     if(event->type() == QEvent::StatusTip) {
         QStatusTipEvent* statusTipEvent = static_cast<QStatusTipEvent *>(event);
         if (!statusTipEvent->tip().isEmpty()) {
@@ -546,7 +503,7 @@ bool CentralWidget::event(QEvent * event) {
         return true;
     }
 
-    return QMainWindow::event(event);
+    return false;
 }
 
 bool CentralWidget::eventFilter(QObject *watched, QEvent *event){
@@ -607,6 +564,7 @@ bool CentralWidget::eventFilter(QObject *watched, QEvent *event){
 
 void CentralWidget::slotWriteLog(const QString &msg, QtMsgType msgType)
 {
+#if 0
     // 创建一个 QTextCursor
     QTextCursor cursor = ui->textEdit_log->textCursor();
     // 将光标移动到文本末尾
@@ -614,7 +572,7 @@ void CentralWidget::slotWriteLog(const QString &msg, QtMsgType msgType)
 
     // 先插入时间
     QString color = "black";
-    if (isDarkTheme)
+    if (mIsDarkTheme)
         color = "white";
     cursor.insertHtml(QString("<span style='color:%1;'>%2</span>").arg(color, QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz >> ")));
     // 再插入文本
@@ -630,6 +588,9 @@ void CentralWidget::slotWriteLog(const QString &msg, QtMsgType msgType)
 
     // 确保 QTextEdit 显示了光标的新位置
     ui->textEdit_log->setTextCursor(cursor);
+#else
+    ui->textEdit_log->append(QString("%1 %2").arg(QDateTime::currentDateTime().toString("[yyyy-MM-dd hh:mm:ss.zzz]"), msg));
+#endif
 
     //限制行数
     QTextDocument *document = ui->textEdit_log->document(); // 获取文档对象，想象成打开了一个TXT文件
@@ -662,6 +623,7 @@ void CentralWidget::on_action_cfgParam_triggered()
 
 void CentralWidget::on_action_exit_triggered()
 {
+    //qApp->quit();
     mainWindow->close();
 }
 
@@ -902,13 +864,127 @@ void CentralWidget::on_action_exportImg_triggered()
     }
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////
-MainWindow::MainWindow(QWidget *parent)
-    : QGoodWindow(parent) {
-    m_central_widget = new CentralWidget(this);
-    m_central_widget->setWindowFlags(Qt::Widget);
+void CentralWidget::on_action_lightTheme_triggered()
+{
+    if(!mIsDarkTheme) return;
+    mIsDarkTheme = false;
+    qGoodStateHolder->setCurrentThemeDark(mIsDarkTheme);
+    if(themeColorEnable) QGoodWindow::setAppCustomTheme(mIsDarkTheme,themeColor);
+    GlobalSettings settings;
+    settings.setValue("Global/Startup/darkTheme","false");
+    applyColorTheme();
+}
 
-    m_good_central_widget = new QGoodCentralWidget(this);
+
+void CentralWidget::on_action_darkTheme_triggered()
+{
+    if(mIsDarkTheme) return;
+    mIsDarkTheme = true;
+    qGoodStateHolder->setCurrentThemeDark(mIsDarkTheme);
+    if(themeColorEnable) QGoodWindow::setAppCustomTheme(mIsDarkTheme,themeColor);
+    GlobalSettings settings;
+    settings.setValue("Global/Startup/darkTheme","true");
+    applyColorTheme();
+}
+
+
+void CentralWidget::on_action_colorTheme_triggered()
+{
+    GlobalSettings settings;
+    QColor color = QColorDialog::getColor(themeColor, this, tr("选择颜色"));
+    if (color.isValid()) {
+        themeColor = color;
+        themeColorEnable = true;
+        qGoodStateHolder->setCurrentThemeDark(mIsDarkTheme);
+        QGoodWindow::setAppCustomTheme(mIsDarkTheme,themeColor);
+        settings.setValue("Global/Startup/themeColor",themeColor);
+    } else {
+        themeColorEnable = false;
+        qGoodStateHolder->setCurrentThemeDark(mIsDarkTheme);
+    }
+    settings.setValue("Global/Startup/themeColorEnable",themeColorEnable);
+    applyColorTheme();
+}
+
+void CentralWidget::applyColorTheme()
+{
+    QList<QCustomPlot*> customPlots = this->findChildren<QCustomPlot*>();
+    for (auto customPlot : customPlots){
+        QPalette palette = customPlot->palette();
+        if (mIsDarkTheme)
+        {
+            DarkStyle darkStyle;
+            darkStyle.polish(palette);
+        }
+        else
+        {
+            LightStyle lightStyle;
+            lightStyle.polish(palette);
+        }
+        // 窗体背景色
+        customPlot->setBackground(QBrush(palette.color(QPalette::Window)));
+        // 四边安装轴并显示
+        customPlot->axisRect()->setupFullAxesBox();
+        customPlot->axisRect()->setBackground(QBrush(palette.color(QPalette::Window)));
+        // 坐标轴线颜色
+        customPlot->xAxis->setBasePen(QPen(palette.color(QPalette::WindowText)));
+        customPlot->xAxis2->setBasePen(QPen(palette.color(QPalette::WindowText)));
+        customPlot->yAxis->setBasePen(QPen(palette.color(QPalette::WindowText)));
+        customPlot->yAxis2->setBasePen(QPen(palette.color(QPalette::WindowText)));
+        // 刻度线颜色
+        customPlot->xAxis->setTickPen(QPen(palette.color(QPalette::WindowText)));
+        customPlot->xAxis2->setTickPen(QPen(palette.color(QPalette::WindowText)));
+        customPlot->yAxis->setTickPen(QPen(palette.color(QPalette::WindowText)));
+        customPlot->yAxis2->setTickPen(QPen(palette.color(QPalette::WindowText)));
+        // 子刻度线颜色
+        customPlot->xAxis->setSubTickPen(QPen(palette.color(QPalette::WindowText)));
+        customPlot->xAxis2->setSubTickPen(QPen(palette.color(QPalette::WindowText)));
+        customPlot->yAxis->setSubTickPen(QPen(palette.color(QPalette::WindowText)));
+        customPlot->yAxis2->setSubTickPen(QPen(palette.color(QPalette::WindowText)));
+        // 坐标轴文本标签颜色
+        customPlot->xAxis->setLabelColor(palette.color(QPalette::WindowText));
+        customPlot->xAxis2->setLabelColor(palette.color(QPalette::WindowText));
+        customPlot->yAxis->setLabelColor(palette.color(QPalette::WindowText));
+        customPlot->yAxis2->setLabelColor(palette.color(QPalette::WindowText));
+        // 坐标轴刻度文本标签颜色
+        customPlot->xAxis->setTickLabelColor(palette.color(QPalette::WindowText));
+        customPlot->xAxis2->setTickLabelColor(palette.color(QPalette::WindowText));
+        customPlot->yAxis->setTickLabelColor(palette.color(QPalette::WindowText));
+        customPlot->yAxis2->setTickLabelColor(palette.color(QPalette::WindowText));
+        // 坐标系背景色
+        customPlot->axisRect()->setBackground(palette.color(QPalette::Window));
+
+        customPlot->replot();
+    }
+}
+
+void CentralWidget::restoreSettings()
+{
+    GlobalSettings settings;
+    if(mainWindow) {
+        mainWindow->restoreGeometry(settings.value("MainWindow/Geometry").toByteArray());
+        mainWindow->restoreState(settings.value("MainWindow/State").toByteArray());
+    } else {
+        restoreGeometry(settings.value("MainWindow/Geometry").toByteArray());
+        restoreState(settings.value("MainWindow/State").toByteArray());
+    }
+    themeColor = settings.value("Global/Startup/themeColor",QColor(30,30,30)).value<QColor>();
+    themeColorEnable = settings.value("Global/Startup/themeColorEnable",true).toBool();
+    if(themeColorEnable) {
+        QTimer::singleShot(0, this, [&](){
+            qGoodStateHolder->setCurrentThemeDark(mIsDarkTheme);
+            QGoodWindow::setAppCustomTheme(mIsDarkTheme,this->themeColor); // Must be >96
+        });
+    }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+MainWindow::MainWindow(bool isDarkTheme, QWidget *parent)
+    : QGoodWindow(parent) {
+    mCentralWidget = new CentralWidget(isDarkTheme, this);
+    mCentralWidget->setWindowFlags(Qt::Widget);
+
+    mGoodCentraWidget = new QGoodCentralWidget(this);
 
 #ifdef Q_OS_MAC
     //macOS uses global menu bar
@@ -916,30 +992,30 @@ MainWindow::MainWindow(QWidget *parent)
 #else
     if(true) {
 #endif
-        m_menu_bar = m_central_widget->menuBar();
+        mMenuBar = mCentralWidget->menuBar();
 
         //Set font of menu bar
-        QFont font = m_menu_bar->font();
+        QFont font = mMenuBar->font();
 #ifdef Q_OS_WIN
         font.setFamily("Segoe UI");
 #else
         font.setFamily(qApp->font().family());
 #endif
-        m_menu_bar->setFont(font);
+        mMenuBar->setFont(font);
 
         QTimer::singleShot(0, this, [&]{
-            const int title_bar_height = m_good_central_widget->titleBarHeight();
-            m_menu_bar->setStyleSheet(QString("QMenuBar {height: %0px;}").arg(title_bar_height));
+            const int title_bar_height = mGoodCentraWidget->titleBarHeight();
+            mMenuBar->setStyleSheet(QString("QMenuBar {height: %0px;}").arg(title_bar_height));
         });
 
-        connect(m_good_central_widget,&QGoodCentralWidget::windowActiveChanged,this, [&](bool active){
-            m_menu_bar->setEnabled(active);
+        connect(mGoodCentraWidget,&QGoodCentralWidget::windowActiveChanged,this, [&](bool active){
+            mMenuBar->setEnabled(active);
 #ifdef Q_OS_MACOS
             fixWhenShowQuardCRTTabPreviewIssue();
 #endif
         });
 
-        m_good_central_widget->setLeftTitleBarWidget(m_menu_bar);
+        mGoodCentraWidget->setLeftTitleBarWidget(mMenuBar);
         setNativeCaptionButtonsVisibleOnMac(false);
     } else {
         setNativeCaptionButtonsVisibleOnMac(true);
@@ -954,31 +1030,31 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, &QGoodWindow::systemThemeChanged, this, [&]{
         qGoodStateHolder->setCurrentThemeDark(QGoodWindow::isSystemThemeDark());
     });
-    qGoodStateHolder->setCurrentThemeDark(true);
-    QGoodWindow::setAppCustomTheme(true, QColor(255,255,255));
+    qGoodStateHolder->setCurrentThemeDark(isDarkTheme);
 
-    m_good_central_widget->setCentralWidget(m_central_widget);
-    setCentralWidget(m_good_central_widget);
+    mGoodCentraWidget->setCentralWidget(mCentralWidget);
+    setCentralWidget(mGoodCentraWidget);
 
-    setWindowIcon(QIcon(":/log.png"));
-    setWindowTitle(m_central_widget->windowTitle());
+    setWindowIcon(QIcon(":/logo.png"));
+    setWindowTitle(mCentralWidget->windowTitle());
 
-    m_good_central_widget->setTitleAlignment(Qt::AlignCenter);
+    mGoodCentraWidget->setTitleAlignment(Qt::AlignCenter);
 }
 
 MainWindow::~MainWindow() {
-    delete m_central_widget;
+    delete mCentralWidget;
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
-    m_central_widget->closeEvent(event);
+    mCentralWidget->closeEvent(event);
 }
 
 bool MainWindow::event(QEvent * event) {
     if(event->type() == QEvent::StatusTip) {
-        m_central_widget->event(static_cast<QStatusTipEvent *>(event));
+        mCentralWidget->checkStatusTipEvent(static_cast<QStatusTipEvent *>(event));
         return true;
     }
 
     return QGoodWindow::event(event);
 }
+

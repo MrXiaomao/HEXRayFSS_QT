@@ -54,9 +54,6 @@ static QTranslator qtbaseTranslator;
 static QTranslator appTranslator;
 int main(int argc, char *argv[])
 {
-    QApplication::setAttribute(Qt::AA_DontUseNativeDialogs);
-    QApplication::setAttribute(Qt::AA_DontUseNativeMenuBar);
-    QApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
     QApplication::setAttribute(Qt::AA_DisableHighDpiScaling); // 禁用高DPI缩放支持
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps); // 使用高DPI位图
     QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
@@ -65,6 +62,7 @@ int main(int argc, char *argv[])
     QFont font = qApp->font();
     font.setStyleStrategy(QFont::PreferAntialias);
     font.setHintingPreference(QFont::PreferFullHinting);
+    font.setFamily("微软雅黑");
     qApp->setFont(font);
     qApp->setStyle(new DarkStyle());
     qApp->style()->setObjectName("fusion");
@@ -149,9 +147,34 @@ int main(int argc, char *argv[])
 
     system_default_message_handler = qInstallMessageHandler(AppMessageHandler);
 
-    GlobalSettings::instance();
+    GlobalSettings settings;
+    if(settings.value("Global/Options/enableNativeUI",false).toBool()) {
+        QApplication::setAttribute(Qt::AA_DontUseNativeDialogs,false);
+        QApplication::setAttribute(Qt::AA_DontUseNativeMenuBar,false);
+        QApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings,false);
+    }
+    settings.beginGroup("Version");
+    settings.setValue("Version",GIT_VERSION);
+    settings.setValue("GitBranch",GIT_BRANCH);
+    settings.setValue("BuildDate",GIT_TIME);
+    settings.endGroup();
 
-    MainWindow w;
+    QString darkTheme = "true";
+    settings.beginGroup("Global/Startup");
+    if(settings.contains("darkTheme"))
+        darkTheme = settings.value("darkTheme").toString();
+    settings.endGroup();
+
+    bool isDarkTheme = true;
+    if(darkTheme == "true") {
+        isDarkTheme = true;
+        QGoodWindow::setAppDarkTheme();
+    } else {
+        isDarkTheme = false;
+        QGoodWindow::setAppLightTheme();
+    }
+
+    MainWindow w(isDarkTheme);
     mw = w.centralWidget();
 
     qInfo().noquote() << QObject::tr("系统启动");
