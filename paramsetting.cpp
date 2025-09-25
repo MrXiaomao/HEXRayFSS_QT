@@ -9,7 +9,7 @@ ParamSetting::ParamSetting(QWidget *parent)
     ui->setupUi(this);
     ui->tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-    GlobalSettings settings("./Settings.ini");
+    GlobalSettings settings(CONFIG_FILENAME);
     ui->comboBox_triggerMode->setCurrentIndex(settings.value("Fpga/TriggerMode").toInt());
     ui->comboBox_waveLength->setCurrentIndex(settings.value("Fpga/WaveLength").toInt());
 
@@ -45,7 +45,7 @@ ParamSetting::~ParamSetting()
 
 void ParamSetting::on_pushButton_save_clicked()
 {
-    GlobalSettings settings("./Settings.ini");
+    GlobalSettings settings(CONFIG_FILENAME);
     settings.setValue("Fpga/TriggerMode", ui->comboBox_triggerMode->currentIndex());
     settings.setValue("Fpga/WaveLength", ui->comboBox_waveLength->currentIndex());
 

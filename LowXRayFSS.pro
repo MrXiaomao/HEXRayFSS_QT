@@ -9,7 +9,6 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    aboutwidget.cpp \
     commhelper.cpp \
     dataprocessor.cpp \
     globalsettings.cpp \
@@ -20,7 +19,6 @@ SOURCES += \
     switchbutton.cpp
 
 HEADERS += \
-    aboutwidget.h \
     dataprocessor.h \
     qlitethread.h \
     commhelper.h \
@@ -31,7 +29,6 @@ HEADERS += \
     switchbutton.h
 
 FORMS += \
-    aboutwidget.ui \
     mainwindow.ui \
     netsetting.ui \
     paramsetting.ui
@@ -43,7 +40,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES +=
 
-DESTDIR = $$PWD/../build
+DESTDIR = $$PWD/../build_Lo
 contains(QT_ARCH, x86_64) {
     # x64
     DESTDIR = $$DESTDIR/x64
@@ -80,16 +77,19 @@ CONFIG += resources_big
 #############################################################################################################
 exists (./.git) {
     GIT_BRANCH   = $$system(git rev-parse --abbrev-ref HEAD)
-    GIT_DATE     = $$system(git show --oneline --format=\"%ci%H\" -s HEAD)
-    GIT_VERSION = "Git: $${GIT_BRANCH}: $${GIT_DATE}"
+    GIT_DATE     = $$system(git show --oneline --format=\"%ci\" -s HEAD)
+    GIT_HASH     = $$system(git show --oneline --format=\"%H\" -s HEAD)
+    GIT_VERSION = "Git: $${GIT_BRANCH}: $${GIT_DATE} $${GIT_HASH}"
 } else {
     GIT_BRANCH      = None
     GIT_DATE        = None
+    GIT_HASH        = None
     GIT_VERSION     = None
 }
 
 DEFINES += GIT_BRANCH=\"\\\"$$GIT_BRANCH\\\"\"
 DEFINES += GIT_DATE=\"\\\"$$GIT_DATE\\\"\"
+DEFINES += GIT_HASH=\"\\\"$$GIT_HASH\\\"\"
 DEFINES += GIT_VERSION=\"\\\"$$GIT_VERSION\\\"\"
 DEFINES += APP_VERSION="\\\"V1.0.1\\\""
 
@@ -110,21 +110,25 @@ windows {
         QMAKE_CXXFLAGS += /execution-charset:utf-8
     }
 }
+#QMAKE_MANIFEST += $$PWD/manifest.xml
 
 include($$PWD/../3rdParty/log4qt/Include/log4qt.pri)
 include($$PWD/../3rdParty/resource/resource.pri)
 include($$PWD/../3rdParty/QCustomplot/QCustomplot.pri)
-#include($$PWD/../3rdParty/QGoodWindow/QGoodWindow/src/theme/theme.pri)
 include($$PWD/../3rdParty/QGoodWindow/QGoodWindow/QGoodWindow.pri)
 include($$PWD/../3rdParty/QGoodWindow/QGoodCentralWidget/QGoodCentralWidget.pri)
-# include($$PWD/../3rdParty/QtFramelessWindow/QtFramelessWindow.pri)
 
 # 启用反解能谱
-#DEFINES += ENABLE_MATLAB
+# DEFINES += ENABLE_MATLAB
 
 contains(DEFINES, ENABLE_MATLAB) {
     message("Including matlab library")
     include($$PWD/../3rdParty/Matlab2020b/Matlab2020b.pri)
+
+    # Matlab SDK库的头文件
+    win32: LIBS += -L$$PWD/lib/ -lUnfolddingAlgorithm_Gravel
+    INCLUDEPATH += $$PWD/lib/
+
 } else {
     message("Skipping matlab library")
 }

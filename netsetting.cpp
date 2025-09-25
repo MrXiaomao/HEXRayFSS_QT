@@ -14,7 +14,7 @@ NetSetting::NetSetting(QWidget *parent)
     ui->tableWidget->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Fixed);
 
 
-    GlobalSettings settings("./Settings.ini");
+    GlobalSettings settings(CONFIG_FILENAME);
     ui->tableWidget->item(0, 0)->setText(settings.value("Relay/ip").toString());
     ui->tableWidget->item(0, 1)->setText(settings.value("Relay/port").toString());
 
@@ -31,7 +31,7 @@ NetSetting::~NetSetting()
 
 void NetSetting::on_pushButton_save_clicked()
 {
-    GlobalSettings settings("./Settings.ini");
+    GlobalSettings settings(CONFIG_FILENAME);
     settings.setValue("Relay/ip", ui->tableWidget->item(0, 0)->text());
     settings.setValue("Relay/port", ui->tableWidget->item(0, 1)->text());
 

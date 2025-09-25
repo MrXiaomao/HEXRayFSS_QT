@@ -40,6 +40,7 @@ public:
     void restoreSettings();
     void initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, QString axisYLabel, int graphCount = 1);
     void applyColorTheme();
+    bool openXRDFile(const QString &filePath, QVector<QPair<double, double>>& data);
 
 public:
     virtual void closeEvent(QCloseEvent *event) override;
@@ -50,7 +51,7 @@ public:
 public slots:
     void slotWriteLog(const QString &msg, QtMsgType msgType = QtDebugMsg);//操作日志
     void showRealCurve(const QMap<quint8, QVector<quint16>>& data);//实测曲线
-    void showEnerygySpectrumCurve(const QVector<QPair<float, float>>& data);//反解能谱
+    void showEnerygySpectrumCurve(const QVector<QPair<double, double>>& data);//反解能谱
 
 signals:
     void sigUpdateBootInfo(const QString &msg);
@@ -65,6 +66,8 @@ private slots:
 
     void on_action_open_triggered();
 
+    void on_action_readXRD_triggered();
+
     void on_action_connect_triggered();
 
     void on_action_disconnect_triggered();
@@ -77,19 +80,13 @@ private slots:
 
     void on_action_powerOff_triggered();
 
-    void on_pushButton_stopMeasureDistance_clicked();
-
-    void on_pushButton_startMeasureDistance_clicked();
-
     void on_action_connectRelay_triggered();
 
     void on_action_disconnectRelay_triggered();
 
     void on_action_about_triggered();
 
-    void on_pushButton_export_clicked();
-
-    void on_pushButton_clicked();
+    void on_action_aboutQt_triggered();
 
     void on_action_exportImg_triggered();
 
@@ -98,6 +95,16 @@ private slots:
     void on_action_darkTheme_triggered();
 
     void on_action_colorTheme_triggered();
+
+    void on_pushButton_stopMeasureDistance_clicked();
+
+    void on_pushButton_startMeasureDistance_clicked();
+
+    void on_pushButton_export_clicked();
+
+    void on_pushButton_clicked();
+
+    void on_pushButton_saveAs_clicked();
 
 private:
     Ui::CentralWidget *ui;

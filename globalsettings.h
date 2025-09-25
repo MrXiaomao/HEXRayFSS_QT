@@ -482,6 +482,7 @@ protected:
 
 #include <QSettings>
 #include <QApplication>
+#define CONFIG_FILENAME "./Config/Settings.ini"
 class GlobalSettings: public QSettings
 {
     Q_OBJECT

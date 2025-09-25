@@ -83,7 +83,8 @@ public:
     /*
      设置发次信息
     */
-    void setShotInformation(QString shotDir, QString shotNum);
+    void setShotInformation(const QString shotDir, const quint32 shotNum);
+    void setResultInformation(const QString reverseValue, const QString dadiationDose, const QString dadiationDoseRate);
 
     /*
      开始测量
@@ -114,7 +115,7 @@ public:
     void stopMeasureDistance();
 
     /*解析历史文件*/
-    void openHistoryWaveFile(const QString &filePath);
+    bool openHistoryWaveFile(const QString &filePath);
 
     //////////////////////////////////////////////////////
     /*
@@ -134,6 +135,8 @@ public:
      断开测距模块激光
     */
     void closeDistanceModuleLaser();
+
+    bool saveAs(QString dstPath);
 
 public slots:
     void errorOccurred(QAbstractSocket::SocketError);
@@ -160,7 +163,8 @@ signals:
     void measureDistanceEnd(); //测量结束
 
     void showRealCurve(const QMap<quint8, QVector<quint16>>& data);//实测曲线
-    void showEnerygySpectrumCurve(const QVector<QPair<float, float>>& data);//反解能谱
+    void showEnerygySpectrumCurve(const QVector<QPair<double, double>>& data);//反解能谱
+    void exportEnergyPlot(const QString fileDir);
 
 private:
     /*********************************************************
@@ -247,7 +251,7 @@ private:
     /*
      反解能谱
     */
-    void calEnerygySpectrumCurve();
+    void calEnerygySpectrumCurve(bool needSave = true);
 
 private:
     bool mRelayIsConnected = false;
@@ -257,6 +261,10 @@ private:
     bool mSingleMeasure = false; //是否单次测量模式
     QString mShotDir;// 保存路径
     QString mShotNum;// 测量发次
+    QString mReverseValue;
+    QString mDadiationDose;
+    QString mDadiationDoseRate;
+
     QTcpSocket *mSocketRelay = nullptr;    //继电器
     QTcpSocket *mSocketDetector1 = nullptr; //探测器
     QTcpSocket *mSocketDetector2 = nullptr; //探测器
@@ -284,7 +292,6 @@ private:
     mwArray m_mwT;
     mwArray m_mwSeq;
     mwArray m_mwResponce_matrix;
-    mwArray m_mwRom;
 
     bool loadSeq(double* seq);
     bool loadResponceMatrix(double* responceMatrix);

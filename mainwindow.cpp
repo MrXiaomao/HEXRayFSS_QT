@@ -18,10 +18,10 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
     setWindowTitle(QApplication::applicationName()+" - "+APP_VERSION);
 
     initUi();
-    initCustomPlot(ui->customPlot, tr("道址"), tr("实测曲线（通道1-4）"), 4);
-    initCustomPlot(ui->customPlot_2, tr("道址"), tr("实测曲线（通道5-8）"), 4);
-    initCustomPlot(ui->customPlot_3, tr("道址"), tr("实测曲线（通道9-11）"), 3);
-    initCustomPlot(ui->customPlot_result, tr("能量/MeV"), tr("反解能谱）"));
+    initCustomPlot(ui->customPlot, tr("时间/ns"), tr("实测曲线（通道1-4）"), 4);
+    initCustomPlot(ui->customPlot_2, tr("时间/ns"), tr("实测曲线（通道5-8）"), 4);
+    initCustomPlot(ui->customPlot_3, tr("时间/ns"), tr("实测曲线（通道9-11）"), 3);
+    initCustomPlot(ui->customPlot_result, tr("能量/keV"), tr("反解能谱"));
     restoreSettings();
     applyColorTheme();
 
@@ -30,6 +30,19 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
     commHelper = CommHelper::instance();
     connect(commHelper, &CommHelper::showRealCurve, this, &CentralWidget::showRealCurve);
     connect(commHelper, &CommHelper::showEnerygySpectrumCurve, this, &CentralWidget::showEnerygySpectrumCurve);
+    connect(commHelper, &CommHelper::exportEnergyPlot, this, [=](const QString fileDir){
+        QString filePath = QString("%1/测量数据/1-4.png").arg(fileDir);
+        ui->customPlot->savePng(filePath, 1920, 1080);
+
+        filePath = QString("%1/测量数据/4-8.png").arg(fileDir);
+        ui->customPlot_2->savePng(filePath, 1920, 1080);
+
+        filePath = QString("%1/测量数据/9-11.png").arg(fileDir);
+        ui->customPlot_3->savePng(filePath, 1920, 1080);
+
+        filePath = QString("%1/处理数据/反解能谱.png").arg(fileDir);
+        ui->customPlot_result->savePng(filePath, 1920, 1080);
+    });
     connect(commHelper, &CommHelper::appVersionRespond, this, [=](quint8 index, QString version, QString serialNumber){
         ui->tableWidget_detectorVersion->item(index - 1, 0)->setText(version + serialNumber);
 
@@ -45,6 +58,8 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
     ui->action_disconnect->setEnabled(false);
     ui->action_startMeasure->setEnabled(false);
     ui->action_stopMeasure->setEnabled(false);
+    ui->pushButton_startMeasure->setEnabled(false);
+    ui->pushButton_stopMeasure->setEnabled(false);
 
     // 继电器
     connect(commHelper, &CommHelper::relayConnected, this, [=](){
@@ -60,6 +75,9 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
 
         ui->action_connect->setEnabled(false);
         ui->action_disconnect->setEnabled(false);
+
+        ui->switchButton_power->setEnabled(true);
+        ui->switchButton_laser->setEnabled(true);
 
         //查询继电器电源闭合状态
         commHelper->queryRelayStatus();
@@ -77,6 +95,9 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
 
         ui->action_connect->setEnabled(false);
         ui->action_disconnect->setEnabled(false);
+
+        ui->switchButton_power->setEnabled(false);
+        ui->switchButton_laser->setEnabled(false);
     });
 
     connect(commHelper, &CommHelper::relayPowerOn, this, [=](){
@@ -104,6 +125,8 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
         ui->tableWidget_detector->item(0, index - 1)->setForeground(QBrush(QColor(Qt::green)));
         ui->action_startMeasure->setEnabled(true);
         ui->action_stopMeasure->setEnabled(true);
+        ui->pushButton_startMeasure->setEnabled(true);
+        ui->pushButton_stopMeasure->setEnabled(true);
 
         if (ui->tableWidget_detector->item(0, 0)->text() == tr("在线") &&
             ui->tableWidget_detector->item(0, 1)->text() == tr("在线") &&
@@ -121,6 +144,8 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
             ui->tableWidget_detector->item(0, 2)->text() == tr("离线")){
             ui->action_startMeasure->setEnabled(false);
             ui->action_stopMeasure->setEnabled(false);
+            ui->pushButton_startMeasure->setEnabled(false);
+            ui->pushButton_stopMeasure->setEnabled(false);
 
             ui->action_connect->setEnabled(true);
             ui->action_disconnect->setEnabled(false);
@@ -151,11 +176,17 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
     connect(commHelper, &CommHelper::measureStart, this, [=](quint8 index){
         ui->action_startMeasure->setEnabled(false);
         ui->action_stopMeasure->setEnabled(true);
+
+        ui->pushButton_startMeasure->setEnabled(false);
+        ui->pushButton_stopMeasure->setEnabled(true);
     });
     //测量结束
     connect(commHelper, &CommHelper::measureEnd, this, [=](quint8 index){
         ui->action_startMeasure->setEnabled(true);
         ui->action_stopMeasure->setEnabled(false);
+
+        ui->pushButton_startMeasure->setEnabled(true);
+        ui->pushButton_stopMeasure->setEnabled(false);
     });
 
     connect(ui->statusbar,&QStatusBar::messageChanged,this,[&](const QString &message){
@@ -262,14 +293,29 @@ void CentralWidget::initUi()
     splitterV1->setCollapsible(2,false);
     splitterV1->setSizes(QList<int>() << 100000 << 100000 << 100000);
 
+    QSplitter *splitterH1 = new QSplitter(Qt::Horizontal,this);
+    splitterH1->setHandleWidth(5);
+    ui->rightHboxWidget->layout()->addWidget(splitterH1);
+    splitterH1->addWidget(ui->customPlot_result);
+    splitterH1->addWidget(ui->widget_5);
+    splitterH1->setCollapsible(0,false);
+    splitterH1->setCollapsible(1,false);
+    splitterH1->setSizes(QList<int>() << 400000 << 100000);
+
     QSplitter *splitterV2 = new QSplitter(Qt::Vertical,this);
     splitterV2->setHandleWidth(5);
+    //ui->rightHboxWidget->layout()->addWidget(splitterH1);
     ui->rightHboxWidget->layout()->addWidget(splitterV2);
-    splitterV2->addWidget(ui->customPlot_result);
-    splitterV2->addWidget(ui->textEdit_log);
+    // splitterV2->addWidget(ui->customPlot_result);
+    // splitterV2->addWidget(ui->widget_5);
+    // splitterV2->addWidget(ui->textEdit_log);
     splitterV2->setCollapsible(0,false);
     splitterV2->setCollapsible(1,false);
     splitterV2->setSizes(QList<int>() << 400000 << 100000);
+
+    splitterV2->addWidget(splitterH1);
+    splitterV2->addWidget(ui->textEdit_log);
+    splitterV2->setCollapsible(0,false);
 
     QPushButton* laserDistanceButton = new QPushButton();
     laserDistanceButton->setText(tr("测距模块"));
@@ -314,29 +360,89 @@ void CentralWidget::initUi()
     ui->tableWidget_detectorVersion->setRowHeight(2, 30);
     ui->tableWidget_detectorVersion->setFixedHeight(117);
 
-    // ui->switchButton_power->setAutoChecked(false);
-    // ui->switchButton_laser->setAutoChecked(false);
-
     QAction *action = ui->lineEdit_filePath->addAction(QIcon(":/open.png"), QLineEdit::TrailingPosition);
     QToolButton* button = qobject_cast<QToolButton*>(action->associatedWidgets().last());
     button->setCursor(QCursor(Qt::PointingHandCursor));
     connect(button, &QToolButton::pressed, this, [=](){
         QString cacheDir = QFileDialog::getExistingDirectory(this);
         if (!cacheDir.isEmpty()){
-            GlobalSettings settings("./Settings.ini");
+            GlobalSettings settings(CONFIG_FILENAME);
             settings.setValue("Global/CacheDir", cacheDir);
             ui->lineEdit_filePath->setText(cacheDir);
         }
     });
 
+    // 数据保存路径
     {
-        GlobalSettings settings("./Settings.ini");
+        GlobalSettings settings(CONFIG_FILENAME);
         QString cacheDir = settings.value("Global/CacheDir").toString();
         if (cacheDir.isEmpty())
             cacheDir = QApplication::applicationDirPath() + "/cache/";
         ui->lineEdit_filePath->setText(cacheDir);
+
+        // 发次
+        ui->spinBox_shotNum->setValue(settings.value("Global/ShotNum", 100).toUInt());
     }
 
+    QAction *action2 = ui->ReMatric_Edit->addAction(QIcon(":/open.png"), QLineEdit::TrailingPosition);
+    QToolButton* button2 = qobject_cast<QToolButton*>(action2->associatedWidgets().last());
+    button2->setCursor(QCursor(Qt::PointingHandCursor));
+    connect(button2, &QToolButton::pressed, this, [=](){
+        QString filter = "二进制文件 (*.dat);;文本文件 (*.csv);;所有文件 (*.dat *.csv)";
+        QString fileName = QFileDialog::getOpenFileName(this, tr("选择响应矩阵文件"),";",filter);
+        if (fileName.isEmpty() || !QFileInfo::exists(fileName))
+            return;
+
+        ui->ReMatric_Edit->setText(fileName);
+    });
+
+    // 反解能谱响应文件
+    {
+        GlobalSettings settings(CONFIG_FILENAME);
+        QString fileName = settings.value("Global/RespondMatrix").toString();
+        ui->ReMatric_Edit->setText(fileName);
+
+        // 辐照距离
+        ui->lineEdit_irradiationDistance->setText(settings.value("Global/IrradiationDistance", 12.22).toString());
+        // 能量区间
+        ui->doubleSpinBox_energyLeft->setValue(settings.value("Global/EnergyLeft", 0.20).toFloat());
+        ui->doubleSpinBox_energyRight->setValue(settings.value("Global/EnergyRight", 102.10).toFloat());
+    }
+
+    QAction *action3 = ui->lineEdit_SaveAsPath->addAction(QIcon(":/open.png"), QLineEdit::TrailingPosition);
+    QToolButton* button3 = qobject_cast<QToolButton*>(action3->associatedWidgets().last());
+    button3->setCursor(QCursor(Qt::PointingHandCursor));
+    connect(button3, &QToolButton::pressed, this, [=](){
+        QString saveAsDir = QFileDialog::getExistingDirectory(this);
+        if (!saveAsDir.isEmpty()){
+
+            GlobalSettings settings(CONFIG_FILENAME);
+            settings.setValue("Global/SaveAsPath", saveAsDir);
+
+            ui->lineEdit_SaveAsPath->setText(saveAsDir);
+        }
+    });
+
+    // 分析结果
+    {
+        GlobalSettings settings(CONFIG_FILENAME);
+        QString saveAsDir = settings.value("Global/SaveAsPath").toString();
+        if (saveAsDir.isEmpty())
+            saveAsDir = QApplication::applicationDirPath() + "/cache/";
+        ui->lineEdit_SaveAsPath->setText(saveAsDir);
+
+        ui->lineEdit_reverseValue->setText(settings.value("Global/ReverseValue", "1.0%").toString());
+        ui->lineEdit_dadiationDose->setText(settings.value("Global/DadiationDose", 1011.0).toString());
+        ui->lineEdit_dadiationDoseRate->setText(settings.value("Global/DadiationDoseRate", 30.0).toString());
+        ui->lineEdit_SaveAsFileName->setText(settings.value("Global/SaveAsFileName", "test1").toString());
+    }
+
+    //ui->switchButton_power->setAutoChecked(false);
+    //ui->switchButton_laser->setAutoChecked(false);
+    ui->switchButton_power->setEnabled(false);
+    ui->switchButton_laser->setEnabled(false);
+    ui->pushButton_startMeasureDistance->setEnabled(false);
+    ui->pushButton_stopMeasureDistance->setEnabled(false);
     connect(ui->switchButton_power, &SwitchButton::toggled, this, [=](bool checked){
         if (checked){
             // 测距模块电源
@@ -410,6 +516,7 @@ void CentralWidget::initUi()
 
     detectorStatusButton->clicked();
     connect(ui->pushButton_startMeasure, &QPushButton::clicked, ui->action_startMeasure, &QAction::trigger);
+    connect(ui->pushButton_stopMeasure, &QPushButton::clicked, ui->action_stopMeasure, &QAction::trigger);
 }
 
 void CentralWidget::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, QString axisYLabel, int graphCount/* = 1*/)
@@ -443,8 +550,8 @@ void CentralWidget::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, 
     customPlot->xAxis->rescale(true);
     customPlot->yAxis->rescale(true);
     // 设置刻度范围
-    customPlot->xAxis->setRange(0, 1024);
-    customPlot->yAxis->setRange(-10, 10);
+    customPlot->xAxis->setRange(0, 200);
+    customPlot->yAxis->setRange(0.0, 10.0);
     customPlot->yAxis->ticker()->setTickCount(5);
     customPlot->xAxis->ticker()->setTickCount(10);
 
@@ -456,7 +563,7 @@ void CentralWidget::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, 
     customPlot->yAxis->setLabel(axisYLabel);
 
     // 添加散点图
-    QColor colors[] = {Qt::red, Qt::blue, Qt::green, Qt::cyan};
+    QColor colors[] = {Qt::green, Qt::blue, Qt::red, Qt::cyan};
     for (int i=0; i<graphCount; ++i){
         QCPGraph * graph = customPlot->addGraph(customPlot->xAxis, customPlot->yAxis);
         graph->setAntialiased(false);
@@ -549,6 +656,15 @@ bool CentralWidget::eventFilter(QObject *watched, QEvent *event){
                         customPlot->yAxis->rescale(true);
                         customPlot->replot(QCustomPlot::rpQueuedReplot);
                     });
+                    contextMenu.addAction(tr("导出图像..."), this, [=]{
+                        QString filePath = QFileDialog::getSaveFileName(this);
+                        if (!filePath.isEmpty()){
+                            if (!filePath.endsWith(".png"))
+                                filePath += ".png";
+                            if (!customPlot->savePng(filePath, 1920, 1080))
+                                QMessageBox::information(this, tr("提示"), tr("导出失败！"));
+                        }
+                    });
                     contextMenu.exec(QCursor::pos());
 
                     //释放内存
@@ -630,13 +746,55 @@ void CentralWidget::on_action_exit_triggered()
 void CentralWidget::on_action_open_triggered()
 {
     // 打开历史测量数据文件...
+    GlobalSettings settings;
+    QString lastPath = settings.value("Global/LastFilePath", QDir::homePath()).toString();
     QString filter = "二进制文件 (*.dat);;文本文件 (*.csv);;所有文件 (*.dat *.csv)";
-    QString filePath = QFileDialog::getOpenFileName(this, tr("打开测量数据文件"),QDir::homePath(),filter);
+    QString filePath = QFileDialog::getOpenFileName(this, tr("打开测量数据文件"), QDir::homePath(), filter);
 
     if (filePath.isEmpty() || !QFileInfo::exists(filePath))
         return;
 
-    commHelper->openHistoryWaveFile(filePath);
+    settings.setValue("Global/LastFilePath", filePath);
+    if (!commHelper->openHistoryWaveFile(filePath))
+    {
+        QMessageBox::information(this, tr("提示"), tr("文件格式错误，加载失败！"));
+    }
+}
+
+void CentralWidget::on_action_readXRD_triggered()
+{
+    // 打开XRD数据文件...
+    // 读取上次使用的路径，如果没有则使用文档路径
+    GlobalSettings settings;
+    QString lastPath = settings.value("Global/LastFilePath", QDir::homePath()).toString();
+    QString filter = "XRD数据文件 (*.csv);;所有文件 (*.csv)";
+    QString filePath = QFileDialog::getOpenFileName(this, tr("打开XRD数据文件"), lastPath, filter);
+
+    if (filePath.isEmpty() || !QFileInfo::exists(filePath))
+        return;
+
+    settings.setValue("Global/LastFilePath", filePath);
+    QVector<QPair<double, double>> data;
+    if (openXRDFile(filePath, data))
+    {
+        showEnerygySpectrumCurve(data);
+    }
+    else
+    {
+        QMessageBox::information(this, tr("提示"), tr("文件格式错误，加载失败！"));
+    }
+}
+
+void CentralWidget::on_action_exportImg_triggered()
+{
+    // 导出图像
+    QString filePath = QFileDialog::getSaveFileName(this);
+    if (!filePath.isEmpty()){
+        if (!filePath.endsWith(".png"))
+            filePath += ".png";
+        if (!ui->customPlot_result->savePng(filePath, 1920, 1080))
+            QMessageBox::information(this, tr("提示"), tr("导出失败！"));
+    }
 }
 
 void CentralWidget::on_action_connectRelay_triggered()
@@ -689,8 +847,46 @@ void CentralWidget::on_action_startMeasure_triggered()
 
     /*设置发次信息*/
     QString shotDir = ui->lineEdit_filePath->text();
-    QString shotNum = ui->lineEdit_shotNum->text();
+    quint32 shotNum = ui->spinBox_shotNum->value();
+
+    // 保存测量数据
+    QString savePath = QString(tr("%1/%2/测量数据")).arg(shotDir).arg(shotNum);
+    QDir dir(QString(tr("%1/%2/测量数据")).arg(shotDir).arg(shotNum));
+    if (!dir.exists()) {
+        dir.mkpath(".");
+    }
+    dir.setPath(QString(tr("%1/%2/处理数据")).arg(shotDir).arg(shotNum));
+    if (!dir.exists()) {
+        dir.mkpath(".");
+    }
+
+    {
+        GlobalSettings settings(QString("%1/Settings.ini").arg(savePath));
+        settings.setValue("Global/ShotNum", ui->spinBox_shotNum->value());
+        settings.setValue("Global/ResponceMatrix", ui->ReMatric_Edit->text());
+        settings.setValue("Global/IrradiationDistance", ui->lineEdit_irradiationDistance->text());
+        settings.setValue("Global/EnergyLeft", ui->doubleSpinBox_energyLeft->text());
+        settings.setValue("Global/EnergyRight", ui->doubleSpinBox_energyRight->text());
+    }
+
+    // 保存界面参数
+    if (ui->checkBox_autoIncrease->isChecked()){
+        ui->spinBox_shotNum->setValue(ui->spinBox_shotNum->value() + 1);
+    }
+    {
+        GlobalSettings settings(CONFIG_FILENAME);
+        settings.setValue("Global/ShotNum", ui->spinBox_shotNum->value());
+        settings.setValue("Global/CacheDir", ui->lineEdit_filePath->text());
+        settings.setValue("Global/ResponceMatrix", ui->ReMatric_Edit->text());
+        settings.setValue("Global/IrradiationDistance", ui->lineEdit_irradiationDistance->text());
+        settings.setValue("Global/EnergyLeft", ui->doubleSpinBox_energyLeft->text());
+        settings.setValue("Global/EnergyRight", ui->doubleSpinBox_energyRight->text());                                              
+    }
+
     commHelper->setShotInformation(shotDir, shotNum);
+    commHelper->setResultInformation(ui->lineEdit_reverseValue->text(),
+                                   ui->lineEdit_dadiationDose->text(),
+                                   ui->lineEdit_dadiationDoseRate->text());
 
     // 再发开始测量指令
     commHelper->startMeasure(CommHelper::TriggerMode::tmSoft);
@@ -744,6 +940,7 @@ void CentralWidget::on_pushButton_stopMeasureDistance_clicked()
     ui->switchButton_laser->setChecked(false);
 }
 
+#define SAMPLE_TIME 10
 void CentralWidget::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
 {
     //实测曲线
@@ -754,7 +951,7 @@ void CentralWidget::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
         QVector<quint16> chData = data[ch];
         if (chData.size() > 0){
             for (int i=0; i<chData.size(); ++i){
-                keys << i;
+                keys << i * SAMPLE_TIME;
                 values << chData[i];
             }
             ui->customPlot->graph(ch - 1)->setData(keys, values);
@@ -772,7 +969,7 @@ void CentralWidget::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
         QVector<quint16> chData = data[ch];
         if (chData.size() > 0){
             for (int i=0; i<chData.size(); ++i){
-                keys << i;
+                keys << i * SAMPLE_TIME;
                 values << chData[i];
             }
             ui->customPlot_2->graph(ch - 5)->setData(keys, values);
@@ -790,7 +987,7 @@ void CentralWidget::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
         QVector<quint16> chData = data[ch];
         if (chData.size() > 0){
             for (int i=0; i<chData.size(); ++i){
-                keys << i;
+                keys << i * SAMPLE_TIME;
                 values << chData[i];
             }
             ui->customPlot_3->graph(ch - 9)->setData(keys, values);
@@ -801,27 +998,34 @@ void CentralWidget::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
     ui->customPlot_3->replot(QCustomPlot::rpQueuedReplot);
 }
 
-void CentralWidget::showEnerygySpectrumCurve(const QVector<QPair<float, float>>& data)
+void CentralWidget::showEnerygySpectrumCurve(const QVector<QPair<double, double>>& data)
 {
     //反解能谱
     QVector<double> keys, values;
     for (auto iter = data.begin(); iter != data.end(); ++iter){
-        keys << iter->first;
+        keys << iter->first * 1000;
         values << iter->second;
     }
     ui->customPlot_result->graph(0)->setData(keys, values);
+    ui->customPlot_result->xAxis->setRange(1.0, 150.0);
+    ui->customPlot_result->yAxis->rescale(true);
     ui->customPlot_result->replot(QCustomPlot::rpQueuedReplot);
 }
 
-
-#include "aboutwidget.h"
 void CentralWidget::on_action_about_triggered()
 {
-    AboutWidget *w = new AboutWidget(this);
-    w->setAttribute(Qt::WA_DeleteOnClose, true);
-    w->setWindowFlags(Qt::WindowCloseButtonHint|Qt::Dialog);
-    w->setWindowModality(Qt::ApplicationModal);
-    w->showNormal();
+    QMessageBox::about(this, tr("关于"),
+                       QString("<p>") +
+                           tr("版本") +
+                           QString("</p><span style='color:blue;'>%1</span><p>").arg("LowXRayFSS").arg(APP_VERSION) +
+                           tr("提交") +
+                           QString("</p><span style='color:blue;'>%1: %2</span><p>").arg(GIT_BRANCH).arg(GIT_HASH) +
+                           tr("日期") +
+                           QString("</p><span style='color:blue;'>%1</span><p>").arg(GIT_DATE) +
+                           tr("开发者") +
+                           QString("</p><span style='color:blue;'>MaoXiaoqing</span><p>") +
+                           "</p><p>四川大学物理学院 版权所有 (C) 2025</p>"
+                       );
 }
 
 void CentralWidget::on_action_aboutQt_triggered()
@@ -855,18 +1059,6 @@ void CentralWidget::on_pushButton_clicked()
     ui->tableWidget_laser->setRowCount(0);
 }
 
-
-void CentralWidget::on_action_exportImg_triggered()
-{
-    // 导出图像
-    QString filePath = QFileDialog::getSaveFileName(this);
-    if (!filePath.isEmpty()){
-        if (!filePath.endsWith(".png"))
-            filePath += ".png";
-        if (!ui->customPlot_result->savePng(filePath, 1920, 1080))
-            QMessageBox::information(this, tr("提示"), tr("导出失败！"));
-    }
-}
 
 void CentralWidget::on_action_lightTheme_triggered()
 {
@@ -917,13 +1109,29 @@ void CentralWidget::applyColorTheme()
         QPalette palette = customPlot->palette();
         if (mIsDarkTheme)
         {
-            DarkStyle darkStyle;
-            darkStyle.polish(palette);
+            if (this->themeColorEnable)
+            {
+                CustomColorDarkStyle darkStyle(themeColorEnable);
+                darkStyle.polish(palette);
+            }
+            else
+            {
+                DarkStyle darkStyle;
+                darkStyle.polish(palette);
+            }
         }
         else
         {
-            LightStyle lightStyle;
-            lightStyle.polish(palette);
+            if (this->themeColorEnable)
+            {
+                CustomColorLightStyle lightStyle(themeColorEnable);
+                lightStyle.polish(palette);
+            }
+            else
+            {
+                LightStyle lightStyle;
+                lightStyle.polish(palette);
+            }
         }
         // 窗体背景色
         customPlot->setBackground(QBrush(palette.color(QPalette::Window)));
@@ -982,6 +1190,76 @@ void CentralWidget::restoreSettings()
     }
 }
 
+#include <QFile>
+#include <QTextStream>
+#include <QVector>
+bool CentralWidget::openXRDFile(const QString &filename, QVector<QPair<double, double>>& data){
+    QFile file(filename);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "无法打开文件:" << filename;
+        return false;
+    }
+
+    QTextStream in(&file);
+    // 可选：设置编码
+    in.setCodec("UTF-8");
+
+    int lineNumber = 0;
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+        lineNumber++;
+
+        // 跳过空行和注释行
+        if (line.trimmed().isEmpty() || line.startsWith('#')) {
+            continue;
+        }
+
+        // 分割CSV行（支持逗号或分号分隔）
+        QStringList parts = line.split(',', Qt::SkipEmptyParts);
+        if (parts.size() < 2) {
+            parts = line.split(';', Qt::SkipEmptyParts);
+        }
+
+        if (parts.size() < 2) {
+            qDebug() << "第" << lineNumber << "行数据列数不足，跳过";
+            continue;
+        }
+
+        // 转换为double
+        bool ok1, ok2;
+        double value1 = 1000.0*parts[0].trimmed().toDouble(&ok1); //MeV转化为keV
+        double value2 = parts[1].trimmed().toDouble(&ok2);
+
+        if (ok1 && ok2) {
+            data.append(QPair<double, double>(value1, value2));
+        } else {
+            qDebug() << "第" << lineNumber << "行数据转换失败:" << line;
+        }
+    }
+
+    file.close();
+    return true;
+}
+
+void CentralWidget::on_pushButton_saveAs_clicked()
+{
+    QString strSavePath = QString("%1/%2").arg(ui->lineEdit_SaveAsPath->text(), ui->lineEdit_SaveAsFileName->text());
+    if (commHelper->saveAs(strSavePath))
+    {
+        GlobalSettings settings(CONFIG_FILENAME);
+        settings.setValue("Global/ReverseValue", ui->lineEdit_reverseValue->text());
+        settings.setValue("Global/DadiationDose", ui->lineEdit_dadiationDose->text());
+        settings.setValue("Global/DadiationDoseRate", ui->lineEdit_dadiationDoseRate->text());
+        settings.setValue("Global/SaveAsFileName", ui->lineEdit_SaveAsFileName->text());
+        settings.setValue("Global/SaveAsPath", ui->lineEdit_SaveAsPath->text());
+        QMessageBox::information(this, tr("提示"), tr("保存成功！"));
+    }
+    else
+    {
+        QMessageBox::information(this, tr("提示"), tr("保存失败！"));
+    }
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////
 MainWindow::MainWindow(bool isDarkTheme, QWidget *parent)
     : QGoodWindow(parent) {
@@ -1016,9 +1294,6 @@ MainWindow::MainWindow(bool isDarkTheme, QWidget *parent)
         });
 
         mGoodCentraWidget->setLeftTitleBarWidget(mMenuBar);
-        setNativeCaptionButtonsVisibleOnMac(false);
-    } else {
-        setNativeCaptionButtonsVisibleOnMac(true);
     }
 
     connect(qGoodStateHolder, &QGoodStateHolder::currentThemeChanged, this, [](){

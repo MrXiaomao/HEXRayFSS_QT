@@ -65,6 +65,28 @@ int main(int argc, char *argv[])
     QApplication::setApplicationVersion(APP_VERSION);
     QApplication::setStyle(QStyleFactory::create("fusion"));//WindowsVista fusion windows
 
+    GlobalSettings settings;
+    if(settings.value("Global/Options/enableNativeUI",false).toBool()) {
+        QApplication::setAttribute(Qt::AA_DontUseNativeDialogs,false);
+        QApplication::setAttribute(Qt::AA_DontUseNativeMenuBar,false);
+        QApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings,false);
+    }
+
+    QString fontFamily = settings.value("Global/Options/fontFamily", "微软雅黑").toString();
+    quint32 fontPointSize = settings.value("Global/Options/fontPointSize", 12).toInt();
+    QFont font = qApp->font();
+    font.setStyleStrategy(QFont::PreferAntialias);
+    font.setHintingPreference(QFont::PreferFullHinting);
+    font.setFamily(fontFamily);
+    font.setPointSize(fontPointSize);
+    qApp->setFont(font);
+    qApp->setStyle(new DarkStyle());
+    qApp->style()->setObjectName("fusion");
+
+    settings.beginGroup("Version");
+    settings.setValue("Version",GIT_VERSION);
+    settings.endGroup();
+
     QSplashScreen splash;
     splash.setPixmap(QPixmap(":/splash.png"));
     splash.show();
@@ -97,7 +119,7 @@ int main(int argc, char *argv[])
 
     // 启用新的日子记录类
     QString filename = QFileInfo(QCoreApplication::applicationFilePath()).baseName();
-    QString sConfFilename = QString("./%1.log4qt.conf").arg(filename);
+    QString sConfFilename = QString("./config/%1.log4qt.conf").arg(filename);
     if (QFileInfo::exists(sConfFilename)){
         Log4Qt::PropertyConfigurator::configure(sConfFilename);
     } else {
@@ -138,30 +160,6 @@ int main(int argc, char *argv[])
         qApp->installTranslator(&qtbaseTranslator);
 
     system_default_message_handler = qInstallMessageHandler(AppMessageHandler);
-
-    GlobalSettings settings;
-    if(settings.value("Global/Options/enableNativeUI",false).toBool()) {
-        QApplication::setAttribute(Qt::AA_DontUseNativeDialogs,false);
-        QApplication::setAttribute(Qt::AA_DontUseNativeMenuBar,false);
-        QApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings,false);
-    }
-
-    QString fontFamily = settings.value("Global/Options/fontFamily", "微软雅黑").toString();
-    quint32 fontPointSize = settings.value("Global/Options/fontPointSize", 12).toInt();
-    QFont font = qApp->font();
-    font.setStyleStrategy(QFont::PreferAntialias);
-    font.setHintingPreference(QFont::PreferFullHinting);
-    font.setFamily(fontFamily);
-    font.setPointSize(fontPointSize);
-    qApp->setFont(font);
-    qApp->setStyle(new DarkStyle());
-    qApp->style()->setObjectName("fusion");
-
-    settings.beginGroup("Version");
-    settings.setValue("Version",GIT_VERSION);
-    settings.setValue("GitBranch",GIT_BRANCH);
-    settings.setValue("BuildDate",GIT_DATE);
-    settings.endGroup();
 
     QString darkTheme = "true";
     settings.beginGroup("Global/Startup");

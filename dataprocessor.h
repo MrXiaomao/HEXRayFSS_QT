@@ -57,7 +57,7 @@ signals:
     void measureEnd(quint8 index); //测量结束
 
     void showRealCurve(const QMap<quint8, QVector<quint16>>& data);//实测曲线
-    void showEnerygySpectrumCurve(const QVector<QPair<float, float>>& data);//反解能谱
+    void showEnerygySpectrumCurve(const QVector<QPair<double, double>>& data);//反解能谱
 
 private:
     quint8 mdetectorIndex = 0x00;

@@ -484,7 +484,8 @@ void DataProcessor::OnDataProcessThread()
                 if (mCachePool.size() >= ONE_CHANNEL_WAVE_SIZE){
                     /*包长度也够了，继续检查包尾*/
                     QByteArray chunk = mCachePool.left(ONE_CHANNEL_WAVE_SIZE);
-                    if (chunk.endsWith(QByteArray::fromHex(QString("CD CD").toUtf8()))){
+                    if (chunk.endsWith(QByteArray::fromHex(QString("CD CD").toUtf8())) ||
+                        chunk.endsWith(QByteArray::fromHex(QString("AB CD").toUtf8()))){//临时添加，后期要FPGA程序改动
                         //单个波形：0xABAB + 0xFFXY+ 波形长度*16bit +0xCDCD
                         //X:数采板序号 Y:通道号
                         quint8 no = (chunk[3] & 0xF0) >> 4;
