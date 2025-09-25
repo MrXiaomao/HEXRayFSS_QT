@@ -1003,7 +1003,7 @@ void CentralWidget::showEnerygySpectrumCurve(const QVector<QPair<double, double>
     //反解能谱
     QVector<double> keys, values;
     for (auto iter = data.begin(); iter != data.end(); ++iter){
-        keys << iter->first * 1000;
+        keys << iter->first * 1000;//MeV转化为keV
         values << iter->second;
     }
     ui->customPlot_result->graph(0)->setData(keys, values);
@@ -1111,7 +1111,7 @@ void CentralWidget::applyColorTheme()
         {
             if (this->themeColorEnable)
             {
-                CustomColorDarkStyle darkStyle(themeColorEnable);
+                CustomColorDarkStyle darkStyle(themeColor);
                 darkStyle.polish(palette);
             }
             else
@@ -1124,7 +1124,7 @@ void CentralWidget::applyColorTheme()
         {
             if (this->themeColorEnable)
             {
-                CustomColorLightStyle lightStyle(themeColorEnable);
+                CustomColorLightStyle lightStyle(themeColor);
                 lightStyle.polish(palette);
             }
             else
@@ -1134,10 +1134,10 @@ void CentralWidget::applyColorTheme()
             }
         }
         // 窗体背景色
-        customPlot->setBackground(QBrush(palette.color(QPalette::Window)));
+        customPlot->setBackground(QBrush(mIsDarkTheme ? palette.color(QPalette::Window) : Qt::white));
         // 四边安装轴并显示
         customPlot->axisRect()->setupFullAxesBox();
-        customPlot->axisRect()->setBackground(QBrush(palette.color(QPalette::Window)));
+        customPlot->axisRect()->setBackground(QBrush(mIsDarkTheme ? palette.color(QPalette::Window) : Qt::white));
         // 坐标轴线颜色
         customPlot->xAxis->setBasePen(QPen(palette.color(QPalette::WindowText)));
         customPlot->xAxis2->setBasePen(QPen(palette.color(QPalette::WindowText)));
@@ -1163,8 +1163,6 @@ void CentralWidget::applyColorTheme()
         customPlot->xAxis2->setTickLabelColor(palette.color(QPalette::WindowText));
         customPlot->yAxis->setTickLabelColor(palette.color(QPalette::WindowText));
         customPlot->yAxis2->setTickLabelColor(palette.color(QPalette::WindowText));
-        // 坐标系背景色
-        customPlot->axisRect()->setBackground(palette.color(QPalette::Window));
 
         customPlot->replot();
     }
@@ -1227,7 +1225,7 @@ bool CentralWidget::openXRDFile(const QString &filename, QVector<QPair<double, d
 
         // 转换为double
         bool ok1, ok2;
-        double value1 = 1000.0*parts[0].trimmed().toDouble(&ok1); //MeV转化为keV
+        double value1 = parts[0].trimmed().toDouble(&ok1);
         double value2 = parts[1].trimmed().toDouble(&ok2);
 
         if (ok1 && ok2) {
