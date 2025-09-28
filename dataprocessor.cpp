@@ -64,7 +64,9 @@ void DataProcessor::inputData(const QByteArray& data)
     {
         QMutexLocker locker(&mDataLocker);
         mRawData.append(data);
-        qDebug().noquote()<< "[" << mdetectorIndex << "] "<< "inputData: " << data.toHex(' ') << " >> " << mRawData.toHex(' ');
+
+        if (mdetectorIndex == 1)
+            qDebug().noquote()<< "[" << mdetectorIndex << "] "<< "inputData: " << data.toHex(' ') << " >> " << mRawData.toHex(' ');
 
         mDataReady = true;
     }
@@ -491,11 +493,11 @@ void DataProcessor::OnDataProcessThread()
                         quint8 no = (chunk[3] & 0xF0) >> 4;
                         no--; // 数采板序号
                         quint8 ch = chunk[3] & 0x0F;
-                        QVector<quint16> data;
+                        QVector<double> data;
 
                         for (quint32 i = 0; i < this->mWaveLength * 2; i += 2) {
                             quint16 value = static_cast<quint8>(chunk[i + 4]) << 8 | static_cast<quint8>(chunk[i + 5]);
-                            data.append(value);
+                            data.append((double)value);
                         }
 
                         mChWaveDataValidTag |= (0x01 << (ch - 1));

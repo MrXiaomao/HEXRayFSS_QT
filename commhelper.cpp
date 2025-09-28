@@ -107,6 +107,20 @@ bool CommHelper::loadSeq(double* seq)
     return true;
 }
 
+bool CommHelper::reloadResponceMatrix()
+{
+    bool ret = false;
+    double* responce_matrix_cpp = new double[11 * 500];
+    if (loadResponceMatrix(responce_matrix_cpp))
+    {
+        m_mwResponce_matrix.SetData(responce_matrix_cpp, 11 * 500);
+        ret = true;
+    }
+    delete[] responce_matrix_cpp;
+    responce_matrix_cpp = nullptr;
+    return ret;
+}
+
 bool CommHelper::loadResponceMatrix(double* responceMatrix)
 {
     QFile file("./responce_matrix.csv");
@@ -259,7 +273,7 @@ void CommHelper::initDataProcessor(DataProcessor** processor, QTcpSocket *socket
     });
     connect(detectorDataProcessor, &DataProcessor::measureEnd, this, &CommHelper::measureEnd);
 
-    connect(detectorDataProcessor, &DataProcessor::showRealCurve, this, [=](const QMap<quint8, QVector<quint16>>& data){
+    connect(detectorDataProcessor, &DataProcessor::showRealCurve, this, [=](const QMap<quint8, QVector<double>>& data){
         // 将map1的内容添加到map2
         for (auto iterator = data.constBegin(); iterator != data.constEnd(); ++iterator) {
             // 这里只保留前11个通道数据
@@ -273,7 +287,7 @@ void CommHelper::initDataProcessor(DataProcessor** processor, QTcpSocket *socket
         */
         calEnerygySpectrumCurve();
     });
-    connect(this, &CommHelper::showRealCurve, this, [=](const QMap<quint8, QVector<quint16>>& data){
+    connect(this, &CommHelper::showHistoryCurve, this, [=](const QMap<quint8, QVector<double>>& data){
         // 将map1的内容添加到map2
         for (auto iterator = data.constBegin(); iterator != data.constEnd(); ++iterator) {
             // 这里只保留前11个通道数据
@@ -490,7 +504,7 @@ bool CommHelper::connectDetectors()
 void CommHelper::disconnectDetectors()
 {
     QTcpSocket* sockets[] = {mSocketRelay, mSocketDetector1, mSocketDetector2, mSocketDetector3};
-    for (int i=1; i<=3; ++i){
+    for (int i=1; i<=3; ++i){        
         sockets[i]->abort();
     }
 }
@@ -816,7 +830,7 @@ void CommHelper::closePower()
 void CommHelper::setShotInformation(const QString shotDir, const quint32 shotNum)
 {
     this->mShotDir = shotDir;
-    this->mShotNum = shotNum;
+    this->mShotNum = QString::number(shotNum);
 }
 
 void CommHelper::setResultInformation(const QString reverseValue, const QString dadiationDose, const QString dadiationDoseRate)
@@ -937,18 +951,20 @@ bool CommHelper::openHistoryWaveFile(const QString &filePath)
     if (file.open(QIODevice::ReadWrite)){
         mWaveAllData.clear();
 
-        QVector<quint16> rawWaveData;
-        QMap<quint8, QVector<quint16>> realCurve;// 4路通道实测曲线数据
         if (filePath.endsWith(".dat")){
+            QVector<quint16> rawWaveData;
+            QMap<quint8, QVector<double>> realCurve;// 4路通道实测曲线数据
             rawWaveData.resize(512);
             for (int i=1; i<=11; ++i){
                 int rSize = file.read((char *)rawWaveData.data(), rawWaveData.size() * sizeof(quint16));
                 if (rSize == 1024){
-                    realCurve[i] = rawWaveData;
+                    for (int j = 0; j < rawWaveData.size(); ++j){
+                        realCurve[i].push_back((double)rawWaveData[j]);
+                    }
                     if (i == 4 || i == 8 || i == 11){
                         // 实测曲线
                         QMetaObject::invokeMethod(this, [=]() {
-                            emit showRealCurve(realCurve);
+                            emit showHistoryCurve(realCurve);
                         }, Qt::DirectConnection);
 
                         realCurve.clear();
@@ -962,26 +978,36 @@ bool CommHelper::openHistoryWaveFile(const QString &filePath)
             }
         }
         else{
-            for (int i=1; i<=11; ++i){
+            QVector<double> rawWaveData;
+            QMap<quint8, QVector<double>> realCurve;// 4路通道实测曲线数据
+            int chIndex = 1;
+            while (!file.atEnd()){
                 QByteArray lines = file.readLine();
                 QList<QByteArray> listLine = lines.split(',');
-                if (listLine.size() != 512)
-                {
-                    file.close();
-                    return false;
-                }
-
                 for( auto line : listLine)
                     rawWaveData.push_back(line.toDouble());
 
-                if (i == 4 || i == 8 || i == 11){
+                if (rawWaveData.size() == 512){
+                    realCurve[chIndex++] = rawWaveData;
                     // 实测曲线
                     QMetaObject::invokeMethod(this, [=]() {
-                        emit showRealCurve(realCurve);
+                        emit showHistoryCurve(realCurve);
                     }, Qt::DirectConnection);
 
+                    rawWaveData.clear();
                     realCurve.clear();
                 }
+            }
+
+            // 尾巴数据（无效数据）
+            if (rawWaveData.size() > 0){
+                realCurve[chIndex++] = rawWaveData;
+                QMetaObject::invokeMethod(this, [=]() {
+                    emit showHistoryCurve(realCurve);
+                }, Qt::DirectConnection);
+
+                rawWaveData.clear();
+                realCurve.clear();
             }
         }
 
@@ -1000,21 +1026,29 @@ void CommHelper::calEnerygySpectrumCurve(bool needSave)
     if (mWaveAllData.size() < 11)
         return;
 
+    emit showRealCurve(mWaveAllData);
+
     //11个通道都收集完毕，可以进行反能谱计算了
     QVector<QPair<double, double>> result;
 
-    QVector<quint16> rawWaveData;
+    QVector<double> rawWaveData;
     for (int i=1; i<=mWaveAllData.size(); ++i){
         rawWaveData.append(mWaveAllData[i]);
     }
 
-    QString strTime = QDateTime::currentDateTime().toString("yyyy-MM-dd_HHmmss");
+    QString triggerTime = QDateTime::currentDateTime().toString("yyyy-MM-dd_HHmmss");
     if (needSave)
     {
+        {
+            QString oldFilePath = QString("%1/%2/测量数据/Settings.ini").arg(mShotDir).arg(mShotNum);
+            QString newFilePath = QString("%1/%2/测量数据/%3_Settings.ini").arg(mShotDir).arg(mShotNum).arg(triggerTime);
+            QFile::rename(oldFilePath, newFilePath);
+        }
+
         /*保存波形数据*/
         /*二进制*/
         {
-            QString filePath = QString("%1/%2/测量数据/%3_Wave.dat").arg(mShotDir, mShotNum, strTime);
+            QString filePath = QString("%1/%2/测量数据/%3_Wave.dat").arg(mShotDir).arg(mShotNum).arg(triggerTime);
             QFile file(filePath);
             if (file.open(QIODevice::WriteOnly)){
                 file.write((const char *)rawWaveData.constData(), rawWaveData.size()*sizeof(quint16));
@@ -1024,12 +1058,12 @@ void CommHelper::calEnerygySpectrumCurve(bool needSave)
 
         /*csv*/
         {
-            QString filePath = QString("%1/%2/测量数据/%3_Wave.csv").arg(mShotDir, mShotNum, strTime);
+            QString filePath = QString("%1/%2/测量数据/%3_Wave.csv").arg(mShotDir).arg(mShotNum).arg(triggerTime);
             QFile file(filePath);
             if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
                 QTextStream stream(&file);
                 for (int i=1; i<=mWaveAllData.size(); ++i){
-                    QVector<quint16> waveData = mWaveAllData[i];
+                    QVector<double> waveData = mWaveAllData[i];
                     for (int j = 0; j < waveData.size(); ++j){
                         stream << waveData.at(j);
                         if (j < waveData.size() - 1)
@@ -1106,7 +1140,7 @@ void CommHelper::calEnerygySpectrumCurve(bool needSave)
             {
                 /*csv*/
                 {
-                    QString filePath = QString("%1/%2/处理数据/%3_En.csv").arg(mShotDir).arg(mShotNum).arg(strTime);
+                    QString filePath = QString("%1/%2/处理数据/%3_En.csv").arg(mShotDir).arg(mShotNum).arg(triggerTime);
                     QFile file(filePath);
                     if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
                         QTextStream stream(&file);
@@ -1120,19 +1154,21 @@ void CommHelper::calEnerygySpectrumCurve(bool needSave)
                 }
 
                 {
-                    QString filePath = QString("%1/%2/处理数据/Result.ini").arg(mShotDir).arg(mShotNum).arg(strTime);
+                    QString filePath = QString("%1/%2/处理数据/%3_Result.ini").arg(mShotDir).arg(mShotNum).arg(triggerTime);
                     GlobalSettings settings(filePath);
-                    settings.setValue("Result/反解能谱不确定值", mReverseValue);
-                    settings.setValue("Result/辐照剂量/μGy", mDadiationDose);
-                    settings.setValue("Result/辐照剂量率/μGy*h-1", mDadiationDoseRate);
+                    settings.setValue("Result/ReverseValue", mReverseValue);//反解能谱不确定值
+                    settings.setValue("Result/DadiationDose", mDadiationDose);//辐照剂量(μGy)
+                    settings.setValue("Result/DadiationDoseRate", mDadiationDoseRate);//辐照剂量率(μGy*h-1)
                 }
 
                 QString fileDir = QString("%1/%2").arg(mShotDir).arg(mShotNum);
-                emit exportEnergyPlot(fileDir);
+                emit exportEnergyPlot(fileDir, triggerTime);
             }
         }
     }
 #endif //ENABLE_MATLAB
+
+    mWaveAllData.clear();
 }
 
 bool copyDir(const QString &src, const QString &dst, bool overwrite = true) {

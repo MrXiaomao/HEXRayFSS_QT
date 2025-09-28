@@ -119,7 +119,7 @@ include($$PWD/../3rdParty/QGoodWindow/QGoodWindow/QGoodWindow.pri)
 include($$PWD/../3rdParty/QGoodWindow/QGoodCentralWidget/QGoodCentralWidget.pri)
 
 # 启用反解能谱
-# DEFINES += ENABLE_MATLAB
+DEFINES += ENABLE_MATLAB
 
 contains(DEFINES, ENABLE_MATLAB) {
     message("Including matlab library")

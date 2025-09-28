@@ -162,9 +162,10 @@ signals:
     void measureDistanceStart(); //测量开始
     void measureDistanceEnd(); //测量结束
 
-    void showRealCurve(const QMap<quint8, QVector<quint16>>& data);//实测曲线
+    void showHistoryCurve(const QMap<quint8, QVector<double>>& data);//实测曲线
+    void showRealCurve(const QMap<quint8, QVector<double>>& data);//实测曲线
     void showEnerygySpectrumCurve(const QVector<QPair<double, double>>& data);//反解能谱
-    void exportEnergyPlot(const QString fileDir);
+    void exportEnergyPlot(const QString fileDir, const QString triggerTime);
 
 private:
     /*********************************************************
@@ -287,13 +288,14 @@ private:
     QByteArray askAppVersionCmd;// 程序版本查询发指令
     QByteArray askTemperatureCmd;// 温度查询指令
 
-    QMap<quint8, QVector<quint16>> mWaveAllData;
+    QMap<quint8, QVector<double>> mWaveAllData;
 #ifdef ENABLE_MATLAB
     mwArray m_mwT;
     mwArray m_mwSeq;
     mwArray m_mwResponce_matrix;
 
     bool loadSeq(double* seq);
+    bool reloadResponceMatrix();
     bool loadResponceMatrix(double* responceMatrix);
     bool loadRom(double* rom);
     bool loadData(double* data);

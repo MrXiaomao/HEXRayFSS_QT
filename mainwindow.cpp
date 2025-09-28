@@ -21,7 +21,7 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
     initCustomPlot(ui->customPlot, tr("时间/ns"), tr("实测曲线（通道1-4）"), 4);
     initCustomPlot(ui->customPlot_2, tr("时间/ns"), tr("实测曲线（通道5-8）"), 4);
     initCustomPlot(ui->customPlot_3, tr("时间/ns"), tr("实测曲线（通道9-11）"), 3);
-    initCustomPlot(ui->customPlot_result, tr("能量/keV"), tr("反解能谱"));
+    initCustomPlot(ui->customPlot_result, tr("能量/keV"), tr("反解能谱/Counts"));
     restoreSettings();
     applyColorTheme();
 
@@ -30,17 +30,17 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
     commHelper = CommHelper::instance();
     connect(commHelper, &CommHelper::showRealCurve, this, &CentralWidget::showRealCurve);
     connect(commHelper, &CommHelper::showEnerygySpectrumCurve, this, &CentralWidget::showEnerygySpectrumCurve);
-    connect(commHelper, &CommHelper::exportEnergyPlot, this, [=](const QString fileDir){
-        QString filePath = QString("%1/测量数据/1-4.png").arg(fileDir);
+    connect(commHelper, &CommHelper::exportEnergyPlot, this, [=](const QString fileDir, const QString triggerTime){
+        QString filePath = QString("%1/测量数据/%2_1-4.png").arg(fileDir, triggerTime);
         ui->customPlot->savePng(filePath, 1920, 1080);
 
-        filePath = QString("%1/测量数据/4-8.png").arg(fileDir);
+        filePath = QString("%1/测量数据/%2_4-8.png").arg(fileDir, triggerTime);
         ui->customPlot_2->savePng(filePath, 1920, 1080);
 
-        filePath = QString("%1/测量数据/9-11.png").arg(fileDir);
+        filePath = QString("%1/测量数据/%2_9-11.png").arg(fileDir, triggerTime);
         ui->customPlot_3->savePng(filePath, 1920, 1080);
 
-        filePath = QString("%1/处理数据/反解能谱.png").arg(fileDir);
+        filePath = QString("%1/处理数据/%2_反解能谱.png").arg(fileDir, triggerTime);
         ui->customPlot_result->savePng(filePath, 1920, 1080);
     });
     connect(commHelper, &CommHelper::appVersionRespond, this, [=](quint8 index, QString version, QString serialNumber){
@@ -75,9 +75,6 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
 
         ui->action_connect->setEnabled(false);
         ui->action_disconnect->setEnabled(false);
-
-        ui->switchButton_power->setEnabled(true);
-        ui->switchButton_laser->setEnabled(true);
 
         //查询继电器电源闭合状态
         commHelper->queryRelayStatus();
@@ -127,6 +124,8 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
         ui->action_stopMeasure->setEnabled(true);
         ui->pushButton_startMeasure->setEnabled(true);
         ui->pushButton_stopMeasure->setEnabled(true);
+        ui->switchButton_power->setEnabled(true);
+        ui->switchButton_laser->setEnabled(true);
 
         if (ui->tableWidget_detector->item(0, 0)->text() == tr("在线") &&
             ui->tableWidget_detector->item(0, 1)->text() == tr("在线") &&
@@ -149,6 +148,9 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
 
             ui->action_connect->setEnabled(true);
             ui->action_disconnect->setEnabled(false);
+
+            ui->switchButton_power->setEnabled(false);
+            ui->switchButton_laser->setEnabled(false);
         }
     });
     connect(commHelper, &CommHelper::temperatureRespond, this, [=](quint8 index, float temperature){
@@ -170,7 +172,6 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
 
         ui->tableWidget_laser->setCurrentItem(item2);
     });
-
 
     //测量开始
     connect(commHelper, &CommHelper::measureStart, this, [=](quint8 index){
@@ -216,6 +217,20 @@ CentralWidget::~CentralWidget()
 void CentralWidget::initUi()
 {
     ui->stackedWidget->hide();
+
+    {
+        QGraphicsScene *scene = new QGraphicsScene(this);
+        scene->setObjectName("logGraphicsScene");
+        QGraphicsTextItem *textItem = scene->addText(tr("工作日志"));
+        textItem->setObjectName("logGraphicsTextItem");
+        textItem->setPos(0,0);
+        textItem->setRotation(-90);
+        ui->graphicsView_2->setFrameStyle(0);
+        ui->graphicsView_2->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        ui->graphicsView_2->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        ui->graphicsView_2->setFixedWidth(50);
+        ui->graphicsView_2->setScene(scene);
+    }
 
     QActionGroup *themeActionGroup = new QActionGroup(this);
     ui->action_lightTheme->setActionGroup(themeActionGroup);
@@ -306,15 +321,12 @@ void CentralWidget::initUi()
     splitterV2->setHandleWidth(5);
     //ui->rightHboxWidget->layout()->addWidget(splitterH1);
     ui->rightHboxWidget->layout()->addWidget(splitterV2);
-    // splitterV2->addWidget(ui->customPlot_result);
-    // splitterV2->addWidget(ui->widget_5);
-    // splitterV2->addWidget(ui->textEdit_log);
     splitterV2->setCollapsible(0,false);
     splitterV2->setCollapsible(1,false);
     splitterV2->setSizes(QList<int>() << 400000 << 100000);
 
     splitterV2->addWidget(splitterH1);
-    splitterV2->addWidget(ui->textEdit_log);
+    splitterV2->addWidget(ui->tabWidget_log);
     splitterV2->setCollapsible(0,false);
 
     QPushButton* laserDistanceButton = new QPushButton();
@@ -382,18 +394,31 @@ void CentralWidget::initUi()
 
         // 发次
         ui->spinBox_shotNum->setValue(settings.value("Global/ShotNum", 100).toUInt());
+        ui->checkBox_autoIncrease->setChecked(settings.value("Global/ShotNumIsAutoIncrease", false).toBool());
     }
 
     QAction *action2 = ui->ReMatric_Edit->addAction(QIcon(":/open.png"), QLineEdit::TrailingPosition);
     QToolButton* button2 = qobject_cast<QToolButton*>(action2->associatedWidgets().last());
     button2->setCursor(QCursor(Qt::PointingHandCursor));
     connect(button2, &QToolButton::pressed, this, [=](){
-        QString filter = "二进制文件 (*.dat);;文本文件 (*.csv);;所有文件 (*.dat *.csv)";
+        QString filter = "响应矩阵文件 (*.csv);;所有文件 (*.csv)";
         QString fileName = QFileDialog::getOpenFileName(this, tr("选择响应矩阵文件"),";",filter);
         if (fileName.isEmpty() || !QFileInfo::exists(fileName))
             return;
 
+        GlobalSettings settings(CONFIG_FILENAME);
+        settings.setValue("Global/RespondMatrix", fileName);
         ui->ReMatric_Edit->setText(fileName);
+
+#ifdef MATLAB
+        // 重新加载响应矩阵文件
+        QFile::rename("./responce_matrix.csv", "./responce_matrix.csv.bak");
+        QFile::copy(fileName, "./responce_matrix.csv");
+        if (!commHelper->reloadResponceMatrix())
+        {
+            QFile::rename("./responce_matrix.csv.bak", "./responce_matrix.csv");
+        }
+#endif
     });
 
     // 反解能谱响应文件
@@ -439,6 +464,7 @@ void CentralWidget::initUi()
 
     //ui->switchButton_power->setAutoChecked(false);
     //ui->switchButton_laser->setAutoChecked(false);
+
     ui->switchButton_power->setEnabled(false);
     ui->switchButton_laser->setEnabled(false);
     ui->pushButton_startMeasureDistance->setEnabled(false);
@@ -447,9 +473,13 @@ void CentralWidget::initUi()
         if (checked){
             // 测距模块电源
             commHelper->openDistanceModulePower();
+            ui->pushButton_startMeasureDistance->setEnabled(true);
+            ui->pushButton_stopMeasureDistance->setEnabled(false);
         }
         else{
             commHelper->closeDistanceModulePower();
+            ui->pushButton_startMeasureDistance->setEnabled(false);
+            ui->pushButton_stopMeasureDistance->setEnabled(false);
         }
     });
     connect(ui->switchButton_laser, &SwitchButton::toggled, this, [=](bool checked){
@@ -548,15 +578,15 @@ void CentralWidget::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, 
     customPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
     // 允许轴自适应大小
     customPlot->xAxis->rescale(true);
-    customPlot->yAxis->rescale(true);
+    customPlot->yAxis->rescale(graphCount == 1 ? true : false);
     // 设置刻度范围
     customPlot->xAxis->setRange(0, 200);
-    customPlot->yAxis->setRange(0.0, 10.0);
+    customPlot->yAxis->setRange(graphCount == 1 ? 10e2 : 0, graphCount == 1 ? 10e8 : 4100);
     customPlot->yAxis->ticker()->setTickCount(5);
-    customPlot->xAxis->ticker()->setTickCount(10);
+    customPlot->xAxis->ticker()->setTickCount(graphCount == 1 ? 10 : 5);
 
     customPlot->yAxis2->ticker()->setTickCount(5);
-    customPlot->xAxis2->ticker()->setTickCount(10);
+    customPlot->xAxis2->ticker()->setTickCount(graphCount == 1 ? 10 : 5);
 
     //设置轴标签名称
     customPlot->xAxis->setLabel(axisXLabel);
@@ -569,10 +599,22 @@ void CentralWidget::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, 
         graph->setAntialiased(false);
         graph->setPen(QPen(colors[i]));
         graph->selectionDecorator()->setPen(QPen(colors[i]));
-        graph->setLineStyle(QCPGraph::lsLine);// 隐藏线性图
-        graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 3));//显示散点图
+        graph->setLineStyle(QCPGraph::lsLine);
+        graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, colors[i], 3));//显示散点图
         graph->setSmooth(true);
     }
+
+    // if (graphCount == 1){
+    //     QSharedPointer<QCPAxisTickerLog> logTicker(new QCPAxisTickerLog);
+    //     customPlot->yAxis->setTicker(logTicker);
+    //     customPlot->yAxis2->setTicker(logTicker);
+    // }
+    // else {
+    //     QSharedPointer<QCPAxisTicker> ticker(new QCPAxisTicker);
+    //     customPlot->yAxis->setTicker(ticker);
+    // }
+
+    customPlot->replot();
 
     connect(customPlot, SIGNAL(beforeReplot()), this, SLOT(slotBeforeReplot()));
     connect(customPlot, SIGNAL(afterLayout()), this, SLOT(slotBeforeReplot()));
@@ -820,8 +862,25 @@ void CentralWidget::on_action_connect_triggered()
 
 void CentralWidget::on_action_disconnect_triggered()
 {
-    // 关闭探测器
-    commHelper->disconnectDetectors();
+    // 先停止测量
+    commHelper->stopMeasure();
+
+    QTimer::singleShot(1000, this, [=](){
+        // 再关闭激光
+        commHelper->closeDistanceModuleLaser();
+
+        // 再关闭测距电源
+        commHelper->closeDistanceModulePower();
+
+        // 关闭探测器
+        commHelper->disconnectDetectors();
+
+        ui->switchButton_power->setEnabled(false);
+        ui->switchButton_laser->setEnabled(false);
+    });
+
+    ui->switchButton_power->setChecked(false);
+    ui->switchButton_laser->setChecked(false);
 }
 
 
@@ -839,6 +898,9 @@ void CentralWidget::on_action_startMeasure_triggered()
     ui->customPlot->replot();
     ui->customPlot_2->replot();
     ui->customPlot_3->replot();
+
+    ui->customPlot_result->graph(0)->data()->clear();
+    ui->customPlot_result->replot();
 
     // 先发温度停止指令
     commHelper->queryTemperature(1, false);
@@ -863,10 +925,11 @@ void CentralWidget::on_action_startMeasure_triggered()
     {
         GlobalSettings settings(QString("%1/Settings.ini").arg(savePath));
         settings.setValue("Global/ShotNum", ui->spinBox_shotNum->value());
+        settings.setValue("Global/ShotNumIsAutoIncrease", ui->checkBox_autoIncrease->isChecked());
         settings.setValue("Global/ResponceMatrix", ui->ReMatric_Edit->text());
         settings.setValue("Global/IrradiationDistance", ui->lineEdit_irradiationDistance->text());
         settings.setValue("Global/EnergyLeft", ui->doubleSpinBox_energyLeft->text());
-        settings.setValue("Global/EnergyRight", ui->doubleSpinBox_energyRight->text());
+        settings.setValue("Global/EnergyRight", ui->doubleSpinBox_energyRight->text());        
     }
 
     // 保存界面参数
@@ -921,11 +984,17 @@ void CentralWidget::on_pushButton_startMeasureDistance_clicked()
         ui->pushButton_stopMeasureDistance->setEnabled(true);
     }
 
-    commHelper->startMeasureDistance(ui->checkBox_continueMeasureDistance->isChecked());
+    // 先打开激光
+    commHelper->openDistanceModuleLaser();
 
-    // 非连续测量，测量完成之后，激光会自动关闭，所以这里把按钮状态同步更新一下
-    if (!ui->checkBox_continueMeasureDistance->isChecked())
-        ui->switchButton_laser->setChecked(false);
+    QTimer::singleShot(1000, this, [=](){
+        // 发送测距指令
+        commHelper->startMeasureDistance(ui->checkBox_continueMeasureDistance->isChecked());
+
+        // 非连续测量，测量完成之后，激光会自动关闭，所以这里把按钮状态同步更新一下
+        if (!ui->checkBox_continueMeasureDistance->isChecked())
+            ui->switchButton_laser->setChecked(false);
+    });
 }
 
 void CentralWidget::on_pushButton_stopMeasureDistance_clicked()
@@ -941,24 +1010,25 @@ void CentralWidget::on_pushButton_stopMeasureDistance_clicked()
 }
 
 #define SAMPLE_TIME 10
-void CentralWidget::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
+void CentralWidget::showRealCurve(const QMap<quint8, QVector<double>>& data)
 {
     //实测曲线
     QVector<double> keys, values;
     for (int ch=1; ch<=4; ++ch){
         keys.clear();
         values.clear();
-        QVector<quint16> chData = data[ch];
+        QVector<double> chData = data[ch];
         if (chData.size() > 0){
             for (int i=0; i<chData.size(); ++i){
                 keys << i * SAMPLE_TIME;
-                values << chData[i];
+                values << chData[i] * 0.9;
             }
             ui->customPlot->graph(ch - 1)->setData(keys, values);
         }
     }
     ui->customPlot->xAxis->rescale(true);
-    ui->customPlot->yAxis->rescale(true);
+    ui->customPlot->yAxis->rescale(false);
+    ui->customPlot->yAxis->setRange(0, 4100);
     ui->customPlot->replot(QCustomPlot::rpQueuedReplot);
 
     keys.clear();
@@ -966,17 +1036,18 @@ void CentralWidget::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
     for (int ch=5; ch<=8; ++ch){
         keys.clear();
         values.clear();
-        QVector<quint16> chData = data[ch];
+        QVector<double> chData = data[ch];
         if (chData.size() > 0){
             for (int i=0; i<chData.size(); ++i){
                 keys << i * SAMPLE_TIME;
-                values << chData[i];
+                values << chData[i] * 0.9;
             }
             ui->customPlot_2->graph(ch - 5)->setData(keys, values);
         }
     }
     ui->customPlot_2->xAxis->rescale(true);
-    ui->customPlot_2->yAxis->rescale(true);
+    ui->customPlot_2->yAxis->rescale(false);
+    ui->customPlot_2->yAxis->setRange(0, 4100);
     ui->customPlot_2->replot(QCustomPlot::rpQueuedReplot);
 
     keys.clear();
@@ -984,17 +1055,18 @@ void CentralWidget::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
     for (int ch=9; ch<=11; ++ch){
         keys.clear();
         values.clear();
-        QVector<quint16> chData = data[ch];
+        QVector<double> chData = data[ch];
         if (chData.size() > 0){
             for (int i=0; i<chData.size(); ++i){
                 keys << i * SAMPLE_TIME;
-                values << chData[i];
+                values << chData[i] * 0.9;
             }
             ui->customPlot_3->graph(ch - 9)->setData(keys, values);
         }
     }
     ui->customPlot_3->xAxis->rescale(true);
-    ui->customPlot_3->yAxis->rescale(true);
+    ui->customPlot_3->yAxis->rescale(false);
+    ui->customPlot_3->yAxis->setRange(0, 4100);
     ui->customPlot_3->replot(QCustomPlot::rpQueuedReplot);
 }
 
@@ -1133,6 +1205,19 @@ void CentralWidget::applyColorTheme()
                 lightStyle.polish(palette);
             }
         }
+        //日志窗体
+        QString styleSheet = mIsDarkTheme ?
+                                 QString("background-color:rgb(%1,%2,%3);color:white;")
+                                    .arg(palette.color(QPalette::Window).red())
+                                    .arg(palette.color(QPalette::Window).green())
+                                    .arg(palette.color(QPalette::Window).blue())
+                                          : QString("background-color:white;color:black;");
+        ui->tabWidget_log->setStyleSheet(styleSheet);
+
+        QGraphicsScene *scene = this->findChild<QGraphicsScene*>("logGraphicsScene");
+        QGraphicsTextItem *textItem = (QGraphicsTextItem*)scene->items()[0];
+        textItem->setHtml(mIsDarkTheme ? QString("<font color='white'>工作日志</font>") : QString("<font color='black'>工作日志</font>"));
+
         // 窗体背景色
         customPlot->setBackground(QBrush(mIsDarkTheme ? palette.color(QPalette::Window) : Qt::white));
         // 四边安装轴并显示

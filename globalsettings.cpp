@@ -1,19 +1,20 @@
 #include "globalsettings.h"
 #include <QFileInfo>
 #include <QApplication>
+#include <QTextCodec>
 
 /*#########################################################*/
 GlobalSettings::GlobalSettings(QObject *parent)
     : QSettings(QSettings::IniFormat, QSettings::UserScope,
     QApplication::applicationName(), QApplication::applicationName(), parent)
 {
-
+    this->setIniCodec(QTextCodec::codecForName("utf-8"));
 }
 
 GlobalSettings::GlobalSettings(QString filePath, QObject *parent)
     : QSettings(filePath, QSettings::IniFormat, parent)
 {
-
+    this->setIniCodec(QTextCodec::codecForName("utf-8"));
 }
 
 GlobalSettings::~GlobalSettings() {

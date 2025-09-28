@@ -10,6 +10,9 @@
 #include <QReadWriteLock>
 #include <QFileInfo>
 #include <QFileSystemWatcher>
+
+#define GLOBAL_CONFIG_FILENAME "./Config/GSettings.ini"
+#define CONFIG_FILENAME "./Config/Settings.ini"
 class JsonSettings : public QObject{
     Q_OBJECT
 public:
@@ -42,6 +45,11 @@ public:
             delete mConfigurationFileWatch;
             mConfigurationFileWatch = nullptr;
         }
+
+        if (!realtime)
+        {
+            flush();
+        }
     };
 
     bool isOpen() {
@@ -52,44 +60,6 @@ public:
         return mFileName;
     }
 
-    bool load(){
-        //QReadLocker locker(&mRWLock);
-        mJsonRoot = QJsonObject();
-        mJsonGroup = QJsonObject();
-        mPrefix.clear();
-
-        QFile file(mFileName);
-        if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            QByteArray jsonData = file.readAll();
-            file.close();
-
-            QJsonParseError error;
-            QJsonDocument mJsonDoc = QJsonDocument::fromJson(jsonData, &error);
-            if (error.error == QJsonParseError::NoError) {
-                if (mJsonDoc.isObject()) {
-                    mJsonRoot = mJsonDoc.object();
-                    return true;
-                } else {
-                    qDebug() << "文件[" << mFileName << "]解析失败！";
-                    return false;
-                }
-            } else{
-                qDebug() << "文件[" << mFileName << "]解析失败！" << error.errorString().toUtf8().constData();
-                return false;
-            }
-        } else {
-            qDebug() << "文件[" << mFileName << "]打开失败！";
-
-            //是否需要创建一个新的文件
-            if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
-                file.close();
-                return true;
-            } else {
-                return false;
-            }
-        }
-    };
-
     bool flush(){
         return save(mFileName);
     };
@@ -99,177 +69,50 @@ public:
             "键key": "值value",
         }
     */
-    void setRootValue(const QString &key, const QVariant &value){
+    void setValue(const QString &key, const QVariant &value){
         QWriteLocker locker(&mRWLock);
         mJsonRoot[key] = value.toJsonValue();
 
         if (realtime)
             flush();
     };
-
-    /*
-        {
-            "groupName":{
-                "键key": "值value",
-            }
-        }
-    */
-    void setGroupValue(const QString &groupName, const QString &key, const QVariant &value){
-        QWriteLocker locker(&mRWLock);
-        auto iterator = mJsonRoot.find(groupName);
+    // 取值
+    QVariant value(const QString &key, const QVariant &defaultValue = QVariant())
+    {
+        QReadLocker locker(&mRWLock);
+        auto iterator = mJsonRoot.find(key);
         if (iterator != mJsonRoot.end()) {
-            QJsonValueRef valueGroupRef = iterator.value();
-            QJsonObject objGroup = valueGroupRef.toObject();
-            objGroup[key] = value.toJsonValue();
-            valueGroupRef = objGroup;
+            return mJsonRoot[key].toVariant();
         }
-        else {
-            QJsonObject objGroup;
-            objGroup[key] = value.toJsonValue();
-            mJsonRoot.insert(groupName, QJsonValue(objGroup));
+        else{
+            return defaultValue;
         }
+    };
+
+    void setValue(QStringList &names, const QString &key, const QVariant &value){
+        QWriteLocker locker(&mRWLock);
+        setValue(mJsonRoot, names, key, value);
+        if (realtime)
+            flush();
+    };
+
+    QVariant value(QStringList &names, const QString &key, const QVariant &defaultValue = QVariant())
+    {
+        QReadLocker locker(&mRWLock);
+        return value(mJsonRoot, names, key, defaultValue);
+    };
+
+    void setValueAt(QStringList &names, const quint8 &index, const QVariant &value){
+        QWriteLocker locker(&mRWLock);
+        setValueAt(mJsonRoot, names, index, value);
 
         if (realtime)
             flush();
     };
 
-    /*
-        {
-            "groupName":{
-                "group2Name":{
-                    "键key": "值value",
-                }
-            }
-        }
-    */
-    void setGroupValue(const QString &groupName, const QString &group2Name, const QString &key, const QVariant &value){
-        QWriteLocker locker(&mRWLock);
-        auto iterator = mJsonRoot.find(groupName);
-        if (iterator != mJsonRoot.end())
-        {
-            QJsonValueRef valueGroupRef = iterator.value();
-            if (valueGroupRef.isObject())
-            {
-                QJsonObject objGroup = valueGroupRef.toObject();
-                auto iterator2 = objGroup.find(group2Name);
-                if (iterator2 != objGroup.end())
-                {
-                    QJsonValueRef valueGroupRef2 = iterator2.value();
-                    QJsonObject objGroup2 = valueGroupRef2.toObject();
-                    objGroup2[key] = value.toJsonValue();
-                    valueGroupRef2 = objGroup2;
-                }
-                else
-                {
-                    QJsonObject objGroup2;
-                    objGroup2[key] = value.toJsonValue();
-                    objGroup.insert(groupName, QJsonValue(objGroup2));
-                }
-
-                valueGroupRef = objGroup;
-
-                if (realtime)
-                    flush();
-            }
-        }
-        else
-        {
-            QJsonObject objGroup2;
-            objGroup2[key] = value.toJsonValue();
-
-            QJsonObject objGroup;
-            objGroup.insert(group2Name, QJsonValue(objGroup2));
-
-            mJsonRoot.insert(groupName, QJsonValue(objGroup));
-
-            if (realtime)
-                flush();
-        }
-    };
-
-    /*
-        {
-            "groupName":{
-                "group2Name":{
-                    "group3Name":{
-                        "键key": "值value",
-                    }
-                }
-            }
-        }
-    */
-    void setGroupValue(const QString &groupName, const QString &group2Name, const QString &group3Name, const QString &key, const QVariant &value){
-        QWriteLocker locker(&mRWLock);
-        auto iterator = mJsonRoot.find(groupName);
-        if (iterator != mJsonRoot.end())
-        {
-            QJsonValueRef valueGroupRef = iterator.value();
-            if (valueGroupRef.isObject())
-            {
-                QJsonObject objGroup = valueGroupRef.toObject();
-                auto iterator2 = objGroup.find(group2Name);
-                if (iterator2 != objGroup.end())
-                {
-                    QJsonValueRef valueGroup2Ref = iterator2.value();
-                    if (valueGroup2Ref.isObject())
-                    {
-                        QJsonObject objGroup2 = valueGroup2Ref.toObject();
-                        auto iterator3 = objGroup2.find(group3Name);
-                        if (iterator3 != objGroup2.end())
-                        {
-                            QJsonValueRef valueGroupRef3 = iterator3.value();
-                            QJsonObject objGroup3 = valueGroupRef3.toObject();
-                            objGroup3[key] = value.toJsonValue();
-
-                            objGroup2.insert(group3Name, objGroup3);//valueGroupRef3 = objGroup2;
-                        }
-                        else
-                        {
-                            QJsonObject objGroup3;
-                            objGroup3[key] = value.toJsonValue();
-
-                            objGroup2.insert(group3Name, objGroup3);
-                        }
-
-                        valueGroup2Ref = objGroup2;
-
-                        if (realtime)
-                            flush();
-                    }
-                }
-                else
-                {
-                    QJsonObject objGroup3;
-                    objGroup3[key] = value.toJsonValue();
-
-                    QJsonObject objGroup2;
-                    objGroup2.insert(group3Name, QJsonValue(objGroup3));
-
-                    objGroup.insert(group2Name, QJsonValue(objGroup2));
-                }
-
-                valueGroupRef = objGroup;
-
-                if (realtime)
-                    flush();
-            }
-        }
-        else
-        {
-            QJsonObject objGroup3;
-            objGroup3[key] = value.toJsonValue();
-
-            QJsonObject objGroup2;
-            objGroup2.insert(group3Name, QJsonValue(objGroup3));
-
-            QJsonObject objGroup;
-            objGroup.insert(group2Name, QJsonValue(objGroup2));
-
-            mJsonRoot.insert(groupName, QJsonValue(objGroup));
-
-            if (realtime)
-                flush();
-        }
+    QVariant valueAt(QStringList &names, const quint8 &index, const QVariant &defaultValue){
+        QReadLocker locker(&mRWLock);
+        return valueAt(mJsonRoot, names, index, defaultValue);
     };
 
     /*
@@ -450,6 +293,43 @@ public:
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private:
+    bool load(){
+        //QReadLocker locker(&mRWLock);
+        mJsonRoot = QJsonObject();
+        mPrefix.clear();
+
+        QFile file(mFileName);
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QByteArray jsonData = file.readAll();
+            file.close();
+
+            QJsonParseError error;
+            QJsonDocument mJsonDoc = QJsonDocument::fromJson(jsonData, &error);
+            if (error.error == QJsonParseError::NoError) {
+                if (mJsonDoc.isObject()) {
+                    mJsonRoot = mJsonDoc.object();
+                    return true;
+                } else {
+                    qDebug() << "文件[" << mFileName << "]解析失败！";
+                    return false;
+                }
+            } else{
+                qDebug() << "文件[" << mFileName << "]解析失败！" << error.errorString().toUtf8().constData();
+                return false;
+            }
+        } else {
+            qDebug() << "文件[" << mFileName << "]打开失败！";
+
+            //是否需要创建一个新的文件
+            if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
+                file.close();
+                return true;
+            } else {
+                return false;
+            }
+        }
+    };
+
     bool save(const QString &fileName = ""){
         //QWriteLocker locker(&mRWLock);
         QFile file(fileName);
@@ -467,22 +347,166 @@ private:
         }
     };
 
+    void setValue(QJsonObject &group, QStringList &names, const QString &key, const QVariant &value){
+        // 取首名称
+        QString name = names.front();
+        names.pop_front();
+
+        if (names.size() > 0){
+            auto iterator = group.find(name);
+            if (iterator != group.end()) {
+                QJsonValueRef valueGroupRef = iterator.value();
+                QJsonObject childGroup = valueGroupRef.toObject();
+                setValue(childGroup, names, key, value);
+                valueGroupRef = childGroup;
+            }
+            else {
+                QJsonObject childGroup;
+                group.insert(name, QJsonValue(childGroup));
+                setValue(childGroup, names, key, value);
+            }
+        } else {
+            auto iterator = group.find(name);
+            if (iterator != group.end()) {
+                QJsonValueRef valueGroupRef = iterator.value();
+                QJsonObject targetGroup = valueGroupRef.toObject();
+                targetGroup[key] = value.toJsonValue();
+                valueGroupRef = targetGroup;
+            }
+            else {
+                QJsonObject targetGroup;
+                targetGroup[key] = value.toJsonValue();
+                group.insert(name, QJsonValue(targetGroup));
+            }
+        }
+    };
+
+    QVariant value(QJsonObject &group, QStringList &names, const QString &key, const QVariant &defaultValue = QVariant())
+    {
+        QString name = names.front();
+        names.pop_front();
+
+        if (names.size() > 0){
+            auto iterator = group.find(name);
+            if (iterator != group.end()) {
+                QJsonValueRef valueGroupRef = iterator.value();
+                QJsonObject childGroup = valueGroupRef.toObject();
+                return value(childGroup, names, key, defaultValue);
+            }
+            else {
+                return defaultValue;
+            }
+        } else {
+            auto iterator = group.find(name);
+            if (iterator != group.end()) {
+                QJsonValueRef valueGroupRef = iterator.value();
+                QJsonObject targetGroup = valueGroupRef.toObject();
+                return targetGroup[key].toVariant();
+            }
+            else {
+                return defaultValue;
+            }
+        }
+    };
+
+    void setValueAt(QJsonObject &group, QStringList &names, const quint8 &index, const QVariant &value){
+        // 取首名称
+        QString name = names.front();
+        names.pop_front();
+
+        if (names.size() > 0){
+            auto iterator = group.find(name);
+            if (iterator != group.end()) {
+                QJsonValueRef valueGroupRef = iterator.value();
+                QJsonObject childGroup = valueGroupRef.toObject();
+                setValueAt(childGroup, names, index, value);
+                valueGroupRef = childGroup;
+            }
+            else {
+                qDebug() << "Don't find group " << name;
+            }
+        } else {
+            auto iterator = group.find(name);
+            if (iterator != group.end())
+            {
+                QJsonValueRef valueArrayRef = iterator.value();
+                if (valueArrayRef.isArray())
+                {
+                    QJsonArray arrayGroup = valueArrayRef.toArray();
+                    if (index < arrayGroup.size())
+                    {
+                        arrayGroup.replace(index, value.toJsonValue());
+                        valueArrayRef = arrayGroup;
+                    }
+                    else{
+                        qDebug() << "Index out of range. " << index;
+                    }
+                }
+                else {
+                    qDebug() << "Don't find group " << name;
+                }
+            }
+            else {
+                qDebug() << "Don't find group " << name;
+            }
+        }
+    };
+
+    QVariant valueAt(QJsonObject &group, QStringList &names, const quint8 &index, const QVariant &defaultValue){
+        // 取首名称
+        QString name = names.front();
+        names.pop_front();
+
+        if (names.size() > 0){
+            auto iterator = group.find(name);
+            if (iterator != group.end()) {
+                QJsonValueRef valueGroupRef = iterator.value();
+                QJsonObject childGroup = valueGroupRef.toObject();
+                return valueAt(childGroup, names, index, defaultValue);
+            }
+            else {
+                qDebug() << "Don't find group " << name;
+            }
+        } else {
+            auto iterator = group.find(name);
+            if (iterator != group.end())
+            {
+                QJsonValueRef valueArrayRef = iterator.value();
+                if (valueArrayRef.isArray())
+                {
+                    QJsonArray targetGroup = valueArrayRef.toArray();
+                    if (index < targetGroup.size())
+                    {
+                        return targetGroup[index].toVariant();
+                    }
+                    else{
+                        qDebug() << "Index out of range. " << index;
+                    }
+                }
+                else {
+                    qDebug() << "Don't find group " << name;
+                }
+            }
+            else {
+                qDebug() << "Don't find group " << name;
+            }
+        }
+    };
+
 protected:
     QString mFileName;
     QString mPrefix;
     QJsonObject mJsonRoot;
-    QJsonObject mJsonGroup;
     QReadWriteLock mRWLock;
     QMutex mAccessMutex;//访问锁
     bool mOpened = false;//文档打开成功标识
-    bool realtime = false;
+    bool realtime = true;
     bool mWatchThisFile = false;
     QFileSystemWatcher *mConfigurationFileWatch;
 };
 
 #include <QSettings>
 #include <QApplication>
-#define CONFIG_FILENAME "./Config/Settings.ini"
 class GlobalSettings: public QSettings
 {
     Q_OBJECT

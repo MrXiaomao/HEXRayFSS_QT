@@ -50,7 +50,7 @@ public:
 
 public slots:
     void slotWriteLog(const QString &msg, QtMsgType msgType = QtDebugMsg);//操作日志
-    void showRealCurve(const QMap<quint8, QVector<quint16>>& data);//实测曲线
+    void showRealCurve(const QMap<quint8, QVector<double>>& data);//实测曲线
     void showEnerygySpectrumCurve(const QVector<QPair<double, double>>& data);//反解能谱
 
 signals:
