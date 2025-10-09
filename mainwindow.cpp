@@ -66,6 +66,7 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
         QLabel* label_Connected = this->findChild<QLabel*>("label_Connected");
         label_Connected->setStyleSheet("color:green;");
         label_Connected->setText(tr("继电器网络状态：已连接"));
+        qInfo().noquote() << tr("继电器网络状态：已连接");
 
         ui->action_connectRelay->setEnabled(false);
         ui->action_disconnectRelay->setEnabled(true);
@@ -83,6 +84,7 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
         QLabel* label_Connected = this->findChild<QLabel*>("label_Connected");
         label_Connected->setStyleSheet("color:red;");
         label_Connected->setText(tr("继电器网络状态：断网"));
+        qInfo().noquote() << tr("继电器网络状态：断网");
 
         ui->action_connectRelay->setEnabled(true);
         ui->action_disconnectRelay->setEnabled(false);
@@ -93,8 +95,8 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
         ui->action_connect->setEnabled(false);
         ui->action_disconnect->setEnabled(false);
 
-        ui->switchButton_power->setEnabled(false);
-        ui->switchButton_laser->setEnabled(false);
+        //ui->switchButton_power->setEnabled(false);
+        //ui->switchButton_laser->setEnabled(false);
     });
 
     connect(commHelper, &CommHelper::relayPowerOn, this, [=](){
@@ -105,6 +107,7 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
         ui->action_disconnect->setEnabled(false);
 
         mRelayPowerOn = true;
+        qInfo().noquote() << tr("继电器电源开关：已打开");
     });
     connect(commHelper, &CommHelper::relayPowerOff, this, [=](){
         ui->action_powerOn->setEnabled(true);
@@ -114,6 +117,7 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
         ui->action_disconnect->setEnabled(false);
 
         mRelayPowerOn = false;
+        qInfo().noquote() << tr("继电器电源开关：已关闭");
     });
 
     // 探测器
@@ -124,16 +128,16 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
         ui->action_stopMeasure->setEnabled(true);
         ui->pushButton_startMeasure->setEnabled(true);
         ui->pushButton_stopMeasure->setEnabled(true);
-        ui->switchButton_power->setEnabled(true);
-        ui->switchButton_laser->setEnabled(true);
+        //ui->switchButton_power->setEnabled(true);
+        //ui->switchButton_laser->setEnabled(true);
 
         if (ui->tableWidget_detector->item(0, 0)->text() == tr("在线") &&
             ui->tableWidget_detector->item(0, 1)->text() == tr("在线") &&
             ui->tableWidget_detector->item(0, 2)->text() == tr("在线")){
             ui->action_connect->setEnabled(false);
             ui->action_disconnect->setEnabled(true);
-        }
-
+            qInfo().noquote() << tr("探测器网络状态：全部在线");
+        }                
     });
     connect(commHelper, &CommHelper::detectorDisconnected, this, [=](quint8 index){
         ui->tableWidget_detector->item(0, index - 1)->setText(tr("离线"));
@@ -149,8 +153,9 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
             ui->action_connect->setEnabled(true);
             ui->action_disconnect->setEnabled(false);
 
-            ui->switchButton_power->setEnabled(false);
-            ui->switchButton_laser->setEnabled(false);
+            // ui->switchButton_power->setEnabled(false);
+            // ui->switchButton_laser->setEnabled(false);
+            qInfo().noquote() << tr("探测器网络状态：已离线");
         }
     });
     connect(commHelper, &CommHelper::temperatureRespond, this, [=](quint8 index, float temperature){
@@ -465,8 +470,8 @@ void CentralWidget::initUi()
     //ui->switchButton_power->setAutoChecked(false);
     //ui->switchButton_laser->setAutoChecked(false);
 
-    ui->switchButton_power->setEnabled(false);
-    ui->switchButton_laser->setEnabled(false);
+    // ui->switchButton_power->setEnabled(false);
+    // ui->switchButton_laser->setEnabled(false);
     ui->pushButton_startMeasureDistance->setEnabled(false);
     ui->pushButton_stopMeasureDistance->setEnabled(false);
     connect(ui->switchButton_power, &SwitchButton::toggled, this, [=](bool checked){
@@ -636,10 +641,20 @@ void CentralWidget::closeEvent(QCloseEvent *event) {
                                              QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
         if(reply == QMessageBox::Yes) {
             commHelper->closePower();
+            event->accept();
+        }
+        else if (reply == QMessageBox::No){
+            event->accept();
+        }
+        else
+        {
+            event->ignore();
         }
     }
-
-    event->accept();
+    else
+    {
+        event->accept();
+    }
 }
 
 bool CentralWidget::checkStatusTipEvent(QEvent * event) {
@@ -875,8 +890,8 @@ void CentralWidget::on_action_disconnect_triggered()
         // 关闭探测器
         commHelper->disconnectDetectors();
 
-        ui->switchButton_power->setEnabled(false);
-        ui->switchButton_laser->setEnabled(false);
+        // ui->switchButton_power->setEnabled(false);
+        // ui->switchButton_laser->setEnabled(false);
     });
 
     ui->switchButton_power->setChecked(false);
@@ -1010,18 +1025,18 @@ void CentralWidget::on_pushButton_stopMeasureDistance_clicked()
 }
 
 #define SAMPLE_TIME 10
-void CentralWidget::showRealCurve(const QMap<quint8, QVector<double>>& data)
+void CentralWidget::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
 {
     //实测曲线
     QVector<double> keys, values;
     for (int ch=1; ch<=4; ++ch){
         keys.clear();
         values.clear();
-        QVector<double> chData = data[ch];
+        QVector<quint16> chData = data[ch];
         if (chData.size() > 0){
             for (int i=0; i<chData.size(); ++i){
                 keys << i * SAMPLE_TIME;
-                values << chData[i] * 0.9;
+                values << chData[i];
             }
             ui->customPlot->graph(ch - 1)->setData(keys, values);
         }
@@ -1036,11 +1051,11 @@ void CentralWidget::showRealCurve(const QMap<quint8, QVector<double>>& data)
     for (int ch=5; ch<=8; ++ch){
         keys.clear();
         values.clear();
-        QVector<double> chData = data[ch];
+        QVector<quint16> chData = data[ch];
         if (chData.size() > 0){
             for (int i=0; i<chData.size(); ++i){
                 keys << i * SAMPLE_TIME;
-                values << chData[i] * 0.9;
+                values << chData[i];
             }
             ui->customPlot_2->graph(ch - 5)->setData(keys, values);
         }
@@ -1055,11 +1070,11 @@ void CentralWidget::showRealCurve(const QMap<quint8, QVector<double>>& data)
     for (int ch=9; ch<=11; ++ch){
         keys.clear();
         values.clear();
-        QVector<double> chData = data[ch];
+        QVector<quint16> chData = data[ch];
         if (chData.size() > 0){
             for (int i=0; i<chData.size(); ++i){
                 keys << i * SAMPLE_TIME;
-                values << chData[i] * 0.9;
+                values << chData[i];
             }
             ui->customPlot_3->graph(ch - 9)->setData(keys, values);
         }
@@ -1357,26 +1372,28 @@ MainWindow::MainWindow(bool isDarkTheme, QWidget *parent)
     if(true) {
 #endif
         mMenuBar = mCentralWidget->menuBar();
-
-        //Set font of menu bar
-        QFont font = mMenuBar->font();
+        if (mMenuBar)
+        {
+            //Set font of menu bar
+            QFont font = mMenuBar->font();
 #ifdef Q_OS_WIN
-        font.setFamily("Segoe UI");
+            font.setFamily("Segoe UI");
 #else
-        font.setFamily(qApp->font().family());
+            font.setFamily(qApp->font().family());
 #endif
-        mMenuBar->setFont(font);
+            mMenuBar->setFont(font);
 
-        QTimer::singleShot(0, this, [&]{
-            const int title_bar_height = mGoodCentraWidget->titleBarHeight();
-            mMenuBar->setStyleSheet(QString("QMenuBar {height: %0px;}").arg(title_bar_height));
-        });
+            QTimer::singleShot(0, this, [&]{
+                const int title_bar_height = mGoodCentraWidget->titleBarHeight();
+                mMenuBar->setStyleSheet(QString("QMenuBar {height: %0px;}").arg(title_bar_height));
+            });
 
-        connect(mGoodCentraWidget,&QGoodCentralWidget::windowActiveChanged,this, [&](bool active){
-            mMenuBar->setEnabled(active);
-        });
+            connect(mGoodCentraWidget,&QGoodCentralWidget::windowActiveChanged,this, [&](bool active){
+                mMenuBar->setEnabled(active);
+            });
 
-        mGoodCentraWidget->setLeftTitleBarWidget(mMenuBar);
+            mGoodCentraWidget->setLeftTitleBarWidget(mMenuBar);
+        }
     }
 
     connect(qGoodStateHolder, &QGoodStateHolder::currentThemeChanged, this, [](){

@@ -273,7 +273,7 @@ void CommHelper::initDataProcessor(DataProcessor** processor, QTcpSocket *socket
     });
     connect(detectorDataProcessor, &DataProcessor::measureEnd, this, &CommHelper::measureEnd);
 
-    connect(detectorDataProcessor, &DataProcessor::showRealCurve, this, [=](const QMap<quint8, QVector<double>>& data){
+    connect(detectorDataProcessor, &DataProcessor::showRealCurve, this, [=](const QMap<quint8, QVector<quint16>>& data){
         // 将map1的内容添加到map2
         for (auto iterator = data.constBegin(); iterator != data.constEnd(); ++iterator) {
             // 这里只保留前11个通道数据
@@ -287,7 +287,7 @@ void CommHelper::initDataProcessor(DataProcessor** processor, QTcpSocket *socket
         */
         calEnerygySpectrumCurve();
     });
-    connect(this, &CommHelper::showHistoryCurve, this, [=](const QMap<quint8, QVector<double>>& data){
+    connect(this, &CommHelper::showHistoryCurve, this, [=](const QMap<quint8, QVector<quint16>>& data){
         // 将map1的内容添加到map2
         for (auto iterator = data.constBegin(); iterator != data.constEnd(); ++iterator) {
             // 这里只保留前11个通道数据
@@ -953,14 +953,13 @@ bool CommHelper::openHistoryWaveFile(const QString &filePath)
 
         if (filePath.endsWith(".dat")){
             QVector<quint16> rawWaveData;
-            QMap<quint8, QVector<double>> realCurve;// 4路通道实测曲线数据
+            QMap<quint8, QVector<quint16>> realCurve;// 4路通道实测曲线数据
             rawWaveData.resize(512);
             for (int i=1; i<=11; ++i){
                 int rSize = file.read((char *)rawWaveData.data(), rawWaveData.size() * sizeof(quint16));
                 if (rSize == 1024){
-                    for (int j = 0; j < rawWaveData.size(); ++j){
-                        realCurve[i].push_back((double)rawWaveData[j]);
-                    }
+                    realCurve[i] = rawWaveData;
+
                     if (i == 4 || i == 8 || i == 11){
                         // 实测曲线
                         QMetaObject::invokeMethod(this, [=]() {
@@ -978,14 +977,17 @@ bool CommHelper::openHistoryWaveFile(const QString &filePath)
             }
         }
         else{
-            QVector<double> rawWaveData;
-            QMap<quint8, QVector<double>> realCurve;// 4路通道实测曲线数据
+            QVector<quint16> rawWaveData;
+            QMap<quint8, QVector<quint16>> realCurve;// 4路通道实测曲线数据
             int chIndex = 1;
             while (!file.atEnd()){
                 QByteArray lines = file.readLine();
+                lines = lines.replace("\r\n", "");
                 QList<QByteArray> listLine = lines.split(',');
-                for( auto line : listLine)
-                    rawWaveData.push_back(line.toDouble());
+                for( auto line : listLine){
+                    //rawWaveData.push_back(qRound((line.toDouble() - 10996) * 0.9));
+                    rawWaveData.push_back(qRound(line.toDouble() * 0.8));
+                }
 
                 if (rawWaveData.size() == 512){
                     realCurve[chIndex++] = rawWaveData;
@@ -1031,7 +1033,7 @@ void CommHelper::calEnerygySpectrumCurve(bool needSave)
     //11个通道都收集完毕，可以进行反能谱计算了
     QVector<QPair<double, double>> result;
 
-    QVector<double> rawWaveData;
+    QVector<quint16> rawWaveData;
     for (int i=1; i<=mWaveAllData.size(); ++i){
         rawWaveData.append(mWaveAllData[i]);
     }
@@ -1063,7 +1065,7 @@ void CommHelper::calEnerygySpectrumCurve(bool needSave)
             if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
                 QTextStream stream(&file);
                 for (int i=1; i<=mWaveAllData.size(); ++i){
-                    QVector<double> waveData = mWaveAllData[i];
+                    QVector<quint16> waveData = mWaveAllData[i];
                     for (int j = 0; j < waveData.size(); ++j){
                         stream << waveData.at(j);
                         if (j < waveData.size() - 1)

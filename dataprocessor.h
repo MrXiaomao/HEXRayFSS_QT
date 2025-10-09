@@ -56,7 +56,7 @@ signals:
     void measureStart(quint8 index); //测量开始
     void measureEnd(quint8 index); //测量结束
 
-    void showRealCurve(const QMap<quint8, QVector<double>>& data);//实测曲线
+    void showRealCurve(const QMap<quint8, QVector<quint16>>& data);//实测曲线
     void showEnerygySpectrumCurve(const QVector<QPair<double, double>>& data);//反解能谱
 
 private:
@@ -64,7 +64,7 @@ private:
     QTcpSocket* mSocket = nullptr;
     QByteArray mRawData; // 存储网络原始数据
     QByteArray mCachePool; // 缓存数据，数据处理之前，先转移到二级缓存池
-    QMap<quint8, QVector<double>> mRealCurve;// 4路通道实测曲线数据
+    QMap<quint8, QVector<quint16>> mRealCurve;// 4路通道实测曲线数据
     QFile *mpfSaveNet = nullptr;
 
     bool mDataReady = false;// 数据长度不够，还没准备好

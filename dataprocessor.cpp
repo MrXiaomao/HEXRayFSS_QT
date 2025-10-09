@@ -20,8 +20,8 @@ DataProcessor::DataProcessor(quint8 index, QTcpSocket* socket, QObject *parent)
 
     connect(mSocket, SIGNAL(readyRead()), this, SLOT(socketReadyRead()));
 
-    QString strTime = QDateTime::currentDateTime().toString("yyyy-MM-dd_HHmmss");
-    QString filePath = QString("%1%2_%3.dat").arg("./cache/").arg(mdetectorIndex).arg(strTime);
+    // QString strTime = QDateTime::currentDateTime().toString("yyyy-MM-dd_HHmmss");
+    // QString filePath = QString("%1%2_%3.dat").arg("./cache/").arg(mdetectorIndex).arg(strTime);
     // mpfSaveNet = new QFile(filePath);
     // if (mpfSaveNet->open(QIODevice::WriteOnly)) {
     //     qDebug().noquote()<< "[" << mdetectorIndex << "] " << tr("创建网口数据缓存文件成功，文件名：%1").arg(filePath);
@@ -493,11 +493,11 @@ void DataProcessor::OnDataProcessThread()
                         quint8 no = (chunk[3] & 0xF0) >> 4;
                         no--; // 数采板序号
                         quint8 ch = chunk[3] & 0x0F;
-                        QVector<double> data;
+                        QVector<quint16> data;
 
                         for (quint32 i = 0; i < this->mWaveLength * 2; i += 2) {
                             quint16 value = static_cast<quint8>(chunk[i + 4]) << 8 | static_cast<quint8>(chunk[i + 5]);
-                            data.append((double)value);
+                            data.append((quint16)value);
                         }
 
                         mChWaveDataValidTag |= (0x01 << (ch - 1));
