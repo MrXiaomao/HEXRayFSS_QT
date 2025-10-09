@@ -17,6 +17,7 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
     //ui->toolBar->setVisible(true);
     setWindowTitle(QApplication::applicationName()+" - "+APP_VERSION);
 
+    commHelper = CommHelper::instance();
     initUi();
     initCustomPlot(ui->customPlot, tr("时间/ns"), tr("实测曲线（通道1-4）"), 4);
     initCustomPlot(ui->customPlot_2, tr("时间/ns"), tr("实测曲线（通道5-8）"), 4);
@@ -26,8 +27,6 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
     applyColorTheme();
 
     connect(this, SIGNAL(sigWriteLog(const QString&,QtMsgType)), this, SLOT(slotWriteLog(const QString&,QtMsgType)));
-
-    commHelper = CommHelper::instance();
     connect(commHelper, &CommHelper::showRealCurve, this, &CentralWidget::showRealCurve);
     connect(commHelper, &CommHelper::showEnerygySpectrumCurve, this, &CentralWidget::showEnerygySpectrumCurve);
     connect(commHelper, &CommHelper::exportEnergyPlot, this, [=](const QString fileDir, const QString triggerTime){
@@ -216,6 +215,17 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
 
 CentralWidget::~CentralWidget()
 {
+    GlobalSettings settings;
+    QSplitter *splitterH1 = this->findChild<QSplitter*>("splitterH1");// QSplitter(Qt::Horizontal,this);
+    settings.setValue("Global/splitterH1/State", splitterH1->saveState());
+    settings.setValue("Global/splitterH1/Geometry", splitterH1->saveGeometry());
+
+    QSplitter *splitter = this->findChild<QSplitter*>("splitter");
+    settings.setValue("Global/splitter/State", splitter->saveState());
+    settings.setValue("Global/splitter/Geometry", splitter->saveGeometry());
+
+    settings.setValue("Global/MainWindows/State", this->saveState());
+
     delete ui;
 }
 
@@ -292,17 +302,19 @@ void CentralWidget::initUi()
     systemClockTimer->start(900);
 
     QSplitter *splitter = new QSplitter(Qt::Horizontal,this);
+    splitter->setObjectName("splitter");
     splitter->setHandleWidth(5);
     ui->centralwidget->layout()->addWidget(splitter);
     splitter->addWidget(ui->stackedWidget);
     splitter->addWidget(ui->leftHboxWidget);
     splitter->addWidget(ui->rightHboxWidget);
-    splitter->setSizes(QList<int>() << 100000 << 100000 << 400000);
+    splitter->setSizes(QList<int>() << 100000 << 400000 << 100000);
     splitter->setCollapsible(0,false);
     splitter->setCollapsible(1,false);
     splitter->setCollapsible(2,false);
 
     QSplitter *splitterV1 = new QSplitter(Qt::Vertical,this);
+    splitterV1->setObjectName("splitterV1");
     splitterV1->setHandleWidth(5);
     ui->leftHboxWidget->layout()->addWidget(splitterV1);
     splitterV1->addWidget(ui->customPlot);
@@ -314,15 +326,17 @@ void CentralWidget::initUi()
     splitterV1->setSizes(QList<int>() << 100000 << 100000 << 100000);
 
     QSplitter *splitterH1 = new QSplitter(Qt::Horizontal,this);
+    splitterH1->setObjectName("splitterH1");
     splitterH1->setHandleWidth(5);
     ui->rightHboxWidget->layout()->addWidget(splitterH1);
     splitterH1->addWidget(ui->customPlot_result);
-    splitterH1->addWidget(ui->widget_5);
+    splitterH1->addWidget(ui->widget_option);
     splitterH1->setCollapsible(0,false);
     splitterH1->setCollapsible(1,false);
-    splitterH1->setSizes(QList<int>() << 400000 << 100000);
+    splitterH1->setSizes(QList<int>() << 300000 << 200000);
 
     QSplitter *splitterV2 = new QSplitter(Qt::Vertical,this);
+    splitterV2->setObjectName("splitterV2");
     splitterV2->setHandleWidth(5);
     //ui->rightHboxWidget->layout()->addWidget(splitterH1);
     ui->rightHboxWidget->layout()->addWidget(splitterV2);
@@ -344,10 +358,12 @@ void CentralWidget::initUi()
     detectorStatusButton->setCheckable(true);
 
     QHBoxLayout* sideHboxLayout = new QHBoxLayout();
+    sideHboxLayout->setObjectName("sideHboxLayout");
     sideHboxLayout->setContentsMargins(0,0,0,0);
     sideHboxLayout->setSpacing(2);
 
     QWidget* sideProxyWidget = new QWidget();
+    sideProxyWidget->setObjectName("sideProxyWidget");
     sideProxyWidget->setLayout(sideHboxLayout);    
     sideHboxLayout->addWidget(laserDistanceButton);
     sideHboxLayout->addWidget(detectorStatusButton);
@@ -423,6 +439,12 @@ void CentralWidget::initUi()
         {
             QFile::rename("./responce_matrix.csv.bak", "./responce_matrix.csv");
         }
+        else{
+            QFile::remove("./responce_matrix.csv.bak");
+        }
+#else
+        QFile::remove("./responce_matrix.csv.bak");
+        QFile::copy(fileName, "./responce_matrix.csv");
 #endif
     });
 
@@ -430,7 +452,10 @@ void CentralWidget::initUi()
     {
         GlobalSettings settings(CONFIG_FILENAME);
         QString fileName = settings.value("Global/RespondMatrix").toString();
+        if (!QFileInfo::exists(fileName))
+            fileName = "./responce_matrix.csv";
         ui->ReMatric_Edit->setText(fileName);
+        commHelper->setResMatrixFileName(fileName);
 
         // 辐照距离
         ui->lineEdit_irradiationDistance->setText(settings.value("Global/IrradiationDistance", 12.22).toString());
@@ -504,19 +529,28 @@ void CentralWidget::initUi()
 
             laserDistanceButton->setChecked(true);
             detectorStatusButton->setChecked(false);
+
+            GlobalSettings settings;
+            settings.setValue("Global/DefaultPage", "laserDistance");
         } else {
             if(ui->stackedWidget->currentWidget() == ui->laserDistanceWidget) {
                 ui->stackedWidget->hide();
 
                 laserDistanceButton->setChecked(false);
                 detectorStatusButton->setChecked(false);
+
+                GlobalSettings settings;
+                settings.setValue("Global/DefaultPage", "");
             } else {
                 ui->stackedWidget->setCurrentWidget(ui->laserDistanceWidget);
 
                 laserDistanceButton->setChecked(true);
                 detectorStatusButton->setChecked(false);
+
+                GlobalSettings settings;
+                settings.setValue("Global/DefaultPage", "laserDistance");
             }
-        }                
+        }
     });
     connect(detectorStatusButton,&QPushButton::clicked,this,[=](){
         if(ui->stackedWidget->isHidden()) {
@@ -525,33 +559,73 @@ void CentralWidget::initUi()
 
             laserDistanceButton->setChecked(false);
             detectorStatusButton->setChecked(true);
+
+            GlobalSettings settings;
+            settings.setValue("Global/DefaultPage", "detectorStatus");
         } else {
             if(ui->stackedWidget->currentWidget() == ui->detectorStatusWidget) {
                 ui->stackedWidget->hide();
                 laserDistanceButton->setChecked(false);
                 detectorStatusButton->setChecked(false);
+
+                GlobalSettings settings;
+                settings.setValue("Global/DefaultPage", "");
             } else {
                 ui->stackedWidget->setCurrentWidget(ui->detectorStatusWidget);
                 laserDistanceButton->setChecked(false);
                 detectorStatusButton->setChecked(true);
+
+                GlobalSettings settings;
+                settings.setValue("Global/DefaultPage", "detectorStatus");
             }
-        }        
+        }
     });
 
     connect(ui->toolButton_closeLaserDistanceWidget,&QPushButton::clicked,this,[=](){
         ui->stackedWidget->hide();
         laserDistanceButton->setChecked(false);
         detectorStatusButton->setChecked(false);
+
+        GlobalSettings settings;
+        settings.setValue("Global/DefaultPage", "");
     });
     connect(ui->toolButton_closeDetectorStatusWidget,&QPushButton::clicked,this,[=](){
         ui->stackedWidget->hide();
         laserDistanceButton->setChecked(false);
         detectorStatusButton->setChecked(false);
+
+        GlobalSettings settings;
+        settings.setValue("Global/DefaultPage", "");
     });
 
-    detectorStatusButton->clicked();
     connect(ui->pushButton_startMeasure, &QPushButton::clicked, ui->action_startMeasure, &QAction::trigger);
     connect(ui->pushButton_stopMeasure, &QPushButton::clicked, ui->action_stopMeasure, &QAction::trigger);
+
+    //恢复页面布局
+    {
+        GlobalSettings settings;
+        QString defaultPage = settings.value("Global/DefaultPage").toString();
+        if (defaultPage == "laserDistance")
+            laserDistanceButton->clicked();
+        else if (defaultPage == "detectorStatus")
+            detectorStatusButton->clicked();
+
+        if (settings.contains("Global/MainWindows-State")){
+            this->restoreState(settings.value("Global/MainWindows-State").toByteArray());
+        }
+
+        if (settings.contains("Global/splitterH1/State")){
+            QSplitter *splitterH1 = this->findChild<QSplitter*>("splitterH1");
+            splitterH1->restoreState(settings.value("Global/splitterH1/State").toByteArray());
+            //splitterH1->restoreGeometry(settings.value("Global/splitterH1/Geometry").toByteArray());
+        }
+
+        if (settings.contains("Global/splitter/State")){
+            QSplitter *splitter = this->findChild<QSplitter*>("splitter");
+            splitter->restoreState(settings.value("Global/splitter/State").toByteArray());
+            //splitter->restoreGeometry(settings.value("Global/splitter/Geometry").toByteArray());
+        }
+    }
 }
 
 void CentralWidget::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, QString axisYLabel, int graphCount/* = 1*/)
@@ -572,9 +646,11 @@ void CentralWidget::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, 
     customPlot->setAntialiasedElements(QCP::aeAll);
     // 图例名称隐藏
     customPlot->legend->setVisible(false);
-    customPlot->legend->setFillOrder(QCPLayoutGrid::foColumnsFirst);//设置图例在一行中显示
-    // 图例名称显示位置
-    customPlot->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignTop|Qt::AlignRight);
+    // customPlot->legend->setFillOrder(QCPLayoutGrid::foRowsFirst);//设置图例在一列中显示
+    // customPlot->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignTop|Qt::AlignRight);// 图例名称显示位置
+    // customPlot->legend->setBrush(Qt::NoBrush);//设置背景颜色
+    // customPlot->legend->setBorderPen(Qt::NoPen);//设置边框颜色
+
     // 设置边界
     //customPlot->setContentsMargins(0, 0, 0, 0);
     // 设置标签倾斜角度，避免显示不下
@@ -601,29 +677,83 @@ void CentralWidget::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, 
     QColor colors[] = {Qt::green, Qt::blue, Qt::red, Qt::cyan};
     for (int i=0; i<graphCount; ++i){
         QCPGraph * graph = customPlot->addGraph(customPlot->xAxis, customPlot->yAxis);
+        //graph->setName("");
         graph->setAntialiased(false);
         graph->setPen(QPen(colors[i]));
         graph->selectionDecorator()->setPen(QPen(colors[i]));
         graph->setLineStyle(QCPGraph::lsLine);
-        graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, colors[i], 3));//显示散点图
-        graph->setSmooth(true);
+        graph->setSelectable(QCP::SelectionType::stNone);
+        graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, colors[i], 2));//显示散点图
+        graph->setSmooth(true);    
     }
 
-    // if (graphCount == 1){
-    //     QSharedPointer<QCPAxisTickerLog> logTicker(new QCPAxisTickerLog);
-    //     customPlot->yAxis->setTicker(logTicker);
-    //     customPlot->yAxis2->setTicker(logTicker);
-    // }
+    // 添加可选项
+    if (graphCount > 1){
+        static int index = 0;
+        for (int i=0; i<graphCount; ++i){
+            QCheckBox* checkBox = new QCheckBox(customPlot);
+            checkBox->setText(QLatin1String("")+QString::number(++index));
+            checkBox->setObjectName(QLatin1String("CH ")+QString::number(index));
+            auto createColorIcon = [&](const QColor &color, int size = 16) {
+                // 创建透明背景的QPixmap
+                QPixmap pixmap(size, size);
+                pixmap.fill(Qt::transparent);
+
+                // 使用QPainter绘制圆形图标
+                QPainter painter(&pixmap);
+                painter.setRenderHint(QPainter::Antialiasing);
+                //painter.fillRect(pixmap.rect(), color);
+                painter.setBrush(color);
+                //painter.setPen(Qt::NoPen);
+                painter.drawEllipse(1, 1, size-2, size-2);
+                painter.end();
+
+                return QIcon(pixmap);
+            };
+
+            QColor colors[] = {Qt::green, Qt::blue, Qt::red, Qt::cyan};
+            QIcon actionIcon = createColorIcon(colors[i]);
+            checkBox->setIcon(actionIcon);
+            checkBox->setProperty("index", i+1);
+            checkBox->setChecked(true);
+            connect(checkBox, &QCheckBox::stateChanged, this, [=](int state){
+                int index = checkBox->property("index").toInt();
+                QCPGraph *graph = customPlot->graph(QLatin1String("Graph ")+QString::number(index));
+                if (graph){
+                    graph->setVisible(Qt::CheckState::Checked == state ? true : false);
+                    customPlot->replot();
+                }
+            });
+        }
+        connect(customPlot, &QCustomPlot::afterLayout, this, [=](){
+            QCustomPlot* customPlot = qobject_cast<QCustomPlot*>(sender());
+            QList<QCheckBox*> checkBoxs = customPlot->findChildren<QCheckBox*>();
+            int i = 0;
+            for (auto checkBox : checkBoxs){
+                checkBox->move(customPlot->axisRect()->topRight().x() - 70, customPlot->axisRect()->topRight().y() + i++ * 20 + 10);
+            }
+        });
+    }
+
+    if (graphCount == 1){
+        QSharedPointer<QCPAxisTickerLog> logTicker(new QCPAxisTickerLog);
+        customPlot->yAxis->setTicker(logTicker);
+        //customPlot->yAxis2->setTicker(logTicker);
+        customPlot->yAxis->setScaleType(QCPAxis::ScaleType::stLogarithmic);
+        customPlot->yAxis->setNumberFormat("eb");//使用科学计数法表示刻度
+        customPlot->yAxis->setNumberPrecision(0);//小数点后面小数位数
+
+        customPlot->yAxis2->setTicker(logTicker);
+        customPlot->yAxis2->setScaleType(QCPAxis::ScaleType::stLogarithmic);
+        customPlot->yAxis2->setNumberFormat("eb");//使用科学计数法表示刻度
+        customPlot->yAxis2->setNumberPrecision(0);//小数点后面小数位数
+    }
     // else {
     //     QSharedPointer<QCPAxisTicker> ticker(new QCPAxisTicker);
     //     customPlot->yAxis->setTicker(ticker);
     // }
 
     customPlot->replot();
-
-    connect(customPlot, SIGNAL(beforeReplot()), this, SLOT(slotBeforeReplot()));
-    connect(customPlot, SIGNAL(afterLayout()), this, SLOT(slotBeforeReplot()));
-
     connect(customPlot->xAxis, SIGNAL(rangeChanged(const QCPRange &)), customPlot->xAxis2, SLOT(setRange(const QCPRange &)));
     connect(customPlot->yAxis, SIGNAL(rangeChanged(const QCPRange &)), customPlot->yAxis2, SLOT(setRange(const QCPRange &)));
 
@@ -679,38 +809,16 @@ bool CentralWidget::eventFilter(QObject *watched, QEvent *event){
 
                 if (e->button() == Qt::RightButton) {// 右键恢复
                     QMenu contextMenu(customPlot);
-                    int chFrom = 1, chCount = 4;
-                    if (customPlot == ui->customPlot)
-                        chFrom = 1;
-                    else if (customPlot == ui->customPlot_2)
-                        chFrom = 5;
-                    else if (customPlot == ui->customPlot_3){
-                        chFrom = 9;
-                        chCount = 3;
-                    }
-                    else if (customPlot == ui->customPlot_result){
-                        chCount = 0;
-                    }
-
-                    for (int i=chFrom; i<chFrom + chCount; ++i){
-                        QAction *action = contextMenu.addAction(tr("通道#%1").arg(i), this, [=]{
-                            QAction* action = qobject_cast<QAction*>(sender());
-                            int index = action->data().toUInt();
-                            customPlot->graph(index)->setVisible(!customPlot->graph(index)->visible());
-                            customPlot->replot(QCustomPlot::rpQueuedReplot);
-                        });
-                        action->setData(i-chFrom);
-                        action->setCheckable(true);
-                        if (customPlot->graph(i-chFrom)->visible())
-                            action->setChecked(true);
-                    }
-
-                    if (chCount != 0)
-                        contextMenu.addSeparator();
-
                     contextMenu.addAction(tr("恢复视图"), this, [=]{
-                        customPlot->xAxis->rescale(true);
-                        customPlot->yAxis->rescale(true);
+                        if (customPlot == ui->customPlot_result){
+                            customPlot->xAxis->rescale(true);
+                            customPlot->yAxis->rescale(false);
+                            customPlot->yAxis->setRange(0, 4100);
+                        }
+                        else {
+                            customPlot->xAxis->rescale(true);
+                            customPlot->yAxis->rescale(true);
+                        }
                         customPlot->replot(QCustomPlot::rpQueuedReplot);
                     });
                     contextMenu.addAction(tr("导出图像..."), this, [=]{
@@ -802,6 +910,11 @@ void CentralWidget::on_action_exit_triggered()
 
 void CentralWidget::on_action_open_triggered()
 {
+    QString ResMatrixFileName;
+    ResMatrixFileName = ui->ReMatric_Edit->text();
+    if (!QFileInfo::exists(ResMatrixFileName))
+        ResMatrixFileName = "./responce_matrix.csv";
+
     // 打开历史测量数据文件...
     GlobalSettings settings;
     QString lastPath = settings.value("Global/LastFilePath", QDir::homePath()).toString();
@@ -812,6 +925,7 @@ void CentralWidget::on_action_open_triggered()
         return;
 
     settings.setValue("Global/LastFilePath", filePath);
+    commHelper->setResMatrixFileName(ResMatrixFileName);
     if (!commHelper->openHistoryWaveFile(filePath))
     {
         QMessageBox::information(this, tr("提示"), tr("文件格式错误，加载失败！"));
@@ -901,6 +1015,11 @@ void CentralWidget::on_action_disconnect_triggered()
 
 void CentralWidget::on_action_startMeasure_triggered()
 {
+    QString ResMatrixFileName;
+    ResMatrixFileName = ui->ReMatric_Edit->text();
+    if (!QFileInfo::exists(ResMatrixFileName))
+        ResMatrixFileName = "./responce_matrix.csv";
+
     QVector<double> keys, values;
     for (int i=0; i<=3; ++i){
         ui->customPlot->graph(i)->data()->clear();
@@ -961,6 +1080,7 @@ void CentralWidget::on_action_startMeasure_triggered()
         settings.setValue("Global/EnergyRight", ui->doubleSpinBox_energyRight->text());                                              
     }
 
+    commHelper->setResMatrixFileName(ResMatrixFileName);
     commHelper->setShotInformation(shotDir, shotNum);
     commHelper->setResultInformation(ui->lineEdit_reverseValue->text(),
                                    ui->lineEdit_dadiationDose->text(),
@@ -1028,17 +1148,21 @@ void CentralWidget::on_pushButton_stopMeasureDistance_clicked()
 void CentralWidget::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
 {
     //实测曲线
+    QColor clrLine[] = {Qt::green, Qt::blue, Qt::red, Qt::cyan};
     QVector<double> keys, values;
+    QVector<QColor> colors;
     for (int ch=1; ch<=4; ++ch){
         keys.clear();
         values.clear();
+        colors.clear();
         QVector<quint16> chData = data[ch];
         if (chData.size() > 0){
             for (int i=0; i<chData.size(); ++i){
                 keys << i * SAMPLE_TIME;
                 values << chData[i];
+                colors << clrLine[ch-1];
             }
-            ui->customPlot->graph(ch - 1)->setData(keys, values);
+            ui->customPlot->graph(ch - 1)->setData(keys, values, colors);
         }
     }
     ui->customPlot->xAxis->rescale(true);
@@ -1051,13 +1175,15 @@ void CentralWidget::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
     for (int ch=5; ch<=8; ++ch){
         keys.clear();
         values.clear();
+        colors.clear();
         QVector<quint16> chData = data[ch];
         if (chData.size() > 0){
             for (int i=0; i<chData.size(); ++i){
                 keys << i * SAMPLE_TIME;
                 values << chData[i];
+                colors << clrLine[ch-5];
             }
-            ui->customPlot_2->graph(ch - 5)->setData(keys, values);
+            ui->customPlot_2->graph(ch - 5)->setData(keys, values, colors);
         }
     }
     ui->customPlot_2->xAxis->rescale(true);
@@ -1070,13 +1196,15 @@ void CentralWidget::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
     for (int ch=9; ch<=11; ++ch){
         keys.clear();
         values.clear();
+        colors.clear();
         QVector<quint16> chData = data[ch];
         if (chData.size() > 0){
             for (int i=0; i<chData.size(); ++i){
                 keys << i * SAMPLE_TIME;
                 values << chData[i];
+                colors << clrLine[ch-9];
             }
-            ui->customPlot_3->graph(ch - 9)->setData(keys, values);
+            ui->customPlot_3->graph(ch - 9)->setData(keys, values, colors);
         }
     }
     ui->customPlot_3->xAxis->rescale(true);
@@ -1094,7 +1222,8 @@ void CentralWidget::showEnerygySpectrumCurve(const QVector<QPair<double, double>
         values << iter->second;
     }
     ui->customPlot_result->graph(0)->setData(keys, values);
-    ui->customPlot_result->xAxis->setRange(1.0, 150.0);
+    //ui->customPlot_result->xAxis->setRange(1.0, 150.0);
+    ui->customPlot_result->xAxis->rescale(true);
     ui->customPlot_result->yAxis->rescale(true);
     ui->customPlot_result->replot(QCustomPlot::rpQueuedReplot);
 }
@@ -1191,6 +1320,15 @@ void CentralWidget::on_action_colorTheme_triggered()
 
 void CentralWidget::applyColorTheme()
 {
+    // 更新图标颜色
+    // QIcon icon;
+    // QPixmap pixmap = icon.pixmap(QSize(size, size));
+    // QPainter painter(&pixmap);
+    // painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+    // painter.fillRect(pixmap.rect(), color);
+    // QIcon colorIcon = QIcon(pixmap);
+    // return colorIcon;
+
     QList<QCustomPlot*> customPlots = this->findChildren<QCustomPlot*>();
     for (auto customPlot : customPlots){
         QPalette palette = customPlot->palette();
@@ -1228,6 +1366,13 @@ void CentralWidget::applyColorTheme()
                                     .arg(palette.color(QPalette::Window).blue())
                                           : QString("background-color:white;color:black;");
         ui->tabWidget_log->setStyleSheet(styleSheet);
+
+        //更新样式表
+        QList<QCheckBox*> checkBoxs = customPlot->findChildren<QCheckBox*>();
+        int i = 0;
+        for (auto checkBox : checkBoxs){
+            checkBox->setStyleSheet(styleSheet);
+        }
 
         QGraphicsScene *scene = this->findChild<QGraphicsScene*>("logGraphicsScene");
         QGraphicsTextItem *textItem = (QGraphicsTextItem*)scene->items()[0];
@@ -1432,4 +1577,3 @@ bool MainWindow::event(QEvent * event) {
 
     return QGoodWindow::event(event);
 }
-

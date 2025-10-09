@@ -73,6 +73,11 @@ CommHelper::CommHelper(QObject *parent)
 
 CommHelper::~CommHelper()
 {
+    if(unfoldData != nullptr ){
+        delete unfoldData;
+        unfoldData = nullptr;
+    }
+
     auto closeSocket = [&](QTcpSocket* socket){
         if (socket){
             socket->disconnectFromHost();
@@ -1020,6 +1025,12 @@ bool CommHelper::openHistoryWaveFile(const QString &filePath)
     return false;
 }
 
+/* 设置矩阵响应文件 */
+void CommHelper::setResMatrixFileName(const QString &fileName)
+{
+    this->mResMatrixFileName = fileName;
+}
+
 /*
  反解能谱
 */
@@ -1079,97 +1090,106 @@ void CommHelper::calEnerygySpectrumCurve(bool needSave)
         }
     }
 
+    if (mWaveAllData.size() < 11)
+        return;
+
 #ifdef ENABLE_MATLAB
-    if (gMatlabInited){
-        if (mWaveAllData.size() >= 11){            
+    if (gMatlabInited){                
+        // 反解能谱波形数据
+        mwArray waveData(5632, 1, mxDOUBLE_CLASS);
+        waveData.SetData(rawWaveData.constData(), 5632);
 
-            // 反解能谱波形数据
-            mwArray waveData(5632, 1, mxDOUBLE_CLASS);
-            waveData.SetData(rawWaveData.constData(), 5632);
+        // 输出数组
+        int nargout = 2;//输出变量的个数是2
+        mwArray unfold_seq(mxDOUBLE_CLASS, mxREAL);
+        mwArray unfold_spec(mxDOUBLE_CLASS, mxREAL);
+        UnfolddingAlgorithm_Gravel(nargout, unfold_seq, unfold_spec, m_mwT, m_mwSeq, waveData, m_mwResponce_matrix);
 
-            // 输出数组
-            int nargout = 2;//输出变量的个数是2
-            mwArray unfold_seq(mxDOUBLE_CLASS, mxREAL);
-            mwArray unfold_spec(mxDOUBLE_CLASS, mxREAL);
-            UnfolddingAlgorithm_Gravel(nargout, unfold_seq, unfold_spec, m_mwT, m_mwSeq, waveData, m_mwResponce_matrix);
+        double dbX[1024] = { 0 }, dbY[1024] = { 0 };
+        int rowCnt = 0, colCnt = 0;
+        {
+            //读取结果数组
+            mwSize  dims = unfold_seq.NumberOfDimensions();//矩阵的维数,2表示二维数组
 
-            double dbX[1024] = { 0 }, dbY[1024] = { 0 };
-            int rowCnt = 0, colCnt = 0;
-            {
-                //读取结果数组
-                mwSize  dims = unfold_seq.NumberOfDimensions();//矩阵的维数,2表示二维数组
+            mwArray arrayDim = unfold_seq.GetDimensions();//各维的具体大小
+            rowCnt = arrayDim.Get(dims, 1); //行数
+            colCnt = arrayDim.Get(dims, 2); //列数
 
-                mwArray arrayDim = unfold_seq.GetDimensions();//各维的具体大小
-                rowCnt = arrayDim.Get(dims, 1); //行数
-                colCnt = arrayDim.Get(dims, 2); //列数
-
-                double* unfold_seq_cpp = new double[rowCnt * colCnt];
-                unfold_seq.GetData(unfold_seq_cpp, rowCnt * colCnt);
-                for (int i = 0; i < rowCnt; ++i) {
-                    dbX[i] = unfold_seq_cpp[i];
-                }
-                delete[] unfold_seq_cpp;
-                unfold_seq_cpp = NULL;
-            }
-
-            {
-                //读取结果数组
-                mwSize  dims = unfold_spec.NumberOfDimensions();//矩阵的维数,2表示二维数组
-
-                mwArray arrayDim = unfold_spec.GetDimensions();//各维的具体大小
-                rowCnt = arrayDim.Get(dims, 1); //行数
-                colCnt = arrayDim.Get(dims, 2); //列数
-
-                double* unfold_spec_cpp = new double[rowCnt * colCnt];
-                unfold_spec.GetData(unfold_spec_cpp, rowCnt * colCnt);
-
-                for (int i = 0; i < rowCnt; ++i) {
-                    dbY[i] = unfold_spec_cpp[i];
-                }
-
-                delete[] unfold_spec_cpp;
-                unfold_spec_cpp = NULL;
-            }
-
-            //显示反能谱曲线图
+            double* unfold_seq_cpp = new double[rowCnt * colCnt];
+            unfold_seq.GetData(unfold_seq_cpp, rowCnt * colCnt);
             for (int i = 0; i < rowCnt; ++i) {
-                result.push_back(qMakePair<double,double>(dbX[i], dbY[i]));
+                dbX[i] = unfold_seq_cpp[i];
             }
-            emit showEnerygySpectrumCurve(result);
+            delete[] unfold_seq_cpp;
+            unfold_seq_cpp = NULL;
+        }
 
-            /*保存能谱数据*/
-            if (needSave)
-            {
-                /*csv*/
-                {
-                    QString filePath = QString("%1/%2/处理数据/%3_En.csv").arg(mShotDir).arg(mShotNum).arg(triggerTime);
-                    QFile file(filePath);
-                    if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
-                        QTextStream stream(&file);
-                        for (int i = 0; i < rowCnt; i++)
-                        {
-                            stream << dbX[i] << "," << dbY[i] << "\n";
-                        }
+        {
+            //读取结果数组
+            mwSize  dims = unfold_spec.NumberOfDimensions();//矩阵的维数,2表示二维数组
 
-                        file.close();
-                    }
-                }
+            mwArray arrayDim = unfold_spec.GetDimensions();//各维的具体大小
+            rowCnt = arrayDim.Get(dims, 1); //行数
+            colCnt = arrayDim.Get(dims, 2); //列数
 
-                {
-                    QString filePath = QString("%1/%2/处理数据/%3_Result.ini").arg(mShotDir).arg(mShotNum).arg(triggerTime);
-                    GlobalSettings settings(filePath);
-                    settings.setValue("Result/ReverseValue", mReverseValue);//反解能谱不确定值
-                    settings.setValue("Result/DadiationDose", mDadiationDose);//辐照剂量(μGy)
-                    settings.setValue("Result/DadiationDoseRate", mDadiationDoseRate);//辐照剂量率(μGy*h-1)
-                }
+            double* unfold_spec_cpp = new double[rowCnt * colCnt];
+            unfold_spec.GetData(unfold_spec_cpp, rowCnt * colCnt);
 
-                QString fileDir = QString("%1/%2").arg(mShotDir).arg(mShotNum);
-                emit exportEnergyPlot(fileDir, triggerTime);
+            for (int i = 0; i < rowCnt; ++i) {
+                dbY[i] = unfold_spec_cpp[i];
             }
+
+            delete[] unfold_spec_cpp;
+            unfold_spec_cpp = NULL;
+        }
+
+        //显示反能谱曲线图
+        for (int i = 0; i < rowCnt; ++i) {
+            result.push_back(qMakePair<double,double>(dbX[i], dbY[i]));
         }
     }
+#else
+    if(unfoldData != nullptr ){
+        delete unfoldData;
+        unfoldData = nullptr;
+    }
+
+    unfoldData = new UnfoldSpec();
+    unfoldData->setResFileName(this->mResMatrixFileName);
+    result = unfoldData->pulseSum(mWaveAllData);
 #endif //ENABLE_MATLAB
 
+    emit showEnerygySpectrumCurve(result);
+
+    /*保存能谱数据*/
+    if (needSave)
+    {
+        /*csv*/
+        {
+            QString filePath = QString("%1/%2/处理数据/%3_En.csv").arg(mShotDir).arg(mShotNum).arg(triggerTime);
+            QFile file(filePath);
+            if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
+                QTextStream stream(&file);
+                for (int i = 0; i < result.size(); i++)
+                {
+                    stream << result[i].first << "," << result[i].second << "\n";
+                }
+
+                file.close();
+            }
+        }
+
+        {
+            QString filePath = QString("%1/%2/处理数据/%3_Result.ini").arg(mShotDir).arg(mShotNum).arg(triggerTime);
+            GlobalSettings settings(filePath);
+            settings.setValue("Result/ReverseValue", mReverseValue);//反解能谱不确定值
+            settings.setValue("Result/DadiationDose", mDadiationDose);//辐照剂量(μGy)
+            settings.setValue("Result/DadiationDoseRate", mDadiationDoseRate);//辐照剂量率(μGy*h-1)
+        }
+
+        QString fileDir = QString("%1/%2").arg(mShotDir).arg(mShotNum);
+        emit exportEnergyPlot(fileDir, triggerTime);
+    }
     mWaveAllData.clear();
 }
 

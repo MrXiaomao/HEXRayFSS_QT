@@ -17,6 +17,7 @@
 #include "mclcppclass.h"  // mwArray 头文件
 extern bool gMatlabInited;
 #endif //ENABLE_MATLAB
+#include "unfoldSpec.h"
 
 class CommHelper : public QObject
 {
@@ -116,6 +117,9 @@ public:
 
     /*解析历史文件*/
     bool openHistoryWaveFile(const QString &filePath);
+
+    /* 设置矩阵响应文件 */
+    void setResMatrixFileName(const QString &fileName);
 
     //////////////////////////////////////////////////////
     /*
@@ -299,7 +303,10 @@ private:
     bool loadResponceMatrix(double* responceMatrix);
     bool loadRom(double* rom);
     bool loadData(double* data);
+#else
+    UnfoldSpec* unfoldData = nullptr;
 #endif //ENABLE_MATLAB
+    QString mResMatrixFileName;
 
     /*
      初始化网络

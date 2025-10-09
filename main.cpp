@@ -65,20 +65,20 @@ int main(int argc, char *argv[])
     QApplication::setApplicationVersion(APP_VERSION);
     QApplication::setStyle(QStyleFactory::create("fusion"));//WindowsVista fusion windows
 
-    JsonSettings* ipSettings = new JsonSettings(GLOBAL_CONFIG_FILENAME);
-    ipSettings->setValue(QStringList() << "Control", "ip", "192.168.10.200");
-    ipSettings->setValue(QStringList() << "Control", "port", "5020");
-    ipSettings->setValue(QStringList() << "Detector", "ip", "192.168.0.114");
-    ipSettings->setValue(QStringList() << "Detector", "port", "5000");
-    ipSettings->setValue(QStringList() << "Relay", "ip", "192.168.10.253");
-    ipSettings->setValue(QStringList() << "Relay", "port", "1030");
+    // JsonSettings* ipSettings = new JsonSettings(GLOBAL_CONFIG_FILENAME);
+    // ipSettings->setValue(QStringList() << "Control", "ip", "192.168.10.200");
+    // ipSettings->setValue(QStringList() << "Control", "port", "5020");
+    // ipSettings->setValue(QStringList() << "Detector", "ip", "192.168.0.114");
+    // ipSettings->setValue(QStringList() << "Detector", "port", "5000");
+    // ipSettings->setValue(QStringList() << "Relay", "ip", "192.168.10.253");
+    // ipSettings->setValue(QStringList() << "Relay", "port", "1030");
 
-    ipSettings->setValue(QStringList() << "Control" << "Distances" << "01", "largeRange", "2500");
-    ipSettings->setValue(QStringList() << "Control" << "Distances" << "01", "mediumRange", "90");
-    ipSettings->setValue(QStringList() << "Control" << "Distances" << "01", "smallRange", "0");
-    ipSettings->setValue(QStringList() << "Control" << "Distances" << "02", "largeRange", "300");
-    ipSettings->setValue(QStringList() << "Control" << "Distances" << "02", "mediumRange", "100");
-    ipSettings->setValue(QStringList() << "Control" << "Distances" << "02", "smallRange", "90");
+    // ipSettings->setValue(QStringList() << "Control" << "Distances" << "01", "largeRange", "2500");
+    // ipSettings->setValue(QStringList() << "Control" << "Distances" << "01", "mediumRange", "90");
+    // ipSettings->setValue(QStringList() << "Control" << "Distances" << "01", "smallRange", "0");
+    // ipSettings->setValue(QStringList() << "Control" << "Distances" << "02", "largeRange", "300");
+    // ipSettings->setValue(QStringList() << "Control" << "Distances" << "02", "mediumRange", "100");
+    // ipSettings->setValue(QStringList() << "Control" << "Distances" << "02", "smallRange", "90");
     // ipSettings->setGroupValue("Control", "ip", "192.168.10.200");
     // ipSettings->setGroupValue("Control", "port", "5020");
     // ipSettings->setGroupValue("Detector", "ip", "192.168.0.114");
