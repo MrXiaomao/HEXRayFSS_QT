@@ -115,12 +115,12 @@ private:
     bool themeColorEnable = true;
     QColor themeColor = QColor(255,255,255);
 
-#ifdef MATLAB
+#ifdef ENABLE_MATLAB
     mwArray m_mwT;
     mwArray m_mwSeq;
     mwArray m_mwResponce_matrix;
     mwArray m_mwRom;
-#endif
+#endif // ENABLE_MATLAB
 
     CommHelper *commHelper = nullptr;
     class MainWindow *mainWindow = nullptr;

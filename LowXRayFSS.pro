@@ -16,8 +16,7 @@ SOURCES += \
     mainwindow.cpp \
     netsetting.cpp \
     paramsetting.cpp \
-    switchbutton.cpp \
-    unfoldSpec.cpp
+    switchbutton.cpp
 
 HEADERS += \
     dataprocessor.h \
@@ -27,8 +26,7 @@ HEADERS += \
     mainwindow.h \
     netsetting.h \
     paramsetting.h \
-    switchbutton.h \
-    unfoldSpec.h
+    switchbutton.h
 
 FORMS += \
     mainwindow.ui \
@@ -132,6 +130,8 @@ contains(DEFINES, ENABLE_MATLAB) {
     INCLUDEPATH += $$PWD/lib/
 
 } else {
+    SOURCES += unfoldSpec.cpp
+    HEADERS += unfoldSpec.h
     message("Skipping matlab library")
 }
 

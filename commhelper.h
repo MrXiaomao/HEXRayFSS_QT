@@ -16,8 +16,9 @@
 #include "mclmcrrt.h"  // MATLAB 运行时头文件
 #include "mclcppclass.h"  // mwArray 头文件
 extern bool gMatlabInited;
-#endif //ENABLE_MATLAB
+#else
 #include "unfoldSpec.h"
+#endif //ENABLE_MATLAB
 
 class CommHelper : public QObject
 {

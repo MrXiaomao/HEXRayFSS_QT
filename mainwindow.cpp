@@ -428,10 +428,10 @@ void CentralWidget::initUi()
             return;
 
         GlobalSettings settings(CONFIG_FILENAME);
-        settings.setValue("Global/RespondMatrix", fileName);
+        settings.setValue("Global/ResponceMatrix", fileName);
         ui->ReMatric_Edit->setText(fileName);
 
-#ifdef MATLAB
+#ifdef ENABLE_MATLAB
         // 重新加载响应矩阵文件
         QFile::rename("./responce_matrix.csv", "./responce_matrix.csv.bak");
         QFile::copy(fileName, "./responce_matrix.csv");
@@ -445,13 +445,13 @@ void CentralWidget::initUi()
 #else
         QFile::remove("./responce_matrix.csv.bak");
         QFile::copy(fileName, "./responce_matrix.csv");
-#endif
+#endif  //ENABLE_MATLAB
     });
 
     // 反解能谱响应文件
     {
         GlobalSettings settings(CONFIG_FILENAME);
-        QString fileName = settings.value("Global/RespondMatrix").toString();
+        QString fileName = settings.value("Global/ResponceMatrix").toString();
         if (!QFileInfo::exists(fileName))
             fileName = "./responce_matrix.csv";
         ui->ReMatric_Edit->setText(fileName);
