@@ -17,46 +17,67 @@ public:
     explicit DataProcessor(QTcpSocket* socket, QObject *parent = nullptr);
     ~DataProcessor();
 
+    enum TriggerMode
+    {
+        tmHardTrigger = 0,
+        tmSoftTrigger = 1,
+        tmTest = 2
+    };
+
+    enum TriggerType
+    {
+        ttSingleTrigger = 0,	// 单次触发
+        ttContinueTrigger = 1	// 连续触发
+    };
+
     /*
      * 添加数据
      */
     void inputData(const QByteArray& data);
 
     /*
-     * 开始测距
+     * 开始测量
      */
-    void startMeasureDistance(bool on = true, bool single = true){
-        mDistanceMeasuring = on;
-        mSingleMeasure = single;
+    void startMeasureWave(quint8 triggerMode, quint8 triggerType){
+        mCollectFinished = false;
+        mTriggerMode = triggerMode;
+        mTriggerType = triggerType;
     };
 
     /*
      * 开始测量
      */
-    void startMeasureWave(quint8 mode, bool on = true){
-        mTriggerMode = mode;
-        mWaveMeasuring = on;
+    void stopMeasureWave(){
+        mWaveMeasuring = false;
     };
+
+private:
+    QByteArray askCurrentCmd;// 当前发送指令
 
 public slots:
     void socketReadyRead();
+
+    void sendInitCmd(); //初始化指令
+    void sendWaveMode();//波形模式
+    void sendStartCmd(); //开始测量指令
+    void sendStopCmd();//停止测量
 
 signals:   
     void detectorConnected();  // 探测器
     void detectorDisconnected();
 
+    void initSuccess(); //初始化成功
+    void waitTriggerSignal();//等待触发
+
     void measureStart(); //测量开始
     void measureEnd(); //测量结束
 
-    void showRealCurve(const QMap<quint8, QVector<quint16>>& data);//实测曲线
-    void showEnerygySpectrumCurve(const QVector<QPair<double, double>>& data);//反解能谱
+    void onRawWaveData(const QByteArray& data);//实测曲线
 
 private:
     QTcpSocket* mSocket = nullptr;
     QByteArray mRawData; // 存储网络原始数据
     QByteArray mCachePool; // 缓存数据，数据处理之前，先转移到二级缓存池
-    QMap<quint8, QVector<quint16>> mRealCurve;// 4路通道实测曲线数据
-    QFile *mpfSaveNet = nullptr;
 
     bool mDataReady = false;// 数据长度不够，还没准备好
     bool mTerminatedThead = false;
@@ -64,11 +85,9 @@ private:
     QWaitCondition mCondition;
     QLiteThread* mdataProcessThread = nullptr;// 处理线程
     bool mWaveMeasuring = false;     //波形测量中
-    bool mDistanceMeasuring = false; //距离测量中
-    bool mSingleMeasure = false; //是否单次测量模式
+    bool mCollectFinished = false; //波形数据采集完成
     quint8 mTriggerMode = 0x00;//触发模式
-    quint32 mWaveLength = 512;// 波形长度
-    quint8 mChWaveDataValidTag = 0x00;//通道数据是否完整
+    quint8 mTriggerType = 0x00;//触发类型（单次/连续）
 
     void OnDataProcessThread();
 };

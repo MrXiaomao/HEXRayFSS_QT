@@ -20,7 +20,7 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
     initCustomPlot(ui->customPlot, tr("时间/ns"), tr("实测曲线（通道1-5）"), 5);
     initCustomPlot(ui->customPlot_2, tr("时间/ns"), tr("实测曲线（通道6-10）"), 5);
     initCustomPlot(ui->customPlot_3, tr("时间/ns"), tr("实测曲线（通道11-15）"), 5);
-    initCustomPlot(ui->customPlot_result, tr("能量/keV"), tr("反解能谱/Counts"));
+    initCustomPlot(ui->customPlot_result, tr("能量/KeV"), tr("反解能谱/Counts"));
     restoreSettings();
     applyColorTheme();
 
@@ -78,6 +78,20 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
         label_Connected->setStyleSheet("color:red;");
         label_Connected->setText(tr("探测器网络状态：离线"));
         qInfo().noquote() << tr("探测器网络状态：离线");
+    });
+
+    //初始化成功
+    connect(commHelper, &CommHelper::initSuccess, this, [=](){
+        ui->action_startMeasure->setEnabled(true);
+        ui->action_stopMeasure->setEnabled(false);
+
+        ui->pushButton_startMeasure->setEnabled(true);
+        ui->pushButton_stopMeasure->setEnabled(false);
+    });
+
+    //测量开始，等待触发
+    connect(commHelper, &CommHelper::waitTriggerSignal, this, [=](){
+
     });
 
     //测量开始
@@ -727,22 +741,14 @@ void CentralWidget::on_action_disconnectRelay_triggered()
 void CentralWidget::on_action_connect_triggered()
 {
     // 打开探测器
-    commHelper->connectDetectors();
+    commHelper->openDetector();
 }
 
 
 void CentralWidget::on_action_disconnect_triggered()
 {
     // 先停止测量
-    commHelper->stopMeasure();
-
-    QTimer::singleShot(1000, this, [=](){
-        // 关闭探测器
-        commHelper->disconnectDetectors();
-
-        // ui->switchButton_power->setEnabled(false);
-        // ui->switchButton_laser->setEnabled(false);
-    });
+    commHelper->closeDetector();
 }
 
 
@@ -815,7 +821,11 @@ void CentralWidget::on_action_startMeasure_triggered()
                                    ui->lineEdit_dadiationDoseRate->text());
 
     // 再发开始测量指令
-    commHelper->startMeasure(CommHelper::TriggerMode::tmSoft);
+    int triggerMode = ui->radioButton_hard->isChecked() ?
+                          DataProcessor::TriggerMode::tmHardTrigger :
+                          (ui->radioButton_soft->isChecked() ? DataProcessor::TriggerMode::tmSoftTrigger : DataProcessor::TriggerMode::tmTest);
+    int triggerType = ui->radioButton_single->isChecked() ? DataProcessor::TriggerType::ttSingleTrigger : DataProcessor::TriggerType::ttContinueTrigger;
+    commHelper->startMeasure(triggerMode, triggerType);
 }
 
 

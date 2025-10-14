@@ -25,9 +25,10 @@ class CentralWidget : public QMainWindow
     Q_OBJECT
 
 public:
-    enum StartupUIMode {
-        STDUI_MODE = 0,
-        MINIUI_MODE,
+    enum ShowMode
+    {
+        smLinearCurve = 0,	// 线性
+        smLogarithmicCurve = 1	// 对数
     };
 
     CentralWidget(bool isDarkTheme = true, QWidget *parent = nullptr);

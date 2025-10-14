@@ -32,17 +32,6 @@ public:
         return &commHelper;
     }
 
-    enum SocketConectedStatus{
-        ssNone      = 0x00,     // 都不在线
-        ssDetector  = 0x01,     // 探测器1
-    };
-    enum TriggerMode{
-        tmStop = 0x00, // 停止测量
-        tmSoft = 0x01, // 软件触发
-        tmHard = 0x02, // 硬件触发
-        tmTest = 0x03  // 测试模式
-    };
-
     /*
      连接网络
     */
@@ -55,11 +44,11 @@ public:
     /*
      打开探测器
     */
-    bool connectDetectors();
+    bool openDetector();
     /*
      断开探测器
     */
-    void disconnectDetectors();
+    void closeDetector();
     /*
      探测器连接/断开
     */
@@ -71,22 +60,19 @@ public:
     void setResultInformation(const QString reverseValue, const QString dadiationDose, const QString dadiationDoseRate);
 
     /*
+     设置波形模式
+    */
+    void startMeasure(quint8 triggerMode, quint8 triggerType);
+
+    /*
      开始测量
     */
-    void startMeasure(quint8 triggerMode);
+    void startMeasure();
+
     /*
      停止测量
     */
     void stopMeasure();
-
-    /*
-     开始测距
-    */
-    void startMeasureDistance(bool isContinue = false);
-    /*
-     停止测距
-    */
-    void stopMeasureDistance();
 
     /*解析历史文件*/
     bool openHistoryWaveFile(const QString &filePath);
@@ -107,6 +93,9 @@ signals:
     void detectorConnected();  // 探测器
     void detectorDisconnected();
 
+    void initSuccess(); //初始化成功
+    void waitTriggerSignal();//等待触发信息
+
     void measureStart(); //测量开始
     void measureEnd(); //测量结束
 
@@ -122,31 +111,6 @@ private:
     /*********************************************************
      探测器指令
     ***********************************************************/
-
-    /*
-     触发阈值
-    */
-    void sendTriggerTholdCmd();
-
-    /*
-     波形触发模式
-    */
-    void sendWaveTriggerModeCmd();
-
-    /*
-     波形长度
-    */
-    void sendWaveLengthCmd();
-
-    /*
-     程控增益
-    */
-    void sendGainCmd();
-
-    /*
-     开始测量
-    */
-    void sendMeasureCmd(quint8 mode);//TriggerMode
 
     /*
      反解能谱
@@ -167,10 +131,11 @@ private:
 
     QTcpSocket *mSocketDetector = nullptr; //探测器
     DataProcessor* mDetectorDataProcessor = nullptr;
-    quint8 mSocketConectedStatus = ssNone; // 设备在线状态
 
-    QByteArray askCurrentCmd;// 当前发送指令
-
+//    QByteArray askCurrentCmd;// 当前发送指令
+    quint8 mTriggerMode; // 触发模式
+    quint8 mTriggerType; // 触发类型
+    quint32 mTriggerTimers;// 触发次数
     QMap<quint8, QVector<quint16>> mWaveAllData;
 #ifdef ENABLE_MATLAB
     mwArray m_mwT;

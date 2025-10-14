@@ -63,11 +63,9 @@ void DataProcessor::inputData(const QByteArray& data)
 
 void DataProcessor::OnDataProcessThread()
 {
-    static const int BASE_CMD_LENGTH = 12;
-    static const int TEMPERATURE_CMD_LENGTH = 6; //温度指令长度
-    static const int VERSION_CMD_LENGTH = 10; //版本号指令长度
+    static const int BASE_CMD_LENGTH = 4;
     static const int ONE_CHANNEL_WAVE_SIZE = 1030;// 1030=(512+3)*2 单通道数据长度
-
+    static const int ONE_PACK_SIZE = 33024; //一次完整数据包大小33024=((1024+8)*2*16)
     QByteArray waveDataHead = QByteArray::fromHex(QString("AB AB FF").toUtf8());;// 数据头
     QByteArray waveDataTail = QByteArray::fromHex(QString("CD CD").toUtf8());;// 数据尾
 
@@ -90,195 +88,147 @@ void DataProcessor::OnDataProcessThread()
             }
         }
 
-        if (mCachePool.size() < TEMPERATURE_CMD_LENGTH)
+        if (mCachePool.size() < BASE_CMD_LENGTH)
             continue;
 
         while (true){
-            if (mCachePool.size() < TEMPERATURE_CMD_LENGTH)
+            if (mCachePool.size() < BASE_CMD_LENGTH)
                 break;
 
             /*是否找到完整帧（命令帧/数据帧）*/
             bool findNaul = false;
 
             // 数据长度从小到大依次判断
-
-            /*指令*/
-            /*指令起始字节是12 34 00 0F/AB，尾字节是AB CD*/
-            if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00").toUtf8()))){
-                if (mCachePool.size() >= BASE_CMD_LENGTH){
-                    if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00").toUtf8())) &&
-                        mCachePool.mid(10, 2) == QByteArray::fromHex(QString("AB CD").toUtf8())){
-                        /*找到指令帧了！！！*/
-                        /*继续判断帧类型*/
-
-                        // 指令返回-距离测量
-                        if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F AF 12 00 00 00 00 AB CD").toUtf8())) ||   //单次
-                             mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F AF 13 00 00 00 00 Ab CD").toUtf8())) ||  //连续-关闭
-                             mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F AF 13 00 00 00 01 Ab CD").toUtf8()))){   //连续-打开
-                            findNaul = true;
-                            mCachePool.remove(0, BASE_CMD_LENGTH);
-                            continue;
-                        }
-
-                        // 硬件触发反馈
-                        if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 AA 00 0C 00 00 00 00 AB CD").toUtf8()))){
-                            qDebug().noquote()<< QString::fromUtf8("<< 反馈指令：硬件触发");
-
-                            findNaul = true;
-                            mCachePool.remove(0, BASE_CMD_LENGTH);
-                            continue;
-                        }
-
-                        // 指令返回-探测器-传输模式-波形
-                        if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FA 13 00 00 00 03 AB CD").toUtf8()))){
-                            qDebug().noquote()<< QString::fromUtf8("<< 反馈指令：传输模式-波形");
-
-                            QMetaObject::invokeMethod(this, "measureStart", Qt::QueuedConnection);
-
-                            //最后发送开始测量-软件触发模式
-                            QTimer::singleShot(0, this, [=]{
-                                QByteArray askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f ff 10 11 11 00 01 ab cd").toUtf8());
-                                //askCurrentCmd[9] = mTransferMode;
-                                mSocket->write(askCurrentCmd);
-                                mSocket->waitForBytesWritten();
-                                qDebug().noquote()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
-                                qDebug().noquote()<< QString::fromUtf8(">> 发送指令：传输模式-开始波形测量");
-                            });
-
-                            findNaul = true;
-                            mCachePool.remove(0, BASE_CMD_LENGTH);
-                            continue;
-                        }
-
-                        // 指令返回-探测器-程控增益
-                        if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FB 11").toUtf8())) &&
-                            mCachePool.mid(10, 2) == QByteArray::fromHex(QString("AB CD").toUtf8())){
-                            qDebug().noquote()<< QString::fromUtf8("<< 反馈指令：程控增益");
-
-                            findNaul = true;
-                            mCachePool.remove(0, BASE_CMD_LENGTH);
-                            continue;
-                        }
-
-                        // 指令返回-探测器-触发阈值
-                        if ((mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FE 11").toUtf8())) ||
-                             mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FE 12").toUtf8()))) &&
-                            mCachePool.mid(10, 2) == QByteArray::fromHex(QString("AB CD").toUtf8())){
-                            qDebug().noquote()<< QString::fromUtf8("<< 反馈指令：触发阈值");
-
-                            findNaul = true;
-                            mCachePool.remove(0, BASE_CMD_LENGTH);
-                            continue;
-                        }
-
-                        // 指令返回-探测器-波形触发模式
-                        if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FE 14 00 00 00 00 AB CD").toUtf8())) ||   //normal-默认值
-                            mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FE 14 00 00 00 01 AB CD").toUtf8()))){    //auto-定时触发
-                            qDebug().noquote()<< QString::fromUtf8("<< 反馈指令：波形触发模式");
-
-                            findNaul = true;
-                            mCachePool.remove(0, BASE_CMD_LENGTH);
-                            continue;
-                        }
-
-                        // 指令返回-探测器-波形长度
-                        if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FE 15").toUtf8())) &&
-                            mCachePool.mid(10, 2) == QByteArray::fromHex(QString("AB CD").toUtf8())){
-                            qDebug().noquote()<< QString::fromUtf8("<< 反馈指令：波形长度");
-
-                            //再发送传输模式-波形
-                            QTimer::singleShot(0, this, [=]{
-                                QByteArray askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f fa 13 00 00 00 03 ab cd").toUtf8());
-                                mSocket->write(askCurrentCmd);
-                                mSocket->waitForBytesWritten();
-                                qDebug().noquote()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
-                                qDebug().noquote()<< QString::fromUtf8("<< 发送指令：传输模式-波形");
-                            });
-
-                            findNaul = true;
-                            mCachePool.remove(0, BASE_CMD_LENGTH);
-                            continue;
-                        }
-
-                        // 指令返回-探测器-触发模式-停止
-                        if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FF 10 11 11 00 00 AB CD").toUtf8()))){
-                            qDebug().noquote()<< QString::fromUtf8("<< 反馈指令：波形测量-停止");
-
-                            /*通知UI，波形数据收集完毕*/
-                            QMetaObject::invokeMethod(this, "measureEnd", Qt::QueuedConnection);
-
-                            findNaul = true;
-                            mCachePool.remove(0, BASE_CMD_LENGTH);
-                            continue;
-                        }
-
-                        // 指令返回-探测器-触发模式-软件触发
-                        if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FF 10 11 11 00 01 AB CD").toUtf8()))){
-                            qDebug().noquote()<< QString::fromUtf8("<< 反馈指令：波形测量-开始测量-软件触发");
-
-                            mWaveMeasuring = true;
-                            findNaul = true;
-                            mCachePool.remove(0, BASE_CMD_LENGTH);
-                            continue;
-                        }
-
-                        // 指令返回-探测器-触发模式-硬件触发
-                        if (mCachePool.startsWith(QByteArray::fromHex(QString("12 34 00 0F FF 10 11 11 00 02 AB CD").toUtf8()))){
-                            qDebug().noquote()<< QString::fromUtf8("<< 反馈指令：波形测量-开始测量-硬件触发");
-
-                            findNaul = true;
-                            mCachePool.remove(0, BASE_CMD_LENGTH);
-                            continue;
-                        }
-
-                        /*其它指令，未解析出来*/
-                        {
-                            qDebug().noquote()<<"(1) Unknown cmd: "<<mCachePool.left(BASE_CMD_LENGTH).toHex(' ');
-
-                            findNaul = true;
-                            mCachePool.remove(0, BASE_CMD_LENGTH);
-                            continue;
-                        }
+            if (!mWaveMeasuring){
+                // 测量未进入到波形数据接收阶段
+                if (askCurrentCmd.at(1) == 0x21) {
+                    // 初始化
+                    if (mCachePool.at(1) == 0x31) {
+                        qInfo().noquote() << "初始化指令响应成功";
+                        QMetaObject::invokeMethod(this, "initSuccess", Qt::QueuedConnection);
                     }
+                    else {
+                        qCritical().noquote() << "初始化指令响应失败";
+                    }
+
+                    // 处理剩下数据（粘包处理）
+                    mCachePool.remove(0, BASE_CMD_LENGTH);
+                    continue;
                 }
-                else{
-                    findNaul = true;
-                    break;
+                else if (askCurrentCmd.at(1) == 0x22 || askCurrentCmd.at(1) == 0x28 || askCurrentCmd.at(1) == 0x29) {
+                    // 启动
+                    if (mCachePool.at(1) == 0x32 || mCachePool.at(1) == 0x38 || mCachePool.at(1) == 0x39) {
+                        mWaveMeasuring = true;
+                        qInfo().noquote() << "等待触发...";
+                        QMetaObject::invokeMethod(this, "waitTriggerSignal", Qt::QueuedConnection);
+                    }
+                    else {
+                        qCritical().noquote() << "开始采集指令响应失败";
+                    }
+
+                    // 处理剩下数据（粘包处理）
+                    mCachePool.remove(0, BASE_CMD_LENGTH);
+                    continue;
+                }
+                else if (askCurrentCmd.at(1) == 0x23) {
+                    // 停止
+                    if (mCachePool.at(1) == 0x33) {
+                        mWaveMeasuring = false;
+                        qInfo().noquote() << "停止采集";
+                        QMetaObject::invokeMethod(this, "measureEnd", Qt::QueuedConnection);
+                     }
+                    else {
+                        qCritical().noquote() << "停止采集指令响应失败";
+                    }
+
+                     // 处理剩下数据（粘包处理）
+                     mCachePool.remove(0, BASE_CMD_LENGTH);
+                     continue;
+                }
+                else if (askCurrentCmd.at(1) == 0x24) {
+                    // 设置参数N
+                    if (mCachePool.at(1) == 0x34) {
+                        qInfo().noquote() << "设置参数指令响应成功";
+                    }
+                    else {
+                        qCritical().noquote() << "设置参数指令响应失败";
+                    }
+
+                    // 处理剩下数据（粘包处理）
+                    mCachePool.remove(0, BASE_CMD_LENGTH);
+                    continue;
+                }
+                else if (askCurrentCmd.at(1) == 0x25) {
+                    // 输出积分
+                    if (mCachePool.at(1) == 0x35) {
+
+                    }
+
+                    return;
+                }
+                else if (askCurrentCmd.at(1) == 0x26) {
+                    // 输出波形
+                    if (mCachePool.at(1) == 0x36) {
+                        qInfo().noquote() << "输出波形指令响应成功";
+
+                        // 启动
+                        sendStartCmd();
+                    }
+                    else {
+                        qCritical().noquote() << "输出波形指令响应失败";
+                    }
+
+                    // 处理剩下数据（粘包处理）
+                    mCachePool.remove(0, BASE_CMD_LENGTH);
+                    continue;
+                }
+                else if (askCurrentCmd.at(1) == 0x27) {
+                    // 校准DRS4
+                    if (mCachePool.at(1) == 0x37) {
+                        qInfo().noquote() << "校准DRS4指令响应成功";
+                    }
+                    else {
+                        qCritical().noquote() << "校准DRS4指令响应失败";
+                    }
+
+                    // 处理剩下数据（粘包处理）
+                    mCachePool.remove(0, BASE_CMD_LENGTH);
+                    continue;
                 }
             }
-
-            /*波形数据帧*/
-            /*先判断包头*/
-            if (mCachePool.startsWith(QByteArray::fromHex(QString("AB AB FF").toUtf8()))){
-                //单个波形：0xABAB + 0xFFXY+ 波形长度*16bit +0xCDCD
-
-                /*包头对了，再判断包长度是否满足一帧数据包长度*/
-                if (mCachePool.size() >= ONE_CHANNEL_WAVE_SIZE){
-                    /*包长度也够了，继续检查包尾*/
-                    QByteArray chunk = mCachePool.left(ONE_CHANNEL_WAVE_SIZE);
-                    if (chunk.endsWith(QByteArray::fromHex(QString("CD CD").toUtf8())) ||
-                        chunk.endsWith(QByteArray::fromHex(QString("AB CD").toUtf8()))){//临时添加，后期要FPGA程序改动
-                        //单个波形：0xABAB + 0xFFXY+ 波形长度*16bit +0xCDCD
-                        //X:数采板序号 Y:通道号
-                        quint8 no = (chunk[3] & 0xF0) >> 4;
-                        no--; // 数采板序号
-                        quint8 ch = chunk[3] & 0x0F;                        
-                        QVector<quint16> data;
-
-                        for (quint32 i = 0; i < this->mWaveLength * 2; i += 2) {
-                            quint16 value = static_cast<quint8>(chunk[i + 4]) << 8 | static_cast<quint8>(chunk[i + 5]);
-                            data.append((quint16)value);
+            else{
+                if (mCollectFinished) {
+                    //已经采集完成了，判断停止采集指令
+                    if (askCurrentCmd.at(1) == 0x23) {
+                        // 停止
+                        if (mCachePool.at(1) == 0x33) {
+                            mWaveMeasuring = false;
+                            qInfo().noquote() << "停止采集";
+                            QMetaObject::invokeMethod(this, "measureEnd", Qt::QueuedConnection);
+                        }
+                        else {
+                            qCritical().noquote() << "停止采集确认失败";
                         }
 
-                        mChWaveDataValidTag |= (0x01 << (ch - 1));
-                        mRealCurve[no * 4 + ch] = data;
+                        // 清空缓存
+                        mCachePool.clear();
+                        continue;
+                    }
+                    else{
+                        // 处理剩下数据（粘包处理）
+                        mCachePool.remove(0, 1);
+                        continue;
+                    }
+                }
+                else {
+                    if (mCachePool.size() >= ONE_PACK_SIZE) {
+                        qInfo().noquote() << "数据采集完成，开始解析数据";
 
-                        if (mChWaveDataValidTag == 0x0F){
-                            /*4通道数据到齐了！！！*/
-                            /*波形数据收集完毕，可以发送停止测量指令了*/
-                            mWaveMeasuring = false;
+                        //发送停止指令
+                        if (mTriggerType == ttSingleTrigger) {
+                            mCollectFinished = true;
 
-                            /*发送停止测量指令*/
+                            /*单触发类型，收到完整数据需要发送停止测量指令*/
                             QTimer::singleShot(0, this, [=]{
                                 if (mSocket && mSocket->state() == QAbstractSocket::ConnectedState){
                                     QByteArray askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f ff 10 11 11 00 00 ab cd").toUtf8());
@@ -287,36 +237,18 @@ void DataProcessor::OnDataProcessThread()
                                     qDebug().noquote()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
                                 }
                             });
-
-                            // 实测曲线
-                            QMetaObject::invokeMethod(this, [=]() {
-                                emit showRealCurve(mRealCurve);
-                            }, Qt::QueuedConnection);
                         }
 
-                        findNaul = true;
-                        mCachePool.remove(0, ONE_CHANNEL_WAVE_SIZE);
+                        //采集数据已经足够了，通知处理数据
+                        // 实测曲线
+                        QMetaObject::invokeMethod(this, [=]() {
+                            emit onRawWaveData(mCachePool);
+                        }, Qt::QueuedConnection);
+
+                        // 处理剩下数据（粘包处理）
+                        mCachePool.remove(0, ONE_PACK_SIZE);
                     }
-                    // else {
-                    //     /*包头对了，但是包尾不正确，继续寻找包头,删除包头继续寻找*/
-                    //     mCachePool.remove(0, 3);
-                    // }
                 }
-                else {
-                    findNaul = true;
-                    break;
-                    //continue;
-                }
-            }
-
-            if (!findNaul){
-                // 循环一圈下来都没发现完整数据帧，删除包头前1个字节
-
-                /*万一只有头，尾还没收到了，这里先不着急删除，还需要进一步判断！！！！*/
-                mCachePool.remove(0, 1);
-
-                /*继续寻找下一轮*/
-                continue;
             }
 
             /*缓存池数据都处理完了*/
@@ -325,4 +257,44 @@ void DataProcessor::OnDataProcessThread()
             }
         }
     }
+}
+
+void DataProcessor::sendInitCmd()
+{
+    askCurrentCmd = QByteArray::fromHex(QString("01 21 00 00").toUtf8());
+    mSocket->write(askCurrentCmd);
+    qDebug().noquote()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+    qDebug().noquote()<< QString::fromUtf8(">> 打开探测器，发送指令：初始化");
+}
+
+void DataProcessor::sendWaveMode()
+{
+    askCurrentCmd = QByteArray::fromHex(QString("01 26 00 00").toUtf8());
+    mSocket->write(askCurrentCmd);
+    qDebug().noquote()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+    qDebug().noquote()<< QString::fromUtf8(">> 发送指令：波形模式");
+}
+
+void DataProcessor::sendStartCmd()
+{
+    askCurrentCmd = QByteArray::fromHex(QString("01 00 00 00").toUtf8());
+    if (mTriggerMode == TriggerMode::tmHardTrigger)
+        askCurrentCmd[1] = 0x22;
+    else if (mTriggerMode == TriggerMode::tmSoftTrigger)
+        askCurrentCmd[1] = 0x28;
+    else if (mTriggerMode == TriggerMode::tmTest)
+        askCurrentCmd[1] = 0x29;
+    else
+        askCurrentCmd[1] = 0x22;
+    mSocket->write(askCurrentCmd);
+    qDebug().noquote()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+    qDebug().noquote()<< QString::fromUtf8(">> 发送指令：触发模式");
+}
+
+void DataProcessor::sendStopCmd()
+{
+    askCurrentCmd = QByteArray::fromHex(QString("01 23 00 00").toUtf8());
+    mSocket->write(askCurrentCmd);
+    qDebug().noquote()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
+    qDebug().noquote()<< QString::fromUtf8(">> 打开探测器，发送指令：停止测量");
 }
