@@ -21,31 +21,7 @@
      </attribute>
      <row>
       <property name="text">
-       <string>继电器</string>
-      </property>
-      <property name="textAlignment">
-       <set>AlignCenter</set>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>探测器1</string>
-      </property>
-      <property name="textAlignment">
-       <set>AlignCenter</set>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>探测器2</string>
-      </property>
-      <property name="textAlignment">
-       <set>AlignCenter</set>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>探测器3</string>
+       <string>探测器</string>
       </property>
       <property name="textAlignment">
        <set>AlignCenter</set>
@@ -59,11 +35,6 @@
      <column>
       <property name="text">
        <string>通讯端口</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>外设</string>
       </property>
      </column>
      <item row="0" column="0">
@@ -80,92 +51,6 @@
       </property>
       <property name="textAlignment">
        <set>AlignCenter</set>
-      </property>
-     </item>
-     <item row="0" column="2">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="flags">
-       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
-      </property>
-     </item>
-     <item row="1" column="0">
-      <property name="text">
-       <string>127.0.0.1</string>
-      </property>
-      <property name="textAlignment">
-       <set>AlignCenter</set>
-      </property>
-     </item>
-     <item row="1" column="1">
-      <property name="text">
-       <string>8000</string>
-      </property>
-      <property name="textAlignment">
-       <set>AlignCenter</set>
-      </property>
-     </item>
-     <item row="1" column="2">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="checkState">
-       <enum>Checked</enum>
-      </property>
-      <property name="flags">
-       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsEnabled</set>
-      </property>
-     </item>
-     <item row="2" column="0">
-      <property name="text">
-       <string>127.0.0.1</string>
-      </property>
-      <property name="textAlignment">
-       <set>AlignCenter</set>
-      </property>
-     </item>
-     <item row="2" column="1">
-      <property name="text">
-       <string>8000</string>
-      </property>
-      <property name="textAlignment">
-       <set>AlignCenter</set>
-      </property>
-     </item>
-     <item row="2" column="2">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="flags">
-       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
-      </property>
-     </item>
-     <item row="3" column="0">
-      <property name="text">
-       <string>127.0.0.1</string>
-      </property>
-      <property name="textAlignment">
-       <set>AlignCenter</set>
-      </property>
-     </item>
-     <item row="3" column="1">
-      <property name="text">
-       <string>8000</string>
-      </property>
-      <property name="textAlignment">
-       <set>AlignCenter</set>
-      </property>
-     </item>
-     <item row="3" column="2">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="textAlignment">
-       <set>AlignCenter</set>
-      </property>
-      <property name="flags">
-       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
       </property>
      </item>
     </widget>

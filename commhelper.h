@@ -34,22 +34,13 @@ public:
 
     enum SocketConectedStatus{
         ssNone      = 0x00,     // 都不在线
-        ssRelay     = 0x01,     // 继电器
-        ssDetector1 = 0x02,     // 探测器1
-        ssDetector2 = 0x04,     // 探测器2
-        ssDetector3 = 0x08,     // 探测器3
-        ssAll       = 0x0F      // 所有设备都在线
-    };
-    enum TransferMode{
-        tmAppVersion = 0x01,    // 程序版本号
-        tmWaveMode = 0x03,      // 波形
-        tmTemperature = 0x05,   // 温度
-        tmLaserDistance = 0x09  // 激光测距
+        ssDetector  = 0x01,     // 探测器1
     };
     enum TriggerMode{
         tmStop = 0x00, // 停止测量
         tmSoft = 0x01, // 软件触发
-        tmHard = 0x02  // 硬件触发
+        tmHard = 0x02, // 硬件触发
+        tmTest = 0x03  // 测试模式
     };
 
     /*
@@ -60,15 +51,6 @@ public:
      断开网络
     */
     void disconnectNet();
-
-    /*
-     打开电源
-    */
-    void openPower();
-    /*
-     断开电源
-    */
-    void closePower();
 
     /*
      打开探测器
@@ -91,21 +73,11 @@ public:
     /*
      开始测量
     */
-    void startMeasure(quint8 mode);
+    void startMeasure(quint8 triggerMode);
     /*
      停止测量
     */
     void stopMeasure();
-
-    /*
-     温度查询
-    */
-    void queryTemperature(quint8 index, quint8 on = true);
-
-    /*
-     继电器状态查询
-    */
-    void queryRelayStatus();
 
     /*
      开始测距
@@ -123,46 +95,20 @@ public:
     void setResMatrixFileName(const QString &fileName);
 
     //////////////////////////////////////////////////////
-    /*
-     打开测距模块电源
-    */
-    void openDistanceModulePower();
-    /*
-     断开测距模块电源
-    */
-    void closeDistanceModulePower();
-
-    /*
-     打开测距模块激光
-    */
-    void openDistanceModuleLaser();
-    /*
-     断开测距模块激光
-    */
-    void closeDistanceModuleLaser();
-
+    /* 数据另存为 */
     bool saveAs(QString dstPath);
 
 public slots:
     void errorOccurred(QAbstractSocket::SocketError);
     void socketConnected();
-    void socketReadyRead();
     void stateChanged(QAbstractSocket::SocketState);
 
 signals:    
-    void relayConnected();// 继电器
-    void relayDisconnected();
-    void relayPowerOn();
-    void relayPowerOff();
+    void detectorConnected();  // 探测器
+    void detectorDisconnected();
 
-    void detectorConnected(quint8 index);  // 探测器
-    void detectorDisconnected(quint8 index);
-    void temperatureRespond(quint8 index, float temperature);
-    void appVersionRespond(quint8 index, QString version, QString serialNumber);
-    void distanceRespond(float distance, quint16 quality);// 测距模块距离和质量
-
-    void measureStart(quint8 index); //测量开始
-    void measureEnd(quint8 index); //测量结束
+    void measureStart(); //测量开始
+    void measureEnd(); //测量结束
 
     void measureDistanceStart(); //测量开始
     void measureDistanceEnd(); //测量结束
@@ -173,19 +119,6 @@ signals:
     void exportEnergyPlot(const QString fileDir, const QString triggerTime);
 
 private:
-    /*********************************************************
-     继电器指令
-    ***********************************************************/
-    /*
-     控制单路通断
-    */
-    void sendRelayPowerSwitcherCmd(quint8 on = 0x01);
-
-    /*
-     查询状态
-    */
-    void sendQueryRelayStatusCmd();
-
     /*********************************************************
      探测器指令
     ***********************************************************/
@@ -211,48 +144,9 @@ private:
     void sendGainCmd();
 
     /*
-     传输模式
-    */
-    void sendTransferModeCmd(quint8 index, quint8 mode);//TransferMode
-
-    /*
      开始测量
     */
     void sendMeasureCmd(quint8 mode);//TriggerMode
-
-    /*
-     程序版本查询
-    */
-    void sendQueryAppVersionCmd(quint8 index = 0x01);
-
-    /*
-     温度查询
-    */
-    void sendQueryTemperaturCmd(quint8 index, quint8 on = 0x01);
-
-    /*********************************************************
-     测距模块指令
-    ***********************************************************/
-
-    /*
-     模块电源打开/关闭
-    */
-    void sendPowerSwitcherCmd(quint8 on = 0x01);
-
-    /*
-     激光打开/关闭
-    */
-    void sendLaserSwitcherCmd(quint8 on = 0x01);
-
-    /*
-     开始单次测量
-    */
-    void sendSingleMeasureCmd();
-
-    /*
-     开始连续测量
-    */
-    void sendContinueMeasureCmd(quint8 on = 0x01);
 
     /*
      反解能谱
@@ -271,27 +165,11 @@ private:
     QString mDadiationDose;
     QString mDadiationDoseRate;
 
-    QTcpSocket *mSocketRelay = nullptr;    //继电器
-    QTcpSocket *mSocketDetector1 = nullptr; //探测器
-    QTcpSocket *mSocketDetector2 = nullptr; //探测器
-    QTcpSocket *mSocketDetector3 = nullptr; //探测器
-    DataProcessor* mDetector1DataProcessor = nullptr;
-    DataProcessor* mDetector2DataProcessor = nullptr;
-    DataProcessor* mDetector3DataProcessor = nullptr;
+    QTcpSocket *mSocketDetector = nullptr; //探测器
+    DataProcessor* mDetectorDataProcessor = nullptr;
     quint8 mSocketConectedStatus = ssNone; // 设备在线状态
 
     QByteArray askCurrentCmd;// 当前发送指令
-    QByteArray askRelayPowerOnCmd;// 继电器电源-闭合
-    QByteArray askRelayPowerOffCmd;// 继电器电源-断开
-    QByteArray askQueryRelayPowerStatusCmd;// 查询继电器电源状态
-    QByteArray ackRelayPowerStatusOnCmd;// 继电器电源状态-闭合
-    QByteArray ackRelayPowerStatusOffCmd;// 继电器电源状态-断开
-
-    QByteArray ackDistanceDataCmd;// 测距模块返回数据格式
-    QByteArray ackHardTriggerCmd;// 硬件触发指令
-
-    QByteArray askAppVersionCmd;// 程序版本查询发指令
-    QByteArray askTemperatureCmd;// 温度查询指令
 
     QMap<quint8, QVector<quint16>> mWaveAllData;
 #ifdef ENABLE_MATLAB
@@ -317,18 +195,7 @@ private:
     /*
      初始化数据处理器
     */
-    void initDataProcessor(DataProcessor **processor, QTcpSocket *socket, quint8 index);
-
-    /*
-     初始化指令
-    */
-    void initCommand();
-
-    /*
-     继电器连接/断开
-    */
-    bool connectRelay();
-    void disconnectRelay();
+    void initDataProcessor(DataProcessor **processor, QTcpSocket *socket);
 };
 
 #endif // COMMHELPER_H

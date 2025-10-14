@@ -14,7 +14,7 @@ class DataProcessor : public QObject
 {
     Q_OBJECT
 public:
-    explicit DataProcessor(quint8 index, QTcpSocket* socket, QObject *parent = nullptr);
+    explicit DataProcessor(QTcpSocket* socket, QObject *parent = nullptr);
     ~DataProcessor();
 
     /*
@@ -34,7 +34,7 @@ public:
      * 开始测量
      */
     void startMeasureWave(quint8 mode, bool on = true){
-        mTransferMode = mode;
+        mTriggerMode = mode;
         mWaveMeasuring = on;
     };
 
@@ -42,25 +42,16 @@ public slots:
     void socketReadyRead();
 
 signals:   
-    void relayConnected();// 继电器
-    void relayDisconnected();
-    void relayPowerOn();
-    void relayPowerOff();
+    void detectorConnected();  // 探测器
+    void detectorDisconnected();
 
-    void detectorConnected(quint8 index);  // 探测器
-    void detectorDisconnected(quint8 index);
-    void temperatureRespond(quint8 index, float temperature);
-    void appVersionRespond(quint8 index, QString version, QString serialNumber);
-    void distanceRespond(float distance, quint16 quality);// 测距模块距离和质量
-
-    void measureStart(quint8 index); //测量开始
-    void measureEnd(quint8 index); //测量结束
+    void measureStart(); //测量开始
+    void measureEnd(); //测量结束
 
     void showRealCurve(const QMap<quint8, QVector<quint16>>& data);//实测曲线
     void showEnerygySpectrumCurve(const QVector<QPair<double, double>>& data);//反解能谱
 
 private:
-    quint8 mdetectorIndex = 0x00;
     QTcpSocket* mSocket = nullptr;
     QByteArray mRawData; // 存储网络原始数据
     QByteArray mCachePool; // 缓存数据，数据处理之前，先转移到二级缓存池
@@ -75,7 +66,7 @@ private:
     bool mWaveMeasuring = false;     //波形测量中
     bool mDistanceMeasuring = false; //距离测量中
     bool mSingleMeasure = false; //是否单次测量模式
-    quint8 mTransferMode = 0x00;//传输模式
+    quint8 mTriggerMode = 0x00;//触发模式
     quint32 mWaveLength = 512;// 波形长度
     quint8 mChWaveDataValidTag = 0x00;//通道数据是否完整
 

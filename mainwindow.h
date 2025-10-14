@@ -92,19 +92,11 @@ private slots:
 
     void on_action_colorTheme_triggered();
 
-    void on_pushButton_stopMeasureDistance_clicked();
-
-    void on_pushButton_startMeasureDistance_clicked();
-
-    void on_pushButton_export_clicked();
-
-    void on_pushButton_clicked();
-
     void on_pushButton_saveAs_clicked();
 
 private:
     Ui::CentralWidget *ui;
-    bool mRelayPowerOn = false;
+    bool mDetectorWorkOn = false;
     qreal windowTransparency = 1.0;
     bool windowTransparencyEnabled = false;
     bool mIsDarkTheme = true;

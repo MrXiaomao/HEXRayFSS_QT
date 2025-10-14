@@ -17,9 +17,9 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
 
     commHelper = CommHelper::instance();
     initUi();
-    initCustomPlot(ui->customPlot, tr("时间/ns"), tr("实测曲线（通道1-4）"), 4);
-    initCustomPlot(ui->customPlot_2, tr("时间/ns"), tr("实测曲线（通道5-8）"), 4);
-    initCustomPlot(ui->customPlot_3, tr("时间/ns"), tr("实测曲线（通道9-11）"), 3);
+    initCustomPlot(ui->customPlot, tr("时间/ns"), tr("实测曲线（通道1-5）"), 5);
+    initCustomPlot(ui->customPlot_2, tr("时间/ns"), tr("实测曲线（通道6-10）"), 5);
+    initCustomPlot(ui->customPlot_3, tr("时间/ns"), tr("实测曲线（通道11-15）"), 5);
     initCustomPlot(ui->customPlot_result, tr("能量/keV"), tr("反解能谱/Counts"));
     restoreSettings();
     applyColorTheme();
@@ -28,25 +28,17 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
     connect(commHelper, &CommHelper::showRealCurve, this, &CentralWidget::showRealCurve);
     connect(commHelper, &CommHelper::showEnerygySpectrumCurve, this, &CentralWidget::showEnerygySpectrumCurve);
     connect(commHelper, &CommHelper::exportEnergyPlot, this, [=](const QString fileDir, const QString triggerTime){
-        QString filePath = QString("%1/测量数据/%2_1-4.png").arg(fileDir, triggerTime);
+        QString filePath = QString("%1/测量数据/%2_1-5.png").arg(fileDir, triggerTime);
         ui->customPlot->savePng(filePath, 1920, 1080);
 
-        filePath = QString("%1/测量数据/%2_4-8.png").arg(fileDir, triggerTime);
+        filePath = QString("%1/测量数据/%2_6-10.png").arg(fileDir, triggerTime);
         ui->customPlot_2->savePng(filePath, 1920, 1080);
 
-        filePath = QString("%1/测量数据/%2_9-11.png").arg(fileDir, triggerTime);
+        filePath = QString("%1/测量数据/%2_11-15.png").arg(fileDir, triggerTime);
         ui->customPlot_3->savePng(filePath, 1920, 1080);
 
         filePath = QString("%1/处理数据/%2_反解能谱.png").arg(fileDir, triggerTime);
         ui->customPlot_result->savePng(filePath, 1920, 1080);
-    });
-
-    connect(commHelper, &CommHelper::appVersionRespond, this, [=](quint8 index, QString version, QString serialNumber){
-        ui->tableWidget_detectorVersion->item(index - 1, 0)->setText(version);
-        ui->tableWidget_detectorVersion->item(index - 1, 1)->setText(serialNumber);
-
-        // 测量结束，可以开始温度查询了
-        commHelper->queryTemperature(index);
     });
 
     ui->action_connectRelay->setEnabled(true);
@@ -58,113 +50,38 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
     ui->pushButton_startMeasure->setEnabled(false);
     ui->pushButton_stopMeasure->setEnabled(false);
 
-    // 继电器
-    connect(commHelper, &CommHelper::relayConnected, this, [=](){
-        QLabel* label_Connected = this->findChild<QLabel*>("label_Connected");
-        label_Connected->setStyleSheet("color:green;");
-        label_Connected->setText(tr("继电器网络状态：已连接"));
-        qInfo().noquote() << tr("继电器网络状态：已连接");
-
-        ui->action_connectRelay->setEnabled(false);
-        ui->action_disconnectRelay->setEnabled(true);
-
-        ui->action_connect->setEnabled(false);
-        ui->action_disconnect->setEnabled(false);
-
-        //查询继电器电源闭合状态
-        commHelper->queryRelayStatus();
-    });
-    connect(commHelper, &CommHelper::relayDisconnected, this, [=](){
-        QLabel* label_Connected = this->findChild<QLabel*>("label_Connected");
-        label_Connected->setStyleSheet("color:red;");
-        label_Connected->setText(tr("继电器网络状态：断网"));
-        qInfo().noquote() << tr("继电器网络状态：断网");
-
-        ui->action_connectRelay->setEnabled(true);
-        ui->action_disconnectRelay->setEnabled(false);
-
-        ui->action_connect->setEnabled(false);
-        ui->action_disconnect->setEnabled(false);
-
-        //ui->switchButton_power->setEnabled(false);
-        //ui->switchButton_laser->setEnabled(false);
-    });
-
-    connect(commHelper, &CommHelper::relayPowerOn, this, [=](){
-        ui->action_connect->setEnabled(true);
-        ui->action_disconnect->setEnabled(false);
-
-        mRelayPowerOn = true;
-        qInfo().noquote() << tr("继电器电源开关：已打开");
-    });
-    connect(commHelper, &CommHelper::relayPowerOff, this, [=](){
-        ui->action_connect->setEnabled(false);
-        ui->action_disconnect->setEnabled(false);
-
-        mRelayPowerOn = false;
-        qInfo().noquote() << tr("继电器电源开关：已关闭");
-    });
-
     // 探测器
-    connect(commHelper, &CommHelper::detectorConnected, this, [=](quint8 index){
-        ui->tableWidget_detector->item(0, index - 1)->setText(tr("在线"));
-        ui->tableWidget_detector->item(0, index - 1)->setForeground(QBrush(QColor(Qt::green)));
+    connect(commHelper, &CommHelper::detectorConnected, this, [=](){
         ui->action_startMeasure->setEnabled(true);
         ui->action_stopMeasure->setEnabled(true);
         ui->pushButton_startMeasure->setEnabled(true);
         ui->pushButton_stopMeasure->setEnabled(true);
-        //ui->switchButton_power->setEnabled(true);
-        //ui->switchButton_laser->setEnabled(true);
 
-        if (ui->tableWidget_detector->item(0, 0)->text() == tr("在线") &&
-            ui->tableWidget_detector->item(0, 1)->text() == tr("在线") &&
-            ui->tableWidget_detector->item(0, 2)->text() == tr("在线")){
-            ui->action_connect->setEnabled(false);
-            ui->action_disconnect->setEnabled(true);
-            qInfo().noquote() << tr("探测器网络状态：全部在线");
-        }                
+        ui->action_connect->setEnabled(false);
+        ui->action_disconnect->setEnabled(true);
+
+        QLabel* label_Connected = this->findChild<QLabel*>("label_Connected");
+        label_Connected->setStyleSheet("color:green;");
+        label_Connected->setText(tr("探测器网络状态：在线"));
+        qInfo().noquote() << tr("探测器网络状态：在线");
     });
-    connect(commHelper, &CommHelper::detectorDisconnected, this, [=](quint8 index){
-        ui->tableWidget_detector->item(0, index - 1)->setText(tr("离线"));
-        ui->tableWidget_detector->item(0, index - 1)->setForeground(QBrush(QColor(Qt::red)));
-        if (ui->tableWidget_detector->item(0, 0)->text() == tr("离线") &&
-            ui->tableWidget_detector->item(0, 1)->text() == tr("离线") &&
-            ui->tableWidget_detector->item(0, 2)->text() == tr("离线")){
-            ui->action_startMeasure->setEnabled(false);
-            ui->action_stopMeasure->setEnabled(false);
-            ui->pushButton_startMeasure->setEnabled(false);
-            ui->pushButton_stopMeasure->setEnabled(false);
+    connect(commHelper, &CommHelper::detectorDisconnected, this, [=](){
+        ui->action_startMeasure->setEnabled(false);
+        ui->action_stopMeasure->setEnabled(false);
+        ui->pushButton_startMeasure->setEnabled(false);
+        ui->pushButton_stopMeasure->setEnabled(false);
 
-            ui->action_connect->setEnabled(true);
-            ui->action_disconnect->setEnabled(false);
+        ui->action_connect->setEnabled(true);
+        ui->action_disconnect->setEnabled(false);
 
-            // ui->switchButton_power->setEnabled(false);
-            // ui->switchButton_laser->setEnabled(false);
-            qInfo().noquote() << tr("探测器网络状态：已离线");
-        }
-    });
-    connect(commHelper, &CommHelper::temperatureRespond, this, [=](quint8 index, float temperature){
-        ui->tableWidget_detector->item(1, index - 1)->setText(QString::number(temperature, 'f', 2));
-    });
-
-    // 测距模块距离和质量    
-    connect(commHelper, &CommHelper::distanceRespond, this, [=](float distance, quint16 quality){
-        int row = ui->tableWidget_laser->rowCount();
-        ui->tableWidget_laser->insertRow(row);
-
-        QTableWidgetItem *item1 = new QTableWidgetItem(QString::number(distance));
-        item1->setTextAlignment(Qt::AlignCenter);
-        ui->tableWidget_laser->setItem(row, 0, item1);
-
-        QTableWidgetItem *item2 = new QTableWidgetItem(QString::number(quality));
-        item2->setTextAlignment(Qt::AlignCenter);
-        ui->tableWidget_laser->setItem(row, 1, item2);
-
-        ui->tableWidget_laser->setCurrentItem(item2);
+        QLabel* label_Connected = this->findChild<QLabel*>("label_Connected");
+        label_Connected->setStyleSheet("color:red;");
+        label_Connected->setText(tr("探测器网络状态：离线"));
+        qInfo().noquote() << tr("探测器网络状态：离线");
     });
 
     //测量开始
-    connect(commHelper, &CommHelper::measureStart, this, [=](quint8 index){
+    connect(commHelper, &CommHelper::measureStart, this, [=](){
         ui->action_startMeasure->setEnabled(false);
         ui->action_stopMeasure->setEnabled(true);
 
@@ -172,7 +89,7 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
         ui->pushButton_stopMeasure->setEnabled(true);
     });
     //测量结束
-    connect(commHelper, &CommHelper::measureEnd, this, [=](quint8 index){
+    connect(commHelper, &CommHelper::measureEnd, this, [=](){
         ui->action_startMeasure->setEnabled(true);
         ui->action_stopMeasure->setEnabled(false);
 
@@ -217,8 +134,6 @@ CentralWidget::~CentralWidget()
 
 void CentralWidget::initUi()
 {
-    ui->stackedWidget->hide();
-
     {
         QGraphicsScene *scene = new QGraphicsScene(this);
         scene->setObjectName("logGraphicsScene");
@@ -253,7 +168,7 @@ void CentralWidget::initUi()
     label_Connected->setObjectName("label_Connected");
     label_Connected->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     label_Connected->setFixedWidth(300);
-    label_Connected->setText(tr("继电器网络状态：未连接"));
+    label_Connected->setText(tr("探测器网络状态：未连接"));
 
     /*设置任务栏信息*/
     QLabel *label_systemtime = new QLabel(ui->statusbar);
@@ -291,7 +206,6 @@ void CentralWidget::initUi()
     splitter->setObjectName("splitter");
     splitter->setHandleWidth(5);
     ui->centralwidget->layout()->addWidget(splitter);
-    splitter->addWidget(ui->stackedWidget);
     splitter->addWidget(ui->leftHboxWidget);
     splitter->addWidget(ui->rightHboxWidget);
     splitter->setSizes(QList<int>() << 100000 << 400000 << 100000);
@@ -333,54 +247,6 @@ void CentralWidget::initUi()
     splitterV2->addWidget(splitterH1);
     splitterV2->addWidget(ui->tabWidget_log);
     splitterV2->setCollapsible(0,false);
-
-    QPushButton* laserDistanceButton = new QPushButton();
-    laserDistanceButton->setText(tr("测距模块"));
-    laserDistanceButton->setFixedSize(250,29);
-    laserDistanceButton->setCheckable(true);
-    QPushButton* detectorStatusButton = new QPushButton();
-    detectorStatusButton->setText(tr("设备信息"));
-    detectorStatusButton->setFixedSize(250,29);
-    detectorStatusButton->setCheckable(true);
-
-    QHBoxLayout* sideHboxLayout = new QHBoxLayout();
-    sideHboxLayout->setObjectName("sideHboxLayout");
-    sideHboxLayout->setContentsMargins(0,0,0,0);
-    sideHboxLayout->setSpacing(2);
-
-    QWidget* sideProxyWidget = new QWidget();
-    sideProxyWidget->setObjectName("sideProxyWidget");
-    sideProxyWidget->setLayout(sideHboxLayout);    
-    sideHboxLayout->addWidget(laserDistanceButton);
-    sideHboxLayout->addWidget(detectorStatusButton);
-
-    QGraphicsScene *scene = new QGraphicsScene(this);
-    QGraphicsProxyWidget *w = scene->addWidget(sideProxyWidget);
-    w->setPos(0,0);
-    w->setRotation(-90);
-    ui->graphicsView->setScene(scene);
-    ui->graphicsView->setFrameStyle(0);
-    ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->graphicsView->setFixedSize(30, 502);
-    ui->sidewidget->setFixedWidth(30);
-
-    ui->tableWidget_laser->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->tableWidget_detector->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->tableWidget_detectorVersion->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    ui->tableWidget_detector->horizontalHeader()->setFixedHeight(25);
-    ui->tableWidget_detector->setRowHeight(0, 30);
-    ui->tableWidget_detector->setRowHeight(1, 30);
-    ui->tableWidget_detector->setFixedHeight(87);
-
-    ui->tableWidget_detectorVersion->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
-    ui->tableWidget_detectorVersion->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);
-    ui->tableWidget_detectorVersion->setColumnWidth(1, 80);
-    ui->tableWidget_detectorVersion->horizontalHeader()->setFixedHeight(25);
-    ui->tableWidget_detectorVersion->setRowHeight(0, 30);
-    ui->tableWidget_detectorVersion->setRowHeight(1, 30);
-    ui->tableWidget_detectorVersion->setRowHeight(2, 30);
-    ui->tableWidget_detectorVersion->setFixedHeight(117);
 
     QAction *action = ui->lineEdit_filePath->addAction(QIcon(":/open.png"), QLineEdit::TrailingPosition);
     QToolButton* button = qobject_cast<QToolButton*>(action->associatedWidgets().last());
@@ -481,124 +347,12 @@ void CentralWidget::initUi()
         ui->lineEdit_SaveAsFileName->setText(settings.value("Global/SaveAsFileName", "test1").toString());
     }
 
-    //ui->switchButton_power->setAutoChecked(false);
-    //ui->switchButton_laser->setAutoChecked(false);
-
-    // ui->switchButton_power->setEnabled(false);
-    // ui->switchButton_laser->setEnabled(false);
-    ui->pushButton_startMeasureDistance->setEnabled(false);
-    ui->pushButton_stopMeasureDistance->setEnabled(false);
-    connect(ui->switchButton_power, &SwitchButton::toggled, this, [=](bool checked){
-        if (checked){
-            // 测距模块电源
-            commHelper->openDistanceModulePower();
-            ui->pushButton_startMeasureDistance->setEnabled(true);
-            ui->pushButton_stopMeasureDistance->setEnabled(false);
-        }
-        else{
-            commHelper->closeDistanceModulePower();
-            ui->pushButton_startMeasureDistance->setEnabled(false);
-            ui->pushButton_stopMeasureDistance->setEnabled(false);
-        }
-    });
-    connect(ui->switchButton_laser, &SwitchButton::toggled, this, [=](bool checked){
-        if (checked){
-            // 测距模块激光
-            commHelper->openDistanceModuleLaser();
-        }
-        else{
-            commHelper->closeDistanceModuleLaser();
-        }
-    });
-
-    connect(laserDistanceButton,&QPushButton::clicked,this,[=](){
-        if(ui->stackedWidget->isHidden()) {
-            ui->stackedWidget->setCurrentWidget(ui->laserDistanceWidget);
-            ui->stackedWidget->show();
-
-            laserDistanceButton->setChecked(true);
-            detectorStatusButton->setChecked(false);
-
-            GlobalSettings settings;
-            settings.setValue("Global/DefaultPage", "laserDistance");
-        } else {
-            if(ui->stackedWidget->currentWidget() == ui->laserDistanceWidget) {
-                ui->stackedWidget->hide();
-
-                laserDistanceButton->setChecked(false);
-                detectorStatusButton->setChecked(false);
-
-                GlobalSettings settings;
-                settings.setValue("Global/DefaultPage", "");
-            } else {
-                ui->stackedWidget->setCurrentWidget(ui->laserDistanceWidget);
-
-                laserDistanceButton->setChecked(true);
-                detectorStatusButton->setChecked(false);
-
-                GlobalSettings settings;
-                settings.setValue("Global/DefaultPage", "laserDistance");
-            }
-        }
-    });
-    connect(detectorStatusButton,&QPushButton::clicked,this,[=](){
-        if(ui->stackedWidget->isHidden()) {
-            ui->stackedWidget->setCurrentWidget(ui->detectorStatusWidget);
-            ui->stackedWidget->show();
-
-            laserDistanceButton->setChecked(false);
-            detectorStatusButton->setChecked(true);
-
-            GlobalSettings settings;
-            settings.setValue("Global/DefaultPage", "detectorStatus");
-        } else {
-            if(ui->stackedWidget->currentWidget() == ui->detectorStatusWidget) {
-                ui->stackedWidget->hide();
-                laserDistanceButton->setChecked(false);
-                detectorStatusButton->setChecked(false);
-
-                GlobalSettings settings;
-                settings.setValue("Global/DefaultPage", "");
-            } else {
-                ui->stackedWidget->setCurrentWidget(ui->detectorStatusWidget);
-                laserDistanceButton->setChecked(false);
-                detectorStatusButton->setChecked(true);
-
-                GlobalSettings settings;
-                settings.setValue("Global/DefaultPage", "detectorStatus");
-            }
-        }
-    });
-
-    connect(ui->toolButton_closeLaserDistanceWidget,&QPushButton::clicked,this,[=](){
-        ui->stackedWidget->hide();
-        laserDistanceButton->setChecked(false);
-        detectorStatusButton->setChecked(false);
-
-        GlobalSettings settings;
-        settings.setValue("Global/DefaultPage", "");
-    });
-    connect(ui->toolButton_closeDetectorStatusWidget,&QPushButton::clicked,this,[=](){
-        ui->stackedWidget->hide();
-        laserDistanceButton->setChecked(false);
-        detectorStatusButton->setChecked(false);
-
-        GlobalSettings settings;
-        settings.setValue("Global/DefaultPage", "");
-    });
-
     connect(ui->pushButton_startMeasure, &QPushButton::clicked, ui->action_startMeasure, &QAction::trigger);
     connect(ui->pushButton_stopMeasure, &QPushButton::clicked, ui->action_stopMeasure, &QAction::trigger);
 
     //恢复页面布局
     {
         GlobalSettings settings;
-        QString defaultPage = settings.value("Global/DefaultPage").toString();
-        if (defaultPage == "laserDistance")
-            laserDistanceButton->clicked();
-        else if (defaultPage == "detectorStatus")
-            detectorStatusButton->clicked();
-
         if (settings.contains("Global/MainWindows-State")){
             this->restoreState(settings.value("Global/MainWindows-State").toByteArray());
         }
@@ -746,7 +500,6 @@ void CentralWidget::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, 
     connect(customPlot->xAxis, SIGNAL(rangeChanged(const QCPRange &)), customPlot->xAxis2, SLOT(setRange(const QCPRange &)));
     connect(customPlot->yAxis, SIGNAL(rangeChanged(const QCPRange &)), customPlot->yAxis2, SLOT(setRange(const QCPRange &)));
 
-
     // 是否允许X轴自适应缩放
     connect(customPlot, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(slotShowTracer(QMouseEvent*)));
     connect(customPlot, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(slotRestorePlot(QMouseEvent*)));
@@ -755,11 +508,11 @@ void CentralWidget::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, 
 }
 
 void CentralWidget::closeEvent(QCloseEvent *event) {
-    if (mRelayPowerOn){
-        int reply = QMessageBox::question(this, tr("系统退出提示"), tr("继电器电源处理闭合状态，是否断开？"),
+    if (mDetectorWorkOn){
+        int reply = QMessageBox::question(this, tr("系统退出提示"), tr("探测器正在测量，是否停止工作？"),
                                              QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
         if(reply == QMessageBox::Yes) {
-            commHelper->closePower();
+            commHelper->stopMeasure();
             event->accept();
         }
         else if (reply == QMessageBox::No){
@@ -984,21 +737,12 @@ void CentralWidget::on_action_disconnect_triggered()
     commHelper->stopMeasure();
 
     QTimer::singleShot(1000, this, [=](){
-        // 再关闭激光
-        commHelper->closeDistanceModuleLaser();
-
-        // 再关闭测距电源
-        commHelper->closeDistanceModulePower();
-
         // 关闭探测器
         commHelper->disconnectDetectors();
 
         // ui->switchButton_power->setEnabled(false);
         // ui->switchButton_laser->setEnabled(false);
     });
-
-    ui->switchButton_power->setChecked(false);
-    ui->switchButton_laser->setChecked(false);
 }
 
 
@@ -1024,11 +768,6 @@ void CentralWidget::on_action_startMeasure_triggered()
 
     ui->customPlot_result->graph(0)->data()->clear();
     ui->customPlot_result->replot();
-
-    // 先发温度停止指令
-    commHelper->queryTemperature(1, false);
-    commHelper->queryTemperature(2, false);
-    commHelper->queryTemperature(3, false);
 
     /*设置发次信息*/
     QString shotDir = ui->lineEdit_filePath->text();
@@ -1087,39 +826,6 @@ void CentralWidget::on_action_stopMeasure_triggered()
 }
 
 
-void CentralWidget::on_pushButton_startMeasureDistance_clicked()
-{
-    // 开始测距
-    if (ui->checkBox_continueMeasureDistance->isChecked()){
-        ui->pushButton_startMeasureDistance->setEnabled(false);
-        ui->pushButton_stopMeasureDistance->setEnabled(true);
-    }
-
-    // 先打开激光
-    commHelper->openDistanceModuleLaser();
-
-    QTimer::singleShot(1000, this, [=](){
-        // 发送测距指令
-        commHelper->startMeasureDistance(ui->checkBox_continueMeasureDistance->isChecked());
-
-        // 非连续测量，测量完成之后，激光会自动关闭，所以这里把按钮状态同步更新一下
-        if (!ui->checkBox_continueMeasureDistance->isChecked())
-            ui->switchButton_laser->setChecked(false);
-    });
-}
-
-void CentralWidget::on_pushButton_stopMeasureDistance_clicked()
-{
-    // 停止测距
-    ui->pushButton_startMeasureDistance->setEnabled(true);
-    ui->pushButton_stopMeasureDistance->setEnabled(false);
-
-    commHelper->stopMeasureDistance();
-
-    // 测距完成之后，激光会自动关闭，所以这里把按钮状态同步更新一下
-    ui->switchButton_laser->setChecked(false);
-}
-
 #define SAMPLE_TIME 10
 void CentralWidget::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
 {
@@ -1127,7 +833,7 @@ void CentralWidget::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
     QColor clrLine[] = {Qt::green, Qt::blue, Qt::red, Qt::cyan};
     QVector<double> keys, values;
     QVector<QColor> colors;
-    for (int ch=1; ch<=4; ++ch){
+    for (int ch=1; ch<=5; ++ch){
         keys.clear();
         values.clear();
         colors.clear();
@@ -1148,7 +854,7 @@ void CentralWidget::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
 
     keys.clear();
     values.clear();
-    for (int ch=5; ch<=8; ++ch){
+    for (int ch=6; ch<=10; ++ch){
         keys.clear();
         values.clear();
         colors.clear();
@@ -1157,9 +863,9 @@ void CentralWidget::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
             for (int i=0; i<chData.size(); ++i){
                 keys << i * SAMPLE_TIME;
                 values << chData[i];
-                colors << clrLine[ch-5];
+                colors << clrLine[ch-6];
             }
-            ui->customPlot_2->graph(ch - 5)->setData(keys, values, colors);
+            ui->customPlot_2->graph(ch - 6)->setData(keys, values, colors);
         }
     }
     ui->customPlot_2->xAxis->rescale(true);
@@ -1169,7 +875,7 @@ void CentralWidget::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
 
     keys.clear();
     values.clear();
-    for (int ch=9; ch<=11; ++ch){
+    for (int ch=11; ch<=15; ++ch){
         keys.clear();
         values.clear();
         colors.clear();
@@ -1178,9 +884,9 @@ void CentralWidget::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
             for (int i=0; i<chData.size(); ++i){
                 keys << i * SAMPLE_TIME;
                 values << chData[i];
-                colors << clrLine[ch-9];
+                colors << clrLine[ch-11];
             }
-            ui->customPlot_3->graph(ch - 9)->setData(keys, values, colors);
+            ui->customPlot_3->graph(ch - 11)->setData(keys, values, colors);
         }
     }
     ui->customPlot_3->xAxis->rescale(true);
@@ -1223,32 +929,6 @@ void CentralWidget::on_action_about_triggered()
 void CentralWidget::on_action_aboutQt_triggered()
 {
     QMessageBox::aboutQt(this);
-}
-
-void CentralWidget::on_pushButton_export_clicked()
-{
-    QString filePath = QFileDialog::getSaveFileName(this);
-    if (!filePath.isEmpty()){
-        if (!filePath.endsWith(".csv"))
-            filePath += ".csv";
-        QFile file(filePath);
-        if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
-            QTextStream stream(&file);
-            stream << ui->tableWidget_laser->horizontalHeaderItem(0)->text() << "," << ui->tableWidget_laser->horizontalHeaderItem(1)->text() << "\n";
-            for (int i=0; i<ui->tableWidget_laser->rowCount(); ++i){
-                stream << ui->tableWidget_laser->item(i, 0)->text() << "," << ui->tableWidget_laser->item(i, 1)->text() << "\n";
-            }
-
-            file.close();
-        }
-    }
-}
-
-
-void CentralWidget::on_pushButton_clicked()
-{
-    ui->tableWidget_laser->clearContents();
-    ui->tableWidget_laser->setRowCount(0);
 }
 
 
