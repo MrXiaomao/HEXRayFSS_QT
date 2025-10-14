@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>低能滤片堆栈谱仪软件</string>
+   <string>高能滤片堆栈谱仪软件</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,100,0,0">
@@ -104,7 +104,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="laserDistanceWidget">
        <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -261,19 +261,6 @@
            <number>2</number>
           </property>
           <item>
-           <spacer name="horizontalSpacer_3">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
            <widget class="QPushButton" name="pushButton_startMeasureDistance">
             <property name="styleSheet">
              <string notr="true"/>
@@ -311,6 +298,56 @@
            </widget>
           </item>
           <item>
+           <spacer name="horizontalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="tableWidget_laser">
+          <property name="editTriggers">
+           <set>QAbstractItemView::NoEditTriggers</set>
+          </property>
+          <column>
+           <property name="text">
+            <string>距离(m)</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>信号质量</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_16">
+          <property name="rightMargin">
+           <number>2</number>
+          </property>
+          <item>
+           <spacer name="horizontalSpacer_7">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
            <widget class="QPushButton" name="pushButton_export">
             <property name="text">
              <string>数据导出</string>
@@ -333,23 +370,6 @@
            </widget>
           </item>
          </layout>
-        </item>
-        <item>
-         <widget class="QTableWidget" name="tableWidget_laser">
-          <property name="editTriggers">
-           <set>QAbstractItemView::NoEditTriggers</set>
-          </property>
-          <column>
-           <property name="text">
-            <string>距离(m)</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>信号质量</string>
-           </property>
-          </column>
-         </widget>
         </item>
        </layout>
       </widget>
@@ -708,6 +728,39 @@
           <property name="bottomMargin">
            <number>0</number>
           </property>
+          <item>
+           <widget class="QGroupBox" name="groupBox_5">
+            <property name="title">
+             <string>触发模式</string>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_14">
+             <item>
+              <widget class="QRadioButton" name="radioButton_hard">
+               <property name="text">
+                <string>硬触发</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="radioButton_soft">
+               <property name="text">
+                <string>软触发</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="radioButton_test">
+               <property name="text">
+                <string>测试</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
           <item>
            <widget class="QGroupBox" name="groupBox_4">
             <property name="title">
@@ -1439,8 +1492,6 @@
    </attribute>
    <addaction name="action_connectRelay"/>
    <addaction name="action_disconnectRelay"/>
-   <addaction name="action_powerOn"/>
-   <addaction name="action_powerOff"/>
    <addaction name="separator"/>
    <addaction name="action_connect"/>
    <addaction name="action_disconnect"/>
@@ -1600,36 +1651,6 @@
    </property>
    <property name="toolTip">
     <string>停止测量</string>
-   </property>
-   <property name="menuRole">
-    <enum>QAction::NoRole</enum>
-   </property>
-  </action>
-  <action name="action_powerOn">
-   <property name="icon">
-    <iconset resource="../3rdParty/resource/resource.qrc">
-     <normaloff>:/power-on.png</normaloff>:/power-on.png</iconset>
-   </property>
-   <property name="text">
-    <string>打开电源</string>
-   </property>
-   <property name="toolTip">
-    <string>打开电源</string>
-   </property>
-   <property name="menuRole">
-    <enum>QAction::NoRole</enum>
-   </property>
-  </action>
-  <action name="action_powerOff">
-   <property name="icon">
-    <iconset resource="../3rdParty/resource/resource.qrc">
-     <normaloff>:/power-fault.png</normaloff>:/power-fault.png</iconset>
-   </property>
-   <property name="text">
-    <string>关闭电源</string>
-   </property>
-   <property name="toolTip">
-    <string>关闭电源</string>
    </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>

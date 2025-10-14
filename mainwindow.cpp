@@ -51,8 +51,6 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
 
     ui->action_connectRelay->setEnabled(true);
     ui->action_disconnectRelay->setEnabled(false);
-    ui->action_powerOn->setEnabled(false);
-    ui->action_powerOff->setEnabled(false);
     ui->action_connect->setEnabled(false);
     ui->action_disconnect->setEnabled(false);
     ui->action_startMeasure->setEnabled(false);
@@ -70,9 +68,6 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
         ui->action_connectRelay->setEnabled(false);
         ui->action_disconnectRelay->setEnabled(true);
 
-        ui->action_powerOn->setEnabled(true);
-        ui->action_powerOff->setEnabled(true);
-
         ui->action_connect->setEnabled(false);
         ui->action_disconnect->setEnabled(false);
 
@@ -88,9 +83,6 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
         ui->action_connectRelay->setEnabled(true);
         ui->action_disconnectRelay->setEnabled(false);
 
-        ui->action_powerOn->setEnabled(false);
-        ui->action_powerOff->setEnabled(false);
-
         ui->action_connect->setEnabled(false);
         ui->action_disconnect->setEnabled(false);
 
@@ -99,9 +91,6 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
     });
 
     connect(commHelper, &CommHelper::relayPowerOn, this, [=](){
-        ui->action_powerOn->setEnabled(false);
-        ui->action_powerOff->setEnabled(true);
-
         ui->action_connect->setEnabled(true);
         ui->action_disconnect->setEnabled(false);
 
@@ -109,9 +98,6 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
         qInfo().noquote() << tr("继电器电源开关：已打开");
     });
     connect(commHelper, &CommHelper::relayPowerOff, this, [=](){
-        ui->action_powerOn->setEnabled(true);
-        ui->action_powerOff->setEnabled(false);
-
         ui->action_connect->setEnabled(false);
         ui->action_disconnect->setEnabled(false);
 
@@ -1100,19 +1086,6 @@ void CentralWidget::on_action_stopMeasure_triggered()
     commHelper->stopMeasure();
 }
 
-
-void CentralWidget::on_action_powerOn_triggered()
-{
-    // 打开电源
-    commHelper->openPower();
-}
-
-
-void CentralWidget::on_action_powerOff_triggered()
-{
-    // 关闭电源
-    commHelper->closePower();
-}
 
 void CentralWidget::on_pushButton_startMeasureDistance_clicked()
 {

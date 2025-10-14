@@ -76,10 +76,6 @@ private slots:
 
     void on_action_stopMeasure_triggered();
 
-    void on_action_powerOn_triggered();
-
-    void on_action_powerOff_triggered();
-
     void on_action_connectRelay_triggered();
 
     void on_action_disconnectRelay_triggered();
