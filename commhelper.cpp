@@ -956,9 +956,9 @@ bool CommHelper::openHistoryWaveFile(const QString &filePath)
     if (file.open(QIODevice::ReadWrite)){
         mWaveAllData.clear();
 
-        if (filePath.endsWith(".dat")){
-            QVector<quint16> rawWaveData;
-            QMap<quint8, QVector<quint16>> realCurve;// 4路通道实测曲线数据
+        QVector<quint16> rawWaveData;
+        QMap<quint8, QVector<quint16>> realCurve;// 4路通道实测曲线数据
+        if (filePath.endsWith(".dat")){                        
             rawWaveData.resize(512);
             for (int i=1; i<=11; ++i){
                 int rSize = file.read((char *)rawWaveData.data(), rawWaveData.size() * sizeof(quint16));
@@ -974,16 +974,9 @@ bool CommHelper::openHistoryWaveFile(const QString &filePath)
                         realCurve.clear();
                     }
                 }
-                else
-                {
-                    file.close();
-                    return false;
-                }
             }
         }
         else{
-            QVector<quint16> rawWaveData;
-            QMap<quint8, QVector<quint16>> realCurve;// 4路通道实测曲线数据
             int chIndex = 1;
             while (!file.atEnd()){
                 QByteArray lines = file.readLine();
@@ -1089,9 +1082,6 @@ void CommHelper::calEnerygySpectrumCurve(bool needSave)
             }
         }
     }
-
-    if (mWaveAllData.size() < 11)
-        return;
 
 #ifdef ENABLE_MATLAB
     if (gMatlabInited){                

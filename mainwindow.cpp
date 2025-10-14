@@ -13,8 +13,6 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
 {
     ui->setupUi(this);    
     emit sigUpdateBootInfo(tr("加载界面..."));
-
-    //ui->toolBar->setVisible(true);
     setWindowTitle(QApplication::applicationName()+" - "+APP_VERSION);
 
     commHelper = CommHelper::instance();
@@ -42,8 +40,10 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
         filePath = QString("%1/处理数据/%2_反解能谱.png").arg(fileDir, triggerTime);
         ui->customPlot_result->savePng(filePath, 1920, 1080);
     });
+
     connect(commHelper, &CommHelper::appVersionRespond, this, [=](quint8 index, QString version, QString serialNumber){
-        ui->tableWidget_detectorVersion->item(index - 1, 0)->setText(version + serialNumber);
+        ui->tableWidget_detectorVersion->item(index - 1, 0)->setText(version);
+        ui->tableWidget_detectorVersion->item(index - 1, 1)->setText(serialNumber);
 
         // 测量结束，可以开始温度查询了
         commHelper->queryTemperature(index);
@@ -387,6 +387,9 @@ void CentralWidget::initUi()
     ui->tableWidget_detector->setRowHeight(1, 30);
     ui->tableWidget_detector->setFixedHeight(87);
 
+    ui->tableWidget_detectorVersion->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+    ui->tableWidget_detectorVersion->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);
+    ui->tableWidget_detectorVersion->setColumnWidth(1, 80);
     ui->tableWidget_detectorVersion->horizontalHeader()->setFixedHeight(25);
     ui->tableWidget_detectorVersion->setRowHeight(0, 30);
     ui->tableWidget_detectorVersion->setRowHeight(1, 30);
@@ -1218,7 +1221,7 @@ void CentralWidget::showEnerygySpectrumCurve(const QVector<QPair<double, double>
     //反解能谱
     QVector<double> keys, values;
     for (auto iter = data.begin(); iter != data.end(); ++iter){
-        keys << iter->first * 1000;//MeV转化为keV
+        keys << iter->first * 1000;//MeV转化为KeV
         values << iter->second;
     }
     ui->customPlot_result->graph(0)->setData(keys, values);

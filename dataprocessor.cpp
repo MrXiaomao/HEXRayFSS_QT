@@ -492,7 +492,7 @@ void DataProcessor::OnDataProcessThread()
                         //X:数采板序号 Y:通道号
                         quint8 no = (chunk[3] & 0xF0) >> 4;
                         no--; // 数采板序号
-                        quint8 ch = chunk[3] & 0x0F;
+                        quint8 ch = chunk[3] & 0x0F;                        
                         QVector<quint16> data;
 
                         for (quint32 i = 0; i < this->mWaveLength * 2; i += 2) {
@@ -501,8 +501,15 @@ void DataProcessor::OnDataProcessThread()
                         }
 
                         mChWaveDataValidTag |= (0x01 << (ch - 1));
-                        mRealCurve[no * 4 + ch] = data;
-
+                        if (no==2)// 第3块采集卡，从第2通道开始计数
+                        {
+                            mRealCurve[no * 4 + ch] = data;
+                            if (ch >= 2)
+                                mRealCurve[no * 4 + ch - 1] = data;
+                        }
+                        else{
+                            mRealCurve[no * 4 + ch] = data;
+                        }
                         if (mChWaveDataValidTag == 0x0F){
                             /*4通道数据到齐了！！！*/
                             /*波形数据收集完毕，可以发送停止测量指令了*/
