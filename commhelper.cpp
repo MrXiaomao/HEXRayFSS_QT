@@ -221,20 +221,6 @@ void CommHelper::initDataProcessor(DataProcessor** processor, QTcpSocket *socket
 
     connect(detectorDataProcessor, &DataProcessor::onRawWaveData, this, &CommHelper::onRawWaveData);
 
-    // connect(detectorDataProcessor, &DataProcessor::showRealCurve, this, [=](const QMap<quint8, QVector<quint16>>& data){
-    //     // 将map1的内容添加到map2
-    //     for (auto iterator = data.constBegin(); iterator != data.constEnd(); ++iterator) {
-    //         // 这里只保留前16个通道数据
-    //         if (iterator.key() >=1 && iterator.key() <= 16){
-    //             mWaveAllData[iterator.key()] = iterator.value();
-    //         }
-    //     }
-
-    //     /*
-    //      计算反解能谱
-    //     */
-    //     calEnerygySpectrumCurve();
-    // });
     connect(this, &CommHelper::showHistoryCurve, this, [=](const QMap<quint8, QVector<quint16>>& data){
         // 将map1的内容添加到map2
         for (auto iterator = data.constBegin(); iterator != data.constEnd(); ++iterator) {
@@ -356,6 +342,7 @@ void CommHelper::startMeasure(quint8 triggerMode, quint8 triggerType)
     if (nullptr == mSocketDetector || mSocketDetector->state() != QAbstractSocket::ConnectedState)
         return;
 
+    mTriggerTimers = 0;
     mTriggerMode = triggerMode;
     mTriggerType = triggerType;
 

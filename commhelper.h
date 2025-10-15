@@ -108,6 +108,7 @@ signals:
     void showEnerygySpectrumCurve(const QVector<QPair<double, double>>& data);//反解能谱
     void exportEnergyPlot(const QString fileDir, const QString triggerTime);
 
+    void refreshTriggerTimers(quint8);//刷新触发次数
 private:
     /*********************************************************
      探测器指令

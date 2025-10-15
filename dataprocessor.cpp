@@ -196,7 +196,7 @@ void DataProcessor::OnDataProcessThread()
                 }
             }
 
-            if (mWaveMeasuring && mCachePool.size() > BASE_CMD_LENGTH){
+            if (mWaveMeasuring && mCachePool.size() >= BASE_CMD_LENGTH){
                 if (!askCurrentCmd.isEmpty() && askCurrentCmd.at(1) == 0x23) {
                     // 停止
                     if (mCachePool.at(1) == 0x33) {
@@ -219,7 +219,7 @@ void DataProcessor::OnDataProcessThread()
 
                         //发送停止指令
                         if (mTriggerType == ttSingleTrigger) {
-                            mCollectFinished = true;
+                            //mCollectFinished = true;
 
                             /*单触发类型，收到完整数据需要发送停止测量指令*/
                             QTimer::singleShot(0, this, [=]{

@@ -98,11 +98,23 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
 
         ui->pushButton_startMeasure->setEnabled(true);
         ui->pushButton_stopMeasure->setEnabled(false);
+
+        QLabel* label_Idle = this->findChild<QLabel*>("label_Idle");
+        label_Idle->setText(tr("探测器已打开"));
+        qInfo().noquote() << tr("探测器初始化已完成");
     });
 
     //测量开始，等待触发
     connect(commHelper, &CommHelper::waitTriggerSignal, this, [=](){
-        ui->statusbar->showMessage(tr("等待触发信号"));
+        //ui->statusbar->showMessage(tr("等待触发信号"));
+        QLabel* label_Idle = this->findChild<QLabel*>("label_Idle");
+        label_Idle->setText(tr("等待触发信号"));
+    });
+
+    connect(commHelper, &CommHelper::refreshTriggerTimers, this, [=](quint8 triggerTimers){
+        //ui->statusbar->showMessage(tr("等待触发信号"));
+        QLabel* label_Idle = this->findChild<QLabel*>("label_Idle");
+        label_Idle->setText(tr("已完成%1次测量，等待下次触发信号").arg(triggerTimers));
     });
 
     //测量开始
@@ -120,15 +132,16 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
 
         ui->pushButton_startMeasure->setEnabled(true);
         ui->pushButton_stopMeasure->setEnabled(false);
+
+        QLabel* label_Idle = this->findChild<QLabel*>("label_Idle");
+
+        if (ui->action_closeDetector->property("isClicked").toBool())
+            label_Idle->setText(tr("探测器已关闭"));
+        else
+            label_Idle->setText(tr("测量结束"));
+        qInfo().noquote() << tr("探测器已关闭");
     });
 
-    connect(ui->statusbar,&QStatusBar::messageChanged,this,[&](const QString &message){
-        if(message.isEmpty()) {
-            ui->statusbar->showMessage(tr("准备就绪"));
-        } else {
-            ui->statusbar->showMessage(message);
-        }
-    });
     QTimer::singleShot(0, this, [&](){
         qGoodStateHolder->setCurrentThemeDark(mIsDarkTheme);
         QGoodWindow::setAppCustomTheme(mIsDarkTheme,this->themeColor); // Must be >96
@@ -185,13 +198,17 @@ void CentralWidget::initUi()
     label_Idle->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     label_Idle->setFixedWidth(300);
     label_Idle->setText(tr("准备就绪"));
-    connect(ui->statusbar,&QStatusBar::messageChanged,this,[&](const QString &message){
-        //label_Idle->setText(message);
-    });
+    // connect(ui->statusbar,&QStatusBar::messageChanged,this,[=](const QString &message){
+    //     if(message.isEmpty()) {
+    //         label_Idle->setText(tr("准备就绪"));
+    //     } else {
+    //         label_Idle->setText(message);
+    //     }
+    // });
 
     QLabel *label_Connected = new QLabel(ui->statusbar);
     label_Connected->setObjectName("label_Connected");
-    label_Connected->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    label_Connected->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     label_Connected->setFixedWidth(300);
     label_Connected->setText(tr("探测器网络状态：未连接"));
 
@@ -256,37 +273,22 @@ void CentralWidget::initUi()
     splitterV2->setObjectName("splitterV2");
     splitterV2->setHandleWidth(5);
     ui->leftVboxWidget->layout()->addWidget(splitterV2);
-    splitterV2->addWidget(ui->customPlot);
-    splitterV2->addWidget(ui->customPlot_2);
-    splitterV2->addWidget(ui->customPlot_3);
+    splitterV2->addWidget(ui->customPlot_result);
+    splitterV2->addWidget(ui->tabWidget_log);
     splitterV2->setCollapsible(0,false);
     splitterV2->setCollapsible(1,false);
-    splitterV2->setCollapsible(2,false);
-    splitterV2->setSizes(QList<int>() << 100000 << 100000 << 100000);
+    splitterV2->setSizes(QList<int>() << 300000 << 100000);
 
     // 右边显示选项
     QSplitter *splitterH1 = new QSplitter(Qt::Horizontal,this);
     splitterH1->setObjectName("splitterH1");
     splitterH1->setHandleWidth(5);
     ui->rightHboxWidget->layout()->addWidget(splitterH1);
-    splitterH1->addWidget(ui->customPlot_result);
+    splitterH1->addWidget(splitterV2);
     splitterH1->addWidget(ui->widget_option);
     splitterH1->setCollapsible(0,false);
     splitterH1->setCollapsible(1,false);
-    splitterH1->setSizes(QList<int>() << 300000 << 200000);
-
-    QSplitter *splitterV2 = new QSplitter(Qt::Vertical,this);
-    splitterV2->setObjectName("splitterV2");
-    splitterV2->setHandleWidth(5);
-    //ui->rightHboxWidget->layout()->addWidget(splitterH1);
-    ui->rightHboxWidget->layout()->addWidget(splitterV2);
-    splitterV2->setCollapsible(0,false);
-    splitterV2->setCollapsible(1,false);
-    splitterV2->setSizes(QList<int>() << 400000 << 100000);
-
-    splitterV2->addWidget(splitterH1);
-    splitterV2->addWidget(ui->tabWidget_log);
-    splitterV2->setCollapsible(0,false);
+    splitterH1->setSizes(QList<int>() << 400000 << 100000);
 
     QAction *action = ui->lineEdit_filePath->addAction(QIcon(":/open.png"), QLineEdit::TrailingPosition);
     QToolButton* button = qobject_cast<QToolButton*>(action->associatedWidgets().last());
@@ -573,7 +575,7 @@ bool CentralWidget::checkStatusTipEvent(QEvent * event) {
     if(event->type() == QEvent::StatusTip) {
         QStatusTipEvent* statusTipEvent = static_cast<QStatusTipEvent *>(event);
         if (!statusTipEvent->tip().isEmpty()) {
-            ui->statusbar->showMessage(statusTipEvent->tip(), 2000);
+            //ui->statusbar->showMessage(statusTipEvent->tip(), 2000);
         }
 
         return true;
@@ -774,6 +776,8 @@ void CentralWidget::on_action_openDetector_triggered()
 void CentralWidget::on_action_closeDetector_triggered()
 {
     // 先停止测量
+    ui->action_closeDetector->setProperty("isClicked", true);
+
     commHelper->closeDetector();
 }
 
@@ -850,6 +854,14 @@ void CentralWidget::on_action_startMeasure_triggered()
                           (ui->radioButton_soft->isChecked() ? DataProcessor::TriggerMode::tmSoftTrigger : DataProcessor::TriggerMode::tmTest);
     int triggerType = ui->radioButton_single->isChecked() ? DataProcessor::TriggerType::ttSingleTrigger : DataProcessor::TriggerType::ttContinueTrigger;
     commHelper->startMeasure(triggerMode, triggerType);
+
+    if (triggerType == DataProcessor::TriggerType::ttContinueTrigger){
+        ui->action_startMeasure->setEnabled(false);
+        ui->action_stopMeasure->setEnabled(true);
+
+        ui->pushButton_startMeasure->setEnabled(false);
+        ui->pushButton_stopMeasure->setEnabled(true);
+    }
 }
 
 
@@ -997,7 +1009,10 @@ void CentralWidget::on_action_colorTheme_triggered()
         themeColorEnable = true;
         qGoodStateHolder->setCurrentThemeDark(mIsDarkTheme);
         QGoodWindow::setAppCustomTheme(mIsDarkTheme,themeColor);
-        settings.setValue("Global/Startup/themeColor",themeColor);
+        if (mIsDarkTheme)
+            settings.setValue("Global/Startup/DarkTheme/themeColor",themeColor);
+        else
+            settings.setValue("Global/Startup/LightTheme/themeColor",themeColor);
     } else {
         themeColorEnable = false;
         qGoodStateHolder->setCurrentThemeDark(mIsDarkTheme);
@@ -1111,7 +1126,11 @@ void CentralWidget::restoreSettings()
         restoreGeometry(settings.value("MainWindow/Geometry").toByteArray());
         restoreState(settings.value("MainWindow/State").toByteArray());
     }
-    themeColor = settings.value("Global/Startup/themeColor",QColor(30,30,30)).value<QColor>();
+
+    if (mIsDarkTheme)
+        themeColor = settings.value("Global/Startup/DarkTheme/themeColor",QColor(30,30,30)).value<QColor>();
+    else
+        themeColor = settings.value("Global/Startup/LightTheme/themeColor",QColor(30,30,30)).value<QColor>();
     themeColorEnable = settings.value("Global/Startup/themeColorEnable",true).toBool();
     if(themeColorEnable) {
         QTimer::singleShot(0, this, [&](){

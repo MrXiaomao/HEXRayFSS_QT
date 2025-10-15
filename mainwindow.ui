@@ -31,7 +31,7 @@
      <number>0</number>
     </property>
     <item>
-     <widget class="QWidget" name="leftHboxWidget" native="true">
+     <widget class="QWidget" name="leftVboxWidget" native="true">
       <property name="minimumSize">
        <size>
         <width>300</width>
@@ -108,6 +108,12 @@
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>400</width>
+           <height>16777215</height>
+          </size>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_6">
           <property name="topMargin">
@@ -731,11 +737,11 @@
              </item>
              <item>
               <widget class="QWidget" name="widget_6" native="true">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>56</height>
-                </size>
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
                </property>
                <layout class="QHBoxLayout" name="horizontalLayout_12">
                 <property name="leftMargin">
@@ -765,6 +771,12 @@
                 </item>
                 <item>
                  <widget class="QPushButton" name="pushButton_saveAs">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
                   <property name="text">
                    <string>另存为...</string>
                   </property>
@@ -822,6 +834,9 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
             <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
             </property>
@@ -831,6 +846,15 @@
            <widget class="QTextEdit" name="textEdit_log">
             <property name="enabled">
              <bool>true</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>150</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
             <property name="readOnly">
              <bool>true</bool>
