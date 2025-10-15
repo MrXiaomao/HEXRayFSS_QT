@@ -137,6 +137,15 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
 
         if (ui->action_closeDetector->property("isClicked").toBool())
         {
+            ui->action_openDetector->setEnabled(true);
+            ui->action_closeDetector->setEnabled(false);
+
+            ui->action_startMeasure->setEnabled(false);
+            ui->action_stopMeasure->setEnabled(false);
+
+            ui->pushButton_startMeasure->setEnabled(false);
+            ui->pushButton_stopMeasure->setEnabled(false);
+
             label_Idle->setText(tr("探测器已关闭"));
             qInfo().noquote() << tr("探测器已关闭");
         }
@@ -193,7 +202,7 @@ void CentralWidget::initUi()
 
     {
         QPushButton* optionButton = new QPushButton();
-        optionButton->setText(tr("测量属性"));
+        optionButton->setText(tr("测量参数"));
         optionButton->setFixedSize(250,29);
         QGraphicsScene *scene = new QGraphicsScene(this);
         QGraphicsProxyWidget *w = scene->addWidget(optionButton);
@@ -354,6 +363,20 @@ void CentralWidget::initUi()
         // 发次
         ui->spinBox_shotNum->setValue(settings.value("Global/ShotNum", 100).toUInt());
         ui->checkBox_autoIncrease->setChecked(settings.value("Global/ShotNumIsAutoIncrease", false).toBool());
+
+        int triggerMode = settings.value("Global/TriggerMode", 0).toUInt();
+        int triggerType = settings.value("Global/TriggerType", 0).toUInt();
+        if (triggerMode==0)
+            ui->radioButton_hard->setChecked(true);
+        else if (triggerMode==1)
+            ui->radioButton_soft->setChecked(true);
+        else if (triggerMode==2)
+            ui->radioButton_test->setChecked(true);
+
+        if (triggerType==0)
+            ui->radioButton_single->setChecked(true);
+        else if (triggerType==1)
+            ui->radioButton_continue->setChecked(true);
     }
 
     QAction *action2 = ui->ReMatric_Edit->addAction(QIcon(":/open.png"), QLineEdit::TrailingPosition);
@@ -859,10 +882,17 @@ void CentralWidget::on_action_startMeasure_triggered()
         dir.mkpath(".");
     }
 
+    int triggerMode = ui->radioButton_hard->isChecked() ?
+                          DataProcessor::TriggerMode::tmHardTrigger :
+                          (ui->radioButton_soft->isChecked() ? DataProcessor::TriggerMode::tmSoftTrigger : DataProcessor::TriggerMode::tmTest);
+    int triggerType = ui->radioButton_single->isChecked() ? DataProcessor::TriggerType::ttSingleTrigger : DataProcessor::TriggerType::ttContinueTrigger;
+
     {
         GlobalSettings settings(QString("%1/Settings.ini").arg(savePath));
         settings.setValue("Global/ShotNum", ui->spinBox_shotNum->value());
         settings.setValue("Global/ShotNumIsAutoIncrease", ui->checkBox_autoIncrease->isChecked());
+        settings.setValue("Global/TriggerMode", triggerMode);
+        settings.setValue("Global/TriggerType", triggerType);
         settings.setValue("Global/ResponceMatrix", ui->ReMatric_Edit->text());
         settings.setValue("Global/IrradiationDistance", ui->lineEdit_irradiationDistance->text());
         settings.setValue("Global/EnergyLeft", ui->doubleSpinBox_energyLeft->text());
@@ -877,6 +907,8 @@ void CentralWidget::on_action_startMeasure_triggered()
         GlobalSettings settings(CONFIG_FILENAME);
         settings.setValue("Global/ShotNum", ui->spinBox_shotNum->value());
         settings.setValue("Global/CacheDir", ui->lineEdit_filePath->text());
+        settings.setValue("Global/TriggerMode", triggerMode);
+        settings.setValue("Global/TriggerType", triggerType);
         settings.setValue("Global/ResponceMatrix", ui->ReMatric_Edit->text());
         settings.setValue("Global/IrradiationDistance", ui->lineEdit_irradiationDistance->text());
         settings.setValue("Global/EnergyLeft", ui->doubleSpinBox_energyLeft->text());
@@ -890,10 +922,6 @@ void CentralWidget::on_action_startMeasure_triggered()
                                    ui->lineEdit_dadiationDoseRate->text());
 
     // 再发开始测量指令
-    int triggerMode = ui->radioButton_hard->isChecked() ?
-                          DataProcessor::TriggerMode::tmHardTrigger :
-                          (ui->radioButton_soft->isChecked() ? DataProcessor::TriggerMode::tmSoftTrigger : DataProcessor::TriggerMode::tmTest);
-    int triggerType = ui->radioButton_single->isChecked() ? DataProcessor::TriggerType::ttSingleTrigger : DataProcessor::TriggerType::ttContinueTrigger;
     commHelper->startMeasure(triggerMode, triggerType);
 
     if (triggerType == DataProcessor::TriggerType::ttContinueTrigger){

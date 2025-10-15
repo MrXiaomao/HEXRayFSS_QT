@@ -42,7 +42,7 @@ void DataProcessor::socketReadyRead()
         return;
 
     QByteArray rawData = socket->readAll();
-    qDebug().noquote()<<"Recv HEX: "<<rawData.toHex(' ');
+    //qDebug().noquote()<<"Recv HEX: "<<rawData.toHex(' ');
     this->inputData(rawData);
 }
 
