@@ -136,10 +136,15 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
         QLabel* label_Idle = this->findChild<QLabel*>("label_Idle");
 
         if (ui->action_closeDetector->property("isClicked").toBool())
+        {
             label_Idle->setText(tr("探测器已关闭"));
+            qInfo().noquote() << tr("探测器已关闭");
+        }
         else
+        {
             label_Idle->setText(tr("测量结束"));
-        qInfo().noquote() << tr("探测器已关闭");
+            qInfo().noquote() << tr("测量结束");
+        }
     });
 
     QTimer::singleShot(0, this, [&](){
@@ -184,6 +189,41 @@ void CentralWidget::initUi()
         ui->graphicsView_2->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         ui->graphicsView_2->setFixedWidth(50);
         ui->graphicsView_2->setScene(scene);
+    }
+
+    {
+        QPushButton* optionButton = new QPushButton();
+        optionButton->setText(tr("测量属性"));
+        optionButton->setFixedSize(250,29);
+        QGraphicsScene *scene = new QGraphicsScene(this);
+        QGraphicsProxyWidget *w = scene->addWidget(optionButton);
+        w->setPos(0,0);
+        w->setRotation(-90);
+        ui->graphicsView->setScene(scene);
+        ui->graphicsView->setFrameStyle(0);
+        ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        ui->graphicsView->setFixedSize(30, 250);
+        ui->sidewidget->setFixedWidth(30);
+
+        connect(optionButton,&QPushButton::clicked,this,[=](){
+            if(ui->widget_option->isHidden()) {
+                ui->widget_option->show();
+
+                GlobalSettings settings;
+                settings.setValue("Global/SideWidget", "Show");
+            } else {
+                ui->widget_option->hide();
+
+                GlobalSettings settings;
+                settings.setValue("Global/SideWidget", "Hide");
+            }
+        });
+
+        GlobalSettings settings;
+        QString defaultPage = settings.value("Global/SideWidget").toString();
+        if (defaultPage == "Hide")
+            ui->widget_option->hide();
     }
 
     QActionGroup *themeActionGroup = new QActionGroup(this);
@@ -248,12 +288,13 @@ void CentralWidget::initUi()
     splitter->setObjectName("splitter");
     splitter->setHandleWidth(5);
     ui->centralwidget->layout()->addWidget(splitter);
+    ui->centralwidget->layout()->addWidget(ui->sidewidget);
     splitter->addWidget(ui->leftVboxWidget);
     splitter->addWidget(ui->rightHboxWidget);
-    splitter->setSizes(QList<int>() << 100000 << 400000 << 100000);
+    splitter->setSizes(QList<int>() << 100000 << 400000);// << 100000);
     splitter->setCollapsible(0,false);
     splitter->setCollapsible(1,false);
-    splitter->setCollapsible(2,false);
+    //splitter->setCollapsible(2,false);
 
     // 左边显示3个计数曲线
     QSplitter *splitterV1 = new QSplitter(Qt::Vertical,this);
