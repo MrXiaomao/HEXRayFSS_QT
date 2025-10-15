@@ -38,17 +38,20 @@ public:
     /*
      * 开始测量
      */
-    void startMeasureWave(quint8 triggerMode, quint8 triggerType){
+    void startMeasure(quint8 triggerMode, quint8 triggerType){
         mCollectFinished = false;
+        mWaveMeasuring = false;
         mTriggerMode = triggerMode;
         mTriggerType = triggerType;
+
+        this->sendWaveModeCmd();
     };
 
     /*
-     * 开始测量
+     * 停止测量
      */
-    void stopMeasureWave(){
-        mWaveMeasuring = false;
+    void stopMeasure(){
+        this->sendStopCmd();
     };
 
 private:
@@ -58,21 +61,18 @@ public slots:
     void socketReadyRead();
 
     void sendInitCmd(); //初始化指令
-    void sendWaveMode();//波形模式
+    void sendWaveModeCmd();//波形模式
     void sendStartCmd(); //开始测量指令
     void sendStopCmd();//停止测量
 
-signals:   
-    void detectorConnected();  // 探测器
-    void detectorDisconnected();
-
+signals:
     void initSuccess(); //初始化成功
     void waitTriggerSignal();//等待触发
 
     void measureStart(); //测量开始
     void measureEnd(); //测量结束
 
-    void onRawWaveData(const QByteArray& data);//实测曲线
+    void onRawWaveData(const QByteArray& data, bool needSave);//网络原生数据
 
 private:
     QTcpSocket* mSocket = nullptr;

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1074</width>
-    <height>903</height>
+    <height>963</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -911,11 +911,11 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="action_connectRelay"/>
-   <addaction name="action_disconnectRelay"/>
+   <addaction name="action_connectNet"/>
+   <addaction name="action_disconnectNet"/>
    <addaction name="separator"/>
-   <addaction name="action_connect"/>
-   <addaction name="action_disconnect"/>
+   <addaction name="action_openDetector"/>
+   <addaction name="action_closeDetector"/>
    <addaction name="action_startMeasure"/>
    <addaction name="action_stopMeasure"/>
    <addaction name="separator"/>
@@ -1017,7 +1017,7 @@
     <enum>QAction::NoRole</enum>
    </property>
   </action>
-  <action name="action_connect">
+  <action name="action_openDetector">
    <property name="icon">
     <iconset resource="../3rdParty/resource/resource.qrc">
      <normaloff>:/conect-on.png</normaloff>:/conect-on.png</iconset>
@@ -1032,7 +1032,7 @@
     <enum>QAction::NoRole</enum>
    </property>
   </action>
-  <action name="action_disconnect">
+  <action name="action_closeDetector">
    <property name="icon">
     <iconset resource="../3rdParty/resource/resource.qrc">
      <normaloff>:/conect-fault.png</normaloff>:/conect-fault.png</iconset>
@@ -1077,7 +1077,7 @@
     <enum>QAction::NoRole</enum>
    </property>
   </action>
-  <action name="action_connectRelay">
+  <action name="action_connectNet">
    <property name="icon">
     <iconset resource="../3rdParty/resource/resource.qrc">
      <normaloff>:/lianjie-on.png</normaloff>:/lianjie-on.png</iconset>
@@ -1092,7 +1092,7 @@
     <enum>QAction::NoRole</enum>
    </property>
   </action>
-  <action name="action_disconnectRelay">
+  <action name="action_disconnectNet">
    <property name="icon">
     <iconset resource="../3rdParty/resource/resource.qrc">
      <normaloff>:/lianjie-fault.png</normaloff>:/lianjie-fault.png</iconset>

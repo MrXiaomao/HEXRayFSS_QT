@@ -41,38 +41,46 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
         ui->customPlot_result->savePng(filePath, 1920, 1080);
     });
 
-    ui->action_connectRelay->setEnabled(true);
-    ui->action_disconnectRelay->setEnabled(false);
-    ui->action_connect->setEnabled(false);
-    ui->action_disconnect->setEnabled(false);
+    ui->action_connectNet->setEnabled(true);
+    ui->action_disconnectNet->setEnabled(false);
+    ui->action_openDetector->setEnabled(false);
+    ui->action_closeDetector->setEnabled(false);
     ui->action_startMeasure->setEnabled(false);
     ui->action_stopMeasure->setEnabled(false);
     ui->pushButton_startMeasure->setEnabled(false);
     ui->pushButton_stopMeasure->setEnabled(false);
 
-    // 探测器
-    connect(commHelper, &CommHelper::detectorConnected, this, [=](){
-        ui->action_startMeasure->setEnabled(true);
-        ui->action_stopMeasure->setEnabled(true);
-        ui->pushButton_startMeasure->setEnabled(true);
-        ui->pushButton_stopMeasure->setEnabled(true);
+    // 网络连接
+    connect(commHelper, &CommHelper::netConnected, this, [=](){
+        ui->action_connectNet->setEnabled(false);
+        ui->action_disconnectNet->setEnabled(true);
 
-        ui->action_connect->setEnabled(false);
-        ui->action_disconnect->setEnabled(true);
+        ui->action_openDetector->setEnabled(true);
+        ui->action_closeDetector->setEnabled(false);
+
+        ui->action_startMeasure->setEnabled(false);
+        ui->action_stopMeasure->setEnabled(false);
+
+        ui->pushButton_startMeasure->setEnabled(false);
+        ui->pushButton_stopMeasure->setEnabled(false);
 
         QLabel* label_Connected = this->findChild<QLabel*>("label_Connected");
         label_Connected->setStyleSheet("color:green;");
         label_Connected->setText(tr("探测器网络状态：在线"));
         qInfo().noquote() << tr("探测器网络状态：在线");
     });
-    connect(commHelper, &CommHelper::detectorDisconnected, this, [=](){
+    connect(commHelper, &CommHelper::netDisconnected, this, [=](){
+        ui->action_connectNet->setEnabled(true);
+        ui->action_disconnectNet->setEnabled(false);
+
+        ui->action_openDetector->setEnabled(false);
+        ui->action_closeDetector->setEnabled(false);
+
         ui->action_startMeasure->setEnabled(false);
         ui->action_stopMeasure->setEnabled(false);
+
         ui->pushButton_startMeasure->setEnabled(false);
         ui->pushButton_stopMeasure->setEnabled(false);
-
-        ui->action_connect->setEnabled(true);
-        ui->action_disconnect->setEnabled(false);
 
         QLabel* label_Connected = this->findChild<QLabel*>("label_Connected");
         label_Connected->setStyleSheet("color:red;");
@@ -82,6 +90,9 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
 
     //初始化成功
     connect(commHelper, &CommHelper::initSuccess, this, [=](){
+        ui->action_openDetector->setEnabled(false);
+        ui->action_closeDetector->setEnabled(true);
+
         ui->action_startMeasure->setEnabled(true);
         ui->action_stopMeasure->setEnabled(false);
 
@@ -91,7 +102,7 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
 
     //测量开始，等待触发
     connect(commHelper, &CommHelper::waitTriggerSignal, this, [=](){
-
+        ui->statusbar->showMessage(tr("等待触发信号"));
     });
 
     //测量开始
@@ -175,7 +186,7 @@ void CentralWidget::initUi()
     label_Idle->setFixedWidth(300);
     label_Idle->setText(tr("准备就绪"));
     connect(ui->statusbar,&QStatusBar::messageChanged,this,[&](const QString &message){
-        label_Idle->setText(message);
+        //label_Idle->setText(message);
     });
 
     QLabel *label_Connected = new QLabel(ui->statusbar);
@@ -220,17 +231,18 @@ void CentralWidget::initUi()
     splitter->setObjectName("splitter");
     splitter->setHandleWidth(5);
     ui->centralwidget->layout()->addWidget(splitter);
-    splitter->addWidget(ui->leftHboxWidget);
+    splitter->addWidget(ui->leftVboxWidget);
     splitter->addWidget(ui->rightHboxWidget);
     splitter->setSizes(QList<int>() << 100000 << 400000 << 100000);
     splitter->setCollapsible(0,false);
     splitter->setCollapsible(1,false);
     splitter->setCollapsible(2,false);
 
+    // 左边显示3个计数曲线
     QSplitter *splitterV1 = new QSplitter(Qt::Vertical,this);
     splitterV1->setObjectName("splitterV1");
     splitterV1->setHandleWidth(5);
-    ui->leftHboxWidget->layout()->addWidget(splitterV1);
+    ui->leftVboxWidget->layout()->addWidget(splitterV1);
     splitterV1->addWidget(ui->customPlot);
     splitterV1->addWidget(ui->customPlot_2);
     splitterV1->addWidget(ui->customPlot_3);
@@ -239,6 +251,20 @@ void CentralWidget::initUi()
     splitterV1->setCollapsible(2,false);
     splitterV1->setSizes(QList<int>() << 100000 << 100000 << 100000);
 
+    // 中间显示反解能谱结果+日志
+    QSplitter *splitterV2 = new QSplitter(Qt::Vertical,this);
+    splitterV2->setObjectName("splitterV2");
+    splitterV2->setHandleWidth(5);
+    ui->leftVboxWidget->layout()->addWidget(splitterV2);
+    splitterV2->addWidget(ui->customPlot);
+    splitterV2->addWidget(ui->customPlot_2);
+    splitterV2->addWidget(ui->customPlot_3);
+    splitterV2->setCollapsible(0,false);
+    splitterV2->setCollapsible(1,false);
+    splitterV2->setCollapsible(2,false);
+    splitterV2->setSizes(QList<int>() << 100000 << 100000 << 100000);
+
+    // 右边显示选项
     QSplitter *splitterH1 = new QSplitter(Qt::Horizontal,this);
     splitterH1->setObjectName("splitterH1");
     splitterH1->setHandleWidth(5);
@@ -431,7 +457,7 @@ void CentralWidget::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, 
     customPlot->yAxis->setLabel(axisYLabel);
 
     // 添加散点图
-    QColor colors[] = {Qt::green, Qt::blue, Qt::red, Qt::cyan};
+    QColor colors[] = {Qt::green, Qt::blue, Qt::red, Qt::cyan, Qt::darkGreen};
     for (int i=0; i<graphCount; ++i){
         QCPGraph * graph = customPlot->addGraph(customPlot->xAxis, customPlot->yAxis);
         //graph->setName("");
@@ -440,7 +466,7 @@ void CentralWidget::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, 
         graph->selectionDecorator()->setPen(QPen(colors[i]));
         graph->setLineStyle(QCPGraph::lsLine);
         graph->setSelectable(QCP::SelectionType::stNone);
-        graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, colors[i], 2));//显示散点图
+        //graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, colors[i], 1));//显示散点图
         graph->setSmooth(true);    
     }
 
@@ -468,7 +494,7 @@ void CentralWidget::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, 
                 return QIcon(pixmap);
             };
 
-            QColor colors[] = {Qt::green, Qt::blue, Qt::red, Qt::cyan};
+            QColor colors[] = {Qt::green, Qt::blue, Qt::red, Qt::cyan, Qt::darkGreen};
             QIcon actionIcon = createColorIcon(colors[i]);
             checkBox->setIcon(actionIcon);
             checkBox->setProperty("index", i+1);
@@ -674,7 +700,7 @@ void CentralWidget::on_action_open_triggered()
     // 打开历史测量数据文件...
     GlobalSettings settings;
     QString lastPath = settings.value("Global/LastFilePath", QDir::homePath()).toString();
-    QString filter = "二进制文件 (*.dat);;文本文件 (*.csv);;所有文件 (*.dat *.csv)";
+    QString filter = "二进制文件 (*.dat);;所有文件 (*.dat)";
     QString filePath = QFileDialog::getOpenFileName(this, tr("打开测量数据文件"), QDir::homePath(), filter);
 
     if (filePath.isEmpty() || !QFileInfo::exists(filePath))
@@ -724,28 +750,28 @@ void CentralWidget::on_action_exportImg_triggered()
     }
 }
 
-void CentralWidget::on_action_connectRelay_triggered()
+void CentralWidget::on_action_connectNet_triggered()
 {
     // 连接网络
     commHelper->connectNet();
 }
 
 
-void CentralWidget::on_action_disconnectRelay_triggered()
+void CentralWidget::on_action_disconnectNet_triggered()
 {
     // 断开网络
     commHelper->disconnectNet();
 }
 
 
-void CentralWidget::on_action_connect_triggered()
+void CentralWidget::on_action_openDetector_triggered()
 {
     // 打开探测器
     commHelper->openDetector();
 }
 
 
-void CentralWidget::on_action_disconnect_triggered()
+void CentralWidget::on_action_closeDetector_triggered()
 {
     // 先停止测量
     commHelper->closeDetector();
@@ -760,11 +786,9 @@ void CentralWidget::on_action_startMeasure_triggered()
         ResMatrixFileName = "./responce_matrix.csv";
 
     QVector<double> keys, values;
-    for (int i=0; i<=3; ++i){
+    for (int i=0; i<=4; ++i){
         ui->customPlot->graph(i)->data()->clear();
         ui->customPlot_2->graph(i)->data()->clear();
-        if (i==3)
-            break;
         ui->customPlot_3->graph(i)->data()->clear();
     }
 
@@ -840,68 +864,64 @@ void CentralWidget::on_action_stopMeasure_triggered()
 void CentralWidget::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
 {
     //实测曲线
-    QColor clrLine[] = {Qt::green, Qt::blue, Qt::red, Qt::cyan};
+    QColor clrLine[] = {Qt::green, Qt::blue, Qt::red, Qt::cyan, Qt::darkGreen};
     QVector<double> keys, values;
     QVector<QColor> colors;
-    for (int ch=1; ch<=5; ++ch){
+    for (int channel=1; channel<=5; ++channel){
         keys.clear();
         values.clear();
         colors.clear();
-        QVector<quint16> chData = data[ch];
+        QVector<quint16> chData = data[channel];
         if (chData.size() > 0){
             for (int i=0; i<chData.size(); ++i){
-                keys << i * SAMPLE_TIME;
+                keys << i/* * SAMPLE_TIME*/;
                 values << chData[i];
-                colors << clrLine[ch-1];
+                colors << clrLine[channel-1];
             }
-            ui->customPlot->graph(ch - 1)->setData(keys, values, colors);
+            ui->customPlot->graph(channel - 1)->setData(keys, values, colors);
         }
     }
     ui->customPlot->xAxis->rescale(true);
-    ui->customPlot->yAxis->rescale(false);
-    ui->customPlot->yAxis->setRange(0, 4100);
+    ui->customPlot->yAxis->rescale(true);
+    //ui->customPlot->yAxis->setRange(0, 4100);
     ui->customPlot->replot(QCustomPlot::rpQueuedReplot);
 
-    keys.clear();
-    values.clear();
-    for (int ch=6; ch<=10; ++ch){
+    for (int channel=6; channel<=10; ++channel){
         keys.clear();
         values.clear();
         colors.clear();
-        QVector<quint16> chData = data[ch];
+        QVector<quint16> chData = data[channel];
         if (chData.size() > 0){
             for (int i=0; i<chData.size(); ++i){
-                keys << i * SAMPLE_TIME;
+                keys << i/* * SAMPLE_TIME*/;
                 values << chData[i];
-                colors << clrLine[ch-6];
+                colors << clrLine[channel-6];
             }
-            ui->customPlot_2->graph(ch - 6)->setData(keys, values, colors);
+            ui->customPlot_2->graph(channel - 6)->setData(keys, values, colors);
         }
     }
     ui->customPlot_2->xAxis->rescale(true);
-    ui->customPlot_2->yAxis->rescale(false);
-    ui->customPlot_2->yAxis->setRange(0, 4100);
+    ui->customPlot_2->yAxis->rescale(true);
+    //ui->customPlot_2->yAxis->setRange(0, 4100);
     ui->customPlot_2->replot(QCustomPlot::rpQueuedReplot);
 
-    keys.clear();
-    values.clear();
-    for (int ch=11; ch<=15; ++ch){
+    for (int channel=11; channel<=15; ++channel){
         keys.clear();
         values.clear();
         colors.clear();
-        QVector<quint16> chData = data[ch];
+        QVector<quint16> chData = data[channel];
         if (chData.size() > 0){
             for (int i=0; i<chData.size(); ++i){
-                keys << i * SAMPLE_TIME;
+                keys << i/* * SAMPLE_TIME*/;
                 values << chData[i];
-                colors << clrLine[ch-11];
+                colors << clrLine[channel-11];
             }
-            ui->customPlot_3->graph(ch - 11)->setData(keys, values, colors);
+            ui->customPlot_3->graph(channel - 11)->setData(keys, values, colors);
         }
     }
     ui->customPlot_3->xAxis->rescale(true);
-    ui->customPlot_3->yAxis->rescale(false);
-    ui->customPlot_3->yAxis->setRange(0, 4100);
+    ui->customPlot_3->yAxis->rescale(true);
+    //ui->customPlot_3->yAxis->setRange(0, 4100);
     ui->customPlot_3->replot(QCustomPlot::rpQueuedReplot);
 }
 
@@ -909,11 +929,13 @@ void CentralWidget::showEnerygySpectrumCurve(const QVector<QPair<double, double>
 {
     //反解能谱
     QVector<double> keys, values;
+    QVector<QColor> colors;
     for (auto iter = data.begin(); iter != data.end(); ++iter){
         keys << iter->first * 1000;//MeV转化为KeV
         values << iter->second;
+        colors << Qt::green;
     }
-    ui->customPlot_result->graph(0)->setData(keys, values);
+    ui->customPlot_result->graph(0)->setData(keys, values, colors);
     //ui->customPlot_result->xAxis->setRange(1.0, 150.0);
     ui->customPlot_result->xAxis->rescale(true);
     ui->customPlot_result->yAxis->rescale(true);

@@ -36,7 +36,7 @@ void AppMessageHandler(QtMsgType type, const QMessageLogContext& context, const 
         return;
 
     if (mw && type != QtDebugMsg)
-        emit mw->sigWriteLog(msg + "\n", type);
+        emit mw->sigWriteLog(msg, type);
 
     //这里必须调用，否则消息被拦截，log4qt无法捕获系统日志
     if (system_default_message_handler){
@@ -59,11 +59,12 @@ int main(int argc, char *argv[])
     QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
 
     QApplication a(argc, argv);
-    QApplication::setApplicationName("低能滤片堆栈谱仪软件");
+    QApplication::setApplicationName("高能滤片堆栈谱仪软件");
     QApplication::setOrganizationName("Copyright (c) 2025");
     QApplication::setOrganizationDomain("");
     QApplication::setApplicationVersion(APP_VERSION);
     QApplication::setStyle(QStyleFactory::create("fusion"));//WindowsVista fusion windows
+    qRegisterMetaType<QtMsgType>("QtMsgType");
 
     // JsonSettings* ipSettings = new JsonSettings(GLOBAL_CONFIG_FILENAME);
     // ipSettings->setValue(QStringList() << "Control", "ip", "192.168.10.200");

@@ -249,28 +249,28 @@ QMap<quint8, QVector<quint16>> UnfoldSpec::getCorrWaveData() const
     //获取矫正后波形数据
     
     //颠倒wave各通道顺序 0-7颠倒 8-15颠倒
-    //unsigned int wave_temp[1024][16];
-    //for (int i = 0; i < 16; ++i) {
-    //    for (int j = 0; j < SAMPLE_LENGTH; ++j) {
-    //        if (i < 8)
-    //        {
-    //            wave_temp[j][i] = wave[j][7 - i];
-    //        }
-    //        else {
-    //            wave_temp[j][i] = wave[j][23 - i];
-    //        }
-    //    }
-    //}
+    unsigned int wave_temp[1024][16];
+    for (int i = 0; i < 16; ++i) {
+       for (int j = 0; j < SAMPLE_LENGTH; ++j) {
+           if (i < 8)
+           {
+               wave_temp[j][i] = wave[j][7 - i];
+           }
+           else {
+               wave_temp[j][i] = wave[j][23 - i];
+           }
+       }
+    }
 
     QMap<quint8, QVector<quint16>> result;
     for (int i = 0; i <= 15; ++i) {
         QVector<quint16> waveData;
         for (int j = 0; j < 1024; ++j) {
-            //waveData.push_back(wave_temp[j][i]);
-            waveData.push_back(wave[j][i]);
+            waveData.push_back(wave_temp[j][i]);
+            //waveData.push_back(wave[j][i]);
         }
 
-        result[i] = waveData;
+        result[i+1] = waveData;
     }
 
     return result;

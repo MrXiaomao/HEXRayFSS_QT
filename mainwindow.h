@@ -69,17 +69,17 @@ private slots:
 
     void on_action_readXRD_triggered();
 
-    void on_action_connect_triggered();
+    void on_action_openDetector_triggered();
 
-    void on_action_disconnect_triggered();
+    void on_action_closeDetector_triggered();
 
     void on_action_startMeasure_triggered();
 
     void on_action_stopMeasure_triggered();
 
-    void on_action_connectRelay_triggered();
+    void on_action_connectNet_triggered();
 
-    void on_action_disconnectRelay_triggered();
+    void on_action_disconnectNet_triggered();
 
     void on_action_about_triggered();
 

@@ -42,10 +42,7 @@ void DataProcessor::socketReadyRead()
         return;
 
     QByteArray rawData = socket->readAll();
-    // if (mpfSaveNet){
-    //     mpfSaveNet->write((const char *)rawData.constData(), rawData.size());
-    //     mpfSaveNet->flush();
-    // }
+    qDebug().noquote()<<"Recv HEX: "<<rawData.toHex(' ');
     this->inputData(rawData);
 }
 
@@ -64,10 +61,7 @@ void DataProcessor::inputData(const QByteArray& data)
 void DataProcessor::OnDataProcessThread()
 {
     static const int BASE_CMD_LENGTH = 4;
-    static const int ONE_CHANNEL_WAVE_SIZE = 1030;// 1030=(512+3)*2 单通道数据长度
     static const int ONE_PACK_SIZE = 33024; //一次完整数据包大小33024=((1024+8)*2*16)
-    QByteArray waveDataHead = QByteArray::fromHex(QString("AB AB FF").toUtf8());;// 数据头
-    QByteArray waveDataTail = QByteArray::fromHex(QString("CD CD").toUtf8());;// 数据尾
 
     while (!mTerminatedThead)
     {
@@ -95,9 +89,6 @@ void DataProcessor::OnDataProcessThread()
             if (mCachePool.size() < BASE_CMD_LENGTH)
                 break;
 
-            /*是否找到完整帧（命令帧/数据帧）*/
-            bool findNaul = false;
-
             // 数据长度从小到大依次判断
             if (!mWaveMeasuring){
                 // 测量未进入到波形数据接收阶段
@@ -114,22 +105,7 @@ void DataProcessor::OnDataProcessThread()
                     // 处理剩下数据（粘包处理）
                     mCachePool.remove(0, BASE_CMD_LENGTH);
                     continue;
-                }
-                else if (askCurrentCmd.at(1) == 0x22 || askCurrentCmd.at(1) == 0x28 || askCurrentCmd.at(1) == 0x29) {
-                    // 启动
-                    if (mCachePool.at(1) == 0x32 || mCachePool.at(1) == 0x38 || mCachePool.at(1) == 0x39) {
-                        mWaveMeasuring = true;
-                        qInfo().noquote() << "等待触发...";
-                        QMetaObject::invokeMethod(this, "waitTriggerSignal", Qt::QueuedConnection);
-                    }
-                    else {
-                        qCritical().noquote() << "开始采集指令响应失败";
-                    }
-
-                    // 处理剩下数据（粘包处理）
-                    mCachePool.remove(0, BASE_CMD_LENGTH);
-                    continue;
-                }
+                }                
                 else if (askCurrentCmd.at(1) == 0x23) {
                     // 停止
                     if (mCachePool.at(1) == 0x33) {
@@ -161,21 +137,10 @@ void DataProcessor::OnDataProcessThread()
                 else if (askCurrentCmd.at(1) == 0x25) {
                     // 输出积分
                     if (mCachePool.at(1) == 0x35) {
-
-                    }
-
-                    return;
-                }
-                else if (askCurrentCmd.at(1) == 0x26) {
-                    // 输出波形
-                    if (mCachePool.at(1) == 0x36) {
-                        qInfo().noquote() << "输出波形指令响应成功";
-
-                        // 启动
-                        sendStartCmd();
+                        qInfo().noquote() << "输出积分指令响应成功";
                     }
                     else {
-                        qCritical().noquote() << "输出波形指令响应失败";
+                        qCritical().noquote() << "输出积分指令响应失败";
                     }
 
                     // 处理剩下数据（粘包处理）
@@ -195,32 +160,60 @@ void DataProcessor::OnDataProcessThread()
                     mCachePool.remove(0, BASE_CMD_LENGTH);
                     continue;
                 }
-            }
-            else{
-                if (mCollectFinished) {
-                    //已经采集完成了，判断停止采集指令
-                    if (askCurrentCmd.at(1) == 0x23) {
-                        // 停止
-                        if (mCachePool.at(1) == 0x33) {
-                            mWaveMeasuring = false;
-                            qInfo().noquote() << "停止采集";
-                            QMetaObject::invokeMethod(this, "measureEnd", Qt::QueuedConnection);
-                        }
-                        else {
-                            qCritical().noquote() << "停止采集确认失败";
-                        }
+                else if (askCurrentCmd.at(1) == 0x26) {
+                    // 输出波形
+                    if (mCachePool.at(1) == 0x36) {
+                        qInfo().noquote() << "输出波形指令响应成功";
 
-                        // 清空缓存
-                        mCachePool.clear();
-                        continue;
+                        // 启动
+                        QTimer::singleShot(0, this, [=]{
+                            this->sendStartCmd();
+                        });
                     }
-                    else{
-                        // 处理剩下数据（粘包处理）
-                        mCachePool.remove(0, 1);
-                        continue;
+                    else {
+                        qCritical().noquote() << "输出波形指令响应失败";
                     }
+
+                    // 处理剩下数据（粘包处理）
+                    mCachePool.remove(0, BASE_CMD_LENGTH);
+                    continue;
                 }
-                else {
+                else if (askCurrentCmd.at(1) == 0x22 || askCurrentCmd.at(1) == 0x28 || askCurrentCmd.at(1) == 0x29) {
+                    // 启动
+                    if (mCachePool.at(1) == 0x32 || mCachePool.at(1) == 0x38 || mCachePool.at(1) == 0x39) {
+                        mWaveMeasuring = true;
+                        qInfo().noquote() << "等待触发...";
+                        QMetaObject::invokeMethod(this, "waitTriggerSignal", Qt::QueuedConnection);
+                    }
+                    else {
+                        qCritical().noquote() << "开始采集指令响应失败";
+                    }
+
+                    // 处理剩下数据（粘包处理）
+                    mCachePool.remove(0, BASE_CMD_LENGTH);
+
+                    askCurrentCmd.clear();
+                }
+            }
+
+            if (mWaveMeasuring && mCachePool.size() > BASE_CMD_LENGTH){
+                if (!askCurrentCmd.isEmpty() && askCurrentCmd.at(1) == 0x23) {
+                    // 停止
+                    if (mCachePool.at(1) == 0x33) {
+                        mWaveMeasuring = false;
+                        qInfo().noquote() << "停止采集";
+                        QMetaObject::invokeMethod(this, "measureEnd", Qt::QueuedConnection);
+                    }
+                    else {
+                        qCritical().noquote() << "停止采集确认失败";
+                    }
+
+                    // 清空缓存
+                    mCachePool.clear();
+                    break;
+                }
+
+                {
                     if (mCachePool.size() >= ONE_PACK_SIZE) {
                         qInfo().noquote() << "数据采集完成，开始解析数据";
 
@@ -230,29 +223,21 @@ void DataProcessor::OnDataProcessThread()
 
                             /*单触发类型，收到完整数据需要发送停止测量指令*/
                             QTimer::singleShot(0, this, [=]{
-                                if (mSocket && mSocket->state() == QAbstractSocket::ConnectedState){
-                                    QByteArray askCurrentCmd = QByteArray::fromHex(QString("12 34 00 0f ff 10 11 11 00 00 ab cd").toUtf8());
-                                    mSocket->write(askCurrentCmd);
-                                    mSocket->waitForBytesWritten();
-                                    qDebug().noquote()<<"Send HEX: "<<askCurrentCmd.toHex(' ');
-                                }
+                                this->sendStopCmd();
                             });
                         }
 
                         //采集数据已经足够了，通知处理数据
                         // 实测曲线
                         QMetaObject::invokeMethod(this, [=]() {
-                            emit onRawWaveData(mCachePool);
+                            emit onRawWaveData(mCachePool, true);
                         }, Qt::QueuedConnection);
 
                         // 处理剩下数据（粘包处理）
                         mCachePool.remove(0, ONE_PACK_SIZE);
                     }
                 }
-            }
 
-            /*缓存池数据都处理完了*/
-            if (mCachePool.size() == 0){
                 break;
             }
         }
@@ -267,7 +252,7 @@ void DataProcessor::sendInitCmd()
     qDebug().noquote()<< QString::fromUtf8(">> 打开探测器，发送指令：初始化");
 }
 
-void DataProcessor::sendWaveMode()
+void DataProcessor::sendWaveModeCmd()
 {
     askCurrentCmd = QByteArray::fromHex(QString("01 26 00 00").toUtf8());
     mSocket->write(askCurrentCmd);

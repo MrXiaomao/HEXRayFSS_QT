@@ -206,9 +206,6 @@ void CommHelper::initDataProcessor(DataProcessor** processor, QTcpSocket *socket
     DataProcessor* detectorDataProcessor = new DataProcessor(socket, this);
     *processor = detectorDataProcessor;
 
-    connect(detectorDataProcessor, &DataProcessor::detectorConnected, this, &CommHelper::detectorConnected);
-    connect(detectorDataProcessor, &DataProcessor::detectorDisconnected, this, &CommHelper::detectorDisconnected);
-
     connect(detectorDataProcessor, &DataProcessor::initSuccess, this, &CommHelper::initSuccess);
     connect(detectorDataProcessor, &DataProcessor::waitTriggerSignal, this, &CommHelper::waitTriggerSignal);
 
@@ -222,238 +219,7 @@ void CommHelper::initDataProcessor(DataProcessor** processor, QTcpSocket *socket
     });
     connect(detectorDataProcessor, &DataProcessor::measureEnd, this, &CommHelper::measureEnd);
 
-    connect(detectorDataProcessor, &DataProcessor::onRawWaveData, this, [=](const QByteArray& rawWaveData){
-        std::map<unsigned int, std::vector<unsigned int>> correctData;//矫正数据
-        QVector<QPair<double, double>> unfoldData;//反解能谱
-
-        // matlab处理
-#ifdef ENABLE_MATLAB
-        if (global_bMatlabInited) {
-            if (m_nTriggerMode == tmTest) {
-                unsigned int index = 0;
-                double* data_cpp = new double[16384/*16 * 1024*/];//原始数据
-
-                // 测试模式，数据不需要矫正
-                unsigned char* pNetDataOffset = (unsigned char*)rawWaveData.constData();
-
-                // 有效数据是15个通道
-                net_pkg* pkg = (net_pkg*)rawWaveData.constData();
-                for (int i = 0; i < 16; ++i) {
-                    //每个通道是1024个采样点,每次发送512个采样点，分成2次发送。
-                    std::vector<unsigned int> waveData;
-                    for (int j = 0; j < 512; ++j) {
-                        data_cpp[index++] = swap_endian(pkg->data[j]);
-                        waveData.push_back(swap_endian(pkg->data[j]));
-                    }
-
-                    pkg++;
-                    for (int j = 512; j < 1024; ++j) {
-                        data_cpp[index++] = swap_endian(pkg->data[j - 512]);
-                        waveData.push_back(swap_endian(pkg->data[j - 512]));
-                    }
-
-                    correctData[i] = waveData;
-                    pkg++;
-                }
-
-                // 测试模式，数据不需要矫正
-                waveData.SetData((double*)data_cpp, 15360/*15 * 1024*/);
-
-                delete[] data_cpp;
-                data_cpp = nullptr;
-            }
-
-            // 反解能谱波形数据
-            mwArray waveData(15360/*15 * 1024*/, 1, mxDOUBLE_CLASS);
-
-            if (m_nTriggerMode != tmTest) {
-            {
-                // 硬件和软件触发模式，数据需要矫正
-
-                // 输入数组
-                mwArray data(33024, 1, mxDOUBLE_CLASS);
-                data.SetData(m_pNetDataCachePool, 33024);
-
-                // 输出数组
-                int nargout = 2;//输出变量的个数是2
-                mwArray wave(mxDOUBLE_CLASS, mxREAL);
-                mwArray wave_rms(mxDOUBLE_CLASS, mxREAL);
-                func_waveCorrect(nargout, wave, wave_rms, data, m_mwRom);
-
-                //读取结果数组
-                mwSize  dims = wave.NumberOfDimensions();//矩阵的维数,2表示二维数组
-                mwArray arrayDim = wave.GetDimensions();//各维的具体大小
-                int rowCnt = arrayDim.Get(dims, 1); //行数
-                int colCnt = arrayDim.Get(dims, 2); //列数
-
-                double* waveCorrectData = new double[rowCnt * colCnt];
-                wave.GetData(waveCorrectData, rowCnt * colCnt);
-                waveData.SetData(waveCorrectData, 15360);
-                for (int i = 0; i < 15; ++i) {
-                    QVector<quint16> waveData;
-                    //每个通道是1024个采样点,每次发送512个采样点，分成2次发送。
-                    for (int j = 0; j < 1024; ++j) {
-                        waveData.push_back(waveCorrectData[index++]);
-                    }
-                    mWaveAllData[i] = waveData;
-                }
-                delete[] waveCorrectData;
-                waveCorrectData = NULL;
-            }
-
-            // 绘制反解能谱
-            {
-                double dbX[1024] = { 0 }, dbY[1024] = { 0 };//反解能谱
-
-                // 输出数组
-                int nargout = 2;//输出变量的个数是2
-                mwArray unfold_seq(mxDOUBLE_CLASS, mxREAL);
-                mwArray unfold_spec(mxDOUBLE_CLASS, mxREAL);
-                UnfolddingAlgorithm_Gravel(nargout, unfold_seq, unfold_spec, m_mwT, m_mwSeq, waveData, m_mwResponce_matrix);
-
-                {
-                    //读取结果数组
-                    mwSize  dims = unfold_seq.NumberOfDimensions();//矩阵的维数,2表示二维数组
-
-                    mwArray arrayDim = unfold_seq.GetDimensions();//各维的具体大小
-                    int rowCnt = arrayDim.Get(dims, 1); //行数
-                    int colCnt = arrayDim.Get(dims, 2); //列数
-
-                    double* unfold_seq_cpp = new double[rowCnt * colCnt];
-                    unfold_seq.GetData(unfold_seq_cpp, rowCnt * colCnt);
-                    for (int i = 0; i < 342; ++i) {
-                        dbX[i] = unfold_seq_cpp[i];
-                    }
-                    delete[] unfold_seq_cpp;
-                    unfold_seq_cpp = NULL;
-                }
-
-                {
-                    //读取结果数组
-                    mwSize  dims = unfold_spec.NumberOfDimensions();//矩阵的维数,2表示二维数组
-
-                    mwArray arrayDim = unfold_spec.GetDimensions();//各维的具体大小
-                    int rowCnt = arrayDim.Get(dims, 1); //行数
-                    int colCnt = arrayDim.Get(dims, 2); //列数
-
-                    double* unfold_spec_cpp = new double[rowCnt * colCnt];
-                    unfold_spec.GetData(unfold_spec_cpp, rowCnt * colCnt);
-
-                    for (int i = 0; i < 342; ++i) {
-                        dbY[i] = unfold_spec_cpp[i];
-                    }
-
-                    delete[] unfold_spec_cpp;
-                    unfold_spec_cpp = NULL;
-                }
-
-                for (int i = 0; i < 342; ++i) {
-                    unfoldData.push_back(qMakePair<double,double>(dbX[i], dbY[i]));
-                }
-
-                //[unfold_seq, unfold_spec] = UnfolddingAlgorithm_Gravel(1E-8, seq_energy, data, responce_matrix);
-            }
-        }
-
-#else
-        // 先矫正数据
-        UnfoldSpec unfoldSpec;
-        if (0/*m_nTriggerMode == tmTest*/) {
-            unfoldSpec.setWaveData((unsigned char*)rawWaveData.constData());
-        }
-        else{
-            unfoldSpec.func_waveCorrect((unsigned char*)rawWaveData.constData());
-            mWaveAllData = unfoldSpec.getCorrWaveData();
-        }
-
-        //反解能谱
-        unfoldSpec.setResFileName(this->mResMatrixFileName.toStdString());
-        unfoldSpec.unfold();
-        unfoldData = unfoldSpec.getUnfoldWaveData();
-#endif //ENABLE_MATLAB
-
-        // 保存矫正后波形数据和原始测量数据
-        QString triggerTime = QDateTime::currentDateTime().toString("yyyy-MM-dd_HHmmss");
-        bool needSave = true;
-        if (needSave)
-        {
-            mTriggerTimers++;
-            QMetaObject::invokeMethod(this, "refreshTriggerTimers", Qt::QueuedConnection, Q_ARG(quint8, mTriggerTimers));
-
-            {
-                QString oldFilePath = QString("%1/%2/测量数据/Settings.ini").arg(mShotDir).arg(mShotNum);
-                QString newFilePath = QString("%1/%2/测量数据/%3_Settings.ini").arg(mShotDir).arg(mShotNum).arg(triggerTime);
-                QFile::rename(oldFilePath, newFilePath);
-            }
-
-            /*保存波形数据*/
-            /*二进制*/
-            {
-                QString filePath = QString("%1/%2/测量数据/%3_net.dat").arg(mShotDir).arg(mShotNum).arg(triggerTime);
-                QFile file(filePath);
-                if (file.open(QIODevice::WriteOnly)){
-                    file.write((const char *)rawWaveData.constData(), rawWaveData.size()*sizeof(quint16));
-                    file.close();
-                }
-            }
-
-            /*csv*/
-            {
-                QString filePath = QString("%1/%2/测量数据/%3_corr.csv").arg(mShotDir).arg(mShotNum).arg(triggerTime);
-                QFile file(filePath);
-                if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
-                    QTextStream stream(&file);
-                    for (int i=1; i<=correctData.size(); ++i){
-                        std::vector<unsigned int> waveData = correctData[i];
-                        for (int j = 0; j < waveData.size(); ++j){
-                            stream << waveData.at(j);
-                            if (j < waveData.size() - 1)
-                                stream << ",";
-                        }
-                        stream << "\n";
-                    }
-
-                    file.close();
-                }
-            }
-
-            /*csv*/
-            {
-                QString filePath = QString("%1/%2/处理数据/%3_unfold.csv").arg(mShotDir).arg(mShotNum).arg(triggerTime);
-                QFile file(filePath);
-                if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
-                    QTextStream stream(&file);
-                    for (int i = 0; i < unfoldData.size(); i++)
-                    {
-                        stream << unfoldData[i].first << "," << unfoldData[i].second << "\n";
-                    }
-
-                    file.close();
-                }
-            }
-
-            {
-                QString filePath = QString("%1/%2/处理数据/%3_Result.ini").arg(mShotDir).arg(mShotNum).arg(triggerTime);
-                GlobalSettings settings(filePath);
-                settings.setValue("Result/ReverseValue", mReverseValue);//反解能谱不确定值
-                settings.setValue("Result/DadiationDose", mDadiationDose);//辐照剂量(μGy)
-                settings.setValue("Result/DadiationDoseRate", mDadiationDoseRate);//辐照剂量率(μGy*h-1)
-            }
-
-            QString fileDir = QString("%1/%2").arg(mShotDir).arg(mShotNum);
-            emit exportEnergyPlot(fileDir, triggerTime);
-        }
-
-        // 绘制实测曲线
-        {
-            emit showRealCurve(mWaveAllData);
-        }
-
-        // 绘制反解能谱
-        {
-            emit showEnerygySpectrumCurve(unfoldData);
-        }
-    });
+    connect(detectorDataProcessor, &DataProcessor::onRawWaveData, this, &CommHelper::onRawWaveData);
 
     // connect(detectorDataProcessor, &DataProcessor::showRealCurve, this, [=](const QMap<quint8, QVector<quint16>>& data){
     //     // 将map1的内容添加到map2
@@ -489,7 +255,7 @@ void CommHelper::errorOccurred(QAbstractSocket::SocketError)
 {
     QTcpSocket* socket = qobject_cast<QTcpSocket*>(sender());
     mDetectorsIsConnected = false;
-    emit detectorDisconnected();
+    emit netDisconnected();
 }
 
 void CommHelper::stateChanged(QAbstractSocket::SocketState state)
@@ -497,7 +263,7 @@ void CommHelper::stateChanged(QAbstractSocket::SocketState state)
     QTcpSocket* socket = qobject_cast<QTcpSocket*>(sender());
     if (state == QAbstractSocket::SocketState::UnconnectedState){
         mDetectorsIsConnected = false;
-        emit detectorDisconnected();
+        emit netDisconnected();
     }
 }
 
@@ -506,7 +272,7 @@ void CommHelper::socketConnected()
 {
     QTcpSocket* socket = qobject_cast<QTcpSocket*>(sender());
     mDetectorsIsConnected = true;
-    emit detectorConnected();
+    emit netConnected();
 }
 
 
@@ -594,7 +360,7 @@ void CommHelper::startMeasure(quint8 triggerMode, quint8 triggerType)
     mTriggerType = triggerType;
 
     /*设置波形模式*/
-    mDetectorDataProcessor->sendWaveMode();
+    mDetectorDataProcessor->startMeasure(mTriggerMode, mTriggerType);
 }
 
 /*
@@ -607,7 +373,7 @@ void CommHelper::stopMeasure()
 
     /*清空波形数据*/
     mWaveAllData.clear();
-    mDetectorDataProcessor->sendStopCmd();
+    mDetectorDataProcessor->stopMeasure();
 }
 
 
@@ -618,59 +384,10 @@ bool CommHelper::openHistoryWaveFile(const QString &filePath)
     if (file.open(QIODevice::ReadWrite)){
         mWaveAllData.clear();
 
-        QVector<quint16> rawWaveData;
-        QMap<quint8, QVector<quint16>> realCurve;// 16路通道实测曲线数据
-        if (filePath.endsWith(".dat")){                        
-            rawWaveData.resize(512);
-            for (int i=1; i<=11; ++i){
-                int rSize = file.read((char *)rawWaveData.data(), rawWaveData.size() * sizeof(quint16));
-                if (rSize == 1024){
-                    realCurve[i] = rawWaveData;
-
-                    if (i == 4 || i == 8 || i == 11){
-                        // 实测曲线
-                        QMetaObject::invokeMethod(this, [=]() {
-                            emit showHistoryCurve(realCurve);
-                        }, Qt::DirectConnection);
-
-                        realCurve.clear();
-                    }
-                }
-            }
-        }
-        else{
-            int chIndex = 1;
-            while (!file.atEnd()){
-                QByteArray lines = file.readLine();
-                lines = lines.replace("\r\n", "");
-                QList<QByteArray> listLine = lines.split(',');
-                for( auto line : listLine){
-                    //rawWaveData.push_back(qRound((line.toDouble() - 10996) * 0.9));
-                    rawWaveData.push_back(qRound(line.toDouble() * 0.8));
-                }
-
-                if (rawWaveData.size() == 512){
-                    realCurve[chIndex++] = rawWaveData;
-                    // 实测曲线
-                    QMetaObject::invokeMethod(this, [=]() {
-                        emit showHistoryCurve(realCurve);
-                    }, Qt::DirectConnection);
-
-                    rawWaveData.clear();
-                    realCurve.clear();
-                }
-            }
-
-            // 尾巴数据（无效数据）
-            if (rawWaveData.size() > 0){
-                realCurve[chIndex++] = rawWaveData;
-                QMetaObject::invokeMethod(this, [=]() {
-                    emit showHistoryCurve(realCurve);
-                }, Qt::DirectConnection);
-
-                rawWaveData.clear();
-                realCurve.clear();
-            }
+        QByteArray rawWaveData;
+        if (filePath.endsWith(".dat")){
+            rawWaveData = file.readAll();
+            onRawWaveData(rawWaveData, false);
         }
 
         file.close();
@@ -874,4 +591,237 @@ bool CommHelper::saveAs(QString dstPath)
 {
     QString srcPath = QString("%1/%2").arg(mShotDir).arg(mShotNum);
     return copyDir(srcPath, dstPath);
+}
+
+void CommHelper::onRawWaveData(const QByteArray& rawWaveData, bool needSave)
+{
+    std::map<unsigned int, std::vector<unsigned int>> correctData;//矫正数据
+    QVector<QPair<double, double>> unfoldData;//反解能谱
+
+    // matlab处理
+#ifdef ENABLE_MATLAB
+    if (global_bMatlabInited) {
+        if (m_nTriggerMode == tmTest) {
+            unsigned int index = 0;
+            double* data_cpp = new double[16384/*16 * 1024*/];//原始数据
+
+            // 测试模式，数据不需要矫正
+            unsigned char* pNetDataOffset = (unsigned char*)rawWaveData.constData();
+
+            // 有效数据是15个通道
+            net_pkg* pkg = (net_pkg*)rawWaveData.constData();
+            for (int i = 0; i < 16; ++i) {
+                //每个通道是1024个采样点,每次发送512个采样点，分成2次发送。
+                std::vector<unsigned int> waveData;
+                for (int j = 0; j < 512; ++j) {
+                    data_cpp[index++] = swap_endian(pkg->data[j]);
+                    waveData.push_back(swap_endian(pkg->data[j]));
+                }
+
+                pkg++;
+                for (int j = 512; j < 1024; ++j) {
+                    data_cpp[index++] = swap_endian(pkg->data[j - 512]);
+                    waveData.push_back(swap_endian(pkg->data[j - 512]));
+                }
+
+                correctData[i] = waveData;
+                pkg++;
+            }
+
+            // 测试模式，数据不需要矫正
+            waveData.SetData((double*)data_cpp, 15360/*15 * 1024*/);
+
+            delete[] data_cpp;
+            data_cpp = nullptr;
+        }
+
+        // 反解能谱波形数据
+        mwArray waveData(15360/*15 * 1024*/, 1, mxDOUBLE_CLASS);
+
+        if (m_nTriggerMode != tmTest) {
+            {
+                // 硬件和软件触发模式，数据需要矫正
+
+                // 输入数组
+                mwArray data(33024, 1, mxDOUBLE_CLASS);
+                data.SetData(m_pNetDataCachePool, 33024);
+
+                // 输出数组
+                int nargout = 2;//输出变量的个数是2
+                mwArray wave(mxDOUBLE_CLASS, mxREAL);
+                mwArray wave_rms(mxDOUBLE_CLASS, mxREAL);
+                func_waveCorrect(nargout, wave, wave_rms, data, m_mwRom);
+
+                //读取结果数组
+                mwSize  dims = wave.NumberOfDimensions();//矩阵的维数,2表示二维数组
+                mwArray arrayDim = wave.GetDimensions();//各维的具体大小
+                int rowCnt = arrayDim.Get(dims, 1); //行数
+                int colCnt = arrayDim.Get(dims, 2); //列数
+
+                double* waveCorrectData = new double[rowCnt * colCnt];
+                wave.GetData(waveCorrectData, rowCnt * colCnt);
+                waveData.SetData(waveCorrectData, 15360);
+                for (int i = 0; i < 15; ++i) {
+                    QVector<quint16> waveData;
+                    //每个通道是1024个采样点,每次发送512个采样点，分成2次发送。
+                    for (int j = 0; j < 1024; ++j) {
+                        waveData.push_back(waveCorrectData[index++]);
+                    }
+                    mWaveAllData[i] = waveData;
+                }
+                delete[] waveCorrectData;
+                waveCorrectData = NULL;
+            }
+
+            // 绘制反解能谱
+            {
+                double dbX[1024] = { 0 }, dbY[1024] = { 0 };//反解能谱
+
+                // 输出数组
+                int nargout = 2;//输出变量的个数是2
+                mwArray unfold_seq(mxDOUBLE_CLASS, mxREAL);
+                mwArray unfold_spec(mxDOUBLE_CLASS, mxREAL);
+                UnfolddingAlgorithm_Gravel(nargout, unfold_seq, unfold_spec, m_mwT, m_mwSeq, waveData, m_mwResponce_matrix);
+
+                {
+                    //读取结果数组
+                    mwSize  dims = unfold_seq.NumberOfDimensions();//矩阵的维数,2表示二维数组
+
+                    mwArray arrayDim = unfold_seq.GetDimensions();//各维的具体大小
+                    int rowCnt = arrayDim.Get(dims, 1); //行数
+                    int colCnt = arrayDim.Get(dims, 2); //列数
+
+                    double* unfold_seq_cpp = new double[rowCnt * colCnt];
+                    unfold_seq.GetData(unfold_seq_cpp, rowCnt * colCnt);
+                    for (int i = 0; i < 342; ++i) {
+                        dbX[i] = unfold_seq_cpp[i];
+                    }
+                    delete[] unfold_seq_cpp;
+                    unfold_seq_cpp = NULL;
+                }
+
+                {
+                    //读取结果数组
+                    mwSize  dims = unfold_spec.NumberOfDimensions();//矩阵的维数,2表示二维数组
+
+                    mwArray arrayDim = unfold_spec.GetDimensions();//各维的具体大小
+                    int rowCnt = arrayDim.Get(dims, 1); //行数
+                    int colCnt = arrayDim.Get(dims, 2); //列数
+
+                    double* unfold_spec_cpp = new double[rowCnt * colCnt];
+                    unfold_spec.GetData(unfold_spec_cpp, rowCnt * colCnt);
+
+                    for (int i = 0; i < 342; ++i) {
+                        dbY[i] = unfold_spec_cpp[i];
+                    }
+
+                    delete[] unfold_spec_cpp;
+                    unfold_spec_cpp = NULL;
+                }
+
+                for (int i = 0; i < 342; ++i) {
+                    unfoldData.push_back(qMakePair<double,double>(dbX[i], dbY[i]));
+                }
+
+                //[unfold_seq, unfold_spec] = UnfolddingAlgorithm_Gravel(1E-8, seq_energy, data, responce_matrix);
+            }
+        }
+
+#else
+        // 先矫正数据
+    UnfoldSpec unfoldSpec;
+    if (0/*m_nTriggerMode == tmTest*/) {
+        unfoldSpec.setWaveData((unsigned char*)rawWaveData.constData());
+    }
+    else{
+        unfoldSpec.func_waveCorrect((unsigned char*)rawWaveData.constData());
+        mWaveAllData = unfoldSpec.getCorrWaveData();
+    }
+
+    //反解能谱
+    unfoldSpec.setResFileName(this->mResMatrixFileName.toStdString());
+    unfoldSpec.unfold();
+    unfoldData = unfoldSpec.getUnfoldWaveData();
+#endif //ENABLE_MATLAB
+
+    // 保存矫正后波形数据和原始测量数据
+    QString triggerTime = QDateTime::currentDateTime().toString("yyyy-MM-dd_HHmmss");
+    if (needSave)
+    {
+        mTriggerTimers++;
+        QMetaObject::invokeMethod(this, "refreshTriggerTimers", Qt::QueuedConnection, Q_ARG(quint8, mTriggerTimers));
+
+        {
+            QString oldFilePath = QString("%1/%2/测量数据/Settings.ini").arg(mShotDir).arg(mShotNum);
+            QString newFilePath = QString("%1/%2/测量数据/%3_Settings.ini").arg(mShotDir).arg(mShotNum).arg(triggerTime);
+            QFile::rename(oldFilePath, newFilePath);
+        }
+
+        /*保存波形数据*/
+        /*二进制*/
+        {
+            QString filePath = QString("%1/%2/测量数据/%3_net.dat").arg(mShotDir).arg(mShotNum).arg(triggerTime);
+            QFile file(filePath);
+            if (file.open(QIODevice::WriteOnly)){
+                file.write((const char *)rawWaveData.constData(), rawWaveData.size()*sizeof(quint16));
+                file.close();
+            }
+        }
+
+        /*csv*/
+        {
+            QString filePath = QString("%1/%2/测量数据/%3_corr.csv").arg(mShotDir).arg(mShotNum).arg(triggerTime);
+            QFile file(filePath);
+            if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
+                QTextStream stream(&file);
+                for (int i=1; i<=correctData.size(); ++i){
+                    std::vector<unsigned int> waveData = correctData[i];
+                    for (int j = 0; j < waveData.size(); ++j){
+                        stream << waveData.at(j);
+                        if (j < waveData.size() - 1)
+                            stream << ",";
+                    }
+                    stream << "\n";
+                }
+
+                file.close();
+            }
+        }
+
+        /*csv*/
+        {
+            QString filePath = QString("%1/%2/处理数据/%3_unfold.csv").arg(mShotDir).arg(mShotNum).arg(triggerTime);
+            QFile file(filePath);
+            if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
+                QTextStream stream(&file);
+                for (int i = 0; i < unfoldData.size(); i++)
+                {
+                    stream << unfoldData[i].first << "," << unfoldData[i].second << "\n";
+                }
+
+                file.close();
+            }
+        }
+
+        {
+            QString filePath = QString("%1/%2/处理数据/%3_Result.ini").arg(mShotDir).arg(mShotNum).arg(triggerTime);
+            GlobalSettings settings(filePath);
+            settings.setValue("Result/ReverseValue", mReverseValue);//反解能谱不确定值
+            settings.setValue("Result/DadiationDose", mDadiationDose);//辐照剂量(μGy)
+            settings.setValue("Result/DadiationDoseRate", mDadiationDoseRate);//辐照剂量率(μGy*h-1)
+        }
+
+        QString fileDir = QString("%1/%2").arg(mShotDir).arg(mShotNum);
+        emit exportEnergyPlot(fileDir, triggerTime);
+    }
+
+    // 绘制实测曲线
+    {
+        emit showRealCurve(mWaveAllData);
+    }
+
+    // 绘制反解能谱
+    {
+        emit showEnerygySpectrumCurve(unfoldData);
+    }
 }
