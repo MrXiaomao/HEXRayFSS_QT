@@ -209,14 +209,14 @@ void CommHelper::initDataProcessor(DataProcessor** processor, QTcpSocket *socket
     connect(detectorDataProcessor, &DataProcessor::initSuccess, this, &CommHelper::initSuccess);
     connect(detectorDataProcessor, &DataProcessor::waitTriggerSignal, this, &CommHelper::waitTriggerSignal);
 
-    connect(detectorDataProcessor, &DataProcessor::measureStart, this, [=](){
-        mWaveMeasuring = true;
-    });
+    // connect(detectorDataProcessor, &DataProcessor::measureStart, this, [=](){
+    //     mWaveMeasuring = true;
+    // });
     connect(detectorDataProcessor, &DataProcessor::measureStart, this, &CommHelper::measureStart);
 
-    connect(detectorDataProcessor, &DataProcessor::measureEnd, this, [=](){
-        mWaveMeasuring = false;
-    });
+    // connect(detectorDataProcessor, &DataProcessor::measureEnd, this, [=](){
+    //     mWaveMeasuring = false;
+    // });
     connect(detectorDataProcessor, &DataProcessor::measureEnd, this, &CommHelper::measureEnd);
 
     connect(detectorDataProcessor, &DataProcessor::onRawWaveData, this, &CommHelper::onRawWaveData);
@@ -240,14 +240,16 @@ void CommHelper::initDataProcessor(DataProcessor** processor, QTcpSocket *socket
 void CommHelper::errorOccurred(QAbstractSocket::SocketError)
 {
     QTcpSocket* socket = qobject_cast<QTcpSocket*>(sender());
-    mDetectorsIsConnected = false;
-    emit netDisconnected();
+    if (mDetectorsIsConnected){
+        mDetectorsIsConnected = false;
+        emit netDisconnected();
+    }
 }
 
 void CommHelper::stateChanged(QAbstractSocket::SocketState state)
 {
     QTcpSocket* socket = qobject_cast<QTcpSocket*>(sender());
-    if (state == QAbstractSocket::SocketState::UnconnectedState){
+    if (mDetectorsIsConnected && state == QAbstractSocket::SocketState::UnconnectedState){
         mDetectorsIsConnected = false;
         emit netDisconnected();
     }

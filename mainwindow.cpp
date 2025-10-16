@@ -114,7 +114,7 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
     connect(commHelper, &CommHelper::refreshTriggerTimers, this, [=](quint8 triggerTimers){
         //ui->statusbar->showMessage(tr("等待触发信号"));
         QLabel* label_Idle = this->findChild<QLabel*>("label_Idle");
-        label_Idle->setText(tr("已完成%1次测量，等待下次触发信号").arg(triggerTimers));
+        label_Idle->setText(tr("已完成%1次数据采集，等待下次触发信号").arg(triggerTimers));
     });
 
     //测量开始
@@ -158,7 +158,7 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
 
     QTimer::singleShot(0, this, [&](){
         qGoodStateHolder->setCurrentThemeDark(mIsDarkTheme);
-        QGoodWindow::setAppCustomTheme(mIsDarkTheme,this->themeColor); // Must be >96
+        QGoodWindow::setAppCustomTheme(mIsDarkTheme,this->mThemeColor); // Must be >96
     });
 
     QTimer::singleShot(0, this, [&](){
@@ -186,6 +186,13 @@ CentralWidget::~CentralWidget()
 
 void CentralWidget::initUi()
 {
+    {
+        // 隐藏剂量统计
+        ui->groupBox_2->hide();
+        // 隐藏分析结果
+        ui->widget_8->hide();
+    }
+
     {
         QGraphicsScene *scene = new QGraphicsScene(this);
         scene->setObjectName("logGraphicsScene");
@@ -924,13 +931,13 @@ void CentralWidget::on_action_startMeasure_triggered()
     // 再发开始测量指令
     commHelper->startMeasure(triggerMode, triggerType);
 
-    if (triggerType == DataProcessor::TriggerType::ttContinueTrigger){
+    //if (triggerType == DataProcessor::TriggerType::ttContinueTrigger){
         ui->action_startMeasure->setEnabled(false);
         ui->action_stopMeasure->setEnabled(true);
 
         ui->pushButton_startMeasure->setEnabled(false);
         ui->pushButton_stopMeasure->setEnabled(true);
-    }
+    //}
 }
 
 
@@ -1050,7 +1057,7 @@ void CentralWidget::on_action_lightTheme_triggered()
     if(!mIsDarkTheme) return;
     mIsDarkTheme = false;
     qGoodStateHolder->setCurrentThemeDark(mIsDarkTheme);
-    if(themeColorEnable) QGoodWindow::setAppCustomTheme(mIsDarkTheme,themeColor);
+    if(mThemeColorEnable) QGoodWindow::setAppCustomTheme(mIsDarkTheme,mThemeColor);
     GlobalSettings settings;
     settings.setValue("Global/Startup/darkTheme","false");
     applyColorTheme();
@@ -1062,7 +1069,7 @@ void CentralWidget::on_action_darkTheme_triggered()
     if(mIsDarkTheme) return;
     mIsDarkTheme = true;
     qGoodStateHolder->setCurrentThemeDark(mIsDarkTheme);
-    if(themeColorEnable) QGoodWindow::setAppCustomTheme(mIsDarkTheme,themeColor);
+    if(mThemeColorEnable) QGoodWindow::setAppCustomTheme(mIsDarkTheme,mThemeColor);
     GlobalSettings settings;
     settings.setValue("Global/Startup/darkTheme","true");
     applyColorTheme();
@@ -1072,21 +1079,21 @@ void CentralWidget::on_action_darkTheme_triggered()
 void CentralWidget::on_action_colorTheme_triggered()
 {
     GlobalSettings settings;
-    QColor color = QColorDialog::getColor(themeColor, this, tr("选择颜色"));
+    QColor color = QColorDialog::getColor(mThemeColor, this, tr("选择颜色"));
     if (color.isValid()) {
-        themeColor = color;
-        themeColorEnable = true;
+        mThemeColor = color;
+        mThemeColorEnable = true;
         qGoodStateHolder->setCurrentThemeDark(mIsDarkTheme);
-        QGoodWindow::setAppCustomTheme(mIsDarkTheme,themeColor);
+        QGoodWindow::setAppCustomTheme(mIsDarkTheme,mThemeColor);
         if (mIsDarkTheme)
-            settings.setValue("Global/Startup/DarkTheme/themeColor",themeColor);
+            settings.setValue("Global/Startup/DarkTheme/themeColor",mThemeColor);
         else
-            settings.setValue("Global/Startup/LightTheme/themeColor",themeColor);
+            settings.setValue("Global/Startup/LightTheme/themeColor",mThemeColor);
     } else {
-        themeColorEnable = false;
+        mThemeColorEnable = false;
         qGoodStateHolder->setCurrentThemeDark(mIsDarkTheme);
     }
-    settings.setValue("Global/Startup/themeColorEnable",themeColorEnable);
+    settings.setValue("Global/Startup/themeColorEnable",mThemeColorEnable);
     applyColorTheme();
 }
 
@@ -1106,9 +1113,9 @@ void CentralWidget::applyColorTheme()
         QPalette palette = customPlot->palette();
         if (mIsDarkTheme)
         {
-            if (this->themeColorEnable)
+            if (this->mThemeColorEnable)
             {
-                CustomColorDarkStyle darkStyle(themeColor);
+                CustomColorDarkStyle darkStyle(mThemeColor);
                 darkStyle.polish(palette);
             }
             else
@@ -1119,9 +1126,9 @@ void CentralWidget::applyColorTheme()
         }
         else
         {
-            if (this->themeColorEnable)
+            if (this->mThemeColorEnable)
             {
-                CustomColorLightStyle lightStyle(themeColor);
+                CustomColorLightStyle lightStyle(mThemeColor);
                 lightStyle.polish(palette);
             }
             else
@@ -1197,14 +1204,14 @@ void CentralWidget::restoreSettings()
     }
 
     if (mIsDarkTheme)
-        themeColor = settings.value("Global/Startup/DarkTheme/themeColor",QColor(30,30,30)).value<QColor>();
+        mThemeColor = settings.value("Global/Startup/DarkTheme/themeColor",QColor(30,30,30)).value<QColor>();
     else
-        themeColor = settings.value("Global/Startup/LightTheme/themeColor",QColor(30,30,30)).value<QColor>();
-    themeColorEnable = settings.value("Global/Startup/themeColorEnable",true).toBool();
-    if(themeColorEnable) {
+        mThemeColor = settings.value("Global/Startup/LightTheme/themeColor",QColor(30,30,30)).value<QColor>();
+    mThemeColorEnable = settings.value("Global/Startup/themeColorEnable",true).toBool();
+    if(mThemeColorEnable) {
         QTimer::singleShot(0, this, [&](){
             qGoodStateHolder->setCurrentThemeDark(mIsDarkTheme);
-            QGoodWindow::setAppCustomTheme(mIsDarkTheme,this->themeColor); // Must be >96
+            QGoodWindow::setAppCustomTheme(mIsDarkTheme,this->mThemeColor); // Must be >96
         });
     }
 }

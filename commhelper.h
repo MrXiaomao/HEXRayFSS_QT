@@ -120,11 +120,8 @@ private:
     void calEnerygySpectrumCurve(bool needSave = true);
 
 private:
-    bool mRelayIsConnected = false;
     bool mDetectorsIsConnected = false;
-    bool mWaveMeasuring = false;     //波形测量中
-    bool mDistanceMeasuring = false; //距离测量中
-    bool mSingleMeasure = false; //是否单次测量模式
+    //bool mWaveMeasuring = false;     //波形测量中
     QString mShotDir;// 保存路径
     QString mShotNum;// 测量发次
     QString mReverseValue;
@@ -133,8 +130,6 @@ private:
 
     QTcpSocket *mSocketDetector = nullptr; //探测器
     DataProcessor* mDetectorDataProcessor = nullptr;
-
-//    QByteArray askCurrentCmd;// 当前发送指令
     quint8 mTriggerMode; // 触发模式
     quint8 mTriggerType; // 触发类型
     quint32 mTriggerTimers;// 触发次数
@@ -152,7 +147,7 @@ private:
 #else
     UnfoldSpec* unfoldData = nullptr;
 #endif //ENABLE_MATLAB
-    QString mResMatrixFileName;
+    QString mResMatrixFileName;//响应矩阵文件
 
     /*
      初始化网络

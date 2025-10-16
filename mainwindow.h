@@ -101,8 +101,8 @@ private:
     qreal windowTransparency = 1.0;
     bool windowTransparencyEnabled = false;
     bool mIsDarkTheme = true;
-    bool themeColorEnable = true;
-    QColor themeColor = QColor(255,255,255);
+    bool mThemeColorEnable = true;
+    QColor mThemeColor = QColor(255,255,255);
 
 #ifdef ENABLE_MATLAB
     mwArray m_mwT;

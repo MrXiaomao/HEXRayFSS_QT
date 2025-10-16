@@ -43,6 +43,7 @@ public:
         mWaveMeasuring = false;
         mTriggerMode = triggerMode;
         mTriggerType = triggerType;
+        mCachePool.clear();
 
         this->sendWaveModeCmd();
     };
