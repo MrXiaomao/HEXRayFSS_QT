@@ -665,15 +665,8 @@ bool CentralWidget::eventFilter(QObject *watched, QEvent *event){
                 if (e->button() == Qt::RightButton) {// 右键恢复
                     QMenu contextMenu(customPlot);
                     contextMenu.addAction(tr("恢复视图"), this, [=]{
-                        if (customPlot == ui->customPlot_result){
-                            customPlot->xAxis->rescale(true);
-                            customPlot->yAxis->rescale(false);
-                            customPlot->yAxis->setRange(0, 4100);
-                        }
-                        else {
-                            customPlot->xAxis->rescale(true);
-                            customPlot->yAxis->rescale(true);
-                        }
+                        customPlot->xAxis->rescale(true);
+                        customPlot->yAxis->rescale(true);
                         customPlot->replot(QCustomPlot::rpQueuedReplot);
                     });
                     contextMenu.addAction(tr("导出图像..."), this, [=]{
@@ -1035,7 +1028,7 @@ void CentralWidget::on_action_about_triggered()
     QMessageBox::about(this, tr("关于"),
                        QString("<p>") +
                            tr("版本") +
-                           QString("</p><span style='color:blue;'>%1</span><p>").arg("LowXRayFSS").arg(APP_VERSION) +
+                           QString("</p><span style='color:blue;'>%1</span><p>").arg("HiXRayFSS").arg(APP_VERSION) +
                            tr("提交") +
                            QString("</p><span style='color:blue;'>%1: %2</span><p>").arg(GIT_BRANCH).arg(GIT_HASH) +
                            tr("日期") +

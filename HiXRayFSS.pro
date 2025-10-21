@@ -96,7 +96,7 @@ DEFINES += APP_VERSION="\\\"V1.0.1\\\""
 windows {
     # MinGW
     *-g++* {
-        QMAKE_CXXFLAGS += -Wall -Wextra -pedantic        
+        QMAKE_CXXFLAGS += -Wall -Wextra -Wpedantic
         #QMAKE_CXXFLAGS += -finput-charset=UTF-8
         #QMAKE_CXXFLAGS += -fexec-charset=UTF-8
         #QMAKE_CXXFLAGS += -fwide-exec-charset=UTF-16
