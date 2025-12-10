@@ -40,7 +40,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES +=
 
-DESTDIR = $$PWD/../build_Hi
+DESTDIR = $$PWD/../build_HEXRayFSS
 contains(QT_ARCH, x86_64) {
     # x64
     DESTDIR = $$DESTDIR/x64
@@ -57,9 +57,9 @@ message(DESTDIR = $$DESTDIR)
 #避免创建空的debug和release目录
 CONFIG -= debug_and_release
 CONFIG(debug, debug|release) {
-    TARGET = HiXRayFSSd
+    TARGET = HEXRayFSSd
 } else {
-    TARGET = HiXRayFSS
+    TARGET = HEXRayFSS
 }
 
 #指定编译产生的文件分门别类放到对应目录

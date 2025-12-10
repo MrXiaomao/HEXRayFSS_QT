@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1074</width>
-    <height>963</height>
+    <height>968</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -945,7 +945,6 @@
      <string>文件(&amp;F)</string>
     </property>
     <addaction name="action_open"/>
-    <addaction name="action_readXRD"/>
     <addaction name="separator"/>
     <addaction name="action_exit"/>
    </widget>
@@ -1242,21 +1241,6 @@
    </property>
    <property name="text">
     <string>关于Qt</string>
-   </property>
-  </action>
-  <action name="action_readXRD">
-   <property name="icon">
-    <iconset resource="../3rdParty/resource/resource.qrc">
-     <normaloff>:/openfile.png</normaloff>:/openfile.png</iconset>
-   </property>
-   <property name="text">
-    <string>读入XRD测量数据...</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+R</string>
-   </property>
-   <property name="menuRole">
-    <enum>QAction::NoRole</enum>
    </property>
   </action>
  </widget>

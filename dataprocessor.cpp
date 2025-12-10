@@ -275,9 +275,10 @@ void DataProcessor::OnDataProcessThread()
 
                 if (mCachePool.size() >= ONE_PACK_SIZE){
                     qInfo().noquote() << "数据采集完成，开始解析数据";
+                    QByteArray trunk = mCachePool;
 
                     //发送停止指令
-                    if (mTriggerMode != tmHardTrigger || mTriggerType == ttSingleTrigger) {
+                    if (mTriggerMode != tmHardTrigger || mTriggerType == ttSingleTrigger) {                        
                         /*单触发类型，收到完整数据需要发送停止测量指令*/
                         QTimer::singleShot(0, this, [=]{
                             this->sendStopCmd();
@@ -287,7 +288,7 @@ void DataProcessor::OnDataProcessThread()
                     //采集数据已经足够了，通知处理数据
                     // 实测曲线
                     QMetaObject::invokeMethod(this, [=]() {
-                        emit onRawWaveData(mCachePool, true);
+                        emit onRawWaveData(trunk, true);
                     }, Qt::QueuedConnection);
 
                     // 处理剩下数据（粘包处理）
@@ -324,7 +325,7 @@ void DataProcessor::sendStartCmd()
         askCurrentCmd[1] = 0x22;
     else if (mTriggerMode == TriggerMode::tmSoftTrigger)
         askCurrentCmd[1] = 0x28;
-    else if (mTriggerMode == TriggerMode::tmTest)
+    else if (mTriggerMode == TriggerMode::tmTestTrigger)
         askCurrentCmd[1] = 0x29;
     else
         askCurrentCmd[1] = 0x22;

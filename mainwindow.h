@@ -67,8 +67,6 @@ private slots:
 
     void on_action_open_triggered();
 
-    void on_action_readXRD_triggered();
-
     void on_action_openDetector_triggered();
 
     void on_action_closeDetector_triggered();
@@ -98,8 +96,6 @@ private slots:
 private:
     Ui::CentralWidget *ui;
     bool mDetectorWorkOn = false;
-    qreal windowTransparency = 1.0;
-    bool windowTransparencyEnabled = false;
     bool mIsDarkTheme = true;
     bool mThemeColorEnable = true;
     QColor mThemeColor = QColor(255,255,255);

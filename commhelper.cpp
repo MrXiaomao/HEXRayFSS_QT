@@ -509,7 +509,7 @@ void CommHelper::calEnerygySpectrumCurve(bool needSave)
 #else
         // 先矫正数据
     UnfoldSpec unfoldSpec;
-    if (0/*m_nTriggerMode == tmTest*/) {
+    if (0/*m_nTriggerMode == DataProcessor::TriggerMode::tmTestTrigger*/) {
         unfoldSpec.setWaveData((unsigned char*)rawWaveData.constData());
     }
     else{
@@ -582,15 +582,14 @@ bool CommHelper::saveAs(QString dstPath)
     return copyDir(srcPath, dstPath);
 }
 
-void CommHelper::onRawWaveData(const QByteArray& rawWaveData, bool needSave)
+void CommHelper::onRawWaveData(const QByteArray rawWaveData, bool needSave)
 {
-    std::map<unsigned int, std::vector<unsigned int>> correctData;//矫正数据
     QVector<QPair<double, double>> unfoldData;//反解能谱
 
     // matlab处理
 #ifdef ENABLE_MATLAB
     if (global_bMatlabInited) {
-        if (m_nTriggerMode == tmTest) {
+        if (m_nTriggerMode == DataProcessor::TriggerMode::tmTestTrigger) {
             unsigned int index = 0;
             double* data_cpp = new double[16384/*16 * 1024*/];//原始数据
 
@@ -601,7 +600,7 @@ void CommHelper::onRawWaveData(const QByteArray& rawWaveData, bool needSave)
             net_pkg* pkg = (net_pkg*)rawWaveData.constData();
             for (int i = 0; i < 16; ++i) {
                 //每个通道是1024个采样点,每次发送512个采样点，分成2次发送。
-                std::vector<unsigned int> waveData;
+                QVector<quint16> waveData;
                 for (int j = 0; j < 512; ++j) {
                     data_cpp[index++] = swap_endian(pkg->data[j]);
                     waveData.push_back(swap_endian(pkg->data[j]));
@@ -613,7 +612,7 @@ void CommHelper::onRawWaveData(const QByteArray& rawWaveData, bool needSave)
                     waveData.push_back(swap_endian(pkg->data[j - 512]));
                 }
 
-                correctData[i] = waveData;
+                mWaveAllData[i] = waveData;
                 pkg++;
             }
 
@@ -627,7 +626,7 @@ void CommHelper::onRawWaveData(const QByteArray& rawWaveData, bool needSave)
         // 反解能谱波形数据
         mwArray waveData(15360/*15 * 1024*/, 1, mxDOUBLE_CLASS);
 
-        if (m_nTriggerMode != tmTest) {
+        if (m_nTriggerMode != DataProcessor::TriggerMode::tmTestTrigger) {
             {
                 // 硬件和软件触发模式，数据需要矫正
 
@@ -719,7 +718,7 @@ void CommHelper::onRawWaveData(const QByteArray& rawWaveData, bool needSave)
 #else
         // 先矫正数据
     UnfoldSpec unfoldSpec;
-    if (0/*m_nTriggerMode == tmTest*/) {
+    if (0/*m_nTriggerMode == DataProcessor::TriggerMode::tmTestTrigger*/) {
         unfoldSpec.setWaveData((unsigned char*)rawWaveData.constData());
     }
     else{
@@ -732,6 +731,16 @@ void CommHelper::onRawWaveData(const QByteArray& rawWaveData, bool needSave)
     unfoldSpec.unfold();
     unfoldData = unfoldSpec.getUnfoldWaveData();
 #endif //ENABLE_MATLAB
+
+    // 绘制实测曲线
+    {
+        emit showRealCurve(mWaveAllData);
+    }
+
+    // 绘制反解能谱
+    {
+        emit showEnerygySpectrumCurve(unfoldData);
+    }
 
     // 保存矫正后波形数据和原始测量数据
     QString triggerTime = QDateTime::currentDateTime().toString("yyyy-MM-dd_HHmmss");
@@ -752,7 +761,7 @@ void CommHelper::onRawWaveData(const QByteArray& rawWaveData, bool needSave)
             QString filePath = QString("%1/%2/测量数据/%3_net.dat").arg(mShotDir).arg(mShotNum).arg(triggerTime);
             QFile file(filePath);
             if (file.open(QIODevice::WriteOnly)){
-                file.write((const char *)rawWaveData.constData(), rawWaveData.size()*sizeof(quint16));
+                file.write((const char *)rawWaveData.constData(), rawWaveData.size());
                 file.close();
             }
         }
@@ -763,8 +772,9 @@ void CommHelper::onRawWaveData(const QByteArray& rawWaveData, bool needSave)
             QFile file(filePath);
             if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
                 QTextStream stream(&file);
-                for (int i=1; i<=correctData.size(); ++i){
-                    std::vector<unsigned int> waveData = correctData[i];
+                for (int i=1; i<=mWaveAllData.size(); ++i){
+                    QVector<quint16> waveData = mWaveAllData[i];
+                    stream << i << ",";//通道号
                     for (int j = 0; j < waveData.size(); ++j){
                         stream << waveData.at(j);
                         if (j < waveData.size() - 1)
@@ -802,15 +812,5 @@ void CommHelper::onRawWaveData(const QByteArray& rawWaveData, bool needSave)
 
         QString fileDir = QString("%1/%2").arg(mShotDir).arg(mShotNum);
         emit exportEnergyPlot(fileDir, triggerTime);
-    }
-
-    // 绘制实测曲线
-    {
-        emit showRealCurve(mWaveAllData);
-    }
-
-    // 绘制反解能谱
-    {
-        emit showEnerygySpectrumCurve(unfoldData);
     }
 }

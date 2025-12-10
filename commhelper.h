@@ -88,7 +88,7 @@ public slots:
     void errorOccurred(QAbstractSocket::SocketError);
     void socketConnected();
     void stateChanged(QAbstractSocket::SocketState);
-    void onRawWaveData(const QByteArray& data, bool needSave);//网络原生数据
+    void onRawWaveData(const QByteArray data, bool needSave);//网络原生数据
 
 signals:    
     void netConnected();  // 探测器

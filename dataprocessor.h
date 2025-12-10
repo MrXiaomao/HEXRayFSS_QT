@@ -21,7 +21,7 @@ public:
     {
         tmHardTrigger = 0,
         tmSoftTrigger = 1,
-        tmTest = 2
+        tmTestTrigger = 2
     };
 
     enum TriggerType
@@ -39,7 +39,6 @@ public:
      * 开始测量
      */
     void startMeasure(quint8 triggerMode, quint8 triggerType){
-        mCollectFinished = false;
         mWaveMeasuring = false;
         mTriggerMode = triggerMode;
         mTriggerType = triggerType;
@@ -73,7 +72,7 @@ signals:
     void measureStart(); //测量开始
     void measureEnd(); //测量结束
 
-    void onRawWaveData(const QByteArray& data, bool needSave);//网络原生数据
+    void onRawWaveData(const QByteArray data, bool needSave);//网络原生数据
 
 private:
     QTcpSocket* mSocket = nullptr;
@@ -86,7 +85,6 @@ private:
     QWaitCondition mCondition;
     QLiteThread* mdataProcessThread = nullptr;// 处理线程
     bool mWaveMeasuring = false;     //波形测量中
-    bool mCollectFinished = false; //波形数据采集完成
     quint8 mTriggerMode = 0x00;//触发模式
     quint8 mTriggerType = 0x00;//触发类型（单次/连续）
 

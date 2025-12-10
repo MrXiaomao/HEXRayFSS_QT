@@ -23,8 +23,8 @@ VS_VERSION_INFO VERSIONINFO
 				VALUE "FileDescription", "\0"
 				VALUE "FileVersion", "0.0.0.0\0"
 				VALUE "LegalCopyright", "\0"
-				VALUE "OriginalFilename", "HiXRayFSSd.exe\0"
-				VALUE "ProductName", "HiXRayFSSd\0"
+				VALUE "OriginalFilename", "HEXRayFSSd.exe\0"
+				VALUE "ProductName", "HEXRayFSSd\0"
 				VALUE "ProductVersion", "0.0.0.0\0"
 			END
 		END

@@ -154,6 +154,14 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
             label_Idle->setText(tr("测量结束"));
             qInfo().noquote() << tr("测量结束");
         }
+
+        // 测量完成发次号递增
+        {
+            GlobalSettings settings(CONFIG_FILENAME);
+            if (settings.value("Global/ShotNumIsAutoIncrease").toBool()){
+                ui->spinBox_shotNum->setValue(settings.value("Global/ShotNum").toUInt() + 1);
+            }
+        }
     });
 
     QTimer::singleShot(0, this, [&](){
@@ -373,18 +381,34 @@ void CentralWidget::initUi()
 
         int triggerMode = settings.value("Global/TriggerMode", 0).toUInt();
         int triggerType = settings.value("Global/TriggerType", 0).toUInt();
-        if (triggerMode==0)
-            ui->radioButton_hard->setChecked(true);
-        else if (triggerMode==1)
-            ui->radioButton_soft->setChecked(true);
-        else if (triggerMode==2)
-            ui->radioButton_test->setChecked(true);
-
         if (triggerType==0)
             ui->radioButton_single->setChecked(true);
         else if (triggerType==1)
             ui->radioButton_continue->setChecked(true);
+
+        if (triggerMode==0)
+            ui->radioButton_hard->setChecked(true);
+        else if (triggerMode==1){
+            ui->radioButton_single->setChecked(true);
+            ui->radioButton_continue->setEnabled(false);
+            ui->radioButton_soft->setChecked(true);
+        }
+        else if (triggerMode==2){
+            ui->radioButton_single->setChecked(true);
+            ui->radioButton_continue->setEnabled(false);
+            ui->radioButton_test->setChecked(true);
+        }
     }
+
+    connect(ui->radioButton_hard, &QRadioButton::toggled, this, [=](bool checked){
+        if (checked){
+            ui->radioButton_continue->setEnabled(true);
+        }
+        else{
+            ui->radioButton_single->setChecked(true);
+            ui->radioButton_continue->setEnabled(false);
+        }
+    });
 
     QAction *action2 = ui->ReMatric_Edit->addAction(QIcon(":/open.png"), QLineEdit::TrailingPosition);
     QToolButton* button2 = qobject_cast<QToolButton*>(action2->associatedWidgets().last());
@@ -767,38 +791,14 @@ void CentralWidget::on_action_open_triggered()
     GlobalSettings settings;
     QString lastPath = settings.value("Global/LastFilePath", QDir::homePath()).toString();
     QString filter = "二进制文件 (*.dat);;所有文件 (*.dat)";
-    QString filePath = QFileDialog::getOpenFileName(this, tr("打开测量数据文件"), QDir::homePath(), filter);
+    QString filePath = QFileDialog::getOpenFileName(this, tr("打开测量数据文件"), lastPath, filter);
 
     if (filePath.isEmpty() || !QFileInfo::exists(filePath))
         return;
 
     settings.setValue("Global/LastFilePath", filePath);
-    commHelper->setResMatrixFileName(ResMatrixFileName);
+    commHelper->setResMatrixFileName(ResMatrixFileName);// 这里应该改为测量数据目录下对应的响应文件名，否则文件不一致，图像也会不一样
     if (!commHelper->openHistoryWaveFile(filePath))
-    {
-        QMessageBox::information(this, tr("提示"), tr("文件格式错误，加载失败！"));
-    }
-}
-
-void CentralWidget::on_action_readXRD_triggered()
-{
-    // 打开XRD数据文件...
-    // 读取上次使用的路径，如果没有则使用文档路径
-    GlobalSettings settings;
-    QString lastPath = settings.value("Global/LastFilePath", QDir::homePath()).toString();
-    QString filter = "XRD数据文件 (*.csv);;所有文件 (*.csv)";
-    QString filePath = QFileDialog::getOpenFileName(this, tr("打开XRD数据文件"), lastPath, filter);
-
-    if (filePath.isEmpty() || !QFileInfo::exists(filePath))
-        return;
-
-    settings.setValue("Global/LastFilePath", filePath);
-    QVector<QPair<double, double>> data;
-    if (openXRDFile(filePath, data))
-    {
-        showEnerygySpectrumCurve(data);
-    }
-    else
     {
         QMessageBox::information(this, tr("提示"), tr("文件格式错误，加载失败！"));
     }
@@ -884,7 +884,7 @@ void CentralWidget::on_action_startMeasure_triggered()
 
     int triggerMode = ui->radioButton_hard->isChecked() ?
                           DataProcessor::TriggerMode::tmHardTrigger :
-                          (ui->radioButton_soft->isChecked() ? DataProcessor::TriggerMode::tmSoftTrigger : DataProcessor::TriggerMode::tmTest);
+                          (ui->radioButton_soft->isChecked() ? DataProcessor::TriggerMode::tmSoftTrigger : DataProcessor::TriggerMode::tmTestTrigger);
     int triggerType = ui->radioButton_single->isChecked() ? DataProcessor::TriggerType::ttSingleTrigger : DataProcessor::TriggerType::ttContinueTrigger;
 
     {
@@ -899,13 +899,14 @@ void CentralWidget::on_action_startMeasure_triggered()
         settings.setValue("Global/EnergyRight", ui->doubleSpinBox_energyRight->text());        
     }
 
-    // 保存界面参数
-    if (ui->checkBox_autoIncrease->isChecked()){
-        ui->spinBox_shotNum->setValue(ui->spinBox_shotNum->value() + 1);
-    }
+    // // 保存界面参数
+    // if (ui->checkBox_autoIncrease->isChecked()){
+    //     ui->spinBox_shotNum->setValue(ui->spinBox_shotNum->value() + 1);
+    // }
     {
         GlobalSettings settings(CONFIG_FILENAME);
         settings.setValue("Global/ShotNum", ui->spinBox_shotNum->value());
+        settings.setValue("Global/ShotNumIsAutoIncrease", ui->checkBox_autoIncrease->isChecked());
         settings.setValue("Global/CacheDir", ui->lineEdit_filePath->text());
         settings.setValue("Global/TriggerMode", triggerMode);
         settings.setValue("Global/TriggerType", triggerType);
@@ -1028,7 +1029,7 @@ void CentralWidget::on_action_about_triggered()
     QMessageBox::about(this, tr("关于"),
                        QString("<p>") +
                            tr("版本") +
-                           QString("</p><span style='color:blue;'>%1</span><p>").arg("HiXRayFSS").arg(APP_VERSION) +
+                           QString("</p><span style='color:blue;'>%1</span><p>").arg("HEXRayFSS").arg(APP_VERSION) +
                            tr("提交") +
                            QString("</p><span style='color:blue;'>%1: %2</span><p>").arg(GIT_BRANCH).arg(GIT_HASH) +
                            tr("日期") +
