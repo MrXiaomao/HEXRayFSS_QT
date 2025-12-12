@@ -28,16 +28,16 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
     connect(commHelper, &CommHelper::showRealCurve, this, &CentralWidget::showRealCurve);
     connect(commHelper, &CommHelper::showEnerygySpectrumCurve, this, &CentralWidget::showEnerygySpectrumCurve);
     connect(commHelper, &CommHelper::exportEnergyPlot, this, [=](const QString fileDir, const QString triggerTime){
-        QString filePath = QString("%1/测量数据/%2_1-5.png").arg(fileDir, triggerTime);
+        QString filePath = QString("%1/%2_1-5.png").arg(fileDir, triggerTime);
         ui->customPlot->savePng(filePath, 1920, 1080);
 
-        filePath = QString("%1/测量数据/%2_6-10.png").arg(fileDir, triggerTime);
+        filePath = QString("%1/%2_6-10.png").arg(fileDir, triggerTime);
         ui->customPlot_2->savePng(filePath, 1920, 1080);
 
-        filePath = QString("%1/测量数据/%2_11-15.png").arg(fileDir, triggerTime);
+        filePath = QString("%1/%2_11-15.png").arg(fileDir, triggerTime);
         ui->customPlot_3->savePng(filePath, 1920, 1080);
 
-        filePath = QString("%1/处理数据/%2_反解能谱.png").arg(fileDir, triggerTime);
+        filePath = QString("%1/%2_反解能谱.png").arg(fileDir, triggerTime);
         ui->customPlot_result->savePng(filePath, 1920, 1080);
     });
 
@@ -728,6 +728,7 @@ void CentralWidget::on_action_exit_triggered()
     mainWindow->close();
 }
 
+//打开历史测量数据文件
 void CentralWidget::on_action_open_triggered()
 {
     QString ResMatrixFileName;
@@ -739,14 +740,24 @@ void CentralWidget::on_action_open_triggered()
     GlobalSettings settings;
     QString lastPath = settings.value("Global/LastFilePath", QDir::homePath()).toString();
     QString filter = "二进制文件 (*.dat);;所有文件 (*.dat)";
-    QString filePath = QFileDialog::getOpenFileName(this, tr("打开测量数据文件"), lastPath, filter);
+    QString fileName = QFileDialog::getOpenFileName(this, tr("打开测量数据文件"), lastPath, filter);
 
-    if (filePath.isEmpty() || !QFileInfo::exists(filePath))
+    if (fileName.isEmpty() || !QFileInfo::exists(fileName))
         return;
 
-    settings.setValue("Global/LastFilePath", filePath);
+    settings.setValue("Global/LastFilePath", fileName);
+
+    //读取触发模式，存储在当前文件所在目录的Settings.ini
+    {
+        //获取fileName所在目录
+        QString dirPath = QFileInfo(fileName).dir().path();
+        GlobalSettings settingsFile(QString("%1/Settings.ini").arg(dirPath));
+        quint8 triggerMode = settingsFile.value("Global/TriggerMode").toUInt();
+        commHelper->setTriggerMode(triggerMode);
+    }
+
     commHelper->setResMatrixFileName(ResMatrixFileName);// 这里应该改为测量数据目录下对应的响应文件名，否则文件不一致，图像也会不一样
-    if (!commHelper->openHistoryWaveFile(filePath))
+    if (!commHelper->openHistoryWaveFile(fileName))
     {
         QMessageBox::information(this, tr("提示"), tr("文件格式错误，加载失败！"));
     }
@@ -820,12 +831,8 @@ void CentralWidget::on_action_startMeasure_triggered()
     quint32 shotNum = ui->spinBox_shotNum->value();
 
     // 保存测量数据
-    QString savePath = QString(tr("%1/%2/测量数据")).arg(shotDir).arg(shotNum);
-    QDir dir(QString(tr("%1/%2/测量数据")).arg(shotDir).arg(shotNum));
-    if (!dir.exists()) {
-        dir.mkpath(".");
-    }
-    dir.setPath(QString(tr("%1/%2/处理数据")).arg(shotDir).arg(shotNum));
+    QString savePath = QString(tr("%1/%2/")).arg(shotDir).arg(shotNum);
+    QDir dir(QString(tr("%1/%2/")).arg(shotDir).arg(shotNum));
     if (!dir.exists()) {
         dir.mkpath(".");
     }

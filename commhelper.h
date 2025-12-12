@@ -50,13 +50,18 @@ public:
      设置发次信息
     */
     void setShotInformation(const QString shotDir, const quint32 shotNum);
-    void setResultInformation(const QString reverseValue/*, const QString dadiationDose, const QString dadiationDoseRate*/);
 
     /*
      设置波形模式
     */
     void startMeasure(quint8 triggerMode, quint8 triggerType);
 
+    //设置触发模式
+    void setTriggerMode(quint8 triggerMode)
+    {
+        mTriggerMode = triggerMode;
+    }
+    
     /*
      开始测量
     */
@@ -101,29 +106,20 @@ signals:
     void exportEnergyPlot(const QString fileDir, const QString triggerTime);
 
     void refreshTriggerTimers(quint8);//刷新触发次数
-private:
-    /*********************************************************
-     探测器指令
-    ***********************************************************/
-
-    /*
-     反解能谱
-    */
-    // void calEnerygySpectrumCurve(bool needSave = true);
 
 private:
     bool mDetectorsIsConnected = false;
-    //bool mWaveMeasuring = false;     //波形测量中
+    
     QString mShotDir;// 保存路径
     QString mShotNum;// 测量发次
-    QString mReverseValue;
+    
     QString mDadiationDose;
     QString mDadiationDoseRate;
 
     QTcpSocket *mSocketDetector = nullptr; //探测器
     DataProcessor* mDetectorDataProcessor = nullptr;
-    quint8 mTriggerMode; // 触发模式
-    quint8 mTriggerType; // 触发类型
+    quint8 mTriggerMode; // 触发模式：硬触发，软触发，测试
+    quint8 mTriggerType; // 触发类型：单次触发，连续触发
     quint32 mTriggerTimers;// 触发次数
     QMap<quint8, QVector<quint16>> mWaveAllData;
 

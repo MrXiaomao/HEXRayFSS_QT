@@ -189,13 +189,6 @@ void CommHelper::setShotInformation(const QString shotDir, const quint32 shotNum
     this->mShotNum = QString::number(shotNum);
 }
 
-void CommHelper::setResultInformation(const QString reverseValue/*, const QString dadiationDose, const QString dadiationDoseRate*/)
-{
-    this->mReverseValue = reverseValue;
-    // this->mDadiationDose = dadiationDose;
-    // this->mDadiationDoseRate = dadiationDoseRate;
-}
-
 /*
  开始测量
 */
@@ -385,14 +378,6 @@ void CommHelper::onRawWaveData(const QByteArray rawWaveData, bool needSave)
 
                 file.close();
             }
-        }
-
-        {
-            QString filePath = QString("%1/%2/%3_Result.ini").arg(mShotDir).arg(mShotNum).arg(triggerTime);
-            GlobalSettings settings(filePath);
-            settings.setValue("Result/ReverseValue", mReverseValue);//反解能谱不确定值
-            // settings.setValue("Result/DadiationDose", mDadiationDose);//辐照剂量(μGy)
-            // settings.setValue("Result/DadiationDoseRate", mDadiationDoseRate);//辐照剂量率(μGy*h-1)
         }
 
         QString fileDir = QString("%1/%2").arg(mShotDir).arg(mShotNum);
