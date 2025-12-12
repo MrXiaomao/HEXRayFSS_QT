@@ -11,14 +11,7 @@
 #include "qlitethread.h"
 #include "dataprocessor.h"
 
-#ifdef ENABLE_MATLAB
-#include "UnfolddingAlgorithm_Gravel.h"
-#include "mclmcrrt.h"  // MATLAB 运行时头文件
-#include "mclcppclass.h"  // mwArray 头文件
-extern bool gMatlabInited;
-#else
 #include "unfoldSpec.h"
-#endif //ENABLE_MATLAB
 
 class CommHelper : public QObject
 {
@@ -103,8 +96,7 @@ signals:
     void measureDistanceStart(); //测量开始
     void measureDistanceEnd(); //测量结束
 
-    void showHistoryCurve(const QMap<quint8, QVector<quint16>>& data);//实测曲线
-    void showRealCurve(const QMap<quint8, QVector<quint16>>& data);//实测曲线
+    void showRealCurve(const QMap<quint8, QVector<quint16>>& data);//波形曲线
     void showEnerygySpectrumCurve(const QVector<QPair<double, double>>& data);//反解能谱
     void exportEnergyPlot(const QString fileDir, const QString triggerTime);
 
@@ -117,7 +109,7 @@ private:
     /*
      反解能谱
     */
-    void calEnerygySpectrumCurve(bool needSave = true);
+    // void calEnerygySpectrumCurve(bool needSave = true);
 
 private:
     bool mDetectorsIsConnected = false;
@@ -134,19 +126,9 @@ private:
     quint8 mTriggerType; // 触发类型
     quint32 mTriggerTimers;// 触发次数
     QMap<quint8, QVector<quint16>> mWaveAllData;
-#ifdef ENABLE_MATLAB
-    mwArray m_mwT;
-    mwArray m_mwSeq;
-    mwArray m_mwResponce_matrix;
 
-    bool loadSeq(double* seq);
-    bool reloadResponceMatrix();
-    bool loadResponceMatrix(double* responceMatrix);
-    bool loadRom(double* rom);
-    bool loadData(double* data);
-#else
     UnfoldSpec* unfoldData = nullptr;
-#endif //ENABLE_MATLAB
+
     QString mResMatrixFileName;//响应矩阵文件
 
     /*

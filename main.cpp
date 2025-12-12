@@ -117,30 +117,6 @@ int main(int argc, char *argv[])
     splash.setPixmap(QPixmap(":/splash.png"));
     splash.show();
 
-#ifdef ENABLE_MATLAB
-    splash.showMessage(QObject::tr("资源初始化..."), Qt::AlignLeft | Qt::AlignBottom, Qt::white);
-    if (mclInitializeApplication(NULL, 0)) {
-        if(UnfolddingAlgorithm_GravelInitialize())
-        {
-            gMatlabInited = true;
-        }
-        else
-        {
-            gMatlabInited = false;
-        }
-    }
-
-    if (!gMatlabInited){
-        int reply = QMessageBox::question(nullptr, QObject::tr("询问"), QObject::tr("Matlab程序DLL初始化失败，是否继续？"),
-                                          QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
-        if(reply != QMessageBox::Yes) {
-            return -1;
-        }
-
-        qInfo().noquote() << QObject::tr("*** matlab程序DLL初始化失败");
-    }
-#endif //ENABLE_MATLAB
-
     splash.showMessage(QObject::tr("加载语言库..."), Qt::AlignLeft | Qt::AlignBottom, Qt::white);
 
     // 启用新的日子记录类
@@ -219,11 +195,6 @@ int main(int argc, char *argv[])
     w.show();
 
     int ret = a.exec();
-
-#ifdef ENABLE_MATLAB
-    UnfolddingAlgorithm_GravelTerminate();
-    mclTerminateApplication();
-#endif //ENABLE_MATLAB
 
     //运行运行到这里，此时主窗体析构函数还没触发，所以shutdownRootLogger需要在主窗体销毁以后再做处理
     QObject::connect(&w, &QObject::destroyed, []{

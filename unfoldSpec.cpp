@@ -595,7 +595,7 @@ bool UnfoldSpec::loadSeq()
  */
 bool UnfoldSpec::readResMatrix(std::string fileName)
 {
-    fileName = "./responce_matrix.csv";
+    // fileName = "./responce_matrix.csv";
     std::ifstream file(fileName);
     if (!file.is_open()) {
         std::cout << "无法打开文件:" << fileName << std::endl;

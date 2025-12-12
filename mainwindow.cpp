@@ -17,9 +17,9 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
 
     commHelper = CommHelper::instance();
     initUi();
-    initCustomPlot(ui->customPlot, tr("时间/ns"), tr("实测曲线（通道1-5）"), 5);
-    initCustomPlot(ui->customPlot_2, tr("时间/ns"), tr("实测曲线（通道6-10）"), 5);
-    initCustomPlot(ui->customPlot_3, tr("时间/ns"), tr("实测曲线（通道11-15）"), 5);
+    initCustomPlot(ui->customPlot, tr("时间/ns"), tr("波形曲线（通道1-5）"), 5);
+    initCustomPlot(ui->customPlot_2, tr("时间/ns"), tr("波形曲线（通道6-10）"), 5);
+    initCustomPlot(ui->customPlot_3, tr("时间/ns"), tr("波形曲线（通道11-15）"), 5);
     initCustomPlot(ui->customPlot_result, tr("能量/KeV"), tr("反解能谱/Counts"));
     restoreSettings();
     applyColorTheme();
@@ -197,8 +197,6 @@ void CentralWidget::initUi()
     {
         // 隐藏剂量统计
         ui->groupBox_2->hide();
-        // 隐藏分析结果
-        ui->widget_8->hide();
     }
 
     {
@@ -413,6 +411,8 @@ void CentralWidget::initUi()
     QAction *action2 = ui->ReMatric_Edit->addAction(QIcon(":/open.png"), QLineEdit::TrailingPosition);
     QToolButton* button2 = qobject_cast<QToolButton*>(action2->associatedWidgets().last());
     button2->setCursor(QCursor(Qt::PointingHandCursor));
+
+    //选择后将响应矩阵文件拷贝到exe所在目录
     connect(button2, &QToolButton::pressed, this, [=](){
         QString filter = "响应矩阵文件 (*.csv);;所有文件 (*.csv)";
         QString fileName = QFileDialog::getOpenFileName(this, tr("选择响应矩阵文件"),";",filter);
@@ -422,22 +422,6 @@ void CentralWidget::initUi()
         GlobalSettings settings(CONFIG_FILENAME);
         settings.setValue("Global/ResponceMatrix", fileName);
         ui->ReMatric_Edit->setText(fileName);
-
-#ifdef ENABLE_MATLAB
-        // 重新加载响应矩阵文件
-        QFile::rename("./responce_matrix.csv", "./responce_matrix.csv.bak");
-        QFile::copy(fileName, "./responce_matrix.csv");
-        if (!commHelper->reloadResponceMatrix())
-        {
-            QFile::rename("./responce_matrix.csv.bak", "./responce_matrix.csv");
-        }
-        else{
-            QFile::remove("./responce_matrix.csv.bak");
-        }
-#else
-        QFile::remove("./responce_matrix.csv.bak");
-        QFile::copy(fileName, "./responce_matrix.csv");
-#endif  //ENABLE_MATLAB
     });
 
     // 反解能谱响应文件
@@ -448,40 +432,6 @@ void CentralWidget::initUi()
             fileName = "./responce_matrix.csv";
         ui->ReMatric_Edit->setText(fileName);
         commHelper->setResMatrixFileName(fileName);
-
-        // 辐照距离
-        ui->lineEdit_irradiationDistance->setText(settings.value("Global/IrradiationDistance", 12.22).toString());
-        // 能量区间
-        ui->doubleSpinBox_energyLeft->setValue(settings.value("Global/EnergyLeft", 0.20).toFloat());
-        ui->doubleSpinBox_energyRight->setValue(settings.value("Global/EnergyRight", 102.10).toFloat());
-    }
-
-    QAction *action3 = ui->lineEdit_SaveAsPath->addAction(QIcon(":/open.png"), QLineEdit::TrailingPosition);
-    QToolButton* button3 = qobject_cast<QToolButton*>(action3->associatedWidgets().last());
-    button3->setCursor(QCursor(Qt::PointingHandCursor));
-    connect(button3, &QToolButton::pressed, this, [=](){
-        QString saveAsDir = QFileDialog::getExistingDirectory(this);
-        if (!saveAsDir.isEmpty()){
-
-            GlobalSettings settings(CONFIG_FILENAME);
-            settings.setValue("Global/SaveAsPath", saveAsDir);
-
-            ui->lineEdit_SaveAsPath->setText(saveAsDir);
-        }
-    });
-
-    // 分析结果
-    {
-        GlobalSettings settings(CONFIG_FILENAME);
-        QString saveAsDir = settings.value("Global/SaveAsPath").toString();
-        if (saveAsDir.isEmpty())
-            saveAsDir = QApplication::applicationDirPath() + "/cache/";
-        ui->lineEdit_SaveAsPath->setText(saveAsDir);
-
-        ui->lineEdit_reverseValue->setText(settings.value("Global/ReverseValue", "1.0%").toString());
-        ui->lineEdit_dadiationDose->setText(settings.value("Global/DadiationDose", 1011.0).toString());
-        ui->lineEdit_dadiationDoseRate->setText(settings.value("Global/DadiationDoseRate", 30.0).toString());
-        ui->lineEdit_SaveAsFileName->setText(settings.value("Global/SaveAsFileName", "test1").toString());
     }
 
     connect(ui->pushButton_startMeasure, &QPushButton::clicked, ui->action_startMeasure, &QAction::trigger);
@@ -497,13 +447,11 @@ void CentralWidget::initUi()
         if (settings.contains("Global/splitterH1/State")){
             QSplitter *splitterH1 = this->findChild<QSplitter*>("splitterH1");
             splitterH1->restoreState(settings.value("Global/splitterH1/State").toByteArray());
-            //splitterH1->restoreGeometry(settings.value("Global/splitterH1/Geometry").toByteArray());
         }
 
         if (settings.contains("Global/splitter/State")){
             QSplitter *splitter = this->findChild<QSplitter*>("splitter");
             splitter->restoreState(settings.value("Global/splitter/State").toByteArray());
-            //splitter->restoreGeometry(settings.value("Global/splitter/Geometry").toByteArray());
         }
     }
 }
@@ -890,19 +838,12 @@ void CentralWidget::on_action_startMeasure_triggered()
     {
         GlobalSettings settings(QString("%1/Settings.ini").arg(savePath));
         settings.setValue("Global/ShotNum", ui->spinBox_shotNum->value());
-        settings.setValue("Global/ShotNumIsAutoIncrease", ui->checkBox_autoIncrease->isChecked());
         settings.setValue("Global/TriggerMode", triggerMode);
         settings.setValue("Global/TriggerType", triggerType);
-        settings.setValue("Global/ResponceMatrix", ui->ReMatric_Edit->text());
-        settings.setValue("Global/IrradiationDistance", ui->lineEdit_irradiationDistance->text());
-        settings.setValue("Global/EnergyLeft", ui->doubleSpinBox_energyLeft->text());
-        settings.setValue("Global/EnergyRight", ui->doubleSpinBox_energyRight->text());        
+        settings.setValue("Global/ResponceMatrix", ui->ReMatric_Edit->text());     
     }
 
-    // // 保存界面参数
-    // if (ui->checkBox_autoIncrease->isChecked()){
-    //     ui->spinBox_shotNum->setValue(ui->spinBox_shotNum->value() + 1);
-    // }
+    // 保存界面参数
     {
         GlobalSettings settings(CONFIG_FILENAME);
         settings.setValue("Global/ShotNum", ui->spinBox_shotNum->value());
@@ -910,15 +851,11 @@ void CentralWidget::on_action_startMeasure_triggered()
         settings.setValue("Global/CacheDir", ui->lineEdit_filePath->text());
         settings.setValue("Global/TriggerMode", triggerMode);
         settings.setValue("Global/TriggerType", triggerType);
-        settings.setValue("Global/ResponceMatrix", ui->ReMatric_Edit->text());
-        settings.setValue("Global/IrradiationDistance", ui->lineEdit_irradiationDistance->text());
-        settings.setValue("Global/EnergyLeft", ui->doubleSpinBox_energyLeft->text());
-        settings.setValue("Global/EnergyRight", ui->doubleSpinBox_energyRight->text());                                              
+        settings.setValue("Global/ResponceMatrix", ui->ReMatric_Edit->text());                                            
     }
 
     commHelper->setResMatrixFileName(ResMatrixFileName);
     commHelper->setShotInformation(shotDir, shotNum);
-    commHelper->setResultInformation(ui->lineEdit_reverseValue->text());
 
     // 再发开始测量指令
     commHelper->startMeasure(triggerMode, triggerType);
@@ -939,11 +876,11 @@ void CentralWidget::on_action_stopMeasure_triggered()
     commHelper->stopMeasure();
 }
 
-
-#define SAMPLE_TIME 10
+// FPGA中ADC的采样间隔位1ns
+#define SAMPLE_TIME 1
+// 绘制波形曲线
 void CentralWidget::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
 {
-    //实测曲线
     QColor clrLine[] = {Qt::green, Qt::blue, Qt::red, Qt::cyan, Qt::darkGreen};
     QVector<double> keys, values;
     QVector<QColor> colors;
@@ -954,7 +891,7 @@ void CentralWidget::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
         QVector<quint16> chData = data[channel];
         if (chData.size() > 0){
             for (int i=0; i<chData.size(); ++i){
-                keys << i/* * SAMPLE_TIME*/;
+                keys << i * SAMPLE_TIME;
                 values << chData[i];
                 colors << clrLine[channel-1];
             }
@@ -963,7 +900,6 @@ void CentralWidget::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
     }
     ui->customPlot->xAxis->rescale(true);
     ui->customPlot->yAxis->rescale(true);
-    //ui->customPlot->yAxis->setRange(0, 4100);
     ui->customPlot->replot(QCustomPlot::rpQueuedReplot);
 
     for (int channel=6; channel<=10; ++channel){
@@ -973,7 +909,7 @@ void CentralWidget::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
         QVector<quint16> chData = data[channel];
         if (chData.size() > 0){
             for (int i=0; i<chData.size(); ++i){
-                keys << i/* * SAMPLE_TIME*/;
+                keys << i * SAMPLE_TIME;
                 values << chData[i];
                 colors << clrLine[channel-6];
             }
@@ -982,7 +918,6 @@ void CentralWidget::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
     }
     ui->customPlot_2->xAxis->rescale(true);
     ui->customPlot_2->yAxis->rescale(true);
-    //ui->customPlot_2->yAxis->setRange(0, 4100);
     ui->customPlot_2->replot(QCustomPlot::rpQueuedReplot);
 
     for (int channel=11; channel<=15; ++channel){
@@ -992,7 +927,7 @@ void CentralWidget::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
         QVector<quint16> chData = data[channel];
         if (chData.size() > 0){
             for (int i=0; i<chData.size(); ++i){
-                keys << i/* * SAMPLE_TIME*/;
+                keys << i * SAMPLE_TIME;
                 values << chData[i];
                 colors << clrLine[channel-11];
             }
@@ -1001,7 +936,6 @@ void CentralWidget::showRealCurve(const QMap<quint8, QVector<quint16>>& data)
     }
     ui->customPlot_3->xAxis->rescale(true);
     ui->customPlot_3->yAxis->rescale(true);
-    //ui->customPlot_3->yAxis->setRange(0, 4100);
     ui->customPlot_3->replot(QCustomPlot::rpQueuedReplot);
 }
 
@@ -1257,25 +1191,6 @@ bool CentralWidget::openXRDFile(const QString &filename, QVector<QPair<double, d
 
     file.close();
     return true;
-}
-
-void CentralWidget::on_pushButton_saveAs_clicked()
-{
-    QString strSavePath = QString("%1/%2").arg(ui->lineEdit_SaveAsPath->text(), ui->lineEdit_SaveAsFileName->text());
-    if (commHelper->saveAs(strSavePath))
-    {
-        GlobalSettings settings(CONFIG_FILENAME);
-        settings.setValue("Global/ReverseValue", ui->lineEdit_reverseValue->text());
-        settings.setValue("Global/DadiationDose", ui->lineEdit_dadiationDose->text());
-        settings.setValue("Global/DadiationDoseRate", ui->lineEdit_dadiationDoseRate->text());
-        settings.setValue("Global/SaveAsFileName", ui->lineEdit_SaveAsFileName->text());
-        settings.setValue("Global/SaveAsPath", ui->lineEdit_SaveAsPath->text());
-        QMessageBox::information(this, tr("提示"), tr("保存成功！"));
-    }
-    else
-    {
-        QMessageBox::information(this, tr("提示"), tr("保存失败！"));
-    }
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////

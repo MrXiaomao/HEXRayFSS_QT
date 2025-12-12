@@ -286,7 +286,7 @@ void DataProcessor::OnDataProcessThread()
                     }
 
                     //采集数据已经足够了，通知处理数据
-                    // 实测曲线
+                    // 波形曲线
                     QMetaObject::invokeMethod(this, [=]() {
                         emit onRawWaveData(trunk, true);
                     }, Qt::QueuedConnection);

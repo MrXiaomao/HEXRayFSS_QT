@@ -16,7 +16,8 @@ SOURCES += \
     mainwindow.cpp \
     netsetting.cpp \
     paramsetting.cpp \
-    switchbutton.cpp
+    switchbutton.cpp \
+    unfoldSpec.cpp
 
 HEADERS += \
     dataprocessor.h \
@@ -26,7 +27,8 @@ HEADERS += \
     mainwindow.h \
     netsetting.h \
     paramsetting.h \
-    switchbutton.h
+    switchbutton.h \
+    unfoldSpec.h
 
 FORMS += \
     mainwindow.ui \
@@ -117,24 +119,6 @@ include($$PWD/../3rdParty/resource/resource.pri)
 include($$PWD/../3rdParty/QCustomplot/QCustomplot.pri)
 include($$PWD/../3rdParty/QGoodWindow/QGoodWindow/QGoodWindow.pri)
 include($$PWD/../3rdParty/QGoodWindow/QGoodCentralWidget/QGoodCentralWidget.pri)
-
-# 使用Matlab库进行反解能谱
-# DEFINES += ENABLE_MATLAB
-
-contains(DEFINES, ENABLE_MATLAB) {
-    message("Including matlab library")
-    include($$PWD/../3rdParty/Matlab2020b/Matlab2020b.pri)
-
-    # Matlab SDK库的头文件
-    win32: LIBS += -L$$PWD/lib/ -lfunc_waveCorrect
-    win32: LIBS += -L$$PWD/lib/ -lUnfolddingAlgorithm_Gravel
-    INCLUDEPATH += $$PWD/lib/
-
-} else {
-    SOURCES += unfoldSpec.cpp
-    HEADERS += unfoldSpec.h
-    message("Skipping matlab library")
-}
 
 # 添加config配置
 # CONFIG += precompile_header

@@ -51,7 +51,7 @@ public:
 
 public slots:
     void slotWriteLog(const QString &msg, QtMsgType msgType = QtDebugMsg);//操作日志
-    void showRealCurve(const QMap<quint8, QVector<quint16>>& data);//实测曲线
+    void showRealCurve(const QMap<quint8, QVector<quint16>>& data);//波形曲线
     void showEnerygySpectrumCurve(const QVector<QPair<double, double>>& data);//反解能谱
 
 signals:
@@ -91,8 +91,6 @@ private slots:
 
     void on_action_colorTheme_triggered();
 
-    void on_pushButton_saveAs_clicked();
-
     void on_action_saveAllPicture_triggered();
 
 private:
@@ -101,13 +99,6 @@ private:
     bool mIsDarkTheme = true;
     bool mThemeColorEnable = true;
     QColor mThemeColor = QColor(255,255,255);
-
-#ifdef ENABLE_MATLAB
-    mwArray m_mwT;
-    mwArray m_mwSeq;
-    mwArray m_mwResponce_matrix;
-    mwArray m_mwRom;
-#endif // ENABLE_MATLAB
 
     CommHelper *commHelper = nullptr;
     class MainWindow *mainWindow = nullptr;
