@@ -39,7 +39,7 @@ public:
     */
     void initUi();
     void restoreSettings();
-    void initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, QString axisYLabel, int graphCount = 1);
+    void initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, QString axisYLabel, int graphCount = 1, int channelStart = 1);
     void applyColorTheme();
     bool openXRDFile(const QString &filePath, QVector<QPair<double, double>>& data);
 
@@ -60,8 +60,6 @@ signals:
 
 private slots:
     void on_action_netCfg_triggered();
-
-    void on_action_cfgParam_triggered();
 
     void on_action_exit_triggered();
 

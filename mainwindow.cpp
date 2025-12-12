@@ -4,6 +4,7 @@
 #include "netsetting.h"
 #include "paramsetting.h"
 #include "globalsettings.h"
+#include <algorithm>
 
 CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
     : QMainWindow(parent)
@@ -17,9 +18,9 @@ CentralWidget::CentralWidget(bool isDarkTheme, QWidget *parent)
 
     commHelper = CommHelper::instance();
     initUi();
-    initCustomPlot(ui->customPlot, tr("时间/ns"), tr("波形曲线（通道1-5）"), 5);
-    initCustomPlot(ui->customPlot_2, tr("时间/ns"), tr("波形曲线（通道6-10）"), 5);
-    initCustomPlot(ui->customPlot_3, tr("时间/ns"), tr("波形曲线（通道11-15）"), 5);
+    initCustomPlot(ui->customPlot, tr("时间/ns"), tr("波形曲线（通道1-5）"), 5, 1);
+    initCustomPlot(ui->customPlot_2, tr("时间/ns"), tr("波形曲线（通道6-10）"), 5, 6);
+    initCustomPlot(ui->customPlot_3, tr("时间/ns"), tr("波形曲线（通道11-15）"), 5, 11);
     initCustomPlot(ui->customPlot_result, tr("能量/KeV"), tr("反解能谱/Counts"));
     restoreSettings();
     applyColorTheme();
@@ -318,7 +319,7 @@ void CentralWidget::initUi()
     splitter->setCollapsible(1,false);
     //splitter->setCollapsible(2,false);
 
-    // 左边显示3个计数曲线
+    // 左边显示3个图，用于显示15通道波形
     QSplitter *splitterV1 = new QSplitter(Qt::Vertical,this);
     splitterV1->setObjectName("splitterV1");
     splitterV1->setHandleWidth(5);
@@ -456,28 +457,23 @@ void CentralWidget::initUi()
     }
 }
 
-void CentralWidget::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, QString axisYLabel, int graphCount/* = 1*/)
+void CentralWidget::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, QString axisYLabel, int graphCount/* = 1*/, int channelStart/* = 1*/)
 {
     //customPlot->setObjectName(objName);
     customPlot->installEventFilter(this);
 
-    // 设置背景网格线是否显示
-    //customPlot->xAxis->grid()->setVisible(true);
-    //customPlot->yAxis->grid()->setVisible(true);
-    // 设置背景网格线条颜色
-    //customPlot->xAxis->grid()->setPen(QPen(palette.color(QPalette::WindowText),1,Qt::PenStyle::SolidLine));  // 垂直网格线条属性
-    //customPlot->yAxis->grid()->setPen(QPen(palette.color(QPalette::WindowText),1,Qt::PenStyle::SolidLine)); // 水平网格线条属性
-    //customPlot->xAxis->grid()->setSubGridPen(QPen(palette.color(QPalette::WindowText),1,Qt::PenStyle::DotLine));
-    //customPlot->yAxis->grid()->setSubGridPen(QPen(palette.color(QPalette::WindowText),1,Qt::PenStyle::SolidLine));
-
     // 设置全局抗锯齿
     customPlot->setAntialiasedElements(QCP::aeAll);
-    // 图例名称隐藏
-    customPlot->legend->setVisible(false);
-    // customPlot->legend->setFillOrder(QCPLayoutGrid::foRowsFirst);//设置图例在一列中显示
-    // customPlot->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignTop|Qt::AlignRight);// 图例名称显示位置
-    // customPlot->legend->setBrush(Qt::NoBrush);//设置背景颜色
-    // customPlot->legend->setBorderPen(Qt::NoPen);//设置边框颜色
+    // 图例名称显示（仅对多通道图显示）
+    if (graphCount > 1) {
+        customPlot->legend->setVisible(true);
+        customPlot->legend->setFillOrder(QCPLayoutGrid::foRowsFirst);//设置图例在一列中显示
+        customPlot->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignTop|Qt::AlignRight);// 图例名称显示位置
+        customPlot->legend->setBrush(Qt::NoBrush);//设置背景颜色
+        customPlot->legend->setBorderPen(Qt::NoPen);//设置边框颜色
+    } else {
+        customPlot->legend->setVisible(false);
+    }
 
     // 设置边界
     //customPlot->setContentsMargins(0, 0, 0, 0);
@@ -505,13 +501,15 @@ void CentralWidget::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, 
     QColor colors[] = {Qt::green, Qt::blue, Qt::red, Qt::cyan, Qt::darkGreen};
     for (int i=0; i<graphCount; ++i){
         QCPGraph * graph = customPlot->addGraph(customPlot->xAxis, customPlot->yAxis);
-        //graph->setName("");
+        // 设置图例名称：通道编号
+        if (graphCount > 1) {
+            graph->setName(QString("通道%1").arg(channelStart + i));
+        }
         graph->setAntialiased(false);
         graph->setPen(QPen(colors[i]));
         graph->selectionDecorator()->setPen(QPen(colors[i]));
         graph->setLineStyle(QCPGraph::lsLine);
         graph->setSelectable(QCP::SelectionType::stNone);
-        //graph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, colors[i], 1));//显示散点图
         graph->setSmooth(true);    
     }
 
@@ -520,45 +518,56 @@ void CentralWidget::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, 
         static int index = 0;
         for (int i=0; i<graphCount; ++i){
             QCheckBox* checkBox = new QCheckBox(customPlot);
-            checkBox->setText(QLatin1String("")+QString::number(++index));
+            checkBox->setText("");
             checkBox->setObjectName(QLatin1String("CH ")+QString::number(index));
-            auto createColorIcon = [&](const QColor &color, int size = 16) {
-                // 创建透明背景的QPixmap
-                QPixmap pixmap(size, size);
-                pixmap.fill(Qt::transparent);
-
-                // 使用QPainter绘制圆形图标
-                QPainter painter(&pixmap);
-                painter.setRenderHint(QPainter::Antialiasing);
-                //painter.fillRect(pixmap.rect(), color);
-                painter.setBrush(color);
-                //painter.setPen(Qt::NoPen);
-                painter.drawEllipse(1, 1, size-2, size-2);
-                painter.end();
-
-                return QIcon(pixmap);
-            };
 
             QColor colors[] = {Qt::green, Qt::blue, Qt::red, Qt::cyan, Qt::darkGreen};
-            QIcon actionIcon = createColorIcon(colors[i]);
-            checkBox->setIcon(actionIcon);
-            checkBox->setProperty("index", i+1);
+            checkBox->setProperty("index", i);
             checkBox->setChecked(true);
             connect(checkBox, &QCheckBox::stateChanged, this, [=](int state){
                 int index = checkBox->property("index").toInt();
-                QCPGraph *graph = customPlot->graph(QLatin1String("Graph ")+QString::number(index));
+                QCPGraph *graph = customPlot->graph(i);//QLatin1String("通道")+QString::number(channelStart+index));
                 if (graph){
                     graph->setVisible(Qt::CheckState::Checked == state ? true : false);
                     customPlot->replot();
                 }
             });
         }
+
         connect(customPlot, &QCustomPlot::afterLayout, this, [=](){
             QCustomPlot* customPlot = qobject_cast<QCustomPlot*>(sender());
             QList<QCheckBox*> checkBoxs = customPlot->findChildren<QCheckBox*>();
-            int i = 0;
-            for (auto checkBox : checkBoxs){
-                checkBox->move(customPlot->axisRect()->topRight().x() - 70, customPlot->axisRect()->topRight().y() + i++ * 20 + 10);
+            
+            // 获取图例位置和大小
+            if (customPlot->legend->visible() && checkBoxs.size() == graphCount) {
+                QRect legendRect = customPlot->legend->outerRect();//outerRect().toRect();
+                
+                // 按照 checkBox 的 index 属性排序，确保与图例项顺序一致
+                std::sort(checkBoxs.begin(), checkBoxs.end(), [](QCheckBox* a, QCheckBox* b) {
+                    return a->property("index").toInt() < b->property("index").toInt();
+                });
+                
+                // 获取图例的顶部位置
+                QPoint legendTopLeft = customPlot->legend->outerRect().topLeft();//topLeft().toPoint();
+                
+                // 计算每个图例项的高度（图例项通常是垂直排列的）
+                int legendItemHeight = legendRect.height() / graphCount;
+                
+                int i = 0;
+                for (auto checkBox : checkBoxs){
+                    // 计算 checkBox 的 y 坐标，与对应的图例项居中对齐
+                    int checkBoxY = legendTopLeft.y() + i * legendItemHeight + (legendItemHeight - checkBox->height()) / 2;
+                    // checkBox 的 x 坐标位于图例左侧，留出一些间距
+                    int checkBoxX = legendRect.left() - 10;
+                    checkBox->move(checkBoxX, checkBoxY);
+                    i++;
+                }
+            } else {
+                // 如果图例不可见，使用原来的定位方式
+                int i = 0;
+                for (auto checkBox : checkBoxs){
+                    checkBox->move(customPlot->axisRect()->topRight().x() - 70, customPlot->axisRect()->topRight().y() + i++ * 20 + 10);
+                }
             }
         });
     }
@@ -576,10 +585,6 @@ void CentralWidget::initCustomPlot(QCustomPlot* customPlot, QString axisXLabel, 
         customPlot->yAxis2->setNumberFormat("eb");//使用科学计数法表示刻度
         customPlot->yAxis2->setNumberPrecision(0);//小数点后面小数位数
     }
-    // else {
-    //     QSharedPointer<QCPAxisTicker> ticker(new QCPAxisTicker);
-    //     customPlot->yAxis->setTicker(ticker);
-    // }
 
     customPlot->replot();
     connect(customPlot->xAxis, SIGNAL(rangeChanged(const QCPRange &)), customPlot->xAxis2, SLOT(setRange(const QCPRange &)));
@@ -641,7 +646,7 @@ bool CentralWidget::eventFilter(QObject *watched, QEvent *event){
                         customPlot->yAxis->rescale(true);
                         customPlot->replot(QCustomPlot::rpQueuedReplot);
                     });
-                    contextMenu.addAction(tr("导出图像..."), this, [=]{
+                    contextMenu.addAction(tr("导出图像"), this, [=]{
                         QString filePath = QFileDialog::getSaveFileName(this);
                         if (!filePath.isEmpty()){
                             if (!filePath.endsWith(".png"))
@@ -713,14 +718,6 @@ void CentralWidget::on_action_netCfg_triggered()
     NetSetting w;
     w.exec();
 }
-
-
-void CentralWidget::on_action_cfgParam_triggered()
-{
-    ParamSetting w;
-    w.exec();
-}
-
 
 void CentralWidget::on_action_exit_triggered()
 {
