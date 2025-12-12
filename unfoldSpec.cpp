@@ -77,6 +77,7 @@ void smooth(double* data, double* output, int data_size, int window_size) {
     }
 }
 
+// 直接设置波形，不经过波形矫正
 void UnfoldSpec::setWaveData(unsigned char* raw_data)
 {
     ::memcpy(data, raw_data, PACK_BYTE);
@@ -142,6 +143,7 @@ void UnfoldSpec::setWaveData(unsigned char* raw_data)
     }
 }
 
+//读取网口波形数据，并进行校正
 #include <math.h>
 bool UnfoldSpec::func_waveCorrect(unsigned char* raw_data)
 {
@@ -263,7 +265,7 @@ QMap<quint8, QVector<quint16>> UnfoldSpec::getCorrWaveData() const
     }
 
     QMap<quint8, QVector<quint16>> result;
-    for (int i = 0; i <= 15; ++i) {
+    for (int i = 0; i < 15; ++i) {
         QVector<quint16> waveData;
         for (int j = 0; j < 1024; ++j) {
             waveData.push_back(wave_temp[j][i]);

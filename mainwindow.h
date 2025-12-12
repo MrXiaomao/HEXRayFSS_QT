@@ -93,6 +93,8 @@ private slots:
 
     void on_pushButton_saveAs_clicked();
 
+    void on_action_saveAllPicture_triggered();
+
 private:
     Ui::CentralWidget *ui;
     bool mDetectorWorkOn = false;

@@ -1003,6 +1003,7 @@
    <addaction name="action_closeDetector"/>
    <addaction name="action_startMeasure"/>
    <addaction name="action_stopMeasure"/>
+   <addaction name="action_saveAllPicture"/>
    <addaction name="separator"/>
    <addaction name="action_exit"/>
   </widget>
@@ -1241,6 +1242,21 @@
    </property>
    <property name="text">
     <string>关于Qt</string>
+   </property>
+  </action>
+  <action name="action_saveAllPicture">
+   <property name="icon">
+    <iconset resource="../3rdParty/resource/resource.qrc">
+     <normaloff>:/savetoPicture.png</normaloff>:/savetoPicture.png</iconset>
+   </property>
+   <property name="text">
+    <string>导出图片</string>
+   </property>
+   <property name="toolTip">
+    <string>导出所有图片</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
    </property>
   </action>
  </widget>

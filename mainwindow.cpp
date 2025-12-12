@@ -918,9 +918,7 @@ void CentralWidget::on_action_startMeasure_triggered()
 
     commHelper->setResMatrixFileName(ResMatrixFileName);
     commHelper->setShotInformation(shotDir, shotNum);
-    commHelper->setResultInformation(ui->lineEdit_reverseValue->text(),
-                                   ui->lineEdit_dadiationDose->text(),
-                                   ui->lineEdit_dadiationDoseRate->text());
+    commHelper->setResultInformation(ui->lineEdit_reverseValue->text());
 
     // 再发开始测量指令
     commHelper->startMeasure(triggerMode, triggerType);
@@ -1035,8 +1033,8 @@ void CentralWidget::on_action_about_triggered()
                            tr("日期") +
                            QString("</p><span style='color:blue;'>%1</span><p>").arg(GIT_DATE) +
                            tr("开发者") +
-                           QString("</p><span style='color:blue;'>MaoXiaoqing</span><p>") +
-                           "</p><p>四川大学物理学院 版权所有 (C) 2025</p>"
+                           QString("</p><span style='color:blue;'>Pan Huajun; MaoXiaoqing</span><p>") +
+                           "</p><p>版权所有 (C) 2025</p>"
                        );
 }
 
@@ -1354,3 +1352,35 @@ bool MainWindow::event(QEvent * event) {
 
     return QGoodWindow::event(event);
 }
+
+//导出所有图片
+void CentralWidget::on_action_saveAllPicture_triggered()
+{
+    //选择导出文件夹
+    QString saveDir = QFileDialog::getExistingDirectory(this, tr("选择导出文件夹"));
+    if (saveDir.isEmpty()){
+        return;
+    }
+
+    //判断待存储的四个文件名是否存在，如果存在，提示用户是否覆盖
+    QStringList fileNames = QStringList() << "waveform1.png" << "waveform2.png" << "waveform3.png" << "XraySpectrumCurve.png";
+    for (auto fileName : fileNames){
+        if (QFileInfo::exists(QString("%1/%2").arg(saveDir).arg(fileName))){
+            if (QMessageBox::Yes == QMessageBox::question(this, tr("提示"), tr("文件已存在，是否覆盖？"), QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes)){
+                QFile::remove(QString("%1/%2").arg(saveDir).arg(fileName));
+            }
+            else{
+                continue;
+            }
+        }
+    }   
+
+    //导出波形图片
+    ui->customPlot->savePng(QString("%1/waveform1.png").arg(saveDir));
+    ui->customPlot_2->savePng(QString("%1/waveform2.png").arg(saveDir));
+    ui->customPlot_3->savePng(QString("%1/waveform3.png").arg(saveDir));
+
+    //导出反解能谱图片
+    ui->customPlot_result->savePng(QString("%1/XraySpectrumCurve.png").arg(saveDir));
+}
+

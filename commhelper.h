@@ -57,7 +57,7 @@ public:
      设置发次信息
     */
     void setShotInformation(const QString shotDir, const quint32 shotNum);
-    void setResultInformation(const QString reverseValue, const QString dadiationDose, const QString dadiationDoseRate);
+    void setResultInformation(const QString reverseValue/*, const QString dadiationDose, const QString dadiationDoseRate*/);
 
     /*
      设置波形模式
